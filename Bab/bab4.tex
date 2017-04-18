@@ -1,0 +1,110 @@
+\chapter{Perancangan}
+Berdasarkan analisis yang telah dilakukan, terdapat beberapa hal yang perlu dirancang untuk pembangunan perangkat lunak naive bayes berbasis \textit{hadoop mapreduce}. Pada bab ini akan dijelaskan perancangan yang diperlukan untuk membangun perangkat lunak yaitu perancang-
+an antarmuka, diagram kelas rinci, serta rincian metode.
+			
+\section{Perancangan Antarmuka}
+
+Perangkat lunak \textit{naive bayes classification} memiliki 6 buah tampilan untuk yang tidak berbasis \textit{MapReduce}, yaitu: (1) \textit{Dashboard} (2) \textit{Input Set Manager} (3) \textit{Renew Model Manager} (4) \textit{Testing Manager} (5) \textit{Classification Manager} (6) \textit{Error Rate Dashboard}. Untuk program yang berbasis \textit{MapReduce} tidak akan memiliki antarmuka yang khusus, karena program hanya perlu dijalankan dengan menggunakan CLI (\textit{command line interface}). Berikut adalah penjelasan dan gambar dari tiap antarmuka yang dirancang:
+
+\subsection{\textit{Dashboard}}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.45]{Mockup/mockup_dashboard_0}
+	\caption[input-set-gui-1]{Dashboard}
+	\label{fig:input-set-gui-1}
+\end{figure}
+\textit{Dashboard} dibuat untuk memudahkan user dalam memonitor model NBC yang telah dimasukkan ke dalam perangkat lunak yang dibangun. Berikut penjelasan lebih lanjut mengenai tiap komponen pada rancangan \textit{dashboard} yang dibuat:
+\begin{enumerate}
+	\item Berisi nama - nama atribut kelas dan total frekeunsi kemunculannya tiap nilai.
+	\item Berisi nama - nama atribut prediktor dan frekuensi kemunculannya untuk prediktor bertipe diskrit dan \textit{mean} \verb|&| \textit{sigma} untuk yang bertipe numerik.
+	\item \textit{Bayesian model} merupakan model dari NBC yang akan digunakan untuk testing dan klasifikasi. Model ini merupakan model yang langsung di-import dari hasil training di dalam HDFS.
+\end{enumerate}
+
+\subsection{\textit{Input Set Manager}}
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.4]{Mockup/input-set-gui-1}
+	\caption[\textit{Input Set Manager}]{\textit{Input Set Manager}}
+	\label{fig:Input Set Manager}
+\end{figure}
+\textit{Input Set Manager} dibuat untuk memudahkan user melakukan input data ke dalam HDFS menggunakan perangkat lunak yang dibuat. Berikut penjelasan lebih lanjut mengenai tiap komponen pada rancangan \textit{Input Set Manager} yang dibuat:
+\begin{enumerate}
+	\item User dapat memilih tipe model input yang sudah ada dalam HDFS.
+	\item Jika ingin membuat tipe model input baru pada HDFS, maka user perlu mengisi kolom ini dan mengisi nama model yang diinginkan.
+	\item User dapat memilih file input yang akan dikirimkan ke dalam HDFS. User dapat memilih > 1 file sekaligus.
+	\item User dapat memilih file info mengenai file input, yang dikirimkan ke dalam HDFS.
+	\item User dapat memilih presentase pembagian data antara data \textit{training} dan data \textit{testing} dari keseluruhan data input yang akan dimasukkan ke dalam HDFS.
+	\item Setelah memillih file info, user dapat memilih atribut mana saja yang akan digunakan untuk training. User juga dapat memilih tipe(diskrit/numerik) dari atribut tersebut beserta jenisnya (kelas/prediktor).
+\end{enumerate}
+
+\subsection{\textit{Renew Model Manager}}
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.45]{Mockup/mockup_renewmodel_manager}
+	\caption[\textit{Renew Model Manager}]{\textit{Renew Model Manager}}
+	\label{fig:Renew Model Manager}
+\end{figure}
+\textit{Renew Model Manager} dibuat agar user selalu bisa memperbaharui model NBC pada perangkat lunak yang dibikin.
+\begin{enumerate}
+	\item User dapat memilih file model NBC hasil dari training dari sistem penyimpanan \textit{local}.
+	\item User dapat memilih file model NBC hasil dari training langsung dari HDFS.
+\end{enumerate}
+
+\subsection{\textit{Testing Manager}}
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.45]{Mockup/mockup_testing_manager}
+	\caption[\textit{Testing Manager}]{\textit{Testing Manager}}
+	\label{fig:Testing Manager}
+\textit{Testing Manager} dibuat untuk melakukan testing pada model NBC yang sudah di-import ke dalam program sebelumnya.
+\end{figure}
+\begin{enumerate}
+	\item User dapat memilih file input dan file info dari penyimpanan \textit{local} milik user.
+	\item User dapat memilih file testing yang sudah ada di dalam HDFS dengan memilih model input direktori pada HDFS.
+\end{enumerate}
+
+\subsection{\textit{Classification Manager}}
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.45]{Mockup/mockup_classification_manager}
+	\caption[\textit{Classification Manager}]{\textit{Classification Manager}}
+	\label{fig:Classification Manager}
+\end{figure}
+\textit{Classification Manager} dapat digunakan untuk mengklasifikasi satu record input/kasus yang secara langsung diisi sendiri oleh user yang menggunakannya terhadap model NBC yang sudah ada pada perangkat lunak sebelumnya.
+\begin{enumerate}
+	\item User memilih nilai prediktor untuk kasus baru (prediktor dapat berupa dropdown untuk yang bertipe diskrit dan \textit{number} untuk yang bertipe numerik)
+	\item User dapat memilih kelas yang menjadi prediksi sebelumnya dari user untuk diperiksa kebenarannya jika menggunakan program setelah diklasifikasikan menggunakan model NBC yang sudah ada.
+	\item Hasil dari klasifikasi yang telah dijalankan.
+\end{enumerate}
+
+\subsection{\textit{Error Rate Dashboard}}
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.45]{Mockup/mockup_errorrate}
+	\caption[\textit{Error Rate Dashboard}]{\textit{Error Rate Dashboard}}
+	\label{fig:Error Rate Dashboard}
+\end{figure}
+\textit{Error Rate Dashboard} dibuat untuk memonitor hasil \textit{error rate} yang sudah dihitung setelah menjalani proses testing. 
+\begin{enumerate}
+	\item \textit{Confusion matrix} untuk setiap atribut kelas.
+	\item Error rate yang akan dihasilkan setelah melakukan klasifikasi meliputi: (1)$Accuracy$; (2)$Precision$; (3)$Recall$; (4)$F-Measure$.
+\end{enumerate}
+
+
+
+\section{Diagram Kelas Lengkap}
+Berikut adalah penjelasan dari kelas - kelas yang ada pada keempat modul yang dibuat dan  beserta penjelasan setiap atribut dan operasi yang dimiliki oleh kelas - kelas.
+
+\subsection{Modul Kelola Input}
+
+
+\subsection{Modul \textit{Train Naive Bayes M-R Based}}
+
+
+\subsection{Modul \textit{Testing Naive Bayes M-R Based}}
+
+
+\subsection{Modul Klasifikasi Naive Bayes}
+
+
