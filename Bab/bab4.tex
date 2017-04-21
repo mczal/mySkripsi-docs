@@ -169,27 +169,8 @@ Dalam \textit{package} ini terdapat beberapa \textit{package} lagi dan kelas - k
 	\end{enumerate}
 	Kelas ini memiliki 1 buah operasi. Operasi tersebut adalah operasi \textit{map(key : Object, value : Text, context : Context) : void} yang akan melakukan operasi pada fase map untuk proses training pada modul ini. Seperti yang digambarkan pada DFD sebelumnya, proses ini akan melakukan perhitungan jumlah frekuensi kemunculan tiap atribut. Terkecuali untuk atribut prediktor yang bertipe numerik, operasi ini akan mengeluarkan kembali nilai yang dibaca dari input.
 	
-	\item{Kelas \textit{MyTrainingReducer}}\\
-	Kelas ini merupakan kelas turunan dari kelas \textit{Reducer} pada \textit{package org.apache.hadoop.mapreduce}. \textit{Generic type} kelas parent dari kelas ini adalah: 
-	\begin{enumerate}
-		\item Text merupakan tipe \textit{key} masukan dari proses \textit{reduce} yang dikirim dari proses sebelumnya yaitu proses \textit{map}
-		\item DoubleWritable merupakan tipe \textit{value} masukan dari proses \textit{reduce} yang dikriim dari proses sebelumnya yaitu proses \textit{map}.
-		\item Text merupakan tipe \textit{key} keluaran dari proses \textit{reduce}. Karena data keluaran berupa model NBC akan memiliki key berisi string.
-		\item Text merupakan tipe \textit{value} keluaran dari proses \textit{reduce}. Karena data keluaran berupa model NBC akan memiliki \textit{value} berisi string.
-	\end{enumerate}
-	Kelas ini memiliki 3 atribut yang memiliki \textit{modifier} \textit{static} dan \textit{final}. Atribut tersebut diantaranya adalah:
-	\begin{enumerate}
-		\item \verb|CLASS_TYPE| merupakan atribut bertipe string yang memiliki nilai inisialisasi awal = \textit{"CLASS"}. Atribut ini akan digunakan sebagai pembeda pada data keluaran yang merupakan atribut kelas.
-				
-		\item \verb|DISCRETE_TYPE| merupakan atribut bertipe string yang memiliki nilai inisialisasi awal = \textit{"DISCRETE"}. Atribut ini akan digunakan sebagai pembeda pada data keluaran yang merupakan atribut prediktor bertipe diskrit.
-
-		\item \verb|NUMERIC_TYPE| merupakan atribut bertipe string yang memiliki nilai inisialisasi awal = \textit{"NUMERIC"}. Atribut ini akan digunakan sebagai pembeda pada data keluaran yang merupakan atribut prediktor bertipe numerik.
-	\end{enumerate}
-	
-	Kelas ini memiliki 1 buah operasi. Operasi tersebut adalah operasi \textit{reduce(key : Text, values : Iterable<DoubleWritable>, context : Context) : void} yang akan melakukan operasi pada fase reduce untuk proses training pada modul ini. Seperti yang digambarkan pada DFD sebelumnya, proses ini akan melakukan akumulasi dari tiap perhitungan jumlah frekuensi kemunculan tiap value yang memiliki key yang sama. Terkecuali untuk atribut prediktor yang bertipe numerik, operasi ini akan menghitung nilai rata - rata dari tiap value pada key tersebut dan lalu dilanjutkan menghitung nilai standar deviasi pada probabilitas posterior atribut numerik tersebut.
-
-\begin{algorithm}
-\caption{NBC Model algorithm}\label{euclid}
+\begin{algorithm}[H]
+\caption{NBC Model Map Algorithm}\label{alg:NBCGenMap}
 \begin{algorithmic}[1]
 \Procedure{Map}{$key,value,context$}\Comment{Map function}
 \State $ $\verb|_|$CLASS \gets "|$\verb|_|$class|"$
@@ -233,9 +214,81 @@ Dalam \textit{package} ini terdapat beberapa \textit{package} lagi dan kelas - k
 \end{algorithmic}
 \end{algorithm}
 	
+	\item{Kelas \textit{MyTrainingReducer}}\\
+	Kelas ini merupakan kelas turunan dari kelas \textit{Reducer} pada \textit{package org.apache.hadoop.mapreduce}. \textit{Generic type} kelas parent dari kelas ini adalah: 
+	\begin{enumerate}
+		\item Text merupakan tipe \textit{key} masukan dari proses \textit{reduce} yang dikirim dari proses sebelumnya yaitu proses \textit{map}
+		\item DoubleWritable merupakan tipe \textit{value} masukan dari proses \textit{reduce} yang dikriim dari proses sebelumnya yaitu proses \textit{map}.
+		\item Text merupakan tipe \textit{key} keluaran dari proses \textit{reduce}. Karena data keluaran berupa model NBC akan memiliki key berisi string.
+		\item Text merupakan tipe \textit{value} keluaran dari proses \textit{reduce}. Karena data keluaran berupa model NBC akan memiliki \textit{value} berisi string.
+	\end{enumerate}
+	Kelas ini memiliki 3 atribut yang memiliki \textit{modifier} \textit{static} dan \textit{final}. Atribut tersebut diantaranya adalah:
+	\begin{enumerate}
+		\item \verb|CLASS_TYPE| merupakan atribut bertipe string yang memiliki nilai inisialisasi awal = \textit{"CLASS"}. Atribut ini akan digunakan sebagai pembeda pada data keluaran yang merupakan atribut kelas.
+				
+		\item \verb|DISCRETE_TYPE| merupakan atribut bertipe string yang memiliki nilai inisialisasi awal = \textit{"DISCRETE"}. Atribut ini akan digunakan sebagai pembeda pada data keluaran yang merupakan atribut prediktor bertipe diskrit.
+
+		\item \verb|NUMERIC_TYPE| merupakan atribut bertipe string yang memiliki nilai inisialisasi awal = \textit{"NUMERIC"}. Atribut ini akan digunakan sebagai pembeda pada data keluaran yang merupakan atribut prediktor bertipe numerik.
+	\end{enumerate}
+	
+	Kelas ini memiliki 1 buah operasi. Operasi tersebut adalah operasi \textit{reduce(key : Text, values : Iterable<DoubleWritable>, context : Context) : void} yang akan melakukan operasi pada fase reduce untuk proses training pada modul ini. Seperti yang digambarkan pada DFD sebelumnya, proses ini akan melakukan akumulasi dari tiap perhitungan jumlah frekuensi kemunculan tiap value yang memiliki key yang sama. Terkecuali untuk atribut prediktor yang bertipe numerik, operasi ini akan menghitung nilai rata - rata dari tiap value pada key tersebut dan lalu dilanjutkan menghitung nilai standar deviasi pada probabilitas posterior atribut numerik tersebut.
+	
+	
+\begin{algorithm}[H]
+\caption{NBC Model Reduce Algorithm}\label{alg:NBCGenReduce}
+\begin{algorithmic}[1]
+\Procedure{Reduce}{$key,values[],context$}\Comment{Reduce function}
+
+\State \verb|CLASS_TYPE| $\gets$ \texttt{"CLASS"}
+\State \verb|DISCRETE_TYPE| $\gets$ \texttt{"DISCRETE"}
+\State \verb|NUMERIC_TYPE| $\gets$ \texttt{"NUMERIC"}
+
+\State \texttt{sum} $\gets 0$
+\State \texttt{count} $\gets 0$
+\State \texttt{caches} $\gets$ \texttt{List<Double>}
+
+\ForAll{\texttt{value} $\in$ \texttt{values}}
+	\State \texttt{caches.add(value)}
+	\State \texttt{sum} $+=$ \texttt{value}
+	\State \texttt{count}$++$
+\EndFor
+
+\If{\texttt{key.type} $\gets$ \texttt{discrete}}
+
+\State \texttt{splitter} $\gets$ \texttt{key.split("|")[2]}
+\State \texttt{result} $\gets$ \texttt{splitter + "," + sum + "|" +}\verb|DISCRETE_TYPE|
+\State \texttt{write(result,"")}
+
+\ElsIf{\texttt{key.type} $\gets$ \texttt{class}}
+
+\State \texttt{splitter} $\gets$ \texttt{key.split("|")[2]}
+\State \texttt{result} $\gets$ \texttt{splitter + "," + sum + "|" +}\verb|CLASS_TYPE|
+\State \texttt{write(result,"")}
+
+\ElsIf{\texttt{key.type} $\gets$ \texttt{contiuous}}
+
+\State \texttt{mean} $\gets$ \texttt{sum/count}
+\State \texttt{calcTemp} $\gets$ \texttt{0.0}
+
+\ForAll{\texttt{c} $\in$ \texttt{caches}}
+	\State \texttt{calcTemp} $+= (c - mean)^2$
+\EndFor
+
+\State \texttt{calcTemp} $\gets$ \texttt{calcTemp * (1/count)}
+\State \texttt{sigma} $\gets calcTemp^{0.5}$
+\State \texttt{result} $\gets$  \texttt{key.split("|")[2]}
+\State \texttt{write(result, ";" + mean + "|" + sigma + "|" +)}\verb|NUMERIC_TYPE|
+
+\EndIf
+
+\EndProcedure
+\end{algorithmic}
+\end{algorithm}
+	
 \end{enumerate}
 
 \subsection{Diagram Kelas Modul \textit{Testing Naive Bayes M-R Based}}
+Pada diagram kelas ini terdapat 1 kelas utama(\textit{main}) yang akan dijalankan pertama kali saat program dieksekusi dan 3 package utama yang merupakan implementasi dari modul \textit{testing naive bayes}. Untuk kelas yang berfungsi sebagai \textit{mapper} dan \textit{reducer} pada modul ini, sama dengan diagram kelas pada modul "\textit{Training Naive Bayes M-R Based}" merupakan kelas implementasi(kelas turunan) dari 2 kelas Mapper dan Reducer milik hadoop pada package \verb|org.apache.hadoop.mapreduce|. Karena bentuk relasi-nya sama persis dengan yang ada pada modul "\textit{Training Naive Bayes M-R Based}", pada modul ini tidak akan digambarkan relasi kelas mapper dan reducer dengan 2 kelas parent milik \textit{library hadoop}.
 
 \subsubsection{Kelas \textit{Main}}
 \begin{figure}[H]
@@ -244,6 +297,15 @@ Dalam \textit{package} ini terdapat beberapa \textit{package} lagi dan kelas - k
 	\caption[Diagram Kelas Modul \textit{Testing: Main}]{Diagram Kelas Modul \textit{Testing: Main}}
 	\label{fig:Diagram Kelas Modul Testing: Main}
 \end{figure}
+	Kelas \textit{TestingApp} ini merupakan kelas utama(\textit{main class}) yang akan dijalankan pertama kali program \textit{MapReduce} ini dieksekusi. Kelas ini memiliki 1 atribut \textit{static} dan 1 method \textit{main}.
+	\begin{enumerate}
+		\item Atribut \verb|HDFS_AUTHORITY| \\
+		Atribut ini bertipe \textit{String} dan memiliki \textit{modifier} \textit{static} dan \textit{final} agar nilainya tidak dapat diubah - ubah. Inisialisasi pertama dari atribut ini adalah: \verb|"hdfs://master:9000"|. \verb|"hdfs://master:9000"| merupakan url dari node master yang digunakan untuk dapat berkomunikasi dengan node master pada lingkungan \textit{hadoop}. Atribut ini digunakan untuk \textit{request} operasi baca file \textit{meta.info} pada HDFS.
+		
+		\item Operasi \verb|main|\\
+		Operasi ini akan menjadi operasi pertama yang dijalankan ketika melakukan eksekusi program mapreduce pada modul ini. Operasi ini akan men-\textit{set} kelas \textit{mapper} dan kelas \textit{reducer} yang akan digunakan serta variabel - variabel yang perlu dikirimkan kepada tiap node yang dibutuhkan oleh mereka.
+	\end{enumerate}
+
 
 \subsubsection{\textit{Package Base}}
 \begin{figure}[H]
@@ -253,6 +315,56 @@ Dalam \textit{package} ini terdapat beberapa \textit{package} lagi dan kelas - k
 	\label{fig:Diagram Kelas Modul Testing: Package Base}
 \end{figure}
 
+Pada package ini terdapat 3 kelas utama yang akan menjadi kelas \textit{parent}(\textit{superclass}) dari kelas - kelas yang akan mengimplementasikan-nya. Kelas - kelas parent pada package ini dibuat untuk memenuhi konsep inheritance yang baik dan menghindari terjadinya duplikasi kode pada kelas - kelas terseubt. Kelas - kelas ini juga akan meminimumkan kode yang nantinya dibuat. Berikut adalah penjelasan lebih lanjut mengenai tiap kelas serta atribut dan operasi yang dimilikinya:
+
+\begin{enumerate}
+	\item \texttt{Enum}\footnote{Enum adalah sebuah tipe data yang nilainya hanya terbatas dari pilihan nilai-nilai yang telah didefinisikan terlebih dahulu. \textit{Enumeration} di Java baru diperkenalkan pada versi Java 5.} \textit{Type}\\ ini berisi:
+	\begin{enumerate}
+		\item NUMERIC
+		\item DISCRETE
+		\item CLASS
+	\end{enumerate}
+	\textit{Enum} ini akan digunakan sebagai pengenal tipe dari tiap atribut yang ada pada model NBC.
+	
+	\item{Kelas \texttt{AttributeMetaInfo}}\\
+	Kelas ini memiliki 1 buah parameter \textit{generic type} yang perlu diimplementasikan pada kelas yang akan menjadi turunan dari kelas ini. \textit{Generic type} pada kelas ini harus merupakan turunan dari kelas \texttt{AttributeDetail}. Kelas ini akan mencatat seluruh atribut(jenis: prediktor,kelas;tipe: numerik,diskrit) yang ada pada model NBC. Atribut yang akan dimiliki oleh kelas ini merupakan atribut yang merepresentasikan atribut pada model NBC secara umum. Atribut - atribut pada kelas ini adalah:
+	\begin{enumerate}
+		\item{\texttt{name}}\\ 
+		Atribut ini bertipe \texttt{string} yang akan merepresentasikan nama dari atribut pada model NBC.
+
+		\item{\texttt{type}}\\
+		Atribut ini bertipe \texttt{Enum Type} yang akan merepresentasikan jenis dari atribut pada model NBC.
+
+		\item{\texttt{sigma}}\\
+		Atribut ini bertipe \texttt{double} yang akan merepresentasikan nilai standar deviasi dari keseluruhan data atribut ini pada model NBC jika dan hanya jika tipe dari atribut ini merupakan numerik. Jika tidak, maka nilai atribut ini akan selalu dikosongkan.
+
+		\item{\texttt{mean}}\\
+		Atribut ini bertipe \texttt{double} yang akan merepresentasikan nilai rata - rata dari keseluruhan data atribut ini pada model NBC jika dan hanya jika tipe dari atribut ini merupakan numerik. Jika tidak, maka nilai atribut ini akan selalu dikosongkan.
+
+		\item{\texttt{attrDetailMap}}\\
+		Atribut ini bertipe \texttt{Map} dengan \texttt{key=string} dan \texttt{value=T(generic type)} yang akan merepresentasikan kumpulan dari semua nilai yang dimiliki oleh atribut ini jika dan hanya jika tipe dari atribut ini merupakan diskrit atau atribut kelas. Jika tidak, maka nilai atribut ini akan selalu dikosongkan.
+	\end{enumerate}
+	
+	Kelas ini menerima 2 buah operasi konstruktor untuk membuat instansiasi dan menginisialisasi nilai - nilai dari atribut di dalamnya. Konstruktor tersebut antara lain adalah:
+	\begin{enumerate}
+		\item \texttt{AttributeMetaInfo(name : String, type : Type)}\\
+		Konstruktor ini digunakan untuk menginisialisasi atribut tanpa mengisi nilai dari atribut \texttt{sigma} dan \texttt{mean}. Konstruktor ini biasa digunakan untuk atribut bertipe \textit{non-numerik}.
+		\item \texttt{AttributeMetaInfo(name : String, type : Type, sigma : double, mean : double)}\\
+		Konstruktor ini digunakan untuk menginisialisasi atribut dengan mengisi seluruh atribut yang ada, kecuali \texttt{attrDetailMap}. Konstruktor ini biasa digunakan untuk atribut bertipe numerik.
+		
+	\end{enumerate}
+	
+	\item{Kelas \texttt{AttributeDetail}}\\
+	Kelas ini akan merepresentasikan tiap nilai diskrit dari atribut diskrit/kelas yang ada pada model NBC. Selain mencatat nama dari nilai diskrit atribut diskrit/kelas pada NBC, kelas ini juga akan mencatat jumlah frekuensi dari atribut ini pada model NBC.
+	Kelas ini memiliki 2 atribut dan 1 operasi konstruktor, diantaranya adalah:
+	\begin{enumerate}
+		\item Atribut \texttt{count} bertipe \texttt{integer} yang akan digunakan untuk mencatat jumlah frekuensi dari kemunculan nilai atribut ini.
+		\item Atribut \texttt{value} bertipe \texttt{string} yang akan digunakan untuk mencatat nama dari nilai diskrit instansiasi dari kelas ini.
+		\item Operasi konstruktor \texttt{AttributeDetail(value : String, count : int): void} akan menginisialisasi nilai awal seluruh atribut yang dimiliki oleh kelas ini pada saat instansiasi objek dari kelas ini.
+	\end{enumerate} 
+	
+\end{enumerate}
+
 \subsubsection{\textit{Package Mapper}}
 \begin{figure}[H]
 	\centering
@@ -260,6 +372,192 @@ Dalam \textit{package} ini terdapat beberapa \textit{package} lagi dan kelas - k
 	\caption[Diagram Kelas Modul \textit{Testing: Package Mapper}]{Diagram Kelas Modul \textit{Testing: Package Mapper}}
 	\label{fig:Diagram Kelas Modul Testing: Package Mapper}
 \end{figure}
+Pada package ini terdapat 7 kelas utama yang akan digunakan untuk melakukan proses pada fase \textit{map} pada modul testing. Berikut merupakan penjelasan tiap package dan kelas - kelas yang ada pada \texttt{Package mapper}:
+\begin{enumerate}
+	\item{Kelas \texttt{MyTestingMapper}}\\
+	Kelas ini merupakan kelas utama yang akan dijalankan pada proses map. Kelas ini memiliki 5 atribut dan 3 operasi yang akan digunakan untuk dapat melakukan operasi pada fase map secara keseluruhan. Berikut merupakan penjelasan mengenai atribut dan operasi pada kelas ini:
+	\begin{itemize}
+		\item{Atribut}
+		\begin{enumerate}
+			\item{\verb|HDFS_AUTHORITY|}\\
+		Atribut ini bertipe \textit{String} dan memiliki \textit{modifier} \textit{static} dan \textit{final} agar nilainya tidak dapat diubah - ubah. Inisialisasi pertama dari atribut ini adalah: \verb|"hdfs://master:9000"|. \verb|"hdfs://master:9000"| merupakan url dari node master yang digunakan untuk dapat berkomunikasi dengan node master pada lingkungan \textit{hadoop}. Atribut ini digunakan untuk \textit{request} operasi baca file \textit{meta.info} dan model NBC pada HDFS.
+		
+		\item{\texttt{classContainer}}\\
+		Atribut ini bertipe \texttt{ClassContainer} yang akan menyimpan seluruh model atribut NBC yang merupakan atribut kelas. 
+
+		\item{\texttt{predictorContainer}}\\
+		Atribut ini bertipe \texttt{PredictorContainer} yang akan menyimpan seluruh model atribut NBC yang merupakan atribut prediktor. 
+
+		\item{\texttt{classSplitConf}}\\
+		Atribut ini bertipe \texttt{array of string} yang menyimpan seluruh keterangan mengenai field - field yang merupakan atribut bertipe kelas yang digunakan pada model NBC. Keterangan yang disimpan pada atribut ini adalah: (1) nomor indeks; (2) name field; (3) jenis atribut. 
+
+		\item{\texttt{attrSplitConf}}\\
+		Atribut ini bertipe \texttt{array of string} yang menyimpan seluruh keterangan mengenai field - field yang merupakan atribut bertipe prediktor yang digunakan pada model NBC. Keterangan yang disimpan pada atribut ini adalah: (1) nomor indeks; (2) name field; (3) jenis atribut.
+		
+		\end{enumerate}
+		
+		\item{Operasi}
+		\begin{enumerate}
+			\item{\texttt{map(}}
+			Operasi ini akan melakukan proses pada fase \textit{map} untuk proses testing pada modul ini. Proses yang dilakukan akan meliputi perhitungan nilai probabilitas posterior untuk setiap input pada value. Proses perhitungan tersebut akan dibagi menjadi 2 proses yang terpisah untuk atribut numerik dan diskrit. Setelah diketahui hasilnya, lalu akan disimpan hasil-nya untuk dijadikan keluaran pada operasi ini. Berikut merupakan \texttt{pseudo-code} pada operasi ini:
+			\begin{algorithm}[H]
+			\caption{NBC Testing algorithm}\label{alg:NBCTestMap}
+			\begin{algorithmic}[1]
+			\Procedure{Map}{$key,value,context$}\Comment{Map function}
+			\State \texttt{input} $\gets$ \texttt{value.toString().trim().split(",")}
+			\State \texttt{allResults} $\gets$ \texttt{List<String>}\Comment{\texttt{Format:[CN|CV|Res|Act]}}
+			\ForAll{$(classIdx,className) \in classSplitConf$}
+				\State $currInClassValue \gets input[classIdx]$
+				\State $classPrior \gets classContainer[className]$
+				\State $allClassResult \gets ListOfString$\Comment{seluruh hasil dari tiap kelas}
+				\ForAll{$(classPriorDetail) \in classPrior$}
+					\State $currClassAllPredictorResult \gets 1.0$
+					\State $flag \gets 0$
+					\State $outer:$
+					
+					\ForAll{$(attrIdx,attrName,attrType) \in attrSplitConf$}
+						\State $currInAttrValue \gets input[attrIdx]$	
+						
+						\If{$attrType \gets $discrete}
+							\State $predictor \gets predictorContainer[attrName]$
+							\State $predDetail \gets predictor.getDetail[currInAttrValue]$
+							\State $countDividend \gets classPriorDetail.getCount$
+							\State $divClassPrior \gets predidctor.getClassPrior[className]$
+							\State $divClassPriorDetail \gets divClassPrior.getDetail[classPriorDetail]$
+							\State $divisor \gets divClassPriorDetail.getCount$
+							\State $currRes \gets (countDividend) / (divisor)$
+							\State $currClassAllPredictorResult *= currRes$
+						\ElsIf{$attrType \gets $numeric}
+							\State $predictor \gets predictorContainer[attrName]$
+							\State $mean \gets classPriorDetail.getMean$
+							\State $sigma \gets classPriorDetail.getSigma$
+							\State $divisor \gets \sqrt{2.0 * \Pi * sigma}$
+							\State $powerDividend \gets currInAttrValue - mean)^2 * -1$
+							\State $powerDivisor \gets 2.0 * \frac{sigma}{2}$
+							\State $resPower \gets powerDividend / powerDivisor$
+							\State $currRes \gets (1/divisor) * Math.E^{resPower}$
+							\State $currClassAllPredictorResult *= currRes$
+						\EndIf
+						
+						\State $currClassCount \gets classPriorDetail.getCount()$
+						\State $allCurrClassCount \gets 0.0$
+
+						\ForAll{$x \in classPrior.getDetail$}
+							\State $allCurrClassCount += x.getCount$
+						\EndFor
+												
+						\State $currClassAllPredictorResult *= (currClassCount/allCurrClassCount)$
+						\State $allClassResult.add(currClassAllPredictorResult)$
+					\EndFor					
+					
+				\EndFor
+				
+				\State $maxClass \gets ""$
+				\State $checker \gets Double.MIN$\verb|_|$VALUE$
+				\State $divisorNorm \gets 0.0$
+				
+				\ForAll{$result \in allClassResult$}
+					\State $divisorNorm += result.currentVal$
+					\If{$checker < currentVal$}
+						\State $checker = currentVal$
+          				\State $maxClass = s$
+					\EndIf
+				\EndFor
+				
+				\State $allResults.add(maxClass)$
+				
+			\EndFor
+			
+			\ForAll{$result \in allResults$}
+				\State $write(result)$
+			\EndFor
+
+			\EndProcedure
+			\end{algorithmic}
+			\end{algorithm}
+			
+			\item{\texttt{setup(}}
+			Operasi ini akan melakukan pembacaan model NBC yang sudah dibuat pada proses sebelumnya pada modul training dalam HDFS serta melakukan konversi data dari \textit{plain text} model NBC pada HDFS ke dalam objek - objek kelas dan prediktor. Lalu, memasukkannya ke dalam kontainer - kontainer sesuai dengan tipe atribut tersebut.
+
+			
+			\item{\texttt{laplacianSmoothing()}}
+			Operasi ini akan melakukan \textit{smoothing} pada mode NBC yang diperoleh pada saat operasi \texttt{setup()} dijalankan. Proses ini akan melakukan penambahan tiap frekuensi pada atribut bertipe diskrit serta kelasnya sebanyak parameter yang diterima (\texttt{default=1}). Operasi ini dibuat untuk menangani terjadinya \textit{zero-frequency problem} pada model NBC yang telah dibuat. Berikut merupakan \textit{pseudo-code} pada operasi ini:
+			\begin{algorithm}[H]
+			\caption{Laplacian Smoothing algorithm}\label{alg:NBCTestLaplace}
+			\begin{algorithmic}[1]
+
+			\ForAll{$(className,classPrior) \in classContainer$}
+
+				\ForAll{$(classValue,classPriorDetail) \in classPrior$}
+				
+					\ForAll{$(predictorName, predictor) \in predictorContainer$}
+					
+						\State $totalAdditionForCurrClassDetail \gets 0$
+						
+						\ForAll{$(predictorDetailName, predictorDetail) \in predictor$}
+							\State \texttt{classPriorDetailChecker} $\gets$ \texttt{predictorDetail.classPrior[className]} \texttt{.getDetail[classValue]}
+														
+							\If{$classPriorDetailChecker \gets null$}
+								\State $classPriorDetailChecker \gets new ClassPriorDetail$ \texttt{(classValue,laplacianSmoothingAdder)}
+								\State \texttt{predictorDetail.classPrior[className]} \texttt{.putDetail(classValue,classPriorDetailChecker)}
+								\State $tmpClassPriorDetail \gets classPrior.get[classValue]$
+								\State $tmpClassPriorDetail.setCount(tmpClassPriorDetail.getCount() + laplacianSmoothingAdder)$
+								
+							\Else
+								\State $classPriorDetailChecker .setCount( classPriorDetailModify.getCount() + laplacianSmoothingAdder)$
+							\EndIf
+							
+							\For{$i \gets 0 $ \textbf{to} $ laplacianSmoothingAdder$}
+								\State $totalAdditionForCurrClassDetail.incrementAndGet()$
+							\EndFor
+							
+						\EndFor
+						
+						\State $classPriorDetailSecondHandler \gets$ \texttt{predictor.classPrior[className]} \texttt{.getDetail[classValue]}
+						\State \texttt{classPriorDetailSecondHandler.setCount(}  \texttt{classPriorDetailSecondHandler} \texttt{.getCount()+totalAdditionForCurrClassDetail.get())}
+					\EndFor
+				
+				\EndFor
+							
+			\EndFor
+			
+			\end{algorithmic}
+			\end{algorithm}
+			
+
+		\end{enumerate}						
+		
+	\end{itemize}
+
+	\item{\texttt{package utils.class}}\\
+	Pada package ini terdapat 3 kelas utama yang akan digunakan sebagai model dari atribut kelas NBC sekaligus kelas kontainer untuk penyimpanannya. Berikut merupakan kelas - kelas yang ada pada \texttt{package utils.class}:
+	\begin{enumerate}
+		\item \texttt{ClassContainer}\\
+		Kelas ini akan digunakan sebagai penyimpanan seluruh atribut kelas pada model NBC. Kelas ini memiliki 1 atribut yaitu \texttt{classPriorMap} yang bertipe \texttt{Map}. Atribut ini memiliki \texttt{key=String} dan \texttt{value=ClassPrior}. Atribut ini akan berisi kumpulan dari atribut kelas pada NBC.
+
+		\item \texttt{ClassPrior}\\
+		Kelas ini akan merepresentasikan atribut kelas pada model NBC yang ada. Kelas ini merupakan turunan dari kelas \texttt{AttributeMetaInfo}. Sehingga, kelas ini secara tidak langsung memiliki atribut yang dimiliki oleh kelas \texttt{AttributeMetaInfo}.
+
+		\item \texttt{ClassPriorDetail}\\
+		Kelas ini akan merepresentasikan nilai diskrit dari atribut kelas pada model NBC yang ada. Kelas ini merupakan kelas turunan dari kelas \texttt{AttributeDetail}. Sehingga, kelas ini secara tidak langsung memiliki atribut yang dimiliki oleh kelas \texttt{AttributeDetail}. Karena kelas ini merepresentasikan atribut bertipe diskrit, maka nilai awal untuk atribut \texttt{mean} dan \texttt{sigma} pada kelas \textit{parent}-nya akan di-\textit{override} dan diinisialisasi dengan nilai -1.
+		
+	\end{enumerate}
+	
+	\item{\texttt{package utils.predictor}}\\
+	Pada package ini terdapat 3 kelas utama yang akan digunakan sebagai model dari atribut prediktor NBC sekaligus kelas kontainer untuk penyimpanannya. Berikut merupakan kelas - kelas yang ada pada \texttt{package utils.predictor}:
+	\begin{enumerate}
+		\item \texttt{PredictorContainer}\\
+		Kelas ini akan digunakan sebagai penyimpanan seluruh atribut prediktor pada model NBC. Kelas ini memiliki 1 atribut yaitu \texttt{predictorMap} yang bertipe \texttt{Map}. Atribut ini memiliki \texttt{key=String} dan \texttt{value=Predictor}. Atribut ini akan berisi kumpulan dari atribut predictor pada NBC.
+
+		\item \texttt{Predictor}\\
+		Kelas ini akan merepresentasikan atribut prediktor pada model NBC yang ada. Kelas ini merupakan turunan dari kelas \texttt{AttributeMetaInfo}. Sehingga, kelas ini secara tidak langsung memiliki atribut yang dimiliki oleh kelas \texttt{AttributeMetaInfo}. Atribut tambahan yang dimiliki secara eksklusif oleh kelas ini merupakan atribut \texttt{classPriorMap}. Atribut ini akan berisi tentang seluruh kelas dari probabilitas posterior atribut prediktor tersebut.
+
+		\item \texttt{PredictorDetail}\\
+		Kelas ini akan merepresentasikan nilai diskrit dari atribut prediktor yang bertipe diskrit pada model NBC yang ada. Kelas ini merupakan kelas turunan dari kelas \texttt{AttributeDetail}. Sehingga, kelas ini secara tidak langsung memiliki atribut yang dimiliki oleh kelas \texttt{AttributeDetail}.
+	\end{enumerate}
+	
+\end{enumerate}
+
 
 \subsubsection{\textit{Package Reducer}}
 \begin{figure}[H]
@@ -268,6 +566,172 @@ Dalam \textit{package} ini terdapat beberapa \textit{package} lagi dan kelas - k
 	\caption[Diagram Kelas Modul \textit{Testing: Package Reducer}]{Diagram Kelas Modul \textit{Testing: Package Reducer}}
 	\label{fig:Diagram Kelas Modul Testing: Package Reducer}
 \end{figure}
+Pada package ini terdapat 4 kelas utama yang akan digunakan untuk menjalankan proses \textit{reduce} pada modul \textit{testing}. Sebagian diantaranya berada di dalam \textit{sub-package} yang berbeda. Berikut merupakan penjelasan tiap package dan kelas:
+
+\begin{enumerate}
+	\item Kelas \texttt{MyTestingReducer}
+	Kelas ini merupakan kelas utama yang akan dijalankan pada proses reduce. Kelas ini memiliki 2 atribut dan 3 operasi yang akan digunakan untuk dapat melakukan operasi pada fase reduce secara keseluruhan. Berikut merupakan penjelasan mengenai atribut dan operasi pada kelas ini:
+	\begin{itemize}
+		\item{Atribut}
+		\begin{enumerate}
+			\item{\verb|HDFS_AUTHORITY|}\\
+			Atribut ini bertipe \textit{String} dan memiliki \textit{modifier} \textit{static} dan \textit{final} agar nilainya tidak dapat diubah - ubah. Inisialisasi pertama dari atribut ini adalah: \verb|"hdfs://master:9000"|. \verb|"hdfs://master:9000"| merupakan url dari node master yang digunakan untuk dapat berkomunikasi dengan node master pada lingkungan \textit{hadoop}. Atribut ini digunakan untuk \textit{request} operasi baca file \textit{meta.info} dan model NBC pada HDFS.
+		
+			\item{\texttt{classContainerReducer}}\\
+			Atribut ini bertipe \texttt{ClassContainerReducer} yang akan digunakan untuk menyimpan seluruh atribut kelas pada NBC. 
+			
+		\end{enumerate}
+		
+		\item{Operasi}
+		\begin{enumerate}
+			\item{\texttt{reduce()}}\\
+			Operasi ini akan melakukan proses pada fase \textit{reduce} untuk proses testing pada modul ini. Proses yang dilakukan akan meliputi perhitungan nilai - nilai pada \texttt{confusion matrix} untuk setiap atribut kelas berdasarkan hasil klasifikasi pada fase \textit{map} sebelumnya. Setelah itu, proses ini juga akan melakukan kalkulasi untuk \textit{error rate}. Variabel yang akan digunakan pada perhitungan \textit{error rate} adalah: (1) \texttt{Accuracy} (2) \texttt{Precision} (3) \texttt{Recall} (4) \texttt{F-Measure}. Berikut merupakan \textit{pseudo-code} untuk proses \textit{reduce} pada modul \textit{testing}:
+			\begin{algorithm}[H]
+			\caption{NBC Testing algorithm}\label{alg:NBCTestMap}
+			\begin{algorithmic}[1]
+			\Procedure{Reduce}{$key,values[],context$}\Comment{Reduce function}
+			
+			\State \verb|HDFS_AUTHORITY| $\gets$ \texttt{"hdfs://master:9000"}
+			\State \texttt{classContainerRed} $\gets$ \texttt{ClassContainerRed}
+
+			\State \texttt{classPriorRed = classContainerRed.get[key]}
+			\State \texttt{confusionMatrix} $\gets$ \texttt{ConfusionMatrix(classPriorRed.valueSize,classPriorRed)}
+			\State \texttt{outKey} $\gets$ \texttt{"@" + key}\Comment{class name}
+			
+			\ForAll{$s \in values$}
+				\State \texttt{splitter} $\gets$ \texttt{s.split("\\|")}
+				\State \texttt{actual} $\gets$ \texttt{splitter[2].split("=")[1]}
+				\State \texttt{predicted} $\gets$ \texttt{splitter[0].split("=")[1]}
+				
+				\State \texttt{predIndex} $\gets$ \texttt{confusionMatrix.get(predicted)}
+				\State \texttt{actIndex} $\gets$ \texttt{confusionMatrix.get(actual)}
+				\State \texttt{confusionMatrix.getMatrix()[actIndex][predIndex]++}
+			\EndFor 
+        	
+        	\State \texttt{outKey} $\gets$ \texttt{confusionMatrix.stringPrintedMatrix()}
+			   	
+        	\State \texttt{dividend} $\gets 0$ \Comment{Accuracy}
+			\State \texttt{divisor}	$\gets 0$
+			
+			\For{$i \gets 0$ \textbf{to} \texttt{confusionMatrix.matrixLength}}
+				\For{$j \gets 0$ \textbf{to} \texttt{confusionMatrix.matrixLength}}
+					\If{$i=j$}
+						\State \texttt{dividend} $+=$ \texttt{confusionMatrix.getMatrix()[i][j]}
+					\EndIf
+					\State \texttt{divisor} $+=$ \texttt{confusionMatrix.getMatrix()[i][j]}
+				\EndFor
+			\EndFor
+			
+			\State \texttt{accuracyOperator} $\gets$ \texttt{dividend + "/" + divisor}
+			\State \texttt{accuracyResult} $\gets$ \texttt{dividend/divisor}
+			\State \texttt{outVal} $+=$ \texttt{accuracyOperator+"="+accuracyResult}
+			
+			\ForAll{\texttt{(className,index)} $\in$ \texttt{confusionMatrix}}
+
+				\State \texttt{currTP} $\gets$ \texttt{confusionMatrix.getMatrix()[index][index]}
+				\State \texttt{currFP} $\gets 0$
+				\State \texttt{currFN} $\gets 0$
+				
+				\For{$i \gets 0 $ \textbf{to} \texttt{confusionMatrix.matrixLength}}
+					\If{$i != index$}
+						\State \texttt{currFP} $+=$ \texttt{confusionMatrix.getMatrix()[i][index]}
+						\State \texttt{currFN} $+=$ \texttt{confusionMatrix.getMatrix()[index][i]}
+					\EndIf
+				\EndFor
+				//*\Comment{Precision}
+				\State \texttt{precisionOperation} $\gets$ \texttt{currTP + "/" + currTP + "+" + currFP}
+				\State \texttt{precisionResult} $\gets$ \texttt{currTP/(currTP + currFP)}
+				\State \texttt{outVal} $+=$ \texttt{precisionOperation + "=" + precisionResult}
+				
+				//*\Comment{Recall}
+				\State \texttt{recallOperation} $\gets$ \texttt{currTP + "/" + currTP + " + " + currFN}
+				\State \texttt{recallResult} $\gets$ \texttt{currTP/ (currTP + currFN)}
+				\State \texttt{outVal} $+=$ \texttt{recallOperation + "=" + recallResult}
+				
+				//*\Comment{F-Measure}
+				\State $\alpha \gets$ \texttt{(2*precisionResult*recallResult) / (precisionResult+recallResult)}
+				\State \texttt{fMeasureOperation} $\gets 1 / {alpha{1 / P}+(1-alpha) 1/R}$
+				\State \texttt{fMeasureResult} $\gets 1/((alpha * (1/P)) + ((1 - alpha) * (1/R)))$
+				\State \texttt{outVal} $+=$ \texttt{fMeasureOperation + "=" + fMeasureResult}
+				
+				
+			\EndFor
+			
+			\State \texttt{write(outKey,outVal)}
+				
+			\EndProcedure
+			\end{algorithmic}
+			\end{algorithm}
+			
+			\item{\texttt{setup()}}\\
+			Operasi ini akan melakukan pembacaan pada model NBC yang sudah dibuat sebelumnya dalam HDFS. Model NBC yang dibaca hanya yang untuk atribut yang bertipe kelas dan lalu memasukkannya ke dalam kelas kontainer pada proses ini.
+			
+			
+			\item{\texttt{separateBetweenConfusionMatrix(s)}}\\
+			Operasi ini akan melakukan penambahan pada \textit{string parameter} dengan separator yang ditentukan di dalam operasi ini.
+			
+		\end{enumerate}
+	
+		
+		
+		
+	\end{itemize}
+	
+	\item \texttt{package utils}
+	Pada kelas \textit{package} ini	terdapat 3 kelas utama yang digunakan untuk menyimpan atribut kelas dari model NBC dan penyimpanan untuk \texttt{confusion matrix} yang akan digunakan untuk melakukan perhitungan \textit{error rate}. Berikut merupakan penjeleasan kelas - kelas yang terdapat pada \textit{package} ini:
+	\begin{enumerate}
+		\item \texttt{ClassContainerRed}\\
+		Kelas ini akan digunakan sebagai penyimpanan seluruh atribut kelas pada model NBC. Kelas ini memiliki 1 atribut yaitu \texttt{classPriorRed} yang bertipe \texttt{HashMap}. Atribut ini memiliki \texttt{key=String} sebagai nama dari kelas tersebut dan \texttt{value=ClassPriorRed} sebagai kelas yang akan menyimpan detail dari kelas tersebut. Atribut ini akan berisi kumpulan dari atribut kelas pada NBC.
+		
+		\item \texttt{ClassPriorRed}\\
+		Kelas ini akan merepresentasikan atribut kelas pada model NBC yang ada. Kelas ini memiliki 2 atribut, diantaranya adalah:
+		\begin{enumerate}
+			\item \texttt{name}\\
+			Atribut ini akan berisi nama dari atribut kelas model NBC ini.
+			
+			\item \texttt{values}\\
+			Atribut ini akan berisi nilai - nilai diskrit dari atribut kelas model NBC ini.
+		\end{enumerate}
+		
+		\item \texttt{ConfusionMatrix}\\		
+		Kelas ini akan merepresentasikan nilai dari \texttt{matrix confusion} yang akan diisi dengan kesesuaian antara hasil prediksi dari algoritma NBC dengan nilai aktual milik record input tersebut. Nilai - nilai dari \texttt{matrix confusion} yang ada pada kelas ini juga akan digunakan untuk melakukan perhitungan \textit{error rate}: (1) \textit{Accuracy}; (2) \textit{Precision}; (3) \textit{Recall}; (4) \textit{F-Measure}. Kelas ini memiliki 2 atribut dan 5 operasi, berikut merupakan penjelasan lebih lanjut:
+		\begin{itemize}
+			\item Atribut
+			\begin{enumerate}
+				\item \texttt{info}\\
+				Atribut ini bertipe \texttt{HashMap} dengan \texttt{key=string} untuk menyimpan nama dari nilai diskrit pada atribut kelas tertentu dan \texttt{value=integer} untuk menyimpan nomor dari indeks pada matrix yang merepresentasikan kelas tersebut.
+			
+				\item \texttt{matrix[][]}\\
+				Atribut ini bertipe matrix 2 dimensi yang akan merepresentasikan matrix \textit{confusion} dari atribut kelas tertentu.
+			
+			\end{enumerate}
+			
+			\item Operasi
+			\begin{enumerate}
+				\item \texttt{ConfusionMatrix()}\\
+				Operasi ini merupakan konstruktor untuk mengisi nilai awal dari dari atribut - atribut pada kelas ini. Operasi ini akan menerima 2 buah parameter yang berisi (1) classPriorRed untuk mencatat tiap nilai diskrit dari atribut kelas tersebut dan (2) panjang dari matrix yang nantinya akan menjadi panjang dari matrix 2 dimensi yang dimiliki oleh kelas ini.
+				
+				\item \texttt{sAddLessSpace()}\\
+				Operasi ini melakukan penambahan spasi pada \textit{string parameter input}. Operasi ini akan digunakan untuk men-\textit{generate} keseluruhan matrix dalam bentuk string	.
+				
+				\item \texttt{sFindDigitLengthNumber()}\\
+				Operasi ini melakukan pencarian panjang digit dari \textit{integer} pada \textit{parameter}. Operasi ini akan digunakan untuk men-\textit{generate} keseluruhan matrix dalam bentuk string.
+				
+				\item \texttt{sNewLine()}\\
+				Operasi ini penambahan baris baru pada \textit{string parameter}. Operasi ini akan digunakan untuk men-\textit{generate} keseluruhan matrix dalam bentuk string.
+				
+				\item \texttt{stringPrintedMatrix()}\\
+				Operasi ini akan melakukan konversi dari matrix 2 dimensi milik atribut \texttt{matrix[][]} ke dalam bentuk \texttt{string} yang nantinya akan di-\textit{print} menjadi keluaran proses ini.
+				
+			\end{enumerate}					
+
+		\end{itemize}
+		
+	\end{enumerate}
+	
+	
+\end{enumerate}
+
 
 
 \subsection{\textit{Design Pattern} Modul Kelola Input dan Modul Klasifikasi \textit{Naive Bayes}}

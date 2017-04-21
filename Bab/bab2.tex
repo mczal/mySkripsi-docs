@@ -405,6 +405,16 @@ Spring menyediakan model pemrograman terbuka yang komprehensif, kohesif, mudah d
 
 Inti dari framework ini lebih kepada untuk membangun aplikasi web, mengatur manajemen transaksi, akses data, messaging, pengujian dsb. Kita bisa mengembangkan aplikasi web berbasis MVC dan \textit{Web-Service} framework \textit{REST-ful}\footnote{REST merupakan \textit{standard} dalam arsitektur web yang menggunakan Protocol HTTP untuk pertukaran data.  Konsep REST menekankan bahwa komunikasi yang terjadi antara \textit{client} dan \textit{server} hanya sebatas melakukan \textit{request} dan memberikan \textit{response} saja.} (\textit{Representational State Transfer}).
 
+\textit{Design pattern} yang digunakan pada perangkat lunak yang dibuat akan menggunakan konsep MVC (\textit{model view controler}). Spring memiliki fitur khusus untuk membuat web berbasiskan \textit{design pattern} MVC. Berikut merupakan ilustrasi\footnote{Gambar diambil dari \url{https://www.tutorialspoint.com/spring/images/spring_dispatcherservlet.png}} dari konsep MVC milik \textit{spring}:
+\begin{figure}[h]
+	\centering
+	\includegraphics[scale=0.6]{GambarIO/spring_dispatcherservlet}
+	\caption[Spring MVC]{Spring MVC}
+	\label{fig:Spring MVC}
+\end{figure}
+
+%\textit{Design pattern} perangkat lunak yang dibangun akan mengusung konsep dari MVC milik \textit{spring} dan beberapa tambahan \textit{layer - layer} untuk mempermudah jalannya perangkat lunak nantinya. Berikut merupakan ilustrasi
+
 \subsection{\textit{Maven} \cite{MengenalMaven2015EGunawan}}
 Apache Maven adalah software build tools / project management yang dibangun dibawah \textit{Apache Software Foundation} yang digunakan untuk melakukan proses building project. Jadi, ketika project akan dibuild menggunakan Maven, project tersebut bisa kita buka menggunakan IDE lain.
 

@@ -1,0 +1,265 @@
+\chapter{Implementasi, Pengujian, dan Eksperimen}
+
+\section{Implementasi}
+
+
+\section{Pengujian Kebenaran}
+
+\subsection{Perhitungan Manual Dengan Data Studi Kasus}
+
+\subsubsection{Studi kasus pembuatan model \textit{naive bayes classifier}}
+%\subsubsection{Tahapan Membuat Model Klasifikasi Dari Algoritma Naive Bayes}		
+Misal kita memiliki dataset yang menunjukan seseorang akan bermain tenis atau tidak berdasarkan dari data kelembaban dan pemandangan yang terjadi seperti pada tabel \ref{tab:dataset} berikut: 
+		
+		\begin{table}[H]
+		\label{tab:dataset}
+		\centering
+		\caption{Contoh Dataset (atribut kelas = \textbf{Play})}
+		\begin{tabular}{ | c | c | c | }
+		\hline
+		%\toprule
+		 Humidity & Outlook & \textbf{Play}\\ \hline \hline
+		%\midrule
+		60 & Rainy & No\\ \hline
+		%\midrule
+		78 & Rainy & No\\ \hline
+		%\midrule
+		80 & Sunny & Yes\\ \hline
+		%\midrule
+		75 & Sunny & No\\ \hline
+		%\midrule
+		85 & Sunny & Yes \\ \hline
+		%\bottomrule
+		\end{tabular}
+		\end{table}
+		
+		
+		Langkah pertama yang perlu dilakukan untuk membuat algoritma naive bayes classifier adalah membuat table frekuensi untuk setiap atribut prediktor terhadap atribut kelas yang bertipe Diskrit. Pada contoh tabel diatas, diasumsikan bahwa atribut Humidity dan Outlook merupakan atribut prediktor, lalu untuk atribut Play merupakan atribut kelas.
+		
+		\begin{table}[ht]
+			\centering
+			\caption{Table frekuensi atribut Outlook}
+			\begin{tabular}{ | c | c | c | c | }
+			\hline
+			 & \multicolumn{2}{c}{\textbf{Play}} & \\ 
+			%\hline
+			 & Yes & No & \textit{sum} \\
+			\hline
+			Sunny & 2 & 1 & \textbf{3}\\
+			\hline
+			Rainy & 0 & 2 & \textbf{2} \\
+			\hline
+			\textit{sum} & \textbf{2} & \textbf{3} & \\
+			\hline
+			\end{tabular}
+		\end{table}
+		
+		Pada table frekuensi untuk atribut Outlook, dapat dilihat bahwa $P(X=Rainy|C=Yes) = 0$. Naive bayes classifier tidak dapat mengatasi frekuensi yang nilainya 0. Karena dapat menyebabkan seluruh perhitungan menjadi 0(karena berapapun bilangannya, jika dikalikan dengan 0 akan selalu menghasilkan nilai 0), sehingga menjadi tidak relevan. Pendekatan yang perlu digunakan untuk mengatasi hal tersebut adalah dengan menggunakan metode Laplacian Correction (->Pustaka.Bib). Pada metode tersebut, dikatakan bahwa kita perlu menambah nilai 1 kepada seluruh nilai pada table frekuensi untuk mengatasi masalah \textit{zero-frequency problems}. Asumsikan training database (D) itu sangat besar, dimana menambahkan frekuensi sebanyak 1 ke setiap jumlah perhitungan yang kita perlukan tidak akan memberikan pengaruh yang besar terhadap nilai kemungkinan akhir (Laplacian correction / Laplace estimator) \cite{PeughMissing:2004}. Perubahan nilai atribut dapat dilihat pada table 3. \\
+		
+		\begin{table}[ht]
+			\centering
+			\caption{Table frekuensi atribut Outlook}
+			\begin{tabular}{|c|c|c|c|}
+			\hline
+			 & \multicolumn{2}{c}{\textbf{Play}} & \\
+			 & Yes & No & \textit{sum} \\ 
+			\hline
+			Sunny & 3 & 2 & \textbf{5}\\
+			\hline
+			Rainy & 1 & 3 & \textbf{4} \\
+			\hline
+			\textit{sum} & \textbf{4} & \textbf{5} & \\
+			\hline
+			\end{tabular}
+		\end{table}
+		
+		
+		Langkah kedua adalah membuat table kemungkinan dari table frekuensi yang telah dibuat :		
+		\begin{table}[ht]
+			\centering
+			\caption{Table kemungkinan atribut Outlook}
+			\begin{tabular}{|c|c|c|c|}
+			\toprule
+			 & \multicolumn{2}{c}{\textbf{Play}} & \\
+			 & Yes & No & \textit{sum} \\ 
+			\midrule
+			Sunny & 3/4 & 2/5 & \textbf{5/9}\\
+			\midrule
+			Rainy & 1/4 & 3/5 & \textbf{4/9} \\
+			\midrule
+			\textit{sum} & \textbf{4/9} & \textbf{5/9} & \\
+			\bottomrule
+			\end{tabular}
+		\end{table}
+		
+		Karena atribut Humidity bertipe numerik, atribut tersebut perlu diubah ke dalam kategori mereka masing - masing agar perhitungan dalam pembuatan model dapat tepat. Konversi atribut yang bertipe numerik bisa menggunakan distribusi variabel numerik untuk dapat menebak frekuensi-nya dengan mengasumsikan distribusi normal untuk variabel numerik. Rumus yang digunakan adalah :\\
+		
+		\textbf{Mencari mean (rata - rata)} 
+		\begin{equation}
+			\mu = \dfrac{1}{n} \mathlarger{\mathlarger{‎‎\sum}}_{i=1}^{n‎}x_i‎‎
+		\end{equation}
+		
+		\textbf{Mencari Standard Deviation}
+		\begin{equation}
+			\sigma = \mathlarger{[ \dfrac{1}{n - 1} \mathlarger{\mathlarger{‎‎\sum}}_{i=1}^{n‎} (x_i‎‎ - \mu)^2]}^{0.5}
+		\end{equation}
+		
+		\textbf{Normal Distribution}
+		\begin{equation}
+			f(x) = \dfrac{1}{\sqrt{2\pi\sigma}}e^{-\dfrac{(x-\mu)^2}{2\sigma^2}}
+		\end{equation}
+		
+		Berikut merupakan table rata - rata dan standar deviasi dari atribut Humidity yang bertipe numerik : 
+		
+		\begin{table}[h]
+		\centering
+		\caption{Table rata - rata dan standar deviasi atribut Humidity}
+		\begin{tabular}{|c|c|c|c|c|}
+		\toprule
+		\multirow{2}{*}{Play Golf ?} & Yes & 80 & 85 & \\
+		 & No & 60 & 75 & 78 \\
+		\bottomrule
+		\end{tabular}
+		\end{table}
+		
+		\begin{table}[ht]
+		\centering
+		\caption{Table Distribusi}
+		\begin{tabular}{|c|c|c|}
+		\toprule
+		 & Mean & StDev \\
+		Yes & 82.5 & 3.5 \\
+		No & 71 & 9.6 \\
+		\bottomrule
+		\end{tabular}
+		\end{table}
+		
+		Dari table distribusi tersebut didapatkan formula untuk menghitung klasifikasi untuk atribut Humidity adalah:
+		
+		\begin{equation}
+			%f(x|play=yes) = \dfrac{1}{\sqrt{2\pi(3.5)}}e^{-\dfrac{(x-82.5)^2}{2(3.5)^2}} 
+			f(x|play=yes) = \dfrac{1}{\sqrt{2\pi(3.5)}}e^{-\dfrac{(x-82.5)^2}{2(3.5)^2}}
+		\end{equation}
+		\begin{equation}
+			f(x|play=no) = \dfrac{1}{\sqrt{2\pi(9.6)}}e^{-\dfrac{(x-71)^2}{2(9.6)^2}} 
+		\end{equation}
+		
+		\textit{Cara ini dapat diberlakukan juga pada atribut yang bertipe kontinu.}
+		
+		Setelah semua model dari naive bayes classifier telah jadi, maka klasifikasi sudah dapat dilakukan dengan model diatas.
+
+\subsubsection{Studi kasus melakukan klasifkasi menggunakan model \textit{naive bayes classifier} yang telah dibuat sebelumnya}
+%\subsection{Contoh perhitungan klasifikasi algoritma naive bayes}		
+		Dimisalkan kita memiliki 2 buah dataset yang akan diuji menggunakan model klasifikasi yang telah dibangun sebelumnya, seperti berikut :
+		
+\begin{enumerate}
+	\item $X = {Humidity = 50, Outlook = Sunny}$
+	\item $Y = {Humidity = 90, Outlook = Sunny}$
+\end{enumerate}
+		
+Untuk dataset X dan Y, akan dicari peluang kelas yang paling tinggi. \\
+		
+$( C_{MAP} = \underset{c \in C}{ argmax } P(c|d) = \underset{c \in C}{ argmax } \dfrac{P(d|c) P(c)}{P(d)} = \underset{c \in C}{ argmax } P(d|c) P(c) )$
+		
+\paragraph{Untuk dataset X dengan $P=Yes$:}
+	Menghitung peluang untuk atribut $Outlook=Sunny$ dengan $P=Yes$
+	\begin{displaymath}
+			P(Outlook=Sunny|Yes) = 3/4 
+			= 0.75
+	\end{displaymath}
+	
+	Menghitung peluang untuk atribut $Humidity=50$ dengan $P=Yes$
+		\begin{displaymath}
+			P(Humidity=50|Yes) 
+			= \dfrac{1}{\sqrt{2\pi(3.5)}}e^{-\dfrac{(\textbf{50}-82.5)^2}{2(3.5)^2}}
+			= 4.031
+		\end{displaymath}
+	
+	\paragraph{Untuk dataset X dengan $P=No$:}
+		Menghitung peluang untuk atribut $Outlook=Sunny$ dengan $P=No$
+		\begin{displaymath}
+			P(Outlook=Sunny|No) = 2/5 
+			= 0.4
+		\end{displaymath}
+		Menghitung peluang untuk atribut $Humidity=50$ dengan $P=No$
+		\begin{displaymath}
+			P(Humidity=50|No) 
+			= \dfrac{1}{\sqrt{2\pi(9.6)}}e^{-\dfrac{(\textbf{50}-71)^2}{2(9.6)^2}}
+			= 0.011
+		\end{displaymath}
+	\paragraph{Kesimpulan untuk $dataset$ $X$}
+	Dari perhitungan di atas, didapat bahwa : \\ \\
+	Untuk kelas $Play=Yes$ \\
+	$P(Play=Yes|X) \\
+	= P(Outlook=Sunny|Play=Yes)*P(Humidity=50|Play=Yes)*P(Yes) \\
+	= 0.75 * 4.031 * 4/9 \\
+	= 1.343$ \\ \\
+	Untuk kelas $Play=No$ \\
+	$P(Play=No|X) \\
+	= P(Outlook=Sunny|Play=No)*P(Humidity=50|Play=No)*P(No) \\
+	= 0.4 * 0.011 * 5/9 \\
+	= 0.002$ \\ \\
+	Setelah itu, lakukan normalisasi terhadap nilai - nilai berikut: \\
+	$P(Play=Yes|X) = 1.343 / (1.343+0.002) \\
+	= 0.998 (99.8\%)$ \\
+	$P(Play=No|X) = 0.002 / (1.343+0.002) \\
+	= 0.002 (0.2\%)$ \\
+	
+	Karena, $P(Play=Yes|X) > P(Play=No|X)$, maka hasil klasifikasi untuk \textit{dataset X} ialah kelas $Play=Yes$.
+	
+	\paragraph{Untuk dataset Y dengan $P=Yes$:}
+	Menghitung peluang untuk atribut $Outlook=Sunny$ dengan $P=Yes$
+	\begin{displaymath}
+			P(Outlook=Sunny|Yes) = 3/4 
+			= 0.75
+	\end{displaymath}
+	
+	Menghitung peluang untuk atribut $Humidity=90$ dengan $P=Yes$
+		\begin{displaymath}
+			P(Humidity=90|Yes) 
+			= \dfrac{1}{\sqrt{2\pi(3.5)}}e^{-\dfrac{(\textbf{90}-82.5)^2}{2(3.5)^2}}
+			= 0.021
+		\end{displaymath}
+	
+	\paragraph{Untuk dataset Y dengan $P=No$:}
+	Menghitung peluang untuk atribut $Outlook=Sunny$ dengan $P=No$
+	\begin{displaymath}
+				P(Outlook=Sunny|No)
+				= 2/5 
+				= 0.4
+		\end{displaymath}
+	
+	Menghitung peluang untuk atribut $Humidity=90$ dengan $P=No$
+		\begin{displaymath}
+			P(Humidity=90|No)
+			= \dfrac{1}{\sqrt{2\pi(9.6)}}e^{-\dfrac{(\textbf{90}-71)^2}{2(9.6)^2}} 
+			= 0.018
+		\end{displaymath}
+		
+	\paragraph{Kesimpulan untuk $dataset$ $Y$}
+	Dari perhitungan di atas, didapat bahwa : \\ \\
+	Untuk kelas $Play=Yes$ \\
+	$P(Play=Yes|Y) \\
+	= P(Outlook=Sunny|Play=Yes)*P(Humidity=90|Play=Yes)*P(Yes) \\
+	= 0.75 * 0.021 * 4/9 \\
+	= 0.007$ \\ \\
+	Untuk kelas $Play=No$ \\
+	$P(Play=No|Y) \\
+	= P(Outlook=Sunny|Play=No)*P(Humidity=90|Play=No)*P(No) \\
+	= 0.4 * 0.018 * 5/9 \\
+	= 0.004$ \\ \\
+	Setelah itu, lakukan normalisasi terhadap nilai - nilai berikut: \\
+	$P(Play=Yes|Y) = 0.007 / (0.007+0.004) \\
+	= 0.64 (64\%)$ \\
+	$P(Play=No|Y) = 0.004 / (0.007+0.004) \\
+	= 0.46 (46\%)$ \\
+	
+	Karena, $P(Play=Yes|Y) > P(Play=No|Y)$, maka hasil klasifikasi untuk \textit{dataset Y} ialah kelas $Play=Yes$.
+	
+
+
+\section{Eksperimen}
+
+\subsection{Pembuatan model}
+
+\subsection{Performansi Big Data}
