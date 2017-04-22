@@ -1,3 +1,4 @@
+%versi 2 (8-10-2016)
 \chapter{Landasan Teori}
 
 Pada bab ini akan dijelaskan beberapa dasar teori dan \textit{framework} yang akan digunakan dalam merancang dan membangun perangkat lunak untuk melakukan klasifikasi naive bayes pada sistem terdistribusi Hadoop. Dasar teori yang akan dijelaskan pada bab ini meliputi: (1) Penambangan data ; (2) \textit{Big data} ; (3) Sistem terdistribusi hadoop ; (4) \textit{Naive bayes classification} ; (5) \textit{Spring framework, maven, } dan \textit{thymeleaf}. \\
@@ -282,7 +283,7 @@ HDFS merupakan sebuah sistem penyimpanan terdistribusi yang menyediakan akses th
 	\label{fig:map_reduce}
 \end{figure}
 		
-		MapReduce merupakan framework yang dirancang untuk memproses data secara paralel terdistribusi yang memiliki performa dan efisiensi yang sangat tinggi. Jenis pekerjaan pada fase map dan reduce yang dapat dikerjakan oleh framework ini merupakan jenis pekerjaan yang tidak memiliki hubungan berkesinambungan di antara  tiap proses-nya, sehingga dapat berjalan secara bersama - sama (\textit{concurrent}). Hadoop membagi/memecah seluruh dataset yang ada ke dalam beberapa partisi dan mendistribusikannya ke dalam kelompok/\textit{cluster}. MapReduce memproses data di setiap server terhadap blok - blok data yang sudah dibagikan sebelumnya, sehingga akan sangat menghemat waktu pekerjaan yang dihabiskan \cite{Lam:2010:HA:1965594}. \\
+		MapReduce merupakan framework yang dirancang untuk memproses data secara paralel terdistribusi yang memiliki performa dan efisiensi yang sangat tinggi. Jenis pekerjaan pada fase map dan reduce yang dapat dikerjakan oleh framework ini merupakan jenis pekerjaan yang tidak memiliki hubungan berkesinambungan di antara  tiap proses-nya, sehingga dapat berjalan secara bersama - sama (\textit{concurrent}). Hadoop membagi/memecah seluruh dataset yang ada ke dalam beberapa partisi dan mendistribusikannya ke dalam kelompok/\textit{cluster}. MapReduce memproses data di setiap server terhadap blok - blok data yang sudah dibagikan sebelumnya, sehingga akan sangat menghemat waktu pekerjaan yang dihabiskan \cite{Lam:1965594:HA}. \\
 		Terdapat 3 fase utama pada MapReduce, yaitu fase \textit{map}, fase \textit{shuffle}, dan fase \textit{reduce}. 
 		\begin{enumerate}
 			\item Pada fase \textit{map}, melakukan \textit{convert} tiap partisi dari input kedalam pasangan \textit{key/value} (seperti pada struktur data HashMap) lalu menggabungkan setiap \textit{value} yang memiliki \textit{key} yang sama.
@@ -306,7 +307,7 @@ HDFS merupakan sebuah sistem penyimpanan terdistribusi yang menyediakan akses th
 		
 \begin{figure}[H]
 \centering
-\includegraphics[scale=0.43]{Gambar/YARN-Architecture}
+\includegraphics[scale=0.6]{YARN-Architecture}
 \caption[Arsitektur YARN-1]{Arsitektur YARN-1}
 \label{fig:Arsitektur YARN-1}
 \end{figure}
@@ -456,4 +457,5 @@ Sebagai \textit{framework open source}, \textit{Thymeleaf} memiliki lisensi Apac
 %\bottomrule
 %\end{tabular}
 %\end{table}
+
 
