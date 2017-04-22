@@ -394,24 +394,34 @@ Sebuah dataset dapat ditentukan klasifikasi-nya dengan algoritma naive bayes set
 		\end{equation} \\
 	
 \section{Framework Yang Digunakan Dalam Membangun Perangkat Lunak}
+
 \subsection{\textit{Spring Framework}}
+\label{subsec:Spring Framework}
+
 \textit{Spring Framework} adalah salah satu framework\footnote{framework adalah tools yang bisa digunakan untuk mengembangkan cakupan luas dari arsitektur-arsitektur yang berbeda \cite{setiawan2009pemilihan}} untuk aplikasi berbasis Java yang dapat digunakan untuk membangun sebuah aplikasi berskala besar. Model yang digunakan pada perangkat lunak yang dibangun adalah \textit{spring framework web application} yang memiliki ekstensi untuk membuat server pada aplikasi berbasis web dengan J2EE (Java 2 Enterprise Edition) \cite{SpringCommerceToha:2010}. Dengan Spring, kita bisa mengembangkan aplikasi enterprise dan berbasis web. Spring termasuk portable karena aplikasi yang dikembangkan dapat berjalan pada JVM manapun. Terdapat beberapa cara yang disediakan oleh spring untuk melakukan deploy aplikasi kita, seperti: 
 \begin{enumerate}
 	\item Melakukan deploy aplikasi dengan menggunakan mode standalone (menggunakan server bawaan dari \textit{spring}),
 	\item Melakukan deploy aplikasi pada aplikasi server (menggunakan aplikasi web server dari luar, seperti \textit{Apache Tomcat Web Application}),
 	\item Melakukan deploy aplikasi dengan menggunakan \textit{cloud PaaS}\footnote{\textit{Platform as Service merupakan sebuah platform untuk mengembangkan, menjalankan, dan mengatur aplikasi kita tanpa melewati serangkaian konfigurasi yang rumit layaknya \textit{dedicated server} pada umumnya}} (\textit{Platform as Service}, seperti \textit{Pivotal Web Service}).
 \end{enumerate}
-Spring menyediakan model pemrograman terbuka yang komprehensif, kohesif, mudah dipahami serta memiliki \textit{library} yang lengkap untuk melakukan integrasi ke \textit{service - service} lain seperti \textit{Hadoop-client Library}, \textit{Mysql-connector Library}, dsb.
+Spring menyediakan model pemrograman terbuka yang komprehensif, kohesif, mudah dipahami serta memiliki \textit{library} yang lengkap untuk melakukan integrasi ke \textit{service - service} lain seperti \textit{Hadoop-client Library}, \textit{Mysql-connector Library}, dsb. Inti dari framework ini lebih kepada untuk membangun aplikasi web, mengatur manajemen transaksi, akses data, messaging, pengujian dsb. Kita bisa mengembangkan aplikasi web berbasis MVC dan \textit{Web-Service} framework \textit{REST-ful}\footnote{REST merupakan \textit{standard} dalam arsitektur web yang menggunakan Protocol HTTP untuk pertukaran data.  Konsep REST menekankan bahwa komunikasi yang terjadi antara \textit{client} dan \textit{server} hanya sebatas melakukan \textit{request} dan memberikan \textit{response} saja.} (\textit{Representational State Transfer}).
 
-Inti dari framework ini lebih kepada untuk membangun aplikasi web, mengatur manajemen transaksi, akses data, messaging, pengujian dsb. Kita bisa mengembangkan aplikasi web berbasis MVC dan \textit{Web-Service} framework \textit{REST-ful}\footnote{REST merupakan \textit{standard} dalam arsitektur web yang menggunakan Protocol HTTP untuk pertukaran data.  Konsep REST menekankan bahwa komunikasi yang terjadi antara \textit{client} dan \textit{server} hanya sebatas melakukan \textit{request} dan memberikan \textit{response} saja.} (\textit{Representational State Transfer}).
-
-\textit{Design pattern} yang digunakan pada perangkat lunak yang dibuat akan menggunakan konsep MVC (\textit{model view controler}). Spring memiliki fitur khusus untuk membuat web berbasiskan \textit{design pattern} MVC. Berikut merupakan ilustrasi\footnote{Gambar diambil dari \url{https://www.tutorialspoint.com/spring/images/spring_dispatcherservlet.png}} dari konsep MVC milik \textit{spring}:
+\textit{Design pattern} yang digunakan pada perangkat lunak yang dibuat akan menggunakan konsep MVC (\textit{model view controler}). Spring memiliki fitur khusus untuk membuat web berbasiskan \textit{design pattern} MVC. Berikut merupakan ilustrasi\footnote{Gambar diambil dari \url{https://docs.spring.io/spring/docs/current/spring-framework-reference/html/images/mvc.png.pagespeed.ce.tmIzOTr1gg.png}} dari \textit{request workflow} pada \textit{Spring Web} MVC.
 \begin{figure}[h]
 	\centering
-	\includegraphics[scale=0.6]{GambarIO/spring_dispatcherservlet}
-	\caption[Spring MVC]{Spring MVC}
-	\label{fig:Spring MVC}
+	\includegraphics[scale=0.5]{GambarIO/mvc_springdocs}
+	\caption[Request Processing Workflow Spring MVC]{\textit{Request Processing Workflow Spring MVC}}
+	\label{fig:Request Processing Workflow Spring MVC}
 \end{figure}
+
+\begin{enumerate}
+	\item \textit{\textbf{Model}} melakukan enkapsulasi dari data yang ada pada aplikasi dan secara umum akan berisi POJO\footnote{Istilah POJO (\textit{Plain Old Java Object}) digunakan untuk menunjukkan objek java yang tidak mengikuti model, konvensi, atau framework apapun. Jadi intinya POJO adalah kelas java yang hanya berisi variable serta \textit{accessor} dan \textit{mutator} -nya tanpa ada method proses lainnya}.
+	
+	\item \textit{\textbf{View}} bertanggung jawab untuk melakukan \textit{rendering} data dengan view HTML yang diinginkan, lalu akan men-\textit{generate} output berupa HTML yang dapat diinterpretasikan oleh \textit{browser}.
+
+	\item \textit{\textbf{Controller}} bertanggung jawab untuk memproses \textit{request} dari user dan lalu perlu memberikan model sesuai dengan yang diminta yang nantinya akan diberikan ke \textit{view} untuk proses \textit{rendering}.
+	
+\end{enumerate}
 
 %\textit{Design pattern} perangkat lunak yang dibangun akan mengusung konsep dari MVC milik \textit{spring} dan beberapa tambahan \textit{layer - layer} untuk mempermudah jalannya perangkat lunak nantinya. Berikut merupakan ilustrasi
 

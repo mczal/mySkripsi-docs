@@ -732,27 +732,112 @@ Pada package ini terdapat 4 kelas utama yang akan digunakan untuk menjalankan pr
 	
 \end{enumerate}
 
-
-
-\subsection{\textit{Design Pattern} Modul Kelola Input dan Modul Klasifikasi \textit{Naive Bayes}}
-\begin{figure}[H]
-	\centering
-	\includegraphics[scale=0.7]{ClassDiagramLengkap/springmvc}
-	\caption[Design Pattern Modul Klasifikasi]{Design Pattern Modul Klasifikasi}
-	\label{fig:Design Pattern Modul Klasifikasi}
-\end{figure}
-
-
 \subsection{Diagram Kelas Modul Kelola Input}
 
+Struktur kelas diagram pada modul input dirancang dengan mengikuti \textit{design pattern} milik \textit{Spring Web MVC} yang telah dijelaskan pada landasan teori mengenai \textit{Spring framework} pada \ref{subsec:Spring Framework} dengan tambahan beberapa modifikasi pada layer tengahnya. Berikut merupakan ilustrasi dari package kelas yang akan dirancang pada modul ini:
 \begin{figure}[H]
 	\centering
-	\includegraphics[scale=0.85]{ClassDiagramLengkap/CD_Input}
+	\includegraphics[scale=0.7]{ClassDiagramLengkap/springmvc_rev1}
+	\caption[Struktur MVC Pada Modul Kelola Input]{Struktur MVC Pada Modul Kelola Input}
+	\label{fig:Struktur MVC Pada Modul Kelola Input}
+\end{figure}
+
+Berikut merupakan gambar dari kelas diagram milik modul kelola \textit{input}:
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.54]{ClassDiagramLengkap/CD_Input}
 	\caption[Diagram Kelas Modul Kelola Input]{Diagram Kelas Modul Kelola Input}
 	\label{fig:Diagram Kelas Modul Kelola Input}
 \end{figure}
 
+Pada modul ini terdapat 3 kelas utama yang akan digunakan untuk melakukan operasi tulis ke dalam HDFS. Selain itu, ada pula 2 kelas milik \textit{springframework} yang digunakan untuk kebutuhan http \textit{request} dan \textit{response} pada \textit{java web servlet}. Kelas - kelas tersebut diantara lain adalah:
+\begin{enumerate}
+	\item \texttt{InputController}\\
+	Kelas ini akan melakukan \textit{handle} request http dari user dan megembalikan \textit{response} yang sesuai dengan apa yang diminta oleh user berkaitan dengan pengelolaan input. Kelas ini akan meneruskan request http dari user ke pada service yang sesuai. Kelas ini memiliki 3 atribut dan 2 operasi, diantaranya adalah:
+	%\begin{itemize}
+	
+	\paragraph{Atribut}
+		\begin{enumerate}
+			\item \verb|ABSOLUTE_PATH|\\
+			Atribut ini bertipe \texttt{string} serta memiliki \textit{modifier static} dan \texttt{final} agar tidak bisa diubah nilai-nya yang akan merepresentasikan path namespace\footnote{\textit{Namespace} merupakan nama pengenal yang unik untuk suatu entitas tertentu.} untuk kelas ini. Atribut ini memiliki nilai inisialisasi awal yang berisi \texttt{"/admin/input-set"}. Jadi, setiap method yang merepresentasikan suatu \textit{request url} dalam kelas ini akan diawali dengan \texttt{"/admin/input-set"}.
+
+			\item \verb|LAYOUTS_ADMIN|\\
+			Atribut ini bertipe \texttt{string} serta memiliki \texttt{modifier static} dan \texttt{final} yang akan menyimpan nama view layout dari tampilan html yang akan dirender oleh view. NIlai awal dari atribut ini adalah \texttt{"layouts/admin"}.
+
+			\item \texttt{hdfsService}\\
+			Atribut ini bertipe \texttt{HdfsService} yang akan digunakan untuk memanggil operasi operasi yang dienkapsulasi ke dalam layer service. \texttt{HdfsService} akan melakukan request secara lansung kepada node master HDFS untuk melakukan operasi baca dan tulis (\textit{hadoop client}).
+
+		\end{enumerate}
+					
+	\paragraph{Operasi}
+		\begin{enumerate}
+			\item \texttt{index(model : Model)}\\
+			Operasi ini akan meng-\textit{handle} http request bertipe GET dengan url yang ditentukan pada atribute \verb|ASBOLUTE_PATH| dan akan mengembalikan halaman utama dari modul kelola input ini.
+			
+			\item \texttt{postFile(inputSetDtoRequest : InputSetDtoRequest,
+      redirectAttributes : RedirectAttributes)}\\
+			Operasi ini akan meng-\textit{handle} http request bertipe POST dengan url yang ditentukan pada atribute \verb|ASBOLUTE_PATH| dan akan melakukan operasi tulis file ke dalam HDFS. Jika berhasil akan mengembalikan data sukses ke pada html yang akan di-\textit{render} oleh view.
+
+		\end{enumerate}
+		
+		
+	%\end{itemize}	 	
+
+	\item \texttt{HdfsService}\\
+	Kelas ini merupakan kelas yang akan berhubungan langsung dengan master node pada lingkungan hadoop untuk mengakses HDFS. Kelas ini memiliki 4 atribut dan 4 operasi yang digunakan untuk melakukan operasi baca/tulis ke dalam HDFS. Atribut dan operasi tersebut adalah:
+	%\begin{itemize}
+	\paragraph{Atribut}
+		\begin{enumerate}
+			\item \verb|HDFS_PATH|\\
+			Atribut ini bertipe \texttt{string} serta memiliki \textit{modifier} \texttt{static} dan \texttt{final} yang akan merepresentasikan \textit{path namespace} pada HDFS yang digunakan oleh keseluruhan perangkat lunak. Atribut ini memiliki nilai inisialisasi awal yang berisi \texttt{"/bayes/"}.
+
+			\item \verb|HDFS_AUTHORITY|\\
+			Atribut ini bertipe \texttt{string} serta memiliki \textit{modifier} \texttt{static} dan \texttt{final} yang akan merepresentasikan server authority dari node master HDFS yang digunakan untuk mengakses file - file dalam HDFS. Atribut ini memiliki nilai inisialisasi awal yang berisi \texttt{"hdfs://localhost:9000"}.
+
+			\item \verb|configuration|\\
+			Atribut ini bertipe Configuration yang berasal dari \textit{library hadoop}. Atribut ini akan mengatur seluruh konfigurasi yang dibutuhkan untuk dapat melakukan komunikasi dengan lingkungan hadoop untuk dapat mengakses HDFS.
+
+			\item \verb|regex|\\
+			Atribut ini akan digunakan untuk pemisah setiap field yang ada dalam tiap baris pada input.
+			
+		\end{enumerate}				
+
+	\paragraph{Operasi}
+		\begin{enumerate}
+			\item \texttt{cleanHdfsDir()}\\
+			Operasi ini akan melakukan pembersihan seluruh file yang ada pada HDFS dengan url pada parameter yang diberikan. Operasi ini akan mengembalikan true apabila berhasil dan false apabila gagal melakukan komunikasi dengan HDFS.
+			
+			\item \texttt{listInputDirOnPath()}\\
+			Operasi ini akan melakukan pencarian setiap model direktori yang sudah ada pada HDFS. Operasi ini akan mengembalikan tiap model direktori pada HDFS.
+			
+			\item \texttt{transformAndTransferInfoToHdfsInfo()}\\
+			Operasi ini akan melakukan penulisan untuk file info yang telah diinput oleh user sebelumnya untuk dijadikan file \texttt{meta.info} yang disimpan untuk model direktori tertentu pada HDFS. Jika sukses, operasi ini akan mengembalikan jumlah field yang digunakan pada file input yang user masukan.
+			
+			\item \texttt{transportToHdfs}\\
+			Operasi ini akan melakukan penulisan file input yang telah dimasukan oleh user, ke dalam HDFS. Selain itu, operasi ini juga akan menerima presentase yang digunakan pada file yang di-input oleh user untuk dijadikan data training dan data testing. Jika sukses, akan mengembalikan \texttt{boolean} bernilai \textit{true}.
+			
+		\end{enumerate}
+		
+	%\end{itemize}
+	
+	
+	\item \texttt{InputSetDtoRequest}\\
+	Kelas ini merupakan kelas DTO\footnote{DTO atau \textit{Command} merupakan salah satu \textit{behavioral pattern} yang melakukan enkapsulasi untuk object yang secara khusus diperuntukkan untuk \textit{object request} dan \textit{object response} dari dan kepada user.} (\textit{Data Transfer Object}) yang diperuntukkan untuk menangani \textit{object request/response} dari dan kepada user dalam proses memasukkan data ke dalam HDFS.
+
+
+\end{enumerate}
+
 \subsection{Diagram Kelas Modul Klasifikasi \textit{Naive Bayes}}
+
+Sama seperti pada modul kelola input, struktur kelas diagram pada modul ini juga dirancang dengan mengikuti \textit{design pattern} milik \textit{Spring Web MVC} yang telah dijelaskan pada landasan teori mengenai \textit{Spring framework} pada \ref{subsec:Spring Framework} dengan tambahan beberapa modifikasi pada layer tengahnya. Berikut merupakan ilustrasi dari package kelas yang akan dirancang pada modul ini:
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.7]{ClassDiagramLengkap/springmvc_rev1}
+	\caption[Struktur MVC Pada Modul Klasifikasi]{Struktur MVC Pada Modul Klasifikasi}
+	\label{fig:Struktur MVC Pada Modul Klasifikasi}
+\end{figure}
+
+Terdapat 3 bagian \textit{layer} yang akan dijelaskan pada kelas diagram modul ini, yaitu (1) \textit{controller}; (2) \textit{service}; (3) \textit{model}. Berikut merupakan penjelasan lebih rinci mengenai tiap \textit{layer} tersebut.
 
 \subsubsection{\textit{Controller}}
 \begin{figure}[H]
@@ -762,10 +847,103 @@ Pada package ini terdapat 4 kelas utama yang akan digunakan untuk menjalankan pr
 	\label{fig:Diagram Kelas Modul Kelola Input}
 \end{figure}
 
+Di dalam \textit{layer controller} terdapat 2 kelas utama sebagai layer yang secara langsung akan menangani request dari user dan memberikan response kepada user. Layer ini menggunakan utility pattern untuk melakukan enkapsulasi perhitungan - perhitungan yang dapat dipisahkan menjadi beberapa bagian operasi tambahan. Kelas tersebut diantara lain adalah:
+\begin{enumerate}
+	\item \texttt{TestingController}\\
+	Kelas ini akan melakukan \textit{handle} request http dari user dan megembalikan \textit{response} yang sesuai dengan apa yang diminta oleh user berkaitan dengan klasifikasi dan \textit{testing} model NBC. Kelas ini akan meneruskan request http dari user ke pada service yang sesuai untuk melakukan klasifikasi maupun \textit{testing}. Kelas ini memiliki 8 atribut dan 7 operasi, diantaranya adalah:
+	%\begin{itemize}
+	\paragraph{Atribut}
+		\begin{enumerate}
+			\item \verb|ABSOLUTE_PATH|\\
+			Atribut ini bertipe \texttt{string} serta memiliki \textit{modifier static} dan \texttt{final} agar tidak bisa diubah nilai-nya yang akan merepresentasikan path namespace untuk kelas ini. Atribut ini memiliki nilai inisialisasi awal yang berisi \texttt{"/admin/input-set"}. Jadi, setiap method yang merepresentasikan suatu \textit{request url} dalam kelas ini akan diawali dengan \texttt{"/admin/testing"}.
+
+			\item \verb|LAYOUTS_ADMIN|\\
+			Atribut ini bertipe \texttt{string} serta memiliki \texttt{modifier static} dan \texttt{final} yang akan menyimpan nama view layout dari tampilan html yang akan dirender oleh view. NIlai awal dari atribut ini adalah \texttt{"layouts/admin"}.
+
+
+			\item \texttt{classInfoDetailService}\\
+			Atribut ini akan merepresentasikan \textit{service} dari nilai - nilai diskrit dari atribut kelas tertentu secara spesifik/detil. \texttt{ClassInfoDetailService} dibuat untuk menyimpan logika program yang berguna untuk menyimpan, memperoleh, dan melakukan pembaharuan terhadap nilai detil dari atribut kelas pada model NBC.
+
+			\item \texttt{classInfoService}\\
+			Atribut ini akan merepresentasikan \textit{service} dari atribut kelas pada model NBC secara umum. \texttt{ClassInfoService} dibuat untuk menyimpan logika program yang berguna untuk menyimpan, memperoleh, dan melakukan pembaharuan terhadap atribut kelas yang ada pada model NBC.
+
+			\item \texttt{confusionMatrixService}\\
+			Atribut ini akan merepresentasikan \textit{service} matrix \textit{confusion} dari hasil test klasifikasi pada model NBC. \texttt{ConfusionMatrixService} dibuat untuk menyimpan logika program yang berguna untuk menyimpan, memperoleh, dan melakukan pembaharuan yang spesifik terhadap nilai matrix \textit{confusion} serta seluruh kelas yang dicatat di dalamnya.
+
+			\item \texttt{errorRateService}\\
+			Atribut ini akan merepresentasikan \textit{service} \textit{error rate} dari hasil test klasifikasi pada model NBC. \texttt{ErrorRateService} dibuat untuk menyimpan logika program yang berguna untuk menyimpan, memperoleh, dan melakukan pembaharuan yang spesifik terhadap nilai - nilai \textit{error rate} pada tiap kelas.
+
+			\item \texttt{predictorInfoService}\\
+			Atribut ini akan merepresentasikan \textit{service} dari atribut prediktor pada model NBC secara umum. \texttt{PredictorInfoService} dibuat untuk menyimpan logika program yang berguna untuk menyimpan, memperoleh, dan melakukan pembaharuan terhadap seluruh atribut prediktor yang ada pada model NBC.
+
+			\item \texttt{testingUtils}\\
+			Atribut ini bertipe \textit{TestingUtils} yang akan melakukan enkapsulasi untuk beberapa operasi yang dilakukan pada kelas \texttt{TestingController}. Sehingga, program dapat lebih mudah dibaca.
+
+		\end{enumerate}
+		
+	\paragraph{Operasi}
+		\begin{enumerate}
+			\item \texttt{- calculateErrorRate(confusionEachClass : HashMap<String,ConfusionMatrix>): void}\\
+			Operasi ini akan melakukan perhitungan \textit{error rate} untuk (1) \textit{Accuracy}; (2) \textit{Precision}; (3) \textit{Recall}; (4) \textit{F-Measure}, yang dihasilkan dari pengolahan matrix \textit{confusion} dan akan menerima parameter matrix \textit{confusion} untuk mengkalkulasi nilai TP \textit{(true positive)}, FP \textit{(false positive)} TN \textit{(true negative)} FN \textit{(false negative)}. Setelah hasil didapat,  akan langsung melakukan penyimpanan ke dalam \textit{database}.
+			
+			\item \texttt{+ index(model : Model): String}\\
+			Operasi ini akan meng-\textit{handle} http request bertipe GET dengan url yang ditentukan pada atribute \verb|ASBOLUTE_PATH| dan akan mengembalikan halaman utama dari modul klasifikasi ini.
+
+			\item \texttt{+ predictNewCase(model : Model): String}\\
+			Operasi ini akan meng-\textit{handle} http request bertipe GET dengan url \verb|ASBOLUTE_PATH+"/predict-new-case"| dan akan mengembalikan halaman untuk melakukan klasifikasi untuk 1 kasus.
+
+			\item \texttt{+ testFileFromHdfs(modelHdfs : RenewModelHdfsFormRequest, redirectAttributes : RedirectAttributes): String}\\
+			Operasi ini akan meng-\textit{handle} http \textit{request} bertipe POST dengan url \verb|ASBOLUTE_PATH+"/files-from-hdfs"| dan akan menerima parameter \texttt{modelHdfs} bertipe \texttt{RenewModelHdfsFormRequest} yang akan diisi dengan keterangan path file yang ada dalam HDFS. Setelah menerima \textit{request}, operasi ini akan meneruskan-nya ke pada \texttt{hdfsService} untuk dilakukan proses klasifikasi dengan data yang sudah ada di dalam HDFS. 
+
+			\item \texttt{+ testFiles(testFile : TestFile, redirectAttributes : RedirectAttributes): String}\\
+			Operasi ini akan meng-\textit{handle} http \textit{request} bertipe POST dengan url \verb|ASBOLUTE_PATH+"/files"| dan akan menerima parameter \texttt{testFile} bertipe \texttt{TestFile} yang akan berisi mengenai seluruh file dan keterangan lainnya untuk melakukan testing. Setelah menerima \textit{request} akan langsung melakukan perhitungan untuk setiap file yang diinput oleh user. 
+
+
+			\item \texttt{- testFilesEncapsuled(br1s : List<String>, br2 : BufferedReader, redirectAttributes : RedirectAttributes): String}\\
+			Operasi ini merupakan enkapsulasi dari proses testing pada operasi \texttt{testFiles()} dan akan melakukan test pada model NBC untuk setiap file yang diterima pada parameter.
+
+
+			\item \texttt{+ testSingleton(singletonQuery : SingletonQuery, confusionEachClassz : HashMap<String,ConfusionMatrix>, resultPerClasses : ArrayList <HashMap <String,String>>) : String}\\
+			Setiap operasi testing pada modul ini akan memanggil operasi ini. Operasi ini akan melakukan perhitungan klasifikasi untuk tiap satu baris/\textit{record} dari file input. Hampir seluruh pemanggilan operasi - operasi lain untuk membantu melakukan perhitungan klasifikasi model NBC pada atribut \texttt{testingUtils} yang bertipe \texttt{TestingUtils} berada pada operasi ini.
+
+		\end{enumerate}
+		
+	%\end{itemize}
+	
+	\item \texttt{TestingUtils}\\
+	Kelas ini merupakan kelas yang meng-enkapsulasi beberapa operasi yang dilakukan pada kelas \texttt{TestingController} agar membuat kode program bisa lebih mudah dibaca dan dapat digunakan kembali oleh operasi - operasi lain yang membutuhkan perhitungan yang disediakan oleh kelas ini. Kelas ini memiliki 2 atribut dan 3 operasi, diantaranya adalah:
+	%\begin{itemize}
+	\paragraph{Atribut}
+		\begin{enumerate}
+			\item \texttt{bayesianModelService}\\
+			Atribut ini bertipe \texttt{BayesianModelService} yang akan digunakan untuk memanggil operasi operasi yang dienkapsulasi ke dalam layer service untuk langsung melakukan koneksi ke dalam database milik \textit{BayesianModel}. \texttt{BayesianModelService}.
+			
+		\end{enumerate}				
+
+	\paragraph{Operasi}
+		\begin{enumerate}
+			\item \texttt{- calcNormalDist}\\
+			Operasi ini akan membantu operasi pada \texttt{calcNormDistEachClass} untuk menghitung fungsi normal distribusi dari parameter yang diberikan
+			
+			\item \texttt{+ calcDiscrete}\\
+			Operasi ini akan membantu \texttt{TestingController} dalam melakukan proses klasifikasi untuk menghitung probabilitas posterior atribut yang bertipe disrkit.
+
+			\item \texttt{- calcNormDistEachClass}\\
+			Operasi ini akan membantu \texttt{TestingController} dalam melakukan proses klasifikasi untuk menghitung probabilitas posterior atribut yang bertipe numerik dengan menghitung normal distribusi dari atribut tersebut.
+
+		\end{enumerate}
+		
+		
+	%\end{itemize}
+
+
+\end{enumerate}
+	
+
 \subsubsection{\textit{Service}}
 \begin{figure}[H]
 	\centering
-	\includegraphics[scale=0.5]{ClassDiagramLengkap/Klasifikasi/Simple_CD_Klasifikasi_Services}
+	\includegraphics[scale=0.55]{ClassDiagramLengkap/Klasifikasi/Simple_CD_Klasifikasi_Services}
 	\caption[Diagram Kelas Modul Kelola Input]{Diagram Kelas Modul Kelola Input}
 	\label{fig:Diagram Kelas Modul Kelola Input}
 \end{figure}
@@ -773,7 +951,7 @@ Pada package ini terdapat 4 kelas utama yang akan digunakan untuk menjalankan pr
 \subsubsection{\textit{Model}}
 \begin{figure}[H]
 	\centering
-	\includegraphics[scale=0.5]{ClassDiagramLengkap/Klasifikasi/Simple_CD_Klasifikasi_Model}
+	\includegraphics[scale=0.6]{ClassDiagramLengkap/Klasifikasi/Simple_CD_Klasifikasi_Model}
 	\caption[Diagram Kelas Modul Kelola Input]{Diagram Kelas Modul Kelola Input}
 	\label{fig:Diagram Kelas Modul Kelola Input}
 \end{figure}
