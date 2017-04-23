@@ -3,10 +3,12 @@ Berdasarkan analisis yang telah dilakukan, terdapat beberapa hal yang perlu dira
 an antarmuka, diagram kelas rinci, serta rincian metode.
 			
 \section{Perancangan Antarmuka}
+\label{sec:Perancangan Antarmuka}
 
 Perangkat lunak \textit{naive bayes classification} memiliki 6 buah tampilan untuk yang tidak berbasis \textit{MapReduce}, yaitu: (1) \textit{Dashboard} (2) \textit{Input Set Manager} (3) \textit{Renew Model Manager} (4) \textit{Testing Manager} (5) \textit{Classification Manager} (6) \textit{Error Rate Dashboard}. Untuk program yang berbasis \textit{MapReduce} tidak akan memiliki antarmuka yang khusus, karena program hanya perlu dijalankan dengan menggunakan CLI (\textit{command line interface}). Berikut adalah penjelasan dan gambar dari tiap antarmuka yang dirancang:
 
 \subsection{\textit{Dashboard}}
+\label{subsec:Dashboard}
 
 \begin{figure}[H]
 	\centering
@@ -22,6 +24,8 @@ Perangkat lunak \textit{naive bayes classification} memiliki 6 buah tampilan unt
 \end{enumerate}
 
 \subsection{\textit{Input Set Manager}}
+\label{subsec:Input Set Manager}
+
 \begin{figure}[H]
 	\centering
 	\includegraphics[scale=0.4]{Mockup/input-set-gui-1}
@@ -39,6 +43,8 @@ Perangkat lunak \textit{naive bayes classification} memiliki 6 buah tampilan unt
 \end{enumerate}
 
 \subsection{\textit{Renew Model Manager}}
+\label{subsec:Renew Model Manager}
+
 \begin{figure}[H]
 	\centering
 	\includegraphics[scale=0.45]{Mockup/mockup_renewmodel_manager}
@@ -52,6 +58,8 @@ Perangkat lunak \textit{naive bayes classification} memiliki 6 buah tampilan unt
 \end{enumerate}
 
 \subsection{\textit{Testing Manager}}
+\label{subsec:Testing Manager}
+
 \begin{figure}[H]
 	\centering
 	\includegraphics[scale=0.45]{Mockup/mockup_testing_manager}
@@ -65,6 +73,8 @@ Perangkat lunak \textit{naive bayes classification} memiliki 6 buah tampilan unt
 \end{enumerate}
 
 \subsection{\textit{Classification Manager}}
+\label{subsec:Classification Manager}
+
 \begin{figure}[H]
 	\centering
 	\includegraphics[scale=0.45]{Mockup/mockup_classification_manager}
@@ -79,6 +89,8 @@ Perangkat lunak \textit{naive bayes classification} memiliki 6 buah tampilan unt
 \end{enumerate}
 
 \subsection{\textit{Error Rate Dashboard}}
+\label{subsec:Error Rate Dashboard}
+
 \begin{figure}[H]
 	\centering
 	\includegraphics[scale=0.45]{Mockup/mockup_errorrate}
@@ -750,9 +762,10 @@ Berikut merupakan gambar dari kelas diagram milik modul kelola \textit{input}:
 	\label{fig:Diagram Kelas Modul Kelola Input}
 \end{figure}
 
-Pada modul ini terdapat 3 kelas utama yang akan digunakan untuk melakukan operasi tulis ke dalam HDFS. Selain itu, ada pula 2 kelas milik \textit{springframework} yang digunakan untuk kebutuhan http \textit{request} dan \textit{response} pada \textit{java web servlet}. Kelas - kelas tersebut diantara lain adalah:
-\begin{enumerate}
-	\item \texttt{InputController}\\
+Pada modul ini terdapat 3 kelas utama yang akan digunakan untuk melakukan operasi tulis ke dalam HDFS. Selain itu, ada pula 2 kelas milik \textit{springframework} yang digunakan untuk kebutuhan http \textit{request} dan \textit{response} pada \textit{java web servlet}. Berikut merupakan penjelasan kelas - kelas tersebut.
+%\begin{enumerate}
+\subsubsection{\texttt{InputController}}
+	%\item \texttt{InputController}\\
 	Kelas ini akan melakukan \textit{handle} request http dari user dan megembalikan \textit{response} yang sesuai dengan apa yang diminta oleh user berkaitan dengan pengelolaan input. Kelas ini akan meneruskan request http dari user ke pada service yang sesuai. Kelas ini memiliki 3 atribut dan 2 operasi, diantaranya adalah:
 	%\begin{itemize}
 	
@@ -783,7 +796,8 @@ Pada modul ini terdapat 3 kelas utama yang akan digunakan untuk melakukan operas
 		
 	%\end{itemize}	 	
 
-	\item \texttt{HdfsService}\\
+\subsubsection{\texttt{HdfsService}}
+		
 	Kelas ini merupakan kelas yang akan berhubungan langsung dengan master node pada lingkungan hadoop untuk mengakses HDFS. Kelas ini memiliki 4 atribut dan 4 operasi yang digunakan untuk melakukan operasi baca/tulis ke dalam HDFS. Atribut dan operasi tersebut adalah:
 	%\begin{itemize}
 	\paragraph{Atribut}
@@ -821,11 +835,11 @@ Pada modul ini terdapat 3 kelas utama yang akan digunakan untuk melakukan operas
 	%\end{itemize}
 	
 	
-	\item \texttt{InputSetDtoRequest}\\
+	\subsubsection{\texttt{InputSetDtoRequest}}
 	Kelas ini merupakan kelas DTO\footnote{DTO atau \textit{Command} merupakan salah satu \textit{behavioral pattern} yang melakukan enkapsulasi untuk object yang secara khusus diperuntukkan untuk \textit{object request} dan \textit{object response} dari dan kepada user.} (\textit{Data Transfer Object}) yang diperuntukkan untuk menangani \textit{object request/response} dari dan kepada user dalam proses memasukkan data ke dalam HDFS.
 
 
-\end{enumerate}
+%\end{enumerate}
 
 \subsection{Diagram Kelas Modul Klasifikasi \textit{Naive Bayes}}
 
@@ -947,6 +961,54 @@ Di dalam \textit{layer controller} terdapat 2 kelas utama sebagai layer yang sec
 	\caption[Diagram Kelas Modul Kelola Input]{Diagram Kelas Modul Kelola Input}
 	\label{fig:Diagram Kelas Modul Kelola Input}
 \end{figure}
+\textit{Layer service} pada modul ini menggunakan konsep \textit{polymorphism}\footnote{
+\textit{Polymorphism} merupakan 1 dari 3 mekanisme dalam OOP (\textit{Object Oriented Programming}) untuk men-\textit{general}-kan beberapa \textit{method} yang secara umum memiliki tujuan yang sama tetapi berbeda implementasi-nya \cite{AbsoluteJava:2012}.} pada java untuk menghindari terjadinya redundansi kode yang memiliki tujuan sama. Berikut merupakan penjelasan lebih rinci mengenai kelas - kelas pada \textit{layer} ini:
+
+\begin{enumerate}
+	\item \texttt{CRUDService}\\
+	Kelas ini merupakan \textit{base class} sebagian besar kelas service lainnya dan memiliki \textit{generic type} \texttt{T} yang perlu diberikan untuk tiap kelas yang menjadi \textit{descendant}-nya. Terdapat 5 \textit{method} abstrak yang dimiliki oleh kelas ini, \textit{method - method} tersebut diantara lain adalah:
+	\begin{enumerate}
+		\item \texttt{delete(id: Integer): void}\\
+		\textit{Method} ini merupakan \textit{method} abstrak yang perlu diimplementasikan oleh seluruh kelas yang menjadi turunan dari kelas ini dan akan melakukan penghapusan \textit{object} bertipe \texttt{T} yang memiliki \texttt{id} pada parameter masukan \textit{method} ini.
+		
+		\item \texttt{findById(id: Integer): T}\\
+		\textit{Method} ini merupakan \textit{method} abstrak yang perlu diimplementasikan oleh seluruh kelas yang menjadi turunan dari kelas ini dan akan melakukan pencarian \textit{object} bertipe \texttt{T} yang memiliki \texttt{id} pada parameter masukan \textit{method} ini.
+
+		\item \texttt{listAll(): List<T>}\\
+		\textit{Method} ini merupakan \textit{method} abstrak yang perlu diimplementasikan oleh seluruh kelas yang menjadi turunan dari kelas ini dan akan melakukan pengambilan seluruh \textit{object} bertipe \texttt{T} pada \textit{database}.
+
+		\item \texttt{save(domainObject: T): T}\\
+		\textit{Method} ini merupakan \textit{method} abstrak yang perlu diimplementasikan oleh seluruh kelas yang menjadi turunan dari kelas ini dan akan melakukan pembuatan \textit{object} baru bertipe \texttt{T} dan memasukkannya ke dalam \textit{database}.
+
+		\item \texttt{update(domainObject: T): T}\\
+		\textit{Method} ini merupakan \textit{method} abstrak yang perlu diimplementasikan oleh seluruh kelas yang menjadi turunan dari kelas ini dan akan melakukan perbaharuan \textit{object} bertipe \texttt{T} dan melakukan \textit{update} ke dalam \textit{database}.
+		
+	\end{enumerate}
+	
+	\item \texttt{PredictorInfoService}\\
+	Kelas ini merupakan kelas \textit{service} turunan dari kelas \texttt{CRUDService} yang akan menangani proses baca tulis ke dalam database pada \textit{object} yang bertipe \texttt{PredictorInfo}. Sehingga, secara langsung akan memiliki juga operasi - operasi pada \textit{base class} tersebut. 
+	
+	\item \texttt{ConfusionMatrixService}\\
+	Kelas ini merupakan kelas \textit{service} turunan dari kelas \texttt{CRUDService} yang akan menangani proses baca tulis ke dalam database pada \textit{object} yang bertipe \texttt{PredictorInfo}. Sehingga, secara langsung akan memiliki juga \textit{operasi - operasi} pada \textit{base class} tersebut. Kelas ini memiliki beberapa operasi tambahan yang diperlkan khusus untuk kelas \texttt{ConfusionMatrixService}.
+	\begin{enumerate}
+		\item \texttt{deleteAll()} akan melakukan penghapusan seluruh record/model yang merepresentasikan \textit{object} instansiasi dari kelas ini.
+		\item \texttt{findByClassName(name: String)} akan melakukan pencarian \textit{object} instansiasi dari kelas ini dengan memberikan nama atribut kelas sebagai parameter masukan.
+	\end{enumerate}
+	
+	\item \texttt{ErrorRateService}\\
+	Kelas ini merupakan kelas \textit{service} turunan dari kelas \texttt{CRUDService} yang akan menangani proses baca tulis ke dalam database pada \textit{object} yang bertipe \texttt{ErrorRate}. Sehingga, secara langsung akan memiliki juga \textit{operasi - operasi} pada \textit{base class} tersebut. Kelas ini memiliki 1 operasi tambahan yang diperlukan khusus untuk kelas \texttt{ErrorRateService}, yaitu \texttt{resetAll()} yang akan melakukan penghapusan seluruh instansiasi dari \textit{object} \textit{ErrorRate} di dalam \textit{database} yang sudah ada sebelumnya.
+	
+	\item \texttt{ClassInfoService}\\
+	Kelas ini merupakan kelas \textit{service} turunan dari kelas \texttt{CRUDService} yang akan menangani proses baca tulis ke dalam database pada \textit{object} yang bertipe \texttt{ErrorRate}. Sehingga, secara langsung akan memiliki juga \textit{operasi - operasi} pada \textit{base class} tersebut. Kelas ini memiliki beberapa operasi tambahan yang diperlukan khusus untuk kelas \texttt{ClassInfoService}.
+	\begin{enumerate}
+		\item \texttt{findByClassName(className: String): ClassInfo} akan melakukan pencarian untuk instansiasi \textit{object} pada kelas ini dalam \textit{database} dengan parameter masukan nama kelas.
+		\item \texttt{getAllWithErrorDetails(): List<ClassInfo>} akan mengembalikan seluruh instansiasi dari \textit{object} \texttt{ClassInfo} dengan mengikutsertakan relasi - relasi yang dimiliki tiap \textit{object} dengan kelas \texttt{ErrorRate}.
+	\end{enumerate}
+	
+	\item \texttt{ClassInfoDetailService}\\
+	Kelas ini merupakan satu - satunya kelas \textit{service} yang bukan merupakan turunan dari kelas \texttt{CRUDService}. Kelas ini dibuat khusus untuk pencarian detil dari atribut kelas spesifik dan akan melakukan update terhadap \textit{errorRate} yang merupakan relasi dari instansiasi \textit{object} kelas \texttt{ClassInfoDetail}. Operasi yang dimiliki pada kelas ini adalah \texttt{findByClassInfoAndValue(classInfo: ClassInfo, value: String): CLassInfoDetail}, yang akan mengembalikan instansiasi dari \textit{object} kelas ini dengan parameter masukan object kelas info serta nama dari nilai diskrit \textit{object} kelas tersebut. 
+
+\end{enumerate}
 
 \subsubsection{\textit{Model}}
 \begin{figure}[H]
@@ -955,3 +1017,171 @@ Di dalam \textit{layer controller} terdapat 2 kelas utama sebagai layer yang sec
 	\caption[Diagram Kelas Modul Kelola Input]{Diagram Kelas Modul Kelola Input}
 	\label{fig:Diagram Kelas Modul Kelola Input}
 \end{figure}
+
+\textit{Layer model} akan merepresentasikan seluruh \textit{object} model yang dimiliki pada modul ini dan juga akan sekaligus merepresentasikan entitas-entitas/tabel-tabel yang ada pada modul. Layer ini memanfaatkan fitur ORM\footnote{\textit{Spring} menyediakan integrasi dengan \textit{Hibernate, JPA(Java Pesistence API), dan JDO(Java Data Objects)} untuk melakukan pemodelan object milik java dengan model pada DBMS serta relasi - relasi yang dibutuhkan pada DBMS} (\textit{Object Relational Model}) milik \textit{spring framework} yang akan mengatasi seluruh transformasi dari object pada java ke model pada DBMS. Kelas - kelas pada layer ini merupakan kelas POJO pada java. Berikut merupakan penjelasan lebih rinci mengenai kelas - kelas pada \textit{layer} ini:
+
+\begin{enumerate}
+	\item \texttt{ConfusionMatrix}\\
+	Kelas model ini akan merepresentasikan matrix \textit{confusion} yang digunakan untuk melakukan perhitungan hasil klasifikasi dari suatu data \textit{testing}. Kelas ini memiliki 6 atribut, diantaranya adalah:
+	\begin{enumerate}
+		\item \texttt{id}, bertipe \textit{integer} digunakan sebagai atribut unik untuk pengenal setiap instansiasi dari \textit{object} kelas ini.
+
+		\item \texttt{classInfo}, bertipe \texttt{ClassInfo} merupakan relasi 1-ke-1 dengan kelas ini. Setiap matrix \textit{confusion} akan memiliki 1 atribut kelas info dan begitu juga sebaliknya.
+	
+		\item \texttt{confusionMatrixDetails}, bertipe \texttt{List <ConfusionMatrixDetail>} merupakan relasi \textit{1-to-many} dengan kelas ini. \texttt{confusionMatrixDetails} akan menyimpan seluruh keterangan detail mengenai tiap matrix \textit{confusion}.
+
+		\item \texttt{createdDate}, bertipe \texttt{Date} akan mencatat waktu \textit{timestamp} \textit{object} instansiasi dari kelas ini dibuat.		
+
+		\item \texttt{className}, bertipe \texttt{String} sebagai nama atribut kelas dari instansiasi \textit{object} kelas ini.
+
+		\item \texttt{printedConfusionMatrix}, bertipe \texttt{String} akan merepresentasikan suatu matrix dari kelas ini dalam bentuk \texttt{string}.
+
+	\end{enumerate}		
+	
+	\item \texttt{ConfusionMatrixDetail}\\
+	Kelas model ini akan merepresentasikan detil dari atribut matrix \textit{confusion}. Kelas ini memiliki 5 atribut, diantaranya adalah:
+	\begin{enumerate}
+		\item \texttt{id}, bertipe \textit{integer} digunakan sebagai atribut unik untuk pengenal setiap instansiasi dari \textit{object} kelas ini.
+				
+
+		\item \texttt{predicted}, bertipe \textit{string} digunakan untuk mencatat hasil nilai prediksi kelas pada klasifikasi yang telah ditentukan.
+		
+
+		\item \texttt{confusionMatrix}, bertipe \texttt{ConfusionMatrix} merupakan relasi \textit{many-to-1} dengan kelas ini.
+
+		\item \texttt{percentage}, bertipe \texttt{string} merupakan presentase dominasi hasil nilai atribut kelas yang diprediksi dari proses klasifikasi.
+		
+
+		\item \texttt{actual}, bertipe \textit{string} digunakan untuk mencatat hasil nilai kelas asli pada data yang dimasukkan ke dalam algoritma klasifikasi \textit{naive bayes}.
+
+	\end{enumerate}
+
+
+	\item \texttt{ClassInfo}\\
+	Kelas model ini akan merepresentasikan atribut kelas pada model NBC yang ada. Kelas ini memiliki 5 atribut, diantaranya adalah:
+	\begin{enumerate}
+		\item \texttt{id}, bertipe \textit{integer} digunakan sebagai atribut unik untuk pengenal setiap instansiasi dari \textit{object} kelas ini.
+		
+		\item \texttt{classInfoDetails}, bertipe \texttt{Set<ClassInfoDetails>} merepresentasikan kumpulan tiap nilai-diskrit detil dari atribut kelas NBC ini.
+		
+		\item \texttt{className}, bertipe \texttt{string} merupakan nama dari atribut kelas ini pada NBC.
+		
+		\item \texttt{confusionMatrix}, bertipe \texttt{ConfusionMatrix} merupakan relasi 1-ke-1 dengan kelas ini. Setiap instansiasi dari \textit{object} \textit{ClassInfo} akan memiliki 1 atribut \texttt{confusionMatrix} dan begitu juga sebaliknya.
+		
+		\item \texttt{accuracy}, bertipe \texttt{ErrorRate} merupakan hasil \textit{error rate} bertipe \textit{accuracy} setelah klasifikasi dilakukan.
+		
+		
+	\end{enumerate}
+
+	\item \texttt{ClassInfoDetail}\\
+	Kelas model ini akan merepresentasikan detil dari atribut kelas pada kelas \texttt{ClassInfo}. Kelas ini memiliki 5 atribut, diantaranya adalah:
+	\begin{enumerate}
+		\item \texttt{id}, bertipe \textit{integer} digunakan sebagai atribut unik untuk pengenal setiap instansiasi dari \textit{object} kelas ini.
+		
+		\item \texttt{classInfo}, bertipe \texttt{ClassInfo} merupakan relasi many-to-1 dari kelas ini ke kelas \texttt{ClassInfo}.
+		
+		\item \texttt{errorRates}, bertipe \texttt{List<ErrorRate>} merupakan kumpulan \textit{error rate} yang dimiliki oleh atribut ini. Kumpulan \textit{error rate} tersebut bisa bertipe: (1)\textit{precision}; (2)\textit{recall}; (3)\textit{f-measure}.
+				
+		\item \texttt{count}, bertipe \textit{integer} merupakan jumlah frekuensi kemunculan atribut kelas yang bernilai tertentu pada NBC.
+
+		\item \texttt{value}, bertipe \textit{string} merupakan nama dari nilai-diskrit atribut kelas tertentu pada NBC.
+		
+	\end{enumerate}
+
+	\item \texttt{ErrorRate}\\
+	Kelas model ini akan merepresentasikan nilai - nilai perhitungan \textit{error rate} yang dihasilkan setelah proses klasifikasi pada data \textit{testing} dilakukan. Kelas ini memiliki 5 atribut, diantaranya adalah:
+	\begin{enumerate}
+		\item \texttt{id}, bertipe \textit{integer} digunakan sebagai atribut unik untuk pengenal setiap instansiasi dari \textit{object} kelas ini.
+		
+		\item \texttt{type}, bertipe \textit{ErrorType} merupakan tipe \textit{error rate} pada \textit{object} instansiasi dari kelas ini. 
+		
+		\item \texttt{classInfoDetail}, bertipe \textit{ClassInfoDetail} merupakan relasi \textit{many-to-1} ke kelas \texttt{ClassInfoDetail}. Sehingga, setiap instansiasi dari kelas ini akan memiliki relasi dengan 1 instansiasi dari kelas \texttt{ClassInfoDetail}.
+		
+		\item \texttt{operation}, bertipe \textit{string} akan digunakan sebagai pencatat operasi yang dilakukan untuk memperoleh hasil pada atribut \textit{result}. Atribut ini dibuat untuk memudahkan user dalam melihat kalkulasi perhitungan sebenarnya pada program dalam menguji kebenaran program.
+		
+		\item \texttt{result}, bertipe \textit{Double} merupakan nilai dari hasil perhitungan \textit{error rate} pada tipe yang spesifik.
+		
+		
+	\end{enumerate}
+
+	\item \texttt{ErrorType}\\
+	\texttt{ErrorType} merupakan \textit{enum} yang merepresentasikan tipe - tipe error pada kelas \texttt{ErrorRate}. \textit{Enum} pada kelas ini berisi:
+	\begin{itemize}
+		\item \texttt{ACCURACY}
+		\item \texttt{PRECISION}
+		\item \texttt{RECALL}
+		\item \texttt{F-MEASURE}
+	\end{itemize}	 
+
+	\item \texttt{PredictorInfo}\\
+	Kelas model ini akan merepresentasikan atribut prediktor pada model NBC yang ada. Atribut prediktor tersebut bisa memiliki tipe numerik atau diskrit. Kelas ini memiliki 4 atribut, diantaranya adalah:
+	\begin{enumerate}
+		\item \texttt{id}, bertipe \textit{integer} digunakan sebagai atribut unik untuk pengenal setiap instansiasi dari \textit{object} kelas ini.
+		
+		\item \texttt{predictorInfoDetail}, bertipe \textit{Set<PredictorInfoDetail>} akan berguna untuk mencatat seluruh kumpulan detil dari instansiasi kelas ini.
+
+		\item \texttt{predictorName}, bertipe \textit{String} merupakan nama dari atribut prediktor NBC pada kelas ini.
+		
+		\item \texttt{modelType}, bertipe \textit{ModelType} berguna untuk memberitahu tipe model atribut-NBC dari kelas ini.
+		
+				
+	\end{enumerate}
+
+	\item \texttt{PredictorInfoDetail}\\
+	Kelas model ini akan merepresentasikan detil dari atribut kelas pada kelas \texttt{PredictorInfo}. Kelas ini memiliki 9 atribut, diantaranya adalah:
+	\begin{enumerate}
+		\item \texttt{id}, bertipe \textit{integer} digunakan sebagai atribut unik untuk pengenal setiap instansiasi dari \textit{object} kelas ini.
+		
+		\item \texttt{classPriorName}, bertipe \textit{String} merepresentasikan nama dari kelas prior yang memiliki hubungan pada perhitungan probabilitas posterior dengan instansiasi dari kelas prediktor ini.
+		
+		\item \texttt{classPriorValue}, bertipe \textit{String} merepresentasikan nilai-diskrit dari atribut kelas prior yang memiliki hubungan pada perhitungan probabilitas posterior dengan instansiasi dari kelas prediktor ini.
+		
+		\item \texttt{count}, bertipe \textit{Integer} merupakan jumlah frekuensi kemunculan instansiasi dari kelas ini terhadap atribut \texttt{classPriorValue}.
+		
+		\item \texttt{mean}, bertipe \textit{Double} merepresentasikan rata - rata dari atribut numerik pada NBC.
+		
+		\item \texttt{sigma}, bertipe \textit{Double} merepresentasikan nilai sigma/standard-deviasi dari atribut numerik pada NBC.
+		
+		\item \texttt{predictorInfo}, bertipe \textit{String} merepresentasikan nama atribut prediktor pada NBC.
+		
+		\item \texttt{value}, bertipe \textit{String} merepresentasikan nilai-diskrit dari atribut prediktor pada model NBC.
+		
+		
+	\end{enumerate}
+
+	\item \texttt{BayesianModel}\\
+	Kelas model ini merupakan representasi dari model NBC yang telah dibuat sebelumnya. Kelas ini memiliki 5 atribut, diantaranya adalah:
+	\begin{enumerate}
+		\item \texttt{id}, bertipe \textit{integer} digunakan sebagai atribut unik untuk pengenal setiap instansiasi dari \textit{object} kelas ini.
+		
+		\item \texttt{className}, bertipe \textit{String} merepresentasikan nama dari kelas prior yang memiliki hubungan pada perhitungan probabilitas posterior dengan instansiasi dari kelas prediktor ini.
+
+		\item \texttt{classVal}, bertipe \textit{String} merepresentasikan nilai-diskrit dari atribut kelas prior yang memiliki hubungan pada perhitungan probabilitas posterior dengan instansiasi dari kelas prediktor ini.
+		
+		\item \texttt{count}, bertipe \textit{Integer} merupakan jumlah frekuensi kemunculan instansiasi dari kelas ini terhadap atribut \texttt{classVal}.
+		
+		\item \texttt{mean}, bertipe \textit{Double} merepresentasikan rata - rata dari atribut numerik pada NBC.
+		
+		\item \texttt{sigma}, bertipe \textit{Double} merepresentasikan nilai sigma/standard-deviasi dari atribut numerik pada NBC.
+		
+		\item \texttt{predictorValue}, bertipe \textit{String} merepresentasikan nilai-diskrit dari atribut prediktor pada model NBC.
+		
+		\item \texttt{predictorName}, bertipe \textit{String} merepresentasikan nama atribut prediktor pada NBC.
+		
+		\item \texttt{modelType}, bertipe \textit{ModelType} berguna untuk memberitahu tipe model atribut-NBC dari kelas ini.
+		
+		
+	\end{enumerate}
+
+	\item \texttt{ModelType}\\
+	\texttt{ModelType} merupakan \textit{enum} yang merepresentasikan tipe - tipe dari atribut prediktor pada kelas \texttt{PredictorInfo}. \textit{Enum} pada kelas ini berisi:
+	\begin{itemize}
+		\item \texttt{DISCRETE}
+		\item \texttt{NUMERIC}
+		\item \texttt{CLASS}
+	\end{itemize}
+
+\end{enumerate}
+
+
+
