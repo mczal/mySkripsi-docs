@@ -188,8 +188,8 @@ Misal kita memiliki dataset yang menunjukan seseorang akan bermain tenis atau ti
 			\end{tabular}
 		\end{table}
 		
-		Pada table frekuensi untuk atribut Outlook, dapat dilihat bahwa $P(X=Rainy|C=Yes) = 0$. Naive bayes classifier tidak dapat mengatasi frekuensi yang nilainya 0. Karena dapat menyebabkan seluruh perhitungan menjadi 0(karena berapapun bilangannya, jika dikalikan dengan 0 akan selalu menghasilkan nilai 0), sehingga menjadi tidak relevan. Pendekatan yang perlu digunakan untuk mengatasi hal tersebut adalah dengan menggunakan metode Laplacian Correction (->Pustaka.Bib). Pada metode tersebut, dikatakan bahwa kita perlu menambah nilai 1 kepada seluruh nilai pada table frekuensi untuk mengatasi masalah \textit{zero-frequency problems}. Asumsikan training database (D) itu sangat besar, dimana menambahkan frekuensi sebanyak 1 ke setiap jumlah perhitungan yang kita perlukan tidak akan memberikan pengaruh yang besar terhadap nilai kemungkinan akhir (Laplacian correction / Laplace estimator) \cite{PeughMissing:2004}. Perubahan nilai atribut dapat dilihat pada table 3. \\
-		
+		Pada table frekuensi untuk atribut Outlook, dapat dilihat bahwa $P(X=Rainy|C=Yes) = 0$. Naive bayes classifier tidak dapat mengatasi frekuensi yang nilainya 0. Karena dapat menyebabkan seluruh perhitungan menjadi 0(karena berapapun bilangannya, jika dikalikan dengan 0 akan selalu menghasilkan nilai 0), sehingga menjadi tidak relevan. Berdasarkan pada~\ref{subsec:Zero-Frequency Problem}, perubahan nilai atribut dapat dilihat pada table 3. \\ 
+
 		\begin{table}[ht]
 			\centering
 			\caption{Table frekuensi atribut Outlook}
@@ -278,8 +278,6 @@ Misal kita memiliki dataset yang menunjukan seseorang akan bermain tenis atau ti
 			f(x|play=no) = \dfrac{1}{\sqrt{2\pi(9.6)}}e^{-\dfrac{(x-71)^2}{2(9.6)^2}} 
 		\end{equation}
 		
-		\textit{Cara ini dapat diberlakukan juga pada atribut yang bertipe kontinu.}
-		
 		Setelah semua model dari naive bayes classifier telah jadi, maka klasifikasi sudah dapat dilakukan dengan model diatas.
 
 \subsubsection{Klasifikasi Menggunakan Model NBC}
@@ -306,7 +304,7 @@ $( C_{MAP} = \underset{c \in C}{ argmax } P(c|d) = \underset{c \in C}{ argmax } 
 		\begin{equation}
 			P(Humidity=50|Yes) 
 			= \dfrac{1}{\sqrt{2\pi(3.5)}}e^{-\dfrac{(\textbf{50}-82.5)^2}{2(3.5)^2}}
-			= 4.031
+			= 4.031*10^{-20}
 		\end{equation}
 	
 	\paragraph{Untuk dataset X dengan $P=No$:}
@@ -326,22 +324,22 @@ $( C_{MAP} = \underset{c \in C}{ argmax } P(c|d) = \underset{c \in C}{ argmax } 
 	Untuk kelas $Play=Yes$ \\
 	$P(Play=Yes|X) \\
 	= P(Outlook=Sunny|Play=Yes)*P(Humidity=50|Play=Yes)*P(Yes) \\
-	= 0.75 * 4.031 * 4/9 \\
-	= 1.343$ \\ \\
+	= 0.75 * 4.031*10^{-20} * 4/9 \\
+	= 1.343*10^{-20}$ \\ \\
 	Untuk kelas $Play=No$ \\
 	$P(Play=No|X) \\
 	= P(Outlook=Sunny|Play=No)*P(Humidity=50|Play=No)*P(No) \\
 	= 0.4 * 0.011 * 5/9 \\
 	= 0.002$ \\ \\
 	Setelah itu, lakukan normalisasi terhadap nilai - nilai berikut: \\
-	$P(Play=Yes|X) = 1.343 / (1.343+0.002) \\
-	= 0.998 (99.8\%)$ \\
-	$P(Play=No|X) = 0.002 / (1.343+0.002) \\
-	= 0.002 (0.2\%)$ \\
+	$P(Play=Yes|X) = 1.343*10^{-20} / (1.343*10^{-20} + 0.002) \\
+	= 6.715*10^{-18}$ \\
+	$P(Play=No|X) = 0.002 / ((1.343*10^{-20}) + 0.002) \\
+	= 1 (100\%)$ \\
 	
-	Karena, $P(Play=Yes|X) > P(Play=No|X)$, maka hasil klasifikasi untuk \textit{dataset X} ialah kelas $Play=Yes$.
+	Karena, $P(Play=Yes|X) < P(Play=No|X)$, maka hasil klasifikasi untuk \textit{dataset X} ialah kelas $Play=No$.
 	
-	\paragraph{Untuk dataset Y dengan $P=Yes$:}
+	\paragraph{Untuk dataset Y dengan $P=Yes$}
 	Menghitung peluang untuk atribut $Outlook=Sunny$ dengan $P=Yes$
 	\begin{equation}
 			P(Outlook=Sunny|Yes) = 3/4 
@@ -433,8 +431,8 @@ Hasil pembuatan model klasifikasi NBC yang dilakukan oleh program dapat dilihat 
 \begin{lstlisting}
 Play,No,3.0|CLASS	
 Play,Yes,2.0|CLASS	
-Humidity,Play,No	;71.0|7.874007874011811|NUMERIC
-Humidity,Play,Yes	;82.5|2.5|NUMERIC
+Humidity,Play,No	;71.0|9.643650760992955|NUMERIC
+Humidity,Play,Yes	;82.5|3.5355339059327378|NUMERIC
 Outlook,Rainy,Play,No,2.0|DISCRETE	
 Outlook,Sunny,Play,No,1.0|DISCRETE	
 Outlook,Sunny,Play,Yes,2.0|DISCRETE
@@ -461,11 +459,13 @@ Pada bagian ini, akan dilakukan 2 kali pengujian klasifikasi, yaitu (1) dengan m
 	|     | no  | yes |
 	-------------------
 	| no  | 0   | 0   |
-	| yes | 0   | 2   |
+	| yes | 1   | 1   |
 	-------------------
 	####
 	\end{lstlisting}
-	Dapat dilihat bahwa, hasil klasifikasi menggunakan program berbasis \textit{MapReduce} pada modul \textit{testing} memiliki hasil yang sama dengan hasil klasifikasi kelas \texttt{Play=Yes}.
+	Hasil pada program berbasis \textit{MapReduce} dapat dilihat pada hasil matrix \textit{confusion} diatas. Pada matrix \textit{confusion} 2 dimensi berikut, dimensi pertama (mendatar) akan menyatakan nilai sebenarnya(\textit{actual}) dari data asli-nya (di-input oleh user), dan dimensi kedua (menurun) akan menyatakan nilai hasil dari prediksi menggunakan model NBC yang sudah dibuat.
+	
+	Pada matrix tersebut terlihat bahwa terdapat 1 record yang menghasilkan kelas \texttt{Play=Yes} dan 1 record yang menghasilkan kelas \texttt{Play=No}.
 	
 	\item{Klasifikasi dengan perangkat lunak berbasis \textit{non-MapReduce}}\\
 	Model pada NBC akan di-\textit{import} ke dalam program yang dibuat dengan melakukan pembaharuan model pada antarmuka \textit{Renew Model Manager}. Program akan melakukan pembacaan terhadap model NBC dan mendeteksi dari model NBC yang diperoleh sebelumnya terdapat \textit{zero-frequency problem} dan mengatasinya dengan menggunakan metode \textit{laplacian correction}, dan hasilnya adalah seperti berikut:
@@ -477,7 +477,7 @@ Pada bagian ini, akan dilakukan 2 kali pengujian klasifikasi, yaitu (1) dengan m
 	\end{figure}
 Dapat dilihat pada Gambar~\ref{fig:Import Model NBC - Pengujian} bahwa pada model yang dihasilkan sebelumnya kita tidak memiliki frekuensi kemunculan untuk prediktor \texttt{outlook=rainy} dengan kelas \texttt{play=yes}, tetapi setelah dilakukan import model ke dalam program, program telah menangani \textit{zero-frequency problem} dengan baik, dengan menambahkan frekuensi sebanyak 1 untuk tiap model.\\
 
-Untuk data input klasifikasi \texttt{Humidity=50} dan \texttt{Outlook=Sunny}, diperoleh hasil klasifikasi yang sama dengan perhitungan manual, yaitu kelas \texttt{Play=Yes}, dengan presentase dominasi yang berbeda sebesar \texttt{100\%}.
+Untuk data input klasifikasi \texttt{Humidity=50} dan \texttt{Outlook=Sunny}, diperoleh hasil klasifikasi yang sama dengan perhitungan manual, yaitu kelas \texttt{Play=No}, dengan presentase dominasi yang juga sama, yaitu sebesar \texttt{100\%}.
 \begin{figure}[H]
 	\centering
 	\includegraphics[scale=0.5]{Pengujian/result_classify_1}
@@ -485,7 +485,7 @@ Untuk data input klasifikasi \texttt{Humidity=50} dan \texttt{Outlook=Sunny}, di
 	\label{fig:Hasil Klasifikasi Dataset-1}
 \end{figure}
 
-Untuk data input klasifikasi \texttt{Humidity=90} dan \texttt{Outlook=Sunny}, diperoleh hasil klasifikasi yang sama dengan perhitungan manual, yaitu kelas \texttt{Play=Yes}, dengan presentase dominasi yang berbeda sebesar \texttt{63.94\%}.
+Untuk data input klasifikasi \texttt{Humidity=90} dan \texttt{Outlook=Sunny}, diperoleh hasil klasifikasi yang sama dengan perhitungan manual, yaitu kelas \texttt{Play=Yes}, dengan presentase dominasi yang berbeda sebesar \texttt{64.67\%}.
 \begin{figure}[H]
 	\centering
 	\includegraphics[scale=0.5]{Pengujian/result_classify_2}
@@ -497,7 +497,7 @@ Untuk data input klasifikasi \texttt{Humidity=90} dan \texttt{Outlook=Sunny}, di
 
 \subsection{Kesimpulan Pengujian Kebenaran}
 
-Pada hasil yang pengujian yang telah dilakukan, dapat dibuktikan bahwa hasil perhitungan dengan menggunakan program dan manual memiliki hasil yang sama. Hanya saja angka presentase dominasi hasil yang dimiliki oleh program sedikit berbeda dengan angka presentase dominasi pada perhitungan manual. Untuk dataset pertama, pada perhitungan manual diperoleh hasil kelas \texttt{Play=Yes} dengan tingkat presentase dominasi sebesar \texttt{99.8\%}, sedangkan jika menggunakan program tingkat presentase dominasi-nya sebesar \texttt{100\%}. Untuk dataset pertama, pada perhitungan manual diperoleh hasil kelas \texttt{Play=Yes} dengan tingkat presentase dominasi sebesar \texttt{64\%}, sedangkan jika menggunakan program tingkat presentase dominasi-nya sebesar \texttt{63.94\%}. Perbedaan yang sangat kecil, yang berkisar diantara \texttt{0.02\% - 0.06\%} diperkirakan timbul karena pembulatan nilai desimal yang berbeda.
+Pada hasil yang pengujian yang telah dilakukan, dapat dibuktikan bahwa hasil perhitungan dengan menggunakan program dan manual memiliki hasil yang sama. Hanya saja angka presentase dominasi hasil yang dimiliki oleh program sedikit berbeda dengan angka presentase dominasi pada perhitungan manual. Untuk dataset pertama, pada perhitungan manual dan menggunakan program diperoleh hasil kelas yang sama yaitu \texttt{Play=Yes} dengan tingkat presentase dominasi juga sama sebesar \texttt{100\%}. Untuk dataset pertama, pada perhitungan manual diperoleh hasil kelas \texttt{Play=Yes} dengan tingkat presentase dominasi sebesar \texttt{64\%}, sedangkan jika menggunakan program tingkat presentase dominasi-nya sebesar \texttt{64.67\%}. Perbedaan yang sangat kecil, yang berkisar diantara \texttt{0.6\%} atau \texttt{0.006} diperkirakan timbul karena pembulatan nilai desimal yang berbeda.
 
 \section{Eksperimen}
 

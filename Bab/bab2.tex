@@ -357,42 +357,81 @@ Reducer berfungsi untuk mengurangi data yang tidak diperlukan (misal : data yang
 \end{enumerate}
 
 		
---------------------------------------------------------------------------------------------------
+\section{Teorema Bayes \cite{garg2013design}}
+	
+	Teorema Bayes adalah salah satu teorema dalam statistika untuk menghitung peluang suatu kejadian dari beberapa kejadian lainnya. Teorema bayes merupakan salah satu istilah dalam teori probabilitas yang berisi mengenai perhitungan probabilitas yang memiliki syarat tertentu (\textit{certain conditional probability}). Probabilitas bersyarat (\textit{conditional probabilities}) merupakan suatu probabilitas terhadap 1 kejadian tertentu yang dipengaruhi oleh probabilitas kejadian lain. Istilah yang umum digunakan pada teorema bayes adalah probabilitas \textit{prior} dan probabilitasi \textit{posterior}. Probabilitas prior dari suatu kejadian(atau hipotesa) merupakan probablitas orisinil yang didapatkan sebelum dipengaruhi oleh probabilitas lain. Sedangkan probabilitas posterior merupakan probabilitas suatu kejadian yang sudah dipengaruhi oleh probabilitas dari kejadian lain.
+	
+	Teorema bayes dapat ditulis sebagai:
+	
+\begin{equation} \label{eq:1}
+P(A|B) = \dfrac{P(B|A)P(A)}{P(B)}
+\end{equation}
+Dimana,
+P(A) adalah probabilitas prior dari A
+P(B) adalah probabilitas prior dari B
+P(A|B) adalah probabilitas posterior dari A jika diberikan B
+P(B|A) adalah probabilitas posterior dari B jika diberikan A
 
 \section{\textit{Naive Bayes Classifier}}
 	
-	 Naive Bayes merupakan salah satu metode mesin learning yang digunakan pada teknik data mining menggunakan metode perhitungan peluang. Konsep dasar yang digunakan oleh Naive bayes adalah Teorema Bayes, yaitu teorema dalam statistika untuk menghitung peluang suatu kejadian dari beberapa kejadian lainnya. Bayes Optimal Classifier menghitung peluang dari satu kelas dari masing-masing kelompok atribut yang ada dan menentukan kelas mana yang paling optimal. Algoritma Naive Bayes melakukan klasifikasi berdasarkan pada teorema Bayes' seperti berikut : 
+	 Naive Bayes merupakan salah satu metode mesin learning yang digunakan pada teknik data mining menggunakan metode perhitungan peluang. Konsep dasar yang digunakan oleh Naive bayes adalah Teorema Bayes dengan asumsi independensi\footnote{Independensi adalah keadaan bebas dari pengaruh, tidak dikendalikan oleh pihak lain.} yang kuat. \textit{Naive Bayes Classifier} pertama kali dijelaskan pada \cite{ro1973pattern} pada tahun 1973 dan setelah itu pada \cite{langley1992analysis} pada tahun 1992. Struktur dari \textit{naive bayes classifier} pertama kali digambarkan seperti pada gambar~\ref{fig:Struktur Naive Bayesian Network} yang menunjukkan asumsi independensi yang kuat antara setiap atribut(\textit{features}) pada suatu contoh data.
+	 
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.6]{naive_bayes_classifier_structure}
+\caption[Struktur \textit{Naive Bayesian Network}]{Struktur \textit{Naive Bayesian Network}}
+\label{fig:Struktur Naive Bayesian Network}
+\end{figure}
 
+\subsection{Algoritma}
+
+	 \textit{Bayes Optimal Classifier} menghitung peluang dari satu kelas dari masing-masing kelompok atribut yang ada dan menentukan kelas mana yang paling optimal. Teori bayes memiliki asumsi bahwa probabilitas P(A|B) atau peluang kejadian A bila B terjadi tidak saling berhubungan dengan setiap kemungkinan dari nilai B yang diberikan (\textit{naive}). Hal ini disebut sebagai \textit{class conditional independence} . Sehingga memudahkan perhitungan yang dilakukan pada saat klasifikasi. Kemungkinan terjadinya kejadian A bila diberikan kejadian B dapat dihitung dengan menggunakan rumus diatas, yaitu mengalikan peluang dari kejadian B jika diberikan kejadian A dikalikan dengan peluang seluruh kejadian A dan dibagi dengan peluang dari seluruh kejadian B.
+
+	Seperti yang ditulis pada \cite{rish2001empirical}, \textit{naive bayes classifier} dapat didefinisikan sebagai berikut. Variabel - variabel dilambangkan dengan menggunakan huruf kapital seperti $X_i$, dan nilai-nya akan dilambangkan dengan huruf kecil seperti $x_i$, dan kumpulan dari variabel akan dilambangkan dengan huruf tebal seperti \textbf{$X$}.
+
+Berdasarkan persamaan pada~\ref{eq:1}, untuk dataset $X$ dan sebuah kelas $C$, didapatkan persamaan seperti $P(C=c|X=x) = \dfrac{P(X=x|C=c)P(C=c)}{P(X=x)}$. Karena, $P(X=x)$ adalah sama untuk setiap kelas, maka bisa diabaikan. Oleh karena itu, maka fungsi dikriminan dapat ditulis menjadi $f^x = P(X=x|C=c)$, dimana $P(X=x|C=c)$ disebut sebagai CPD (\textit{class-conditional probability distribution}).
+
+Untuk menghitung nilai $P(C=c|X)$ (\textit{X merupakan dataset yang digunakan sebagai predictor}) dengan mengasumsikan bahwa masing - masing atribut tidak saling bergantung dengan atribut lainnya \textit{class conditional independence}, maka didapat : 
 \begin{equation}
-P(A|B) = \dfrac{P(B|A)P(A)}{P(B)}
-\end{equation}
-
-	Teori bayes memiliki asumsi bahwa probabilitas P(A|B) atau peluang kejadian A bila B terjadi tidak saling berhubungan dengan setiap kemungkinan dari nilai B yang diberikan (\textit{naive}). Hal ini disebut sebagai \textit{class conditional independence} . Sehingga memudahkan perhitungan yang dilakukan pada saat klasifikasi. Kemungkinan terjadinya kejadian A bila diberikan kejadian B dapat dihitung dengan menggunakan rumus diatas, yaitu mengalikan peluang dari kejadian B jika diberikan kejadian A dikalikan dengan peluang seluruh kejadian A dan dibagi dengan peluang dari seluruh kejadian B.\\
-
-Berdasarkan teori Bayes, untuk dataset $d$ dan sebuah kelas $c$, didapatkan : \\
-
-\begin{equation}
-P(c|d) = \dfrac{P(d|c)P(c)}{P(d)}
-\end{equation}
-
-\begin{itemize}
-	\item $P(c|d)$ merupakan peluang dari kemunculan suatu kelas/kelompok tertentu jika diberikan suatu dataset $d$
-	\item $P(d|c)$ merupakan peluang suatu dataset tertentu jika diberikan suatu kelas $c$
-	\item $P(c)$ merupakan probabilitas dari kelas
-	\item $P(d)$ merupakan probabilitas dari dokumen/dataset
-\end{itemize}
-
-Untuk menghitung nilai $P(c|X)$ (\textit{X merupakan dataset yang digunakan sebagai predictor}) dengan mengasumsikan bahwa masing - masing atribut tidak saling bergantung dengan atribut lainnya \textit{class conditional independence}, maka didapat : 
-\begin{equation}
-	P(c|X) = P(x_1|c) P(x_2|c) ... P(x_n|c) P(c)
+	P(C=c|X) = P(x_1|c) P(x_2|c) ... P(x_n|c) P(C=c)
 \end{equation}
 
 Sebuah dataset dapat ditentukan klasifikasi-nya dengan algoritma naive bayes setelah dihitung semua kemungkinan dari nilai $P(c_k|X)$ dan untuk nilai keluaran yang paling besar akan dipilih menjadi kelas yang paling optimal dari dataset tersebut.
 
 \textit{MAP Maximum A Posteriori}
 		\begin{equation}
-			C_{MAP} = \underset{c \in C}{ argmax } P(c|d) = \underset{c \in C}{ argmax } \dfrac{P(d|c) P(c)}{P(d)} = \underset{c \in C}{ argmax } P(d|c) P(c)
+			C_{MAP} = \underset{c \in C}{ argmax } P(c|X) = \underset{c \in C}{ argmax } P(X|c) P(c)
 		\end{equation} \\
+
+%\begin{itemize}
+%	\item $P(c|d)$ merupakan peluang dari kemunculan suatu kelas/kelompok tertentu jika diberikan suatu dataset $d$
+%	\item $P(d|c)$ merupakan peluang suatu dataset tertentu jika diberikan suatu kelas $c$
+%	\item $P(c)$ merupakan probabilitas dari kelas
+%	\item $P(d)$ merupakan probabilitas dari dokumen/dataset
+%\end{itemize}
+
+\subsection{\textit{Zero-Frequency Problem} \cite{PeughMissing:2004}}
+\label{subsec:Zero-Frequency Problem}
+
+Ketika ada suatu nilai dari atribut prediktor yang tidak memiliki frekuensi kemunculan sama sekali terhadap setiap kelas (frekuensi=0), maka nilai 1 akan ditambahkan kepada setiap kombinasi dari frekuensi dari atribut terhadap tiap kelas. Pendekatan yang digunakan untuk dalam mengatasi hal ini adalah dengan menggunakan metode \textit{Laplacian Correction}. Pada metode tersebut, dikatakan bahwa kita perlu menambah nilai 1 kepada seluruh nilai pada table frekuensi untuk mengatasi masalah \textit{zero-frequency problems}. Asumsikan training database (D) itu sangat besar, dimana menambahkan frekuensi sebanyak 1 ke setiap jumlah perhitungan yang kita perlukan tidak akan memberikan pengaruh yang besar terhadap nilai kemungkinan akhir (Laplacian correction / Laplace estimator).
+
+\subsection{Prediktor Numerik \cite{garg2013design}}
+
+Ketika suatu atribut prediktor memiliki data bersifat kontinu atau numerik, terdapat 2 cara untuk mengatasi hal tersebut, diantaranya adalah:
+\begin{enumerate}
+	\item Melakukan transformasi atribut numerik dengan cara memecah - mecah nilai distribusi dari seluruh nilai dalam atribut tersebut ke dalam kategori - kategori terpisah. Cara tersebut disebut sebagai \textit{binning}. Cara ini perlu dilakukan sebelum membuat tabel frekuensi.
+	
+	\item Menggunakan disribusi dari nilai - nilai dalam atribut numerik tersebut untuk menebak frekuensi-nya. Salah satu cara yang umum digunakan adalah dengan menggunakan fungsi \textit{normal distribution} untuk nilai numerik, yang didefinisikan dengan 2 parameter: \textit{mean} dan \textit{standard deviation}.
+	\begin{equation}
+	P(X=x|C=c) = \dfrac{1}{\sqrt{2\pi\sigma}}\epsilon^{-\dfrac{x-\mu}{2\sigma^2}}
+	\end{equation}
+	Dimana,\\
+	\textit{Mean} $= \mu = \dfrac{1}{n}\sum^n_{j=1}x_j$\\
+	\textit{Standard Deviation} $= \sigma = [\dfrac{1}{n-1}\sum^n_{j=1}(x_j-n)^2]^{0.5}$\\
+	\textit{n} $=$ jumlah kemunculan atribut terhadap kelas
+	
+	
+\end{enumerate}	
 	
 \section{Framework Yang Digunakan Dalam Membangun Perangkat Lunak}
 
@@ -407,7 +446,7 @@ Sebuah dataset dapat ditentukan klasifikasi-nya dengan algoritma naive bayes set
 \end{enumerate}
 Spring menyediakan model pemrograman terbuka yang komprehensif, kohesif, mudah dipahami serta memiliki \textit{library} yang lengkap untuk melakukan integrasi ke \textit{service - service} lain seperti \textit{Hadoop-client Library}, \textit{Mysql-connector Library}, dsb. Inti dari framework ini lebih kepada untuk membangun aplikasi web, mengatur manajemen transaksi, akses data, messaging, pengujian dsb. Kita bisa mengembangkan aplikasi web berbasis MVC dan \textit{Web-Service} framework \textit{REST-ful}\footnote{REST merupakan \textit{standard} dalam arsitektur web yang menggunakan Protocol HTTP untuk pertukaran data.  Konsep REST menekankan bahwa komunikasi yang terjadi antara \textit{client} dan \textit{server} hanya sebatas melakukan \textit{request} dan memberikan \textit{response} saja.} (\textit{Representational State Transfer}).
 
-\textit{Design pattern} yang digunakan pada perangkat lunak yang dibuat akan menggunakan konsep MVC (\textit{model view controler}). Spring memiliki fitur khusus untuk membuat web berbasiskan \textit{design pattern} MVC. Berikut merupakan ilustrasi\footnote{Gambar diambil dari \url{https://docs.spring.io/spring/docs/current/spring-framework-reference/html/images/mvc.png.pagespeed.ce.tmIzOTr1gg.png}} dari \textit{request workflow} pada \textit{Spring Web} MVC.
+\textit{Design pattern} yang digunakan pada perangkat lunak yang dibuat akan menggunakan konsep MVC (\textit{model view controler}). Spring memiliki fitur khusus untuk membuat web berbasiskan \textit{design pattern} MVC. Berikut merupakan ilustrasi(diambil dari \url{https://docs.spring.io/spring/docs/current/spring-framework-reference/html/images/mvc.png.pagespeed.ce.tmIzOTr1gg.png}) dari \textit{request workflow} pada \textit{Spring Web} MVC.
 \begin{figure}[h]
 	\centering
 	\includegraphics[scale=0.5]{GambarIO/mvc_springdocs}
@@ -429,7 +468,7 @@ Spring menyediakan model pemrograman terbuka yang komprehensif, kohesif, mudah d
 \subsection{\textit{Maven} \cite{MengenalMaven2015EGunawan}}
 Apache Maven adalah software build tools / project management yang dibangun dibawah \textit{Apache Software Foundation} yang digunakan untuk melakukan proses building project. Jadi, ketika project akan dibuild menggunakan Maven, project tersebut bisa kita buka menggunakan IDE lain.
 
-Selain itu, keuntungan menggunakan maven adalah mendukung dependency management. Artinya, ketika kita membutuhkan suatu library ke dalam project, kita tidak perlu mendownloadnya manual, kemudian dimasukkan ke dalam project. Kita tinggal memasukkan  ependency-nya, dan maven akan menanganinya.  Dengan begini, ukuran project menjadi lebih kecil karena tidak memasukkan library ke dalam project.
+Selain itu, keuntungan menggunakan maven adalah mendukung dependency management. Artinya, ketika kita membutuhkan suatu library ke dalam project, kita tidak perlu men-\textit{download}-nya secara manual yang kemudian dimasukkan ke dalam project. Tetapi, tinggal memasukkan \textit{dependency} untuk library yang dibutuhkan tersebut dan maven akan menangani proses \textit{download} library dan kompilasi project menggunakan \textit{library} tersebut.  Dengan begitu, ukuran project menjadi lebih kecil karena tidak memasukkan library ke dalam project. \textit{Maven} menyimpan seluruh library yang pernah kita gunakan pada direktori \texttt{.m2} milik user.
 
 Untuk mendownload Apache Maven bisa langsung ke websitenya di \url{http://maven.apache.org/}. Versi terbaru dari Apache Maven adalah 3.5.0.
 
