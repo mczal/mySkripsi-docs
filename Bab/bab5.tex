@@ -16,14 +16,14 @@ Sebuah komputer dijadikan \textit{master} dan sisanya dijadikan sebagai \textit{
 \section{Implementasi Antarmuka}
 \label{sec:impl_antarmuka}
 
-Antarmuka yang dibangun pada keseluruhan perangkat lunak ada 2 jenis. (1) Antarmuka perangkat lunak jenis pertama diperuntukkan untuk modul yang berbasis \textit{MapReduce}, dirancang dengan antarmuka \textit{shell}. (2) Antarmuka perangkat lunak jenis kedua diperuntukkan untuk modul yang tidak berbasiskan \textit{MapReduce}, seperti modul kelola input dan klasifikasi. Antarmuka pada jenis kedua ini akan dirancang menggunakan antarmuka berbasis web HTML.
+Antarmuka yang dibangun pada keseluruhan perangkat lunak ada 2 jenis. (1) Antarmuka perangkat lunak jenis pertama diperuntukkan untuk modul yang berbasis \textit{MapReduce}, dirancang dengan antarmuka \textit{shell}. (2) Antarmuka perangkat lunak jenis kedua diperuntukkan untuk modul yang tidak berbasiskan \textit{MapReduce}, seperti modul kelola input dan klasifikasi. Antarmuka pada jenis kedua ini dirancang menggunakan antarmuka berbasis web HTML.
 
 \subsection{\textit{Shell}}
-Perangkat lunak pada modul berbasis \textit{MapReduce} yang sudah di-\textit{compile} dengan java dalam bentuk jar akan dijalankan melalui \textit{shell} pada \textit{terminal} dengan perintah:
+Perangkat lunak pada modul berbasis \textit{MapReduce} yang sudah di-\textit{compile} dengan java dalam bentuk jar dijalankan melalui \textit{shell} pada \textit{terminal} dengan perintah:
 \begin{lstlisting}
 :~$ hadoop jar MapReduce.jar /bayes/<model-directory>
 \end{lstlisting}
-Perintah ini akan menerima 1 buah parameter yang akan menentukan model dari direktori yang akan digunakan untuk proses \textit{MapReduce} yang akan dijalankan. Parameter tersebut memiliki \textit{namespace} yang perlu selalu diikutsertakan untuk menentukan model direktori pada saat menjalankan program, yaitu namespace \texttt{/bayes/}. Setelah \texttt{/bayes/}, kata berikutnya merupakan nama model direktori yang akan digunakan untuk menjalankan program. Misalnya, akan menjalankan program pada model bernama \texttt{car}, maka perintah yang perlu dijalankan adalah:
+Perintah ini menerima 1 buah parameter yang menentukan model dari direktori yang digunakan untuk proses \textit{MapReduce} yang dijalankan. Parameter tersebut memiliki \textit{namespace} yang perlu selalu diikutsertakan untuk menentukan model direktori pada saat menjalankan program, yaitu namespace \texttt{/bayes/}. Setelah \texttt{/bayes/}, kata berikutnya merupakan nama model direktori yang digunakan untuk menjalankan program. Misalnya, menjalankan program pada model bernama \texttt{car}, maka perintah yang perlu dijalankan adalah:
 \begin{lstlisting}
 :~$ hadoop jar MapReduce.jar /bayes/car
 \end{lstlisting}
@@ -32,7 +32,7 @@ Berikut ini merupakan contoh yang salah:
 :~$ hadoop jar MapReduce.jar /car
 \end{lstlisting}
 
-Untuk mengingatkan penggunaan program, perlu diingat kembali urutan yang perlu dilakukan untuk menjalankan keseluruhan perangkat lunak dengan benar pada \textit{modul specification} Figure~\ref{fig:Modul Specification}. 
+Untuk mengingatkan penggunaan program, perlu diingat kembali urutan yang perlu dilakukan untuk menjalankan keseluruhan perangkat lunak dengan benar pada \textit{modul specification} Gambar~\ref{fig:Modul Specification}. 
 
 Di dalam model direktori yang dijadikan parameter saat menjalankan program menggunakan \textit{shell}, sudah harus memiliki beberapa direktori yang diproses pada modul kelola input, direktori serta isinya. Berikut merupakan contoh isi dalam model direktori minimal yang dibutuhkan untuk menjalankan perangkat lunak berbasis \textit{MapReduce} dengan menjalankan perintah untuk melihat seluruh isi direktori dan file secara rekursif:
 \begin{lstlisting}
@@ -47,7 +47,7 @@ drwxrwxr-x   - hduser supergroup          0 2017-04-19 22:17 /bayes/car/testing/
 \end{lstlisting}
 
 \subsection{Berbasis Web HTML}
-Antarmuka pada modul klasifikasi dan modul kelola input dibuat dengan menggunakan antarmuka berbasis web yaitu HTML. Seperti yang telah dijelaskan pada bagian~\ref{sec:Perancangan Antarmuka}, pada modul yang tidak berbasiskan \textit{MapReduce} ini, memiliki 6 buah antarmuka dan 1 layout untuk menu yang akan disimpan disamping kiri dari keseluruhan tampilan antarmuka.
+Antarmuka pada modul klasifikasi dan modul kelola input dibuat dengan menggunakan antarmuka berbasis web yaitu HTML. Seperti yang telah dijelaskan pada bagian~\ref{sec:Perancangan Antarmuka}, pada modul yang tidak berbasiskan \textit{MapReduce} ini, memiliki 6 buah antarmuka dan 1 layout untuk menu yang disimpan disamping kiri dari keseluruhan tampilan antarmuka.
 
 \subsubsection{Layout Menu}
 Gambar~\ref{fig:Implementasi Antarmuka Layout Menu} menunjukkan antarmuka untuk tampilan layout menu yang ada pada bagian kiri seluruh tampilan antarmuka yang dibuat. Antarmuka ini dibuat untuk memudahkan user dalam melakukan perpindahan halaman antarmuka sesuai yang diinginkan oleh user.
@@ -73,7 +73,7 @@ Terdapat keterangan dari nama kolom pada bagian \textit{Bayesian Model} yang per
 
 
 \subsubsection{Input Set Manager}
-Gambar~\ref{fig:Implementasi Antarmuka Input Set Manager} menunjukkan antarmuka untuk melakukan pengelolaan file input untuk ditransfer ke dalam HDFS yang nantinya akan menjadi file untuk data latih dan data testing algoritma klasifikasi \textit{naive bayes}. Seperti yang sudah dijelaskan di bagian rancangan antarmuka \textit{Input Set Manager} pada~\ref{subsec:Input Set Manager}, bahwa user dapat memilih model direktori; user dapat memilih file input dan file info; user dapat memilih presentase penggunaan file input untuk dijadikan data \textit{training} dan data \textit{testing}; user dapat memilih penggunaan dan jenis setiap atribut pada file yang di-input-kan oleh user.
+Gambar~\ref{fig:Implementasi Antarmuka Input Set Manager} menunjukkan antarmuka untuk melakukan pengelolaan file input untuk ditransfer ke dalam HDFS yang nantinya menjadi file untuk data latih dan data testing algoritma klasifikasi \textit{naive bayes}. Seperti yang sudah dijelaskan di bagian rancangan antarmuka \textit{Input Set Manager} pada~\ref{subsec:Input Set Manager}, bahwa user dapat memilih model direktori; user dapat memilih file input dan file info; user dapat memilih presentase penggunaan file input untuk dijadikan data \textit{training} dan data \textit{testing}; user dapat memilih penggunaan dan jenis setiap atribut pada file yang di-input-kan oleh user.
 
 \begin{figure}[H]
 	\centering
@@ -105,7 +105,7 @@ Gambar~\ref{fig:Implementasi Antarmuka Testing Manager} menunjukkan antarmuka un
 \end{figure}
 
 \subsubsection{Classification Manager}
-Gambar~\ref{fig:Implementasi Antarmuka Classification Manager} menunjukkan antarmuka untuk melakukan klasifikasi pada model NBC(\textit{single case prediction}). Seperti yang sudah dijelaskan di bagian perancangan antarmuka \textit{Classification Manager} pada bagian~\ref{subsec:Classification Manager}, user dapat melakukan input manual untuk 1 kasus baru dengan mengisi nilai atribut prediktor yang dibutuhkan dan atribut kelas (\textit{optional}) yang nantinya akan diumpankan ke dalam model NBC untuk dilakukan klasifikasi.
+Gambar~\ref{fig:Implementasi Antarmuka Classification Manager} menunjukkan antarmuka untuk melakukan klasifikasi pada model NBC(\textit{single case prediction}). Seperti yang sudah dijelaskan di bagian perancangan antarmuka \textit{Classification Manager} pada bagian~\ref{subsec:Classification Manager}, user dapat melakukan input manual untuk 1 kasus baru dengan mengisi nilai atribut prediktor yang dibutuhkan dan atribut kelas (\textit{optional}) yang nantinya diumpankan ke dalam model NBC untuk dilakukan klasifikasi.
 
 \begin{figure}[H]
 	\centering
@@ -135,15 +135,15 @@ Implementasi untuk setiap modul dari kelas-kelas dan method-method hasil dari an
 \end{enumerate}
 
 \section{Pengujian Kebenaran}
-Bagian ini akan menunjukkan pengujian kebenaran terhadap perangkat lunak yang dibangun dengan membandingkan perhitungan manual yang akan dilakukan pada bagian~\ref{subsec:Perhitungan Manual Dengan Data Studi Kasus} dengan perhitungan dengan menggunakan program pada bagian~\ref{subsec:Perhitungan Menggunakan Perangkat Lunak yang Dibangun Dengan Data Studi Kasus} dengan data yang sama. Data yang digunakan pada kedua perhitungan tersebut merupakan data yang sama. Data studi kasus diperoleh dengan cara mengambil dari situs \url{http://cse-wiki.unl.edu/wiki/images/e/e0/Golf_dataset.png} yang diambil pada pada 23 April 20117, dan telah dilakukan modifikasi sedikit terhadap data agar menjadi lebih simpel.
+Bagian ini menunjukkan pengujian kebenaran terhadap perangkat lunak yang dibangun dengan membandingkan perhitungan manual yang dilakukan pada bagian~\ref{subsec:Perhitungan Manual Dengan Data Studi Kasus} dengan perhitungan dengan menggunakan program pada bagian~\ref{subsec:Perhitungan Menggunakan Perangkat Lunak yang Dibangun Dengan Data Studi Kasus} dengan data yang sama. Data yang digunakan pada kedua perhitungan tersebut merupakan data yang sama. Data studi kasus diperoleh dengan cara mengambil dari situs \url{http://cse-wiki.unl.edu/wiki/images/e/e0/Golf_dataset.png} yang diambil pada pada 23 April 20117, dan telah dilakukan modifikasi sedikit terhadap data agar menjadi lebih simpel.
 
 \subsection{Perhitungan Manual Dengan Data Studi Kasus}
 \label{subsec:Perhitungan Manual Dengan Data Studi Kasus}
-Pada bagian ini akan dilakukan perhitungan manual dengan menggunakan data studi kasus yang menunjukkan seseorang akan bermain tenis atau tidak berdasarkan dari data kelembaban dari cuaca dan pemandangan yang terjadi.
+Pada bagian ini dilakukan perhitungan manual dengan menggunakan data studi kasus yang menunjukkan seseorang bermain tenis atau tidak berdasarkan dari data kelembaban dari cuaca dan pemandangan yang terjadi.
 
 \subsubsection{Pembuatan Model NBC}
 %\subsubsection{Tahapan Membuat Model Klasifikasi Dari Algoritma Naive Bayes}		
-Misal kita memiliki dataset yang menunjukan seseorang akan bermain tenis atau tidak berdasarkan dari data kelembaban dan pemandangan yang terjadi seperti pada Tabel~\ref{tab:dataset} berikut: 
+Misal kita memiliki dataset yang menunjukan seseorang bermain tenis atau tidak berdasarkan dari data kelembaban dan pemandangan yang terjadi seperti pada Tabel~\ref{tab:dataset} berikut: 
 		
 		\begin{table}[H]
 		\label{tab:dataset}
@@ -188,7 +188,7 @@ Misal kita memiliki dataset yang menunjukan seseorang akan bermain tenis atau ti
 			\end{tabular}
 		\end{table}
 		
-		Pada table frekuensi untuk atribut Outlook, dapat dilihat bahwa $P(X=Rainy|C=Yes) = 0$. Naive bayes classifier tidak dapat mengatasi frekuensi yang nilainya 0. Karena dapat menyebabkan seluruh perhitungan menjadi 0(karena berapapun bilangannya, jika dikalikan dengan 0 akan selalu menghasilkan nilai 0), sehingga menjadi tidak relevan. Berdasarkan pada~\ref{subsec:Zero-Frequency Problem}, perubahan nilai atribut dapat dilihat pada table 3. \\ 
+		Pada table frekuensi untuk atribut Outlook, dapat dilihat bahwa $P(X=Rainy|C=Yes) = 0$. Naive bayes classifier tidak dapat mengatasi frekuensi yang nilainya 0. Karena dapat menyebabkan seluruh perhitungan menjadi 0(karena berapapun bilangannya, jika dikalikan dengan 0 selalu menghasilkan nilai 0), sehingga menjadi tidak relevan. Berdasarkan pada~\ref{subsec:Zero-Frequency Problem}, perubahan nilai atribut dapat dilihat pada table 3. \\ 
 
 		\begin{table}[ht]
 			\centering
@@ -282,14 +282,14 @@ Misal kita memiliki dataset yang menunjukan seseorang akan bermain tenis atau ti
 
 \subsubsection{Klasifikasi Menggunakan Model NBC}
 %\subsection{Contoh perhitungan klasifikasi algoritma naive bayes}		
-		Dimisalkan kita memiliki 2 buah dataset yang akan diuji menggunakan model klasifikasi yang telah dibangun sebelumnya, seperti berikut :
+		Dimisalkan kita memiliki 2 buah dataset yang diuji menggunakan model klasifikasi yang telah dibangun sebelumnya, seperti berikut :
 		
 \begin{enumerate}
 	\item $X = {Humidity = 50, Outlook = Sunny}$
 	\item $Y = {Humidity = 90, Outlook = Sunny}$
 \end{enumerate}
 		
-Untuk dataset X dan Y, akan dicari peluang kelas yang paling tinggi. \\
+Untuk dataset X dan Y, dicari peluang kelas yang paling tinggi. \\
 		
 $( C_{MAP} = \underset{c \in C}{ argmax } P(c|d) = \underset{c \in C}{ argmax } \dfrac{P(d|c) P(c)}{P(d)} = \underset{c \in C}{ argmax } P(d|c) P(c) )$
 		
@@ -337,7 +337,7 @@ $( C_{MAP} = \underset{c \in C}{ argmax } P(c|d) = \underset{c \in C}{ argmax } 
 	$P(Play=No|X) = 0.002 / ((1.343*10^{-20}) + 0.002) \\
 	= 1 (100\%)$ \\
 	
-	Karena, $P(Play=Yes|X) < P(Play=No|X)$, maka hasil klasifikasi untuk \textit{dataset X} ialah kelas $Play=No$.
+	Karena, $P(Play=Yes|X) = 6.715*10^{-18} < P(Play=No|X) = 1 (100\%) $, maka hasil klasifikasi untuk \textit{dataset X} ialah kelas $Play=No$.
 	
 	\paragraph{Untuk dataset Y dengan $P=Yes$}
 	Menghitung peluang untuk atribut $Outlook=Sunny$ dengan $P=Yes$
@@ -386,13 +386,13 @@ $( C_{MAP} = \underset{c \in C}{ argmax } P(c|d) = \underset{c \in C}{ argmax } 
 	$P(Play=No|Y) = 0.004 / (0.007+0.004) \\
 	= 0.46 (46\%)$ \\
 	
-	Karena, $P(Play=Yes|Y) > P(Play=No|Y)$, maka hasil klasifikasi untuk \textit{dataset Y} ialah kelas $Play=Yes$.
+	Karena, $P(Play=Yes|Y) = 0.64 (64\%) > P(Play=No|Y) = 0.46 (46\%)$, maka hasil klasifikasi untuk \textit{dataset Y} ialah kelas $Play=Yes$.
 	
 
 \subsection{Perhitungan Menggunakan Perangkat Lunak yang Dibangun Dengan Data Studi Kasus}
 \label{subsec:Perhitungan Menggunakan Perangkat Lunak yang Dibangun Dengan Data Studi Kasus}
 
-Pada bagian ini akan dilakukan perhitungan manual dengan menggunakan data studi kasus yang menunjukkan seseorang akan bermain tenis atau tidak berdasarkan dari data kelembaban dari cuaca dan pemandangan yang terjadi.
+Pada bagian ini dilakukan perhitungan manual dengan menggunakan data studi kasus yang menunjukkan seseorang bermain tenis atau tidak berdasarkan dari data kelembaban dari cuaca dan pemandangan yang terjadi.
 
 \subsubsection{Pembuatan model NBC}
 \label{subsubsec:Pembuatan model naive bayes classifier}
@@ -438,13 +438,15 @@ Outlook,Sunny,Play,No,1.0|DISCRETE
 Outlook,Sunny,Play,Yes,2.0|DISCRETE
 \end{lstlisting}
 
-\subsubsection{Klasifikasi Menggunakan Model NBC}
-Setelah model NBC diperoleh dari hasil eksekusi program \textit{train naive bayes} berbasis \textit{MapReduce} pada bagian~\ref{subsubsec:Pembuatan model naive bayes classifier}, akan dilakukan klasifikasi dan testing pada model NBC tersebut.
+Untuk model NBC pada atribut diskrit dan kelas, model yang dihasilkan memiliki nilai yang berbeda dengan model yang dihasilkan pada perhitungan manual. Hal ini disebabkan oleh karena penanganan \textit{zero-frequency problem} pada perangkat lunak tidak ditangani pada saat pembuatan model, melainkan pada saat melakukan testing dan klasifikasi.
 
-Pada bagian ini, akan dilakukan 2 kali pengujian klasifikasi, yaitu (1) dengan menggunakan perangkat lunak berbasis \textit{MapReduce} pada modul \textit{Testing Naive Bayes} dan (2) dengan menggunakan perangkat lunak berbasis \textit{non-MapReduce} pada modul Klasifikasi.
+\subsubsection{Klasifikasi Menggunakan Model NBC}
+Setelah model NBC diperoleh dari hasil eksekusi program \textit{train naive bayes} berbasis \textit{MapReduce} pada bagian~\ref{subsubsec:Pembuatan model naive bayes classifier}, dilakukan klasifikasi dan testing pada model NBC tersebut.
+
+Pada bagian ini, dilakukan 2 kali pengujian klasifikasi, yaitu (1) dengan menggunakan perangkat lunak berbasis \textit{MapReduce} pada modul \textit{Testing Naive Bayes} dan (2) dengan menggunakan perangkat lunak berbasis \textit{non-MapReduce} pada modul Klasifikasi.
 \begin{enumerate}
 	\item{Klasifikasi dengan perangkat lunak berbasis \textit{MapReduce}}\\
-	Diasumsikan data \textit{testing} untuk pengujian model NBC yang sama dengan pada perhitungan manual sudah berada pada direktori \texttt{/bayes/weather/testing/input} dalam HDFS. Program testing akan dieksekusi dengan menjalankan perintah:
+	Diasumsikan data \textit{testing} untuk pengujian model NBC yang sama dengan pada perhitungan manual sudah berada pada direktori \texttt{/bayes/weather/testing/input} dalam HDFS. Program testing dieksekusi dengan menjalankan perintah:
 	\begin{lstlisting}
 	:~$ hadoop jar mapreduce-train.jar /bayes/weather
 	\end{lstlisting}
@@ -463,12 +465,12 @@ Pada bagian ini, akan dilakukan 2 kali pengujian klasifikasi, yaitu (1) dengan m
 	-------------------
 	####
 	\end{lstlisting}
-	Hasil pada program berbasis \textit{MapReduce} dapat dilihat pada hasil matrix \textit{confusion} diatas. Pada matrix \textit{confusion} 2 dimensi berikut, dimensi pertama (mendatar) akan menyatakan nilai sebenarnya(\textit{actual}) dari data asli-nya (di-input oleh user), dan dimensi kedua (menurun) akan menyatakan nilai hasil dari prediksi menggunakan model NBC yang sudah dibuat.
+	Hasil pada program berbasis \textit{MapReduce} dapat dilihat pada hasil matrix \textit{confusion} diatas. Pada matrix \textit{confusion} 2 dimensi berikut, dimensi pertama (mendatar) menyatakan nilai sebenarnya(\textit{actual}) dari data asli-nya (di-input oleh user), dan dimensi kedua (menurun) menyatakan nilai hasil dari prediksi menggunakan model NBC yang sudah dibuat.
 	
 	Pada matrix tersebut terlihat bahwa terdapat 1 record yang menghasilkan kelas \texttt{Play=Yes} dan 1 record yang menghasilkan kelas \texttt{Play=No}.
 	
 	\item{Klasifikasi dengan perangkat lunak berbasis \textit{non-MapReduce}}\\
-	Model pada NBC akan di-\textit{import} ke dalam program yang dibuat dengan melakukan pembaharuan model pada antarmuka \textit{Renew Model Manager}. Program akan melakukan pembacaan terhadap model NBC dan mendeteksi dari model NBC yang diperoleh sebelumnya terdapat \textit{zero-frequency problem} dan mengatasinya dengan menggunakan metode \textit{laplacian correction}, dan hasilnya adalah seperti berikut:
+	Model pada NBC di-\textit{import} ke dalam program yang dibuat dengan melakukan pembaharuan model pada antarmuka \textit{Renew Model Manager}. Program melakukan pembacaan terhadap model NBC dan mendeteksi dari model NBC yang diperoleh sebelumnya terdapat \textit{zero-frequency problem} dan mengatasinya dengan menggunakan metode \textit{laplacian correction}, dan hasilnya adalah seperti berikut:
 	\begin{figure}[H]
 	\centering
 	\includegraphics[scale=0.5]{Pengujian/pengujian-nonmr}
@@ -495,12 +497,154 @@ Untuk data input klasifikasi \texttt{Humidity=90} dan \texttt{Outlook=Sunny}, di
 	
 \end{enumerate}
 
-\subsection{Kesimpulan Pengujian Kebenaran}
+\subsection{Perbandingan dan Kesimpulan}
+Pada Subbab ini, dijelaskan perbandingan dan kesimpulan dari hasil pembuatan model dan klasifikasi pada pengujian perhitungan manual dan pengujian program.
 
-Pada hasil yang pengujian yang telah dilakukan, dapat dibuktikan bahwa hasil perhitungan dengan menggunakan program dan manual memiliki hasil yang sama. Hanya saja angka presentase dominasi hasil yang dimiliki oleh program sedikit berbeda dengan angka presentase dominasi pada perhitungan manual. Untuk dataset pertama, pada perhitungan manual dan menggunakan program diperoleh hasil kelas yang sama yaitu \texttt{Play=Yes} dengan tingkat presentase dominasi juga sama sebesar \texttt{100\%}. Untuk dataset pertama, pada perhitungan manual diperoleh hasil kelas \texttt{Play=Yes} dengan tingkat presentase dominasi sebesar \texttt{64\%}, sedangkan jika menggunakan program tingkat presentase dominasi-nya sebesar \texttt{64.67\%}. Perbedaan yang sangat kecil, yang berkisar diantara \texttt{0.6\%} atau \texttt{0.006} diperkirakan timbul karena pembulatan nilai desimal yang berbeda.
+\subsubsection{Model}
+
+% Model
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.65]{GambarIO/perbandingan_model}
+	\caption[Perbandingan Hasil Model Manual dan Program]{Perbandingan Hasil Model Manual dan Program}
+	\label{fig:Perbandingan Hasil Model Manual dan Program}
+\end{figure}
+
+Pada hasil pengujian pembuatan model NBC yang dilakukan oleh perhitungan manual dan perangkat lunak, dapat dilihat bahwa model yang dihasilkan oleh perangkat lunak berbeda dengan model yang dihasilkan pada perhitungan manual. Untuk atribut diskrit, perbedaan jumlah frekuensi disebabkan oleh karena penanganan \textit{zero-frequency problem} pada perangkat lunak ditangani pada saat melakukan \textit{testing} program atau pada saat melakukan klasifikasi. Selain itu, perbedaan pada atribut numerik yang bernilai sangat kecil, disebabkan oleh perbedaan angka pembulatan pada perhitungan manual dan perhitungan menggunakan perangkat lunak.
+
+\subsubsection{Klasifikasi}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.65]{GambarIO/perbandingan_klasifikasi}
+	\caption[Perbandingan Hasil Klasifikasi Manual dan Program]{Perbandingan Hasil Klasifikasi Manual dan Program}
+	\label{fig:Perbandingan Hasil Klasifikasi Manual dan Program}
+\end{figure}
+
+% Klasifikasi
+Pada hasil pengujian klasifikasi yang telah dilakukan, dapat dibuktikan bahwa hasil perhitungan dengan menggunakan program dan manual memiliki hasil yang sama. Hanya saja angka presentase dominasi hasil yang dimiliki oleh program sedikit berbeda dengan angka presentase dominasi pada perhitungan manual. Untuk dataset pertama, pada perhitungan manual dan menggunakan program diperoleh hasil kelas yang sama yaitu \texttt{Play=Yes} dengan tingkat presentase dominasi juga sama sebesar \texttt{100\%}. Untuk dataset pertama, pada perhitungan manual diperoleh hasil kelas \texttt{Play=Yes} dengan tingkat presentase dominasi sebesar \texttt{64\%}, sedangkan jika menggunakan program tingkat presentase dominasi-nya sebesar \texttt{64.67\%}. Perbedaan yang sangat kecil, yang berkisar diantara \texttt{0.6\%} atau \texttt{0.006} diperkirakan timbul karena pembulatan nilai desimal yang berbeda.
 
 \section{Eksperimen}
+Bagian ini memaparkan mengenai eksperimen - eksperimen yang dilakukan dalam membuat model NBC dan melakukan klasifikasi.
 
 \subsection{Pembuatan model}
+Pada eksperimen pembuatan model, digunakan 3 dataset yang berbeda.
+
+\subsubsection{Dataset-1}
+Dataset-1: \textit{mushroom classification}, berisi mengenai data tentang tumbuhan jamur yang memiliki racun(tidak dapat dimakan) dan yang tidak memiliki racun(bisa dimakan) berdasarkan beberapa atribut yang dimiliki oleh jamur tersebut. Data ini diperoleh dari \url{https://www.kaggle.com/uciml/mushroom-classification} pada tanggal 26 April 2017(Contoh dataset telah dilampirkan pada lampiran~\ref{lamp:E-Contoh Datase1-1}). Data ini memiliki 23 atribut, dimana 1 merupakan atribut kelas yang menentukan jamur tersebut beracun atau tidak dan sisanya merupakan atribut dari ciri - cirijamur itu sendiri. Berikut merupakan penjelasan tiap atribut milik jamur yang disingkat menjadi 1 huruf:
+\begin{enumerate}
+	\item \texttt{classes : edible=e, poisonous=p}
+	\item \texttt{cap-shape: bell=b, conical=c, convex=x, flat=f, knobbed=k, sunken=s}
+	\item \texttt{cap-surface: fibrous=f, grooves=g, scaly=y, smooth=s}
+	\item \texttt{cap-color: brown=n, buff=b, cinnamon=c, gray=g, green=r, pink=p, purple=u, red=e, white=w, yellow=y}
+	\item \texttt{bruises: bruises=t, no=f}
+	\item \texttt{odor: almond=a, anise=l, creosote=c, fishy=y, foul=f, musty=m, none=n, pungent=p, spicy=s}
+	\item \texttt{gill-attachment: attached=a, descending=d, free=f, notched=n}
+	\item \texttt{gill-spacing: close=c, crowded=w, distant=d}
+	\item \texttt{gill-size: broad=b, narrow=n}
+	\item \texttt{gill-color: black=k, brown=n, buff=b, chocolate=h, gray=g ,green=r, orange=o, pink=p, purple=u, red=e, white=w, yellow=y}
+	\item \texttt{stalk-shape: enlarging=e, tapering=t}
+	\item \texttt{stalk-root: bulbous=b, club=c, cup=u, equal=e, rhizomorphs=z, rooted=r, missing=?}
+	\item \texttt{stalk-surface-above-ring: fibrous=f, scaly=y, silky=k, smooth=s}
+	\item \texttt{stalk-surface-below-ring: fibrous=f, scaly=y, silky=k, smooth=s}
+	\item \texttt{stalk-color-above-ring: brown=n, buff=b, cinnamon=c, gray=g, orange=o, pink=p, red=e, white=w, yellow=y}
+	\item \texttt{stalk-color-below-ring: brown=n, buff=b, cinnamon=c, gray=g, orange=o, pink=p, red=e, white=w, yellow=y}
+	\item \texttt{veil-type: partial=p, universal=u}
+	\item \texttt{veil-color: brown=n, orange=o, white=w, yellow=y}
+	\item \texttt{ring-number: none=n, one=o, two=t}
+	\item \texttt{ring-type: cobwebby=c, evanescent=e, flaring=f, large=l, none=n, pendant=p, sheathing=s, zone=z}
+	\item \texttt{spore-print-color: black=k, brown=n, buff=b, chocolate=h, green=r, orange=o, purple=u, white=w, yellow=y}
+	\item \texttt{population: abundant=a ,clustered=c, numerous=n, scattered=s, several=v, solitary=y}
+	\item \texttt{habitat: grasses=g, leaves=l, meadows=m, paths=p, urban=u, waste=w, woods=d}
+\end{enumerate}
+
+Dataset-1 asli ini memiliki ukuran sebesar 366KB. Pada eksperimen kali ini dilakukan manipulasi terhadap dataset-1 agar menjadi lebih besar. Manipulasi data dilakukan dengan cara melakukan pengulangan terhadap data yang sama hingga mencapai ukuran 174,9MB. Hal ini dilakukan agar data yang diumpankan kepada program mapreduce tidak terlalu kecil. Pada dataset-1 yang berukuran 174,9MB, eksperimen dilakukan dengan presentase data training dan data testing sebesar 70 : 30. Selain itu, eksperimen juga mengikutsertakan seluruh atribut prediktor pada dataset ini dan 1 atribut kelas.
+
+Data yang sudah diperbanyak tersebut dimasukkan ke dalam HDFS melalui perangkat lunak pada modul input seperti pada gambar~\ref{fig:Memasukkan dataset-1 ke dalam HDFS}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.65]{Eksperimen_Model/dataset1_0}
+	\caption[Memasukkan dataset-1 ke dalam HDFS]{Memasukkan dataset-1 ke dalam HDFS}
+	\label{fig:Memasukkan dataset-1 ke dalam HDFS}
+\end{figure}
+
+Setelah melakukan eksekusi program untuk melakukan pembuatan model dengan menggunakan 70\% dari dataset-1, diperoleh hasil model NBC yang tertera pada lampiran~\ref{lamp:E-Hasil Pembuatan Model Dataset-1}.
+
+Setelah model NBC dihasilkan, dilakukan juga eksperimen testing untuk mengetahui kualitas dari NBC yang dihasilkan dengan menggunakan 30\% dari dataset-1, diperoleh hasil testing yang tertera pada lampiran~\ref{lamp:E-Hasil Testing Dataset-1}. Pada lampiran tersebut, dapat dilihat bahwa model NBC yang dihasilkan memiliki tingkat akurasi yang cukup tinggi. Hal tersebut dapat terlihat dari hasil nilai perhitungan evaluasi model NBC pada nilai \texttt{accuracy} yang mencapai nilai \texttt{99\%} dan nilai \textit{recall}, \textit{precision}, dan \textit{f-measure} untuk setiap nilai kelas yang juga memiliki nilai sebesar \texttt{99\%}.
+
+\subsubsection{Dataset-2}
+
+Dataset-2: \textit{Car Evaluation Data Set}, berisi mengenai data dari evaluasi mobil yang akan menentukkan apakah sebuah mobil dapat diterima atau tidak. Data ini diperoleh dari \url{http://mlr.cs.umass.edu/ml/datasets/Car+Evaluation} pada tanggal 29 April 2017(Contoh dataset telah dilampirkan pada lampiran~\ref{lamp:E-Contoh Datase1-2}). Data ini memiliki 7 atribut, dimana 1 atribut merupakan atribut kelas dan sisanya adalah atribut prediktor. Berikut merupakan penjelasan tiap atribut yang diperoleh dari \url{http://mlr.cs.umass.edu/ml/datasets/Car+Evaluation}:
+\begin{enumerate}
+	\item \texttt{class: unacc, acc, good, vgood }
+	\item \texttt{buying: vhigh, high, med, low}
+	\item \texttt{maint: vhigh, high, med, low}
+	\item \texttt{doors: 2, 3, 4, 5more}
+	\item \texttt{persons: 2, 4, more} 
+	\item \texttt{lug boot: small, med, big}
+	\item \texttt{safety: low, med, high}
+\end{enumerate}
+
+Dataset-2 asli ini memiliki ukuran sebesar 53KB. Pada eksperimen kali ini dilakukan manipulasi terhadap dataset-2 agar menjadi lebih besar. Manipulasi data dilakukan dengan cara melakukan pengulangan terhadap data yang sama hingga mencapai ukuran 64.3MB. Hal ini dilakukan agar data yang diumpankan kepada program mapreduce tidak terlalu kecil. Pada dataset-2 yang berukuran 74MB, eksperimen dilakukan dengan presentase data training dan data testing sebesar 70 : 30. Selain itu, eksperimen juga mengikutsertakan seluruh atribut prediktor dan 1 atribut kelas bernama \texttt{class}.
+
+Data yang sudah diperbanyak tersebut dimasukkan ke dalam HDFS melalui perangkat lunak pada modul input seperti pada gambar~\ref{fig:Memasukkan dataset-2 ke dalam HDFS}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.65]{Eksperimen_Model/dataset2_0}
+	\caption[Memasukkan dataset-2 ke dalam HDFS]{Memasukkan dataset-2 ke dalam HDFS}
+	\label{fig:Memasukkan dataset-2 ke dalam HDFS}
+\end{figure}
+
+Setelah melakukan eksekusi program untuk melakukan pembuatan model dengan menggunakan 70\% dari dataset-2, diperoleh hasil model NBC yang tertera pada lampiran~\ref{lamp:E-Hasil Pembuatan Model Dataset-2}.
+
+Setelah model NBC dihasilkan, dilakukan juga eksperimen testing untuk mengetahui kualitas dari NBC yang dihasilkan dengan menggunakan 30\% dari dataset-2, diperoleh hasil testing yang tertera pada lampiran~\ref{lamp:E-Hasil Testing Dataset-2}. Pada lampiran tersebut, dapat dilihat bahwa model NBC yang dihasilkan memiliki tingkat akurasi yang cukup tinggi. Hal tersebut dapat terlihat dari hasil nilai perhitungan evaluasi model NBC pada nilai \texttt{accuracy} yang mencapai nilai \texttt{87\%} dan nilai \textit{recall}, \textit{precision}, dan \textit{f-measure} untuk setiap nilai kelas yang juga memiliki nilai rata - rata sebesar \texttt{70\%}.
+
+\subsubsection{Dataset-3}
+\label{subsubsec:Dataset-3}
+
+Dataset-3: \textit{Homicide Reports}(1980 - 2014), berisi mengenai data pembunuhan yang terjadi di negara US yang diambil dari FBI. Data kali ini diperoleh dari \url{https://www.kaggle.com/murderaccountability/homicide-reports} pada tanggal 29 April 2017(Contoh dataset telah dilampirkan pada lampiran~\ref{lamp:E-Contoh Datase1-3}). Data ini memiliki 24 atribut. Dalam eksperimen kali ini, akan dipilih satu atribut sebagai atribut kelas yaitu atribut \textit{Crime Solved} dan 6 atribut sebagai atribut prediktor yaitu: (1)\textit{Crime Type}; (2)\textit{Victim Age}; (3)\textit{Perpetrator Age}; (4)\textit{Perpetrator Ethnicity}; (5)\textit{Relationship}; (6)\textit{Weapon} . Atribut kelas tersebut nantinya diharapkan dapat melakukan prediksi untuk mengetahui apakah kejahatan bisa terpecahkan jika diberikan beberapa keterangan mengenai korban dan pelaku serta hubungan dan senjata yang digunakan untuk membunuh korban. Berikut merupakan penjelasan tiap atribut yang diperoleh dari \url{https://www.kaggle.com/murderaccountability/homicide-reports}:
+\begin{enumerate}
+	\item \texttt{Record ID: Numeric}
+	\item \texttt{Agency Code: String}
+	\item \texttt{Agency Name: String}
+	\item \texttt{Agency Type: String}
+	\item \texttt{City: String}
+	\item \texttt{State: String}
+	\item \texttt{Year: Numeric}
+	\item \texttt{Month: String}
+	\item \texttt{Incident: Numeric}
+	\item \texttt{Crime Type: String} \textcolor{red}{*}\texttt{atribut prediktor}
+	\item \texttt{Crime Solved: String} \textcolor{red}{*}\texttt{atribut kelas}
+	\item \texttt{Victim Sex: String}
+	\item \texttt{Victim Age: Numeric} \textcolor{red}{*}\texttt{atribut prediktor}
+	\item \texttt{Victim Race: String}
+	\item \texttt{Victim Ethnicity: String}
+	\item \texttt{Perpetrator Sex: String}
+	\item \texttt{Perpetrator Age: Numeric} \textcolor{red}{*}\texttt{atribut prediktor}
+	\item \texttt{Perpetrator Race: String}
+	\item \texttt{Perpetrator Ethnicity: String} \textcolor{red}{*}\texttt{atribut prediktor}
+	\item \texttt{Relationship: String} \textcolor{red}{*}\texttt{atribut prediktor}
+	\item \texttt{Weapon: String} \textcolor{red}{*}\texttt{atribut prediktor}
+	\item \texttt{Victim Count: Numeric}
+	\item \texttt{Perpetrator Count: Numeric}
+	\item \texttt{Record Source: String}
+\end{enumerate}
+
+Dataset-3 asli ini memiliki ukuran sebesar 100MB. Pada eksperimen kali ini dilakukan manipulasi terhadap dataset-3 agar menjadi lebih besar. Manipulasi data dilakukan dengan cara melakukan pengulangan terhadap data yang sama hingga mencapai ukuran 335MB. Hal ini dilakukan agar data yang diumpankan kepada program mapreduce tidak terlalu kecil. Pada dataset-3 yang berukuran 335MB, eksperimen dilakukan dengan presentase data training dan data testing sebesar 70 : 30.
+
+Data yang sudah diperbanyak tersebut dimasukkan ke dalam HDFS melalui perangkat lunak pada modul input seperti pada gambar~\ref{fig:Memasukkan dataset-3 ke dalam HDFS}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.65]{Eksperimen_Model/dataset3_0}
+	\caption[Memasukkan dataset-3 ke dalam HDFS]{Memasukkan dataset-3 ke dalam HDFS}
+	\label{fig:Memasukkan dataset-3 ke dalam HDFS}
+\end{figure}
+
+Setelah melakukan eksekusi program untuk melakukan pembuatan model dengan menggunakan 70\% dari dataset-2, diperoleh hasil model NBC yang tertera pada lampiran~\ref{lamp:E-Hasil Pembuatan Model Dataset-3}.
+
+Setelah model NBC dihasilkan, dilakukan juga eksperimen testing untuk mengetahui kualitas dari NBC yang dihasilkan dengan menggunakan 30\% dari dataset-3, diperoleh hasil testing yang tertera pada lampiran~\ref{lamp:E-Hasil Testing Dataset-3}. Pada lampiran berikut dapat dilihat bahwa model NBC memiliki nilai \textit{accuracy} yang cukup tinggi, yaitu sebesar 96\%. Untuk nilai evaluasi model yang spesifik terhadap nilai kelas seperti nilai \textit{precision}, \textit{recall}, dan \textit{f-measure} juga memiliki nilai yang berkisar diantara 90\%. Dapat disimpulkan bahwa model NBC yang dibuat cukup bagus, karena nilai pehitungan evaluasi model NBC yang dihasilkan tidak ada yang berada dibawah 90\%.
 
 \subsection{Performansi Big Data}

@@ -19,13 +19,13 @@ Dengan begitu, banyak perusahaan yang menjadikan internet sebagai salah satu sar
 
 
 %def, problem -> Naive Bayes
-Di samping itu, Data Mining merupakan teknologi baru yang sangat berguna untuk membantu perusahaan-perusahaan menemukan informasi yang sangat penting dari gudang data mereka. Melihat perkembangan dan pertumbuhan data yang kian semakin tinggi, teknik data mining akan sangat cocok untuk diimplementasikan pada \textit{Big Data}. Karena, diharapkan teknik data mining akan memiliki tingkat akurasi yang tinggi sebanding dengan volume data yang kian meninggi. Kakas \textit{data mining} meramalkan tren dan sifat-sifat perilaku bisnis yang sangat berguna untuk mendukung pengambilan keputusan penting. \textit{Data Mining} dapat menjawab pertanyaan-pertanyaan bisnis yang dengan cara tradisional memerlukan banyak waktu untuk menjawabnya. \textit{Data Mining} akan mengeksplorasi data - data yang sudah ada untuk menemukan pola - pola yang tersembunyi dan mencari informasi pemrediksi yang mungkin saja terlupakan oleh para pelaku bisnis karena tidak terpikirkan sebelumnya oleh mereka.
+Di samping itu, Data Mining merupakan teknologi baru yang sangat berguna untuk membantu perusahaan-perusahaan menemukan informasi yang sangat penting dari gudang data mereka. Melihat perkembangan dan pertumbuhan data yang kian semakin tinggi, teknik data mining sangat cocok untuk diimplementasikan pada \textit{Big Data}. Karena, diharapkan teknik data mining memiliki tingkat akurasi yang tinggi sebanding dengan volume data yang kian meninggi. Kakas \textit{data mining} meramalkan tren dan sifat-sifat perilaku bisnis yang sangat berguna untuk mendukung pengambilan keputusan penting. \textit{Data Mining} dapat menjawab pertanyaan-pertanyaan bisnis yang dengan cara tradisional memerlukan banyak waktu untuk menjawabnya. \textit{Data Mining} mengeksplorasi data - data yang sudah ada untuk menemukan pola - pola yang tersembunyi dan mencari informasi pemrediksi yang mungkin saja terlupakan oleh para pelaku bisnis karena tidak terpikirkan sebelumnya oleh mereka.
 
 Fokus penelitian tugas akhir ini adalah untuk menggunakan sistem terdistribusi hadoop dalam memecahkan 3 masalah utama yang dimiliki oleh \textit{Big Data} dalam menerapkan algoritma teknik data mining \textit{(Naive Bayes Classifier)} dalam melakukan klasifikasi berdasarkan data yang diberikan.
 %}
 
 \section{Rumusan Masalah}
-Dari latar belakang tersebut, rumusan masalah yang akan dibahas pada penelitian ini adalah :
+Dari latar belakang tersebut, rumusan masalah yang dibahas pada penelitian ini adalah :
 \begin{enumerate}
 	\item Bagaimana merancang algoritma {\it Naive Bayes Classifier} berbasis \textit{MapReduce} pada lingkungan sistem terdistribusi Hadoop ?
 	\item Bagaimana mengimplementasikan algoritma {\it Naive Bayes Classifier} berbasis \textit{MapReduce} pada lingkungan sistem terdistribusi Hadoop ?
@@ -74,7 +74,7 @@ Langkah-langkah yang dilakukan dalam penelitian ini adalah :
 		\item Melakukan studi literatur tentang klasifikasi menggunakan algoritma \textit{naive bayes}
 		\item Mempelajari Hadoop MapReduce dan membuat program - program kecil yang dapat mendukung implementasi dari algoritma klasifikasi \textit{naive bayes} berbasis MapReduce
 		\item Merancang algoritma \textit{Naive Bayes Classifier} berbasis \textit{MapReduce} 
-		\item Mengumpulkan data yang akan dianalisis/diuji (input)
+		\item Mengumpulkan data yang dianalisis/diuji (input)
 		%\item Merancang teknik {\it preprocessing data} yang diperlukan
 		\item Melakukan implementasi klasifikasi menggunakan algoritma \textit{naive bayes classifier} pada sistem terdistribusi Hadoop dengan \textit{Big Data}
 		\item Menganalisis studi kasus untuk data yang berukuran kecil, menengah, dan sangat besar \textit{(Big Data)}
@@ -89,10 +89,10 @@ Langkah-langkah yang dilakukan dalam penelitian ini adalah :
 Sistematika pembahasan penelitian ini, yaitu :
 
 \begin{enumerate}
-	\item Bab 1 Pendahuluan, berisi tentang permasalahan utama yang akan dibahas pada penelitian ini dan dipecahkan menjadi beberapa poin penting, tujuan dari penelitian, batasan masalah, metodologi penelitian yang digunakan, dan sistematika pembahasan pada penelitian ini. 
-	\item Bab 2 Landasan Teori, berisi tentang teori dasar dan pengetahuan mengenai Sistem Terdistribusi Hadoop dan Algoritma \textit{Naive Bayes Classifier}. Pada bab ini akan dijelaskan juga mengenai beberapa \textit{framework} yang akan digunakan dalam membangun perangkat lunak.
-	\item Bab 3 Analisis, berisi tentang analisis masalah yang telah dideskripsikan pada Bab 1 dan menentukan beberapa kebutuhan dari perangkat lunak. Selain itu juga akan melakukan perhitungan manual algoritma \textit{naive bayes classification} dengan studi kasus.
-	\item Bab 4 Perancangan Perangkat Lunak, berisi tentang rancangan perangkat lunak yang akan dibangun. Perancangan perangkat lunak akan meliputi perancangan antarmuka, diagram kelas lengkap, dan rincian metode - metode yang ada pada kelas.
+	\item Bab 1 Pendahuluan, berisi tentang permasalahan utama yang dibahas pada penelitian ini dan dipecahkan menjadi beberapa poin penting, tujuan dari penelitian, batasan masalah, metodologi penelitian yang digunakan, dan sistematika pembahasan pada penelitian ini. 
+	\item Bab 2 Landasan Teori, berisi tentang teori dasar dan pengetahuan mengenai Sistem Terdistribusi Hadoop dan Algoritma \textit{Naive Bayes Classifier}. Pada bab ini dijelaskan juga mengenai beberapa \textit{framework} yang digunakan dalam membangun perangkat lunak.
+	\item Bab 3 Analisis, berisi tentang analisis masalah yang telah dideskripsikan pada Bab 1 dan menentukan beberapa kebutuhan dari perangkat lunak. Selain itu juga melakukan perhitungan manual algoritma \textit{naive bayes classification} dengan studi kasus.
+	\item Bab 4 Perancangan Perangkat Lunak, berisi tentang rancangan perangkat lunak yang dibangun. Perancangan perangkat lunak meliputi perancangan antarmuka, diagram kelas lengkap, dan rincian metode - metode yang ada pada kelas.
 	\item Bab 5 Implementasi, Pengujian, dan Eksperimen Perangkat Lunak, berisi tentang hasil dari implementasi, pengujian, dan eksperimen yang dilakukan pada perangkat lunak pada lingkungan terdistribusi Hadoop.
 	\item Bab 6 Kesimpulan dan Saran, berisi tentang kesimpulan atas hasil penelitian yang telah dilakukan, apakah semua masalah pada rumusan masalah dapat terselesaikan atau tidak, serta saran untuk penelitian yang masih bisa dikembangkan dari penelitian ini.
 \end{enumerate}

@@ -1,19 +1,19 @@
 \chapter{Analisis}
 
-Bab ini akan membahas mengenai permasalahan umum yang dihadapi dan melakukan analisis pemodelan sistem yang akan dibangun.
+Bab ini membahas mengenai permasalahan umum yang dihadapi dan melakukan analisis pemodelan sistem yang dibangun.
 
 \section{Deskripsi Masalah dan Solusi Umum}
 \subsection{Deskripsi Masalah}
 Salah satu algoritma teknik \textit{data mining} yang digunakan pada skripsi ini adalah algoritma \textit{naive bayes classifier}. Tingkat akurasi pada algoritma ini dapat dipengaruhi oleh beberapa faktor. Salah satu faktor pentingnya adalah faktor volume data. Pada algoritma \textit{naive bayes} yang diimplementasikan secara \textit{standalone}, (non-\textit{MapReduce}, tidak menggunakan komputasi secara paralel) tidak dapat mengolah proses menggunakan data yang sangat besar, karena adanya keterbatasan memori yang dimiliki oleh perangkat tersebut. Hal tersebut dikarenakan minimnya memori yang bisa diberikan oleh \textit{hardware} pada sistem yang berjalan hanya pada 1 mesin/komputer.
 \subsection{Solusi Umum}
-\textit{Apache hadoop} digunakan untuk menangani hal meliputi big data dengan sistem yang terdistribusi. Framework ini dapat memfasilitasi sebuah program yang berjalan dengan menggunakan beberapa mesin/komputer sekaligus untuk menjadi sebagai tempat penyimpanan data sekaligus pemroses tugas dari program tersebut, dengan protokol komunikasi antar mesin/komputer yang sudah secara otomatis diatur oleh framework tersebut. \textit{Framework hadoop} dapat digunakan untuk membantu algoritma \textit{naive bayes classifier} dalam menangani jumlah data yang sangat banyak dengan bergantung pada banyaknya node yang digunakan. Sehingga, banyaknya node yang digunakan pada lingkungan hadoop yang akan dipakai akan mempengaruhi \textit{scalability} dari algoritma \textit{naive bayes classifier}. Tentu saja untuk mendapatkan keuntungan tersebut dalam menjalankan program \textit{naive bayes classifier}, diperlukan rancangan program yang dibuat berbasiskan \textit{MapReduce} pada Hadoop. Skripsi ini akan membangun perangkat lunak yang menerapkan algoritma klasifikasi \textit{naive bayes} pada sistem terdistribusi hadoop.
+\textit{Apache hadoop} digunakan untuk menangani pemrosesan big data dengan sistem yang terdistribusi. Framework ini dapat memfasilitasi sebuah program yang berjalan dengan menggunakan beberapa mesin/komputer sekaligus untuk menjadi sebagai tempat penyimpanan data sekaligus pemroses tugas dari program tersebut, dengan protokol komunikasi antar mesin/komputer yang sudah secara otomatis diatur oleh framework tersebut. \textit{Framework hadoop} dapat digunakan untuk membantu algoritma \textit{naive bayes classifier} dalam menangani jumlah data yang sangat banyak dengan bergantung pada banyaknya node yang digunakan. Sehingga, banyaknya node yang digunakan pada lingkungan hadoop yang dipakai mempengaruhi \textit{scalability} dari algoritma \textit{naive bayes classifier}. Tentu saja untuk mendapatkan keuntungan tersebut dalam menjalankan program \textit{naive bayes classifier}, diperlukan rancangan program yang dibuat berbasiskan \textit{MapReduce} pada Hadoop. Skripsi ini membangun perangkat lunak yang menerapkan algoritma klasifikasi \textit{naive bayes} pada sistem terdistribusi hadoop.
 
-%Dengan begitu, tingkat akurasi yang dimiliki oleh algoritma ini akan sangat maksimal dengan memberikan fasilitas untuk mengolah data yang sangat banyak dan beragam (\textit{big data}). Waktu yang dibutuhkan untuk mengeksekusi program tersebut juga diharapkan akan sangat cepat sebanding dengan jumlah komputer/node yang digunakan pada sistem terdistribusi hadoop(mendelegasikan pekerjaan kepada tiap komputer/node yang terintegrasi pada sistem secara bersamaan). 
-%Untuk dapat melakukan hal tersebut, program perlu dirancang dengan berbasis \textit{MapReduce}. Skripsi ini akan membangun perangkat lunak yang menerapkan algoritma naive bayes pada sistem terdistribusi hadoop.
+%Dengan begitu, tingkat akurasi yang dimiliki oleh algoritma ini sangat maksimal dengan memberikan fasilitas untuk mengolah data yang sangat banyak dan beragam (\textit{big data}). Waktu yang dibutuhkan untuk mengeksekusi program tersebut juga diharapkan sangat cepat sebanding dengan jumlah komputer/node yang digunakan pada sistem terdistribusi hadoop(mendelegasikan pekerjaan kepada tiap komputer/node yang terintegrasi pada sistem secara bersamaan). 
+%Untuk dapat melakukan hal tersebut, program perlu dirancang dengan berbasis \textit{MapReduce}. Skripsi ini membangun perangkat lunak yang menerapkan algoritma naive bayes pada sistem terdistribusi hadoop.
 
 \section{Analisis Perangkat Lunak}
 
-	Pada bagian ini akan dijelaskan menenai analisis perancangan perangkat lunak yang mencakup aliran proses dan gambaran secara umum diagram kelas untuk melakukan skema algoritma \textit{naive bayes classifier} berbasis \textit{map reduce}.
+	Pada bagian ini dijelaskan menenai analisis perancangan perangkat lunak yang mencakup aliran proses dan gambaran secara umum diagram kelas untuk melakukan skema algoritma \textit{naive bayes classifier} berbasis \textit{map reduce}.
 
 \subsection{Analisis Skema Algoritma \textit{Naive Bayes Classifier} Berbasis \textit{Map Reduce}}
 
@@ -24,8 +24,8 @@ Salah satu algoritma teknik \textit{data mining} yang digunakan pada skripsi ini
 	\label{fig:Rancangan Keseluruhan Modul Program}
 \end{figure}
 
-%Perangkat lunak yang dibangun akan mem
-Keseluruhan program yang akan menjalankan pelatihan maupun pengujian klasifikasi naive bayes berbasis mapreduce pada Hadoop yang dibuat akan memiliki 4 buah modul. sebagian besar modul tersebut harus berjalan secara berurutan dan saling bergantung satu dengan lainnya dalam menjalankan tugasnya. Berikut adalah spesifikasi ringkas dari modul beserta urutan yang perlu dijalankan terlebih dahulu: 
+%Perangkat lunak yang dibangun mem
+Keseluruhan program yang menjalankan pelatihan maupun pengujian klasifikasi naive bayes berbasis mapreduce pada Hadoop yang dibuat memiliki 4 buah modul. sebagian besar modul tersebut harus berjalan secara berurutan dan saling bergantung satu dengan lainnya dalam menjalankan tugasnya. Berikut adalah spesifikasi ringkas dari modul beserta urutan yang perlu dijalankan terlebih dahulu: 
 
 \begin{figure}[H]
 	\centering
@@ -36,7 +36,7 @@ Keseluruhan program yang akan menjalankan pelatihan maupun pengujian klasifikasi
 
 \subsubsection{Modul Kelola \textit{Input}}
 
-Pada Modul Input, program akan menerima input file dari pengguna berupa data yang akan dijadikan pelatihan untuk pembuatan model klasifikasi naive bayes. Pengguna diberikan pilihan untuk menentukan atribut mana saja yang akan dijadikan kelas dan yang dijadikan sebagai atribut prediktor dan memilih tipe konten dari atribut yang digunakan (mis: \textit{diskrit atau numerik}). Selain itu, penguna juga diberikan pilihan untuk membagi presentase seluruh data input yang akan dijadikan sebagai \textit{data training} dan \textit{data testing}. Program pada modul ini akan meminta akses kepada server master Hadoop untuk melakukan proses tulis pada HDFS dengan meng-import library Hadoop Client API pada program. Pada modul ini terdapat file tambahan yang akan dimasukan ke dalam HDFS, yaitu file yang bernama meta.info. File meta.info ini akan berisi kumpulan dari atribut prediktor yang pengguna pilih dan atribut kelas yang penggna pilih beserta dengan masing - masing tipe kontennya.
+Pada Modul Input, program menerima input file dari pengguna berupa data yang dijadikan pelatihan untuk pembuatan model klasifikasi naive bayes. Pengguna diberikan pilihan untuk menentukan atribut mana saja yang dijadikan kelas dan yang dijadikan sebagai atribut prediktor dan memilih tipe konten dari atribut yang digunakan (mis: \textit{diskrit atau numerik}). Selain itu, penguna juga diberikan pilihan untuk membagi presentase seluruh data input yang dijadikan sebagai \textit{data training} dan \textit{data testing}. Program pada modul ini meminta akses kepada server master Hadoop untuk melakukan proses tulis pada HDFS dengan meng-import library Hadoop Client API pada program. Pada modul ini terdapat file tambahan yang dimasukan ke dalam HDFS, yaitu file yang bernama meta.info. File meta.info ini berisi kumpulan dari atribut prediktor yang pengguna pilih dan atribut kelas yang penggna pilih beserta dengan masing - masing tipe kontennya.
 
 Berikut merupakan diagram \textit{flow chart} untuk modul input:
 
@@ -50,7 +50,7 @@ Berikut merupakan diagram \textit{flow chart} untuk modul input:
 
 \paragraph{Pemilihan Data Masukan}
 Data yang dapat digunakan pada perangkat lunak yang dibuat adalah data tidak terstruktur yang menggunakan \textit{comma-separated values}\footnote{ CSV (comma-separated values) merupakan data tabular yang berada di dalam plain text. Setiap baris dari data tersebut menyatakan sebuah record. Setiap record memiliki 1 atau lebih field yang dipisahkan oleh koma}. Data tidak terstruktur (\textit{unstructured data}) adalah data yang tidak memiliki format pasti. Data tidak terstruktur biasanya merupakan data text yang berukuran sangat besar dan format dari isi datanya juga dapat memiliki format yang bermacam - macam, seperti: tanggal ; angka ; suatu kejadian ; dsb. 
-Data - data yang digunakan bisa saja berupa data pencatatan pembelian selama 3 tahun terakhir dari suatu perusahaan, data penjualan mobil dengan spesifikasi kriteria yang rinci dari suatu perusahaan mobil, dsb. Selain itu, data yang digunakan juga perlu memiliki ukuran yang cukup besar (supaya manfaat dari penggunaan framework hadoop akan lebih terlihat signifikan). Seperti pada contoh data berikut mengenai penentuan seseorang akan bermain tenis atau tidak jika diberikan beberapa fakta yang terjadi terkait faktor lingkungan dan waktu :
+Data - data yang digunakan bisa saja berupa data pencatatan pembelian selama 3 tahun terakhir dari suatu perusahaan, data penjualan mobil dengan spesifikasi kriteria yang rinci dari suatu perusahaan mobil, dsb. Selain itu, data yang digunakan juga perlu memiliki ukuran yang cukup besar (supaya manfaat dari penggunaan framework hadoop lebih terlihat signifikan). Seperti pada contoh data berikut mengenai penentuan seseorang bermain tenis atau tidak jika diberikan beberapa fakta yang terjadi terkait faktor lingkungan dan waktu :
 
 \begin{lstlisting}
 Outlook,Temperature,Humidity,Windy,Play,Rand,Hour
@@ -68,7 +68,7 @@ Pada kolom pertama, ke-dua, ke-tiga, ke-empat, dan ke-lima merupakan data yang b
 
 \paragraph{Kebutuhan Pra-pengolahan Data}
 
-Pada teknik data mining, diperlukan fase pra-pengolahan data terlebih dahulu sebelum melakukan mining dengan teknik tertentu, agar data yang masuk ke dalam perangkat lunak memiliki format yang pasti. Pada skripsi kali ini, fase pra-pengolahan akan diperlukan untuk mendeteksi dan menangani terjadinya \textit{missing values}\footnote{\textit{Missing-values} merupakan keadaan dimana jumlah field pada suatu record tidak memenuhi jumlah field yang seharusnya} pada data. Pendekatan yang digunakan untuk mengatasi terjadinya \textit{missing-values} yang dapat menyebabkan analisis berjalan tidak lancar ini adalah metode \textit{listwise deletion}. \textit{Listwise deletion} merupakan salah satu metode dalam cabang ilmu statistika untuk mengatasi terjadi \textit{missing-values} dengan cara mengabaikan seluruh record - record yang memiliki \textit{missing-values} \cite{PeughMissing:2004}.
+Pada teknik data mining, diperlukan fase pra-pengolahan data terlebih dahulu sebelum melakukan mining dengan teknik tertentu, agar data yang masuk ke dalam perangkat lunak memiliki format yang pasti. Pada skripsi kali ini, fase pra-pengolahan diperlukan untuk mendeteksi dan menangani terjadinya \textit{missing values}\footnote{\textit{Missing-values} merupakan keadaan dimana jumlah field pada suatu record tidak memenuhi jumlah field yang seharusnya} pada data. Pendekatan yang digunakan untuk mengatasi terjadinya \textit{missing-values} yang dapat menyebabkan analisis berjalan tidak lancar ini adalah metode \textit{listwise deletion}. \textit{Listwise deletion} merupakan salah satu metode dalam cabang ilmu statistika untuk mengatasi terjadi \textit{missing-values} dengan cara mengabaikan seluruh record - record yang memiliki \textit{missing-values} \cite{PeughMissing:2004}.
 
 \begin{figure}[ht]
 	\centering
@@ -78,9 +78,10 @@ Pada teknik data mining, diperlukan fase pra-pengolahan data terlebih dahulu seb
 \end{figure}
 
 \subsubsection{Modul \textit{Train Naive Bayes M-R Based}}
+\label{subsubsec:Modul Train Naive Bayes M-R Based}
 
-Sebelum modul ini dijalankan, proses pada modul Input haruslah terlebih dulu selesai, karena file yang menjadi input pada modul ini merupakan hasil dari salinan file yang dijalankan pada proses dalam modul Input. Pada modul ini akan dijalankan proses train dalam pembentukan model klasifikasi naive bayes. Program \textit{training} klasifikasi naive bayes dibuat di atas framework mapreduce yang akan dijalankan pada Hadoop. Terdapat 2 pengecekan yang akan dilakukan pada modul ini, yaitu untuk menghitung atribut yang bertipe diskrit dan numerik(kontinu).\\
-	Program pada modul ini akan memisahkan cara perhitungan yang digunakan dalam membangun sebuah model \textit{naive bayes classifier}. Algoritma Naive Bayes yang akan diimplementasikan pada program akan menerima input berupa dataset dan info mengenai dataset tersebut. Info yang akan diberikan meliputi atribut yang digunakan untuk melakukan pembuatan model classifier, tipe dari tiap atribut yang akan digunakan, dan atribut yang akan menjadi kelas-nya.
+Sebelum modul ini dijalankan, proses pada modul Input haruslah terlebih dulu selesai, karena file yang menjadi input pada modul ini merupakan hasil dari salinan file yang dijalankan pada proses dalam modul Input. Pada modul ini dijalankan proses train dalam pembentukan model klasifikasi naive bayes. Program \textit{training} klasifikasi naive bayes dibuat di atas framework mapreduce yang dijalankan pada Hadoop. Terdapat 2 pengecekan yang dilakukan pada modul ini, yaitu untuk menghitung atribut yang bertipe diskrit dan numerik(kontinu).\\
+	Program pada modul ini memisahkan cara perhitungan yang digunakan dalam membangun sebuah model \textit{naive bayes classifier}. Algoritma Naive Bayes yang diimplementasikan pada program menerima input berupa dataset dan info mengenai dataset tersebut. Info yang diberikan meliputi atribut yang digunakan untuk melakukan pembuatan model classifier, tipe dari tiap atribut yang digunakan, dan atribut yang menjadi kelas-nya.
 	
 Berikut merupakan diagram \textit{flow chart} untuk modul \textit{training}:
 
@@ -148,6 +149,8 @@ Untuk proses yang berbasis \textit{MapReduce} pada modul ini perlu digambarkan m
 
 
 \paragraph{DFD \textit{level} 1}
+\label{par:DFD level 1 modul Training}
+
 \begin{figure}[H]
 	\centering
 	\includegraphics[scale=0.65]{Diagram/DFD_1_0_Training_Testing}
@@ -246,7 +249,7 @@ Untuk proses yang berbasis \textit{MapReduce} pada modul ini perlu digambarkan m
 			\item Tipe jenis atribut prediktor = [A..Z|a..z]
 			\item Jumlah field yang ada pada data \textit{input} = [0..9]
 		\end{itemize}
-		 \textcolor{red}{*}Setiap atribut pada prediktor akan dipisahkan menggunakan karakter titik-koma\textit{(;)}.\\
+		 \textcolor{red}{*}Setiap atribut pada prediktor dipisahkan menggunakan karakter titik-koma\textit{(;)}.\\
 	Contoh data \verb|data_info|
 	\begin{lstlisting}
 	<- prediktor ->
@@ -277,10 +280,10 @@ Untuk proses yang berbasis \textit{MapReduce} pada modul ini perlu digambarkan m
 	\end{lstlisting}	
 	
 	\item{Data \verb|input(k,v)numeric|}\\
-	Format pada data ini akan memiliki format sama dengan data pada \verb|data_input|. Pengecekan akan dilakukan oleh sistem yang dibuat untuk mengenali tipe atribut dari tiap field yang akan diperiksanya.	
+	Format pada data ini memiliki format sama dengan data pada \verb|data_input|. Pengecekan dilakukan oleh sistem yang dibuat untuk mengenali tipe atribut dari tiap field yang diperiksanya.	
 	
 	\item{Data \verb|input(k,v)discrete|}
-	Format pada data ini akan memiliki format sama dengan data pada \verb|data_input|. Pengecekan akan dilakukan oleh sistem yang dibuat untuk mengenali tipe atribut dari tiap field yang akan diperiksanya.
+	Format pada data ini memiliki format sama dengan data pada \verb|data_input|. Pengecekan dilakukan oleh sistem yang dibuat untuk mengenali tipe atribut dari tiap field yang diperiksanya.
 
 	\item{Data \verb|(k',v')class|}
 	\begin{itemize}
@@ -571,8 +574,9 @@ Untuk proses yang berbasis \textit{MapReduce} pada modul ini perlu digambarkan m
 
 
 \subsubsection{Modul \textit{Testing Naive Bayes M-R Based}}
+\label{subsubsec:Modul Testing Naive Bayes M-R Based}
 
-Pada modul ini, program akan memanfaatkan model klasifikasi naive bayes yang telah dibuat sebelumnya untuk melakukan klasifikasi pada data testing yang telah ada sebelumnya di HDFS (pada modul input) dan memberikan laporan analisis mengenai tingkat akurasi dan tingkat error yang dimiliki oleh model terhadap data tersebut. 
+Pada modul ini, program memanfaatkan model klasifikasi naive bayes yang telah dibuat sebelumnya untuk melakukan klasifikasi pada data testing yang telah ada sebelumnya di HDFS (pada modul input) dan memberikan laporan analisis mengenai tingkat akurasi dan tingkat error yang dimiliki oleh model terhadap data tersebut. 
 
 Berikut merupakan diagram \textit{flow chart} untuk modul \textit{testing}:
 
@@ -665,6 +669,8 @@ Sama seperti pada modul \textit{training}, untuk proses yang berbasis \textit{Ma
 
 
 \paragraph{DFD \textit{level} 1}
+\label{par:DFD level 1 modul Testing}
+
 \begin{figure}[H]
 	\centering
 	\includegraphics[scale=0.65]{Diagram/DFD_1_0_Testing_rdmodel}
@@ -1000,7 +1006,7 @@ Sama seperti pada modul \textit{training}, untuk proses yang berbasis \textit{Ma
 
 \subsubsection{Modul Klasifikasi \textit{Naive Bayes}}
 
-Pada modul ini, program juga akan memanfaatkan model klasifikasi naive bayes yang telah dibuat sebelumnya untuk melakukan klasifikasi. Program pada modul ini dapat menerima 1 jenis input yang merupakan input manual secara satu - persatu atribut yang diperlukan untuk melakukan klasifikasi (\textit{predict new case}).
+Pada modul ini, program juga memanfaatkan model klasifikasi naive bayes yang telah dibuat sebelumnya untuk melakukan klasifikasi. Program pada modul ini dapat menerima 1 jenis input yang merupakan input manual secara satu - persatu atribut yang diperlukan untuk melakukan klasifikasi (\textit{predict new case}).
 
 Berikut merupakan diagram \textit{flow chart} untuk modul klasifikasi:
 
@@ -1013,7 +1019,7 @@ Berikut merupakan diagram \textit{flow chart} untuk modul klasifikasi:
 
 \subsection{Diagram Kelas}
 
-Perangkat lunak yang dibangun akan mengikuti metode pemrograman berbasis objek (\textit{Object Oriented Programming}). Sehingga, untuk melakukan pemodelan pada perangkat lunak yang dibuat akan menggunakan kelas yang memiliki beberapa atribut dan metode operasi. Berikut merupakan gambaran diagram kelas pada perangkat lunak untuk setiap modul.
+Perangkat lunak yang dibangun mengikuti metode pemrograman berbasis objek (\textit{Object Oriented Programming}). Sehingga, untuk melakukan pemodelan pada perangkat lunak yang dibuat menggunakan kelas yang memiliki beberapa atribut dan metode operasi. Berikut merupakan gambaran diagram kelas pada perangkat lunak untuk setiap modul.
 
 \subsubsection{Modul Kelola \textit{Input}}
 
@@ -1024,12 +1030,12 @@ Perangkat lunak yang dibangun akan mengikuti metode pemrograman berbasis objek (
 	\label{fig:Diagram kelas modul kelola input}
 \end{figure}
 
-Pada modul ini, akan dibuatkan 2 kelas utama untuk menangani proses memasukkan file input ke dalam HDFS. Kelas tersebut diantaranya adalah:
+Pada modul ini, dibuatkan 2 kelas utama untuk menangani proses memasukkan file input ke dalam HDFS. Kelas tersebut diantaranya adalah:
 \begin{enumerate}
 \item{\textit{InputController.class}} \\
-Kelas ini akan menjadi sebagai kelas yang meng-enkapsulasi seluruh proses penting yang dibutuhkan untuk memasukan file input ke dalam HDFS. Kelas ini hanya membuatkan satu method untuk melakukan operasi input yang akan diakses oleh user. Kelas ini akan memiliki objek instansiasi dari kelas \textit{HdfsService.class} dan memanggil beberapa method di dalamnya untuk melakukan operasi penulisan ke dalam HDFS.
+Kelas ini berfungsi sebagai kelas yang meng-enkapsulasi seluruh proses penting yang dibutuhkan untuk memasukan file input ke dalam HDFS. Kelas ini hanya membuatkan satu method untuk melakukan operasi input yang diakses oleh user. Kelas ini memiliki objek instansiasi dari kelas \textit{HdfsService.class} dan memanggil beberapa method di dalamnya untuk melakukan operasi penulisan ke dalam HDFS.
 \item{HdfsService.class} \\
-Kelas ini akan mengatur segala kebutuhan yang diperlukan untuk melakukan proses penulisan ke dalam HDFS. Kelas ini akan memiliki koneksi terhadap HDFS Master sebagai \textit{hadoop client} untuk memerintahkan penulisan dan pendistribusian file baru yang akan dimasukkan ke dalam HDFS.
+Kelas ini mengatur segala kebutuhan yang diperlukan untuk melakukan proses penulisan ke dalam HDFS. Kelas ini memiliki koneksi terhadap HDFS Master sebagai \textit{hadoop client} untuk memerintahkan penulisan dan pendistribusian file baru yang dimasukkan ke dalam HDFS.
 \end{enumerate}
 
 \subsubsection{Modul \textit{Training dan Testing Naive Bayes M-R Based}}
@@ -1041,19 +1047,19 @@ Kelas ini akan mengatur segala kebutuhan yang diperlukan untuk melakukan proses 
 	\label{fig:Diagram kelas modul training dan testing}
 \end{figure}
 
-Pada modul ini, akan dibuatkan 3 kelas utama untuk menangani proses \textit{training} dan \textit{testing} berbasis \textit{MapReduce}. Di dalam kelas tersebut terdapat operasi - operasi untuk menjalankan proses \textit{MapReduce} pada modul training dan testing. Operasi - operasi ini telah dijelaskan sebelumnya pada Paragraf~\ref{par:contextdiagramTraining} dan Paragraf~\ref{par:contextdiagramTesting}. Berikut merupakan pemetaan fungsi pada kelas diagram yang akan dibuat dan proses \textit{MapReduce} pada DFD yang telah dibuat sebelumnya:
+Pada modul ini, dibuatkan 3 kelas utama untuk menangani proses \textit{training} dan \textit{testing} berbasis \textit{MapReduce}. Di dalam kelas tersebut terdapat operasi - operasi untuk menjalankan proses \textit{MapReduce} pada modul training dan testing. Operasi - operasi ini telah dijelaskan sebelumnya pada Paragraf~\ref{par:contextdiagramTraining} dan Paragraf~\ref{par:contextdiagramTesting}. Berikut merupakan pemetaan fungsi pada kelas diagram yang dibuat dan proses \textit{MapReduce} pada DFD yang telah dibuat sebelumnya:
 
 \begin{table}[H]
 	\label{tab:mapDFDProcesstoClassDiagramFunction}
 	\centering
-	\caption{Pemetaan Proses \textit{MapReduce} Pada DFD Dengan Operasi Pada Diagram Kelas}
+	\caption{Pemetaan Proses \textit{MapReduce} pada DFD ke Method pada Kelas}
 	\begin{tabular}{ | c | c | c | c | }
 	\hline
-	Nomor & Proses DFD & Operasi pada kelas & Section\\ \hline \hline
-	1 & DFD level 1 modul \textit{training} Proses 1.0 Map & MyMapper.map() & figure~\ref{fig:DFD level 1 modul Training} \\ \hline
-	2 & DFD level 1 modul \textit{training}: Proses 1.2 Reduce & MyReducer.reduce() & figure~\ref{fig:DFD level 1 modul Training} \\ \hline
-	3 & DFD level 1 modul \textit{testing}: Proses 1.0 Map & MyMapper.map() & figure~\ref{fig:DFD level 1 modul Testing} \\ \hline
-	4 & DFD level 1 modul \textit{testing}: Proses 1.2 Reduce & MyReducer.reduce() & figure~\ref{fig:DFD level 1 modul Testing} \\ \hline
+	Nomor & Proses DFD & Operasi pada kelas & Subbab\\ \hline \hline
+	1 & DFD level 1 modul \textit{training} Proses 1.0 Map & MyMapper.map() & Subbab~\ref{subsubsec:Modul Train Naive Bayes M-R Based} \\ \hline
+	2 & DFD level 1 modul \textit{training}: Proses 1.2 Reduce & MyReducer.reduce() & Subbab~\ref{subsubsec:Modul Train Naive Bayes M-R Based} \\ \hline
+	3 & DFD level 1 modul \textit{testing}: Proses 1.0 Map & MyMapper.map() & Subbab~\ref{subsubsec:Modul Testing Naive Bayes M-R Based} \\ \hline
+	4 & DFD level 1 modul \textit{testing}: Proses 1.2 Reduce & MyReducer.reduce() & Subbab~\ref{subsubsec:Modul Testing Naive Bayes M-R Based} \\ \hline
 	\end{tabular}
 \end{table}
 
@@ -1061,11 +1067,11 @@ Berikut merupakan penjelasan 3 kelas 3 kelas utama untuk menangani proses \texti
 
 \begin{enumerate}
 \item{App.class} \\
-Kelas ini akan menjadi kelas utama yang akan menjalankan operasi \textit{testing} maupun \textit{training} yang berbasis \textit{MapReduce}. Pada kelas ini akan ditentukan pula kelas mana saja yang akan dijadikan sebagai kelas mapper dan kelas reducer nya, begitu juga dengan pasangan \textit{key} dan \textit{value} untuk \textit{input} dan untuk \textit{output} di setiap kelas.
+Kelas ini menjadi kelas utama yang menjalankan operasi \textit{testing} maupun \textit{training} yang berbasis \textit{MapReduce}. Pada kelas ini ditentukan pula kelas mana saja yang dijadikan sebagai kelas mapper dan kelas reducer nya, begitu juga dengan pasangan \textit{key} dan \textit{value} untuk \textit{input} dan untuk \textit{output} di setiap kelas.
 \item{MyMapper.class} \\
-Kelas ini akan menjalankan operasi pada fase map untuk proses training dan testing berbasis \textit{MapReduce}.
+Kelas ini menjalankan operasi pada fase map untuk proses training dan testing berbasis \textit{MapReduce}.
 \item{MyReducer.class} \\
-Kelas ini akan menjalankan operasi pada fase reduce untuk proses training dan testing berbasis \textit{MapReduce}.
+Kelas ini menjalankan operasi pada fase reduce untuk proses training dan testing berbasis \textit{MapReduce}.
 \end{enumerate}
 
 \subsubsection{Modul Klasifikasi \textit{Naive Bayes}}
@@ -1076,30 +1082,30 @@ Kelas ini akan menjalankan operasi pada fase reduce untuk proses training dan te
 	\label{fig:Diagram kelas modul klasifikasi naive bayes}
 \end{figure}
 
-Pada modul ini, akan dibuatkan 10 kelas utama dan 2 kelas yang bertipe emum untuk menangani proses klasifikasi menggunakan model yang telah dibuat sebelumnya. Kelas tersebut diantaranya adalah: 
+Pada modul ini, dibuatkan 10 kelas utama dan 2 kelas yang bertipe emum untuk menangani proses klasifikasi menggunakan model yang telah dibuat sebelumnya. Kelas tersebut diantaranya adalah: 
 \begin{enumerate}
 \item{\textit{TestingController.class}} \\
-Kelas ini merupakan kelas utama yang akan melakukan enkapsulasi seluruh proses penting yang akan dijalankan pada proses klasifikasi.
+Kelas ini merupakan kelas utama yang melakukan enkapsulasi seluruh proses penting yang dijalankan pada proses klasifikasi.
 \item{\textit{TestingUtils.class}} \\
-Kelas ini akan menjadi kelas-pembantu pada kelas \textit{TestingController.class} untuk melakukan operasi - operasi yang dibutuhkan pada algoritma klasifikasi \textit{naive bayes}. Seperti perhitungan probabilitas posterior dan normal distribusi
+Kelas ini menjadi kelas-pembantu pada kelas \textit{TestingController.class} untuk melakukan operasi - operasi yang dibutuhkan pada algoritma klasifikasi \textit{naive bayes}. Seperti perhitungan probabilitas posterior dan normal distribusi
 \item{\textit{BayesianModel.class}} \\
 Kelas ini merupakan kelas utama untuk merepresentasikan model klasifikasi \textit{naive bayes} yang telah dibuat sebelumnya.
 \item{\textit{ModelType.enum}} \\
-Enum ini akan menjadi tipe untuk setiap model yang ada pada kelas \textit{BayesianModel}. Enum tersebut terdiri antara: DISCRETE, NUMERIC, dan CLASS.
+Enum ini menjadi tipe untuk setiap model yang ada pada kelas \textit{BayesianModel}. Enum tersebut terdiri antara: DISCRETE, NUMERIC, dan CLASS.
 \item{\textit{ClassInfo.class}} \\
-Kelas ini akan merepresentasikan seluruh atribut kelas pada model klasifikasi \textit{naive bayes} yang telah dibuat sebelumnya.
+Kelas ini merepresentasikan seluruh atribut kelas pada model klasifikasi \textit{naive bayes} yang telah dibuat sebelumnya.
 \item{\textit{ClassInfoDetail.class}} \\
-Kelas ini merupakan ekstensi dari kelas \textit{ClassInfo.class}. Kelas ini akan menyimpan seluruh detail mengenai atribut kelas tertentu pada model \textit{naive bayes} yang sudah jadi.
+Kelas ini merupakan ekstensi dari kelas \textit{ClassInfo.class}. Kelas ini menyimpan seluruh detail mengenai atribut kelas tertentu pada model \textit{naive bayes} yang sudah jadi.
 \item{\textit{ErrorRate.class}} \\
-Kelas ini akan merepresentasikan perhitungan \textit{ErrorRate} yang dapat dihitung setelah melakukan testing terhadap model \textit{naive bayes} yang sudah jadi sebelumnya.
+Kelas ini merepresentasikan perhitungan \textit{ErrorRate} yang dapat dihitung setelah melakukan testing terhadap model \textit{naive bayes} yang sudah jadi sebelumnya.
 \item{\textit{ErrorType.enum}} \\
-Enum ini akan menjadi tipe untuk tiap error yang ada. Enum tersebut terdiri dari: $ACCURACY$, $PRECISION$, $RECALL$, dan $F_MEASURE$.
+Enum ini menjadi tipe untuk tiap error yang ada. Enum tersebut terdiri dari: $ACCURACY$, $PRECISION$, $RECALL$, dan $F_MEASURE$.
 \item{\textit{ConfusionMatrix.class}} \\
-Kelas ini akan merepresentasikan \textit{ConfusionMatrix} yang akan diperoleh setelah menjalani testing/klasifikasi pada model \textit{naive bayes} yang sudah jadi sebelumnya.
+Kelas ini merepresentasikan \textit{ConfusionMatrix} yang diperoleh setelah menjalani testing/klasifikasi pada model \textit{naive bayes} yang sudah jadi sebelumnya.
 \item{\textit{ConfusionMatrixDetail.class}} \\
-Kelas ini merupakan ekstensi dari kelas \textit{ConfusionMatrix.class}. Kelas ini akan menyimpan seluruh detail yang dimiliki oleh tiap instansiasi dari kelas \textit{ConfusionMatrix}.
+Kelas ini merupakan ekstensi dari kelas \textit{ConfusionMatrix.class}. Kelas ini menyimpan seluruh detail yang dimiliki oleh tiap instansiasi dari kelas \textit{ConfusionMatrix}.
 \item{\textit{PredictorInfo.class}} \\
-Kelas ini akan merepresentasikan sebagai seluruh atribut prediktor yang digunakan pada model \textit{naive bayes}.
+Kelas ini merepresentasikan sebagai seluruh atribut prediktor yang digunakan pada model \textit{naive bayes}.
 \item{\textit{PredictorInfoDetail.class}} \\
-Kelas ini merupakan kelas ekstensi dari kelas \textit{PredictorInfo.class}. Kelas ini akan menyimpan seluruh detail pad tiap instansiasi dari kelas \textit{PredictorInfo}.
+Kelas ini merupakan kelas ekstensi dari kelas \textit{PredictorInfo.class}. Kelas ini menyimpan seluruh detail pad tiap instansiasi dari kelas \textit{PredictorInfo}.
 \end{enumerate}

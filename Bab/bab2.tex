@@ -1,14 +1,14 @@
 %versi 2 (8-10-2016)
 \chapter{Landasan Teori}
 
-Pada bab ini akan dijelaskan beberapa dasar teori dan \textit{framework} yang akan digunakan dalam merancang dan membangun perangkat lunak untuk melakukan klasifikasi naive bayes pada sistem terdistribusi Hadoop. Dasar teori yang akan dijelaskan pada bab ini meliputi: (1) Penambangan data ; (2) \textit{Big data} ; (3) Sistem terdistribusi hadoop ; (4) \textit{Naive bayes classification} ; (5) \textit{Spring framework, maven, } dan \textit{thymeleaf}. \\
+Pada bab ini dijelaskan beberapa dasar teori dan \textit{framework} yang digunakan dalam merancang dan membangun perangkat lunak untuk melakukan klasifikasi naive bayes pada sistem terdistribusi Hadoop. Dasar teori yang dijelaskan pada bab ini meliputi: (1) Penambangan data ; (2) \textit{Big data} ; (3) Sistem terdistribusi hadoop ; (4) \textit{Naive bayes classification} ; (5) \textit{Spring framework, maven, } dan \textit{thymeleaf}. \\
 
 \section{Penambangan Data}
 
 \subsection{Definisi Penambangan Data}
 \textit{Data mining} (penambangan data) adalah suatu proses untuk menemukan suatu
 pengetahuan atau informasi yang berguna dari data berskala besar. Sering juga
-disebut sebagai bagian proses KDD (Knowledge Discovery in Databases) \cite{Piateski:1991:KDD:583310}. \textit{Data mining} akan melakukan pemecahan masalah dengan menganalisa data yang ada di dalam database dan sering juga didefinisikan sebagai proses menemukan pola dalam data, dimana proses tersebut harus otomatis atau semi-otomatis dan pola yang ditemukan harus bermakna \cite{DataMiningIntro:2015}.
+disebut sebagai bagian proses KDD (Knowledge Discovery in Databases) \cite{Piateski:1991:KDD:583310}. \textit{Data mining} melakukan pemecahan masalah dengan menganalisa data yang ada di dalam database dan sering juga didefinisikan sebagai proses menemukan pola dalam data, dimana proses tersebut harus otomatis atau semi-otomatis dan pola yang ditemukan harus bermakna \cite{DataMiningIntro:2015}.
 
 \textit{Data mining} secara umum adalah mengenai pembuatan sebuah model. Suatu model dari teknik \textit{data mining} merupakan suatu algoritma atau sekumpulan aturan yang menghubungkan suatu input data set dengan hasil dari output yang diinginkan. Sebuah model yang dibuat menggunakan teknik \textit{data mining} dapat memiliki tingkat akurasi yang tinggi dan juga tingkat akurasi yang rendah. Hal tersebut bergantung pada pemilihan data yang digunakan sebagai input dan output yang harus memiliki hubungan \cite{book:339389}.
 
@@ -22,7 +22,7 @@ disebut sebagai bagian proses KDD (Knowledge Discovery in Databases) \cite{Piate
 	\item \textit{Description and profiling}
 \end{itemize}
 
-Pada bagian ini, hanya akan dijelaskan mengenai teknik klasifikasi dan klustering.
+Pada bagian ini, hanya dijelaskan mengenai teknik klasifikasi dan klustering.
 
 \begin{enumerate}
 	\item{\textit{Classification}\cite{book:339389}}\\
@@ -30,15 +30,15 @@ Pada bagian ini, hanya akan dijelaskan mengenai teknik klasifikasi dan klusterin
 	
 	Algoritma klasifikasi adalah salah satu tugas data mining yang paling umum, tampaknya dewasa ini hal tersebut menjadi penting bagi perusahaan - perusahaan yang memiliki data transaksi. Disamping perusahaan, kita juga sebagai manusia secara terus-menerus mengklasifikasikan, mengkategorikan, dan melakukan penilaian terhadap sesuatu. 
 	
-	Klasifikasi memeriksa atribut dari objek baru yang diberikan dan dilemparkan ke dalam model standar klasifikasi yang sudah ada. Objek yang akan diklasifikasikan umumnya diwakili oleh \textit{record - record} dalam tabel database atau file, dan tindakan klasifikasi terdiri dari menambahkan kolom (\textit{field}) baru dengan kode kelas (\textit{kelompok}) dari beberapa jenis kelas. Tugas kita adalah untuk membangun model dari beberapa jenis \textit{dataset} yang dapat diterapkan pada data yang belum terklasifikasi untuk diklasifikasikan ke dalam kelompok yang sudah ada. Berikut merupakan beberapa contoh dari penerapan teknik klasifikasi:
+	Klasifikasi memeriksa atribut dari objek baru yang diberikan dan dilemparkan ke dalam model standar klasifikasi yang sudah ada. Objek yang diklasifikasikan umumnya diwakili oleh \textit{record - record} dalam tabel database atau file, dan tindakan klasifikasi terdiri dari menambahkan kolom (\textit{field}) baru dengan kode kelas (\textit{kelompok}) dari beberapa jenis kelas. Tugas kita adalah untuk membangun model dari beberapa jenis \textit{dataset} yang dapat diterapkan pada data yang belum terklasifikasi untuk diklasifikasikan ke dalam kelompok yang sudah ada. Berikut merupakan beberapa contoh dari penerapan teknik klasifikasi:
 \begin{itemize}
 	\item Klasifikasi calon pengguna kartu kredit yang memiliki resiko rendah, sedang, atau tinggi.
-	\item Memilih konten yang akan ditampilkan pada halaman Web.
+	\item Memilih konten yang ditampilkan pada halaman Web.
 	\item Menentukan nomor telepon sesuai dengan mesin faks.
 	\item Menentukan potensi dari klaim asuransi palsu.
 \end{itemize}
 	\item{\textit{Clustering}\cite{book:339389}} \\
-	Klustering juga merupakan algoritma mesin learning yang bersifat tidak terawasi (\textit{unsupervised learning}). Dimana dalam pembuatan modelnya tidak diperlukan data latih (umumnya disebut sebagai \textit{data training}) terlebih dahulu. Klustering akan mengelompokkan sejumlah data yang memiliki kemiripan yang tinggi. Berikut merupakan beberapa contoh dari penerapan teknik klustering:
+	Klustering juga merupakan algoritma mesin learning yang bersifat tidak terawasi (\textit{unsupervised learning}). Dimana dalam pembuatan modelnya tidak diperlukan data latih (umumnya disebut sebagai \textit{data training}) terlebih dahulu. Klustering mengelompokkan sejumlah data yang memiliki kemiripan yang tinggi. Berikut merupakan beberapa contoh dari penerapan teknik klustering:
 \begin{itemize}
 	\item Mencari distribusi penjualan suatu barang tertentu berdasarkan lokasi tempat tinggal konsumen.
 	\item Mencari distribusi penjualan suatu barang tertentu berdasarkan tingkat penghasilan konsumen.
@@ -63,13 +63,13 @@ Gambar 2.1 menyatakan langkah-langkah untuk menemukan pengetahuan dan proses-pro
 	\item{Integrasi data} \\
 	Pada fase ini, beberapa sumber data yang heterogen digabungkan menjadi satu.
 	\item{Pemilihan Data} \\
-	Fase ini adalah fase dimana data dipilih, data yang relevan akan dipilih dari koleksi data pada fase sebelumnya.
+	Fase ini adalah fase dimana data dipilih, data yang relevan dipilih dari koleksi data pada fase sebelumnya.
 	\item{Transformasi Data} \\
 	Pada fase ini data yang dipilih ditransformasi sehingga memiliki bentuk yang layak untuk ditambang.
 	\item{Penambangan Data} \\
 	Fase ini adalah fase dimana teknik-teknik penambangan (termasuk Algoritma Apriori) digunakan untuk mencari pola yang memiliki potensi.
 	\item{Evaluasi Pola} \\
-	Pada fase ini, pola yang menarik akan diidentifikasi dan dianalisis sehingga dapat menghasilkan pengetahuan yang baru.
+	Pada fase ini, pola yang menarik diidentifikasi dan dianalisis sehingga dapat menghasilkan pengetahuan yang baru.
 	\item{Penyimpulan Pengetahuan} \\
 	Fase terakhir ini adalah fase dimana pengetahuan yang baru ditemukan itu direpresentasikan kepada pengguna.
 \end{itemize}
@@ -77,7 +77,7 @@ Gambar 2.1 menyatakan langkah-langkah untuk menemukan pengetahuan dan proses-pro
 \section{{\it Big Data}}
 
 \subsection{Definisi {\it Big Data}}
-{\it Big Data} merupakan suatu terminologi modern untuk sekumpulan data yang memiliki kesulitan tersendiri untuk diproses dengan cara tradisional (menggunakan satu buah komputer) \cite{zikopoulos2011understanding}. Dewasa ini perusahaan - perusahaan tengah menghadapi tantangan - tantangan yang ada pada {\it Big Data}, karena pertumbuhan data yang sudah semakin cepat dan grafik jumlah pengguna internet yang semakin menaik setiap saat. Mereka mendapatkan akses pada data/informasi tersebut tetapi tidak tahu cara mengambil informasi yang berguna pada data tersebut karena format dari data tersebut yang semi bahkan ada yang tidak terstruktur dan juga ukuran-nya yang sangat besar ; Cukup kebingungan apakah data tersebut akan berguna apabila terus disimpan. Karena, dapat dapat menyebabkan {\it memory overload}.
+{\it Big Data} merupakan suatu terminologi modern untuk sekumpulan data yang memiliki kesulitan tersendiri untuk diproses dengan cara tradisional (menggunakan satu buah komputer) \cite{zikopoulos2011understanding}. Dewasa ini perusahaan - perusahaan tengah menghadapi tantangan - tantangan yang ada pada {\it Big Data}, karena pertumbuhan data yang sudah semakin cepat dan grafik jumlah pengguna internet yang semakin menaik setiap saat. Mereka mendapatkan akses pada data/informasi tersebut tetapi tidak tahu cara mengambil informasi yang berguna pada data tersebut karena format dari data tersebut yang semi bahkan ada yang tidak terstruktur dan juga ukuran-nya yang sangat besar ; Cukup kebingungan apakah data tersebut berguna apabila terus disimpan. Karena, dapat dapat menyebabkan {\it memory overload}.
 
 {\it Big Data} tidak melulu berasal dari internet, di dalam kehidupan kita sehari - hari sering kali kita berurusan dengan data, seperti data pada sensor sidik jari ketika absensi, data pembelian pada supermarket, data sensor kelembaban udara pada 10 tahun terakhir untuk memprediksi cuaca, kenaikan dan penurunan harga saham, {\it bitcoin}, dsb. {\it Big Data} menjadi topik yang diminati karena dengan data yang begitu banyak, dapat diteliti pola yang terjadi pada data tersebut selama beberapa kurun waktu tertentu untuk digunakan dalam menganalisis data dan membuat keputusan serta memberikan prediksi kemunculan data berikutnya dengan tingkat akurasi yang tinggi berdasarkan data yang dipelajari. Perusahaan - perusahaan saat ini tengah memulai untuk mengumpulkan setiap data yang dapat mereka peroleh dari {\it customer} untuk melihat pola aktifitas {\it customer} mereka dan membuat keputusan yang dapat menguntungkan perusahaan berdasarkan hal tersebut. Tentu saja hal ini tidak dapat dilakukan menggunakan teknik komputasi yang tradisional (menggunakan satu buah komputer berteknologi tinggi), karena biaya dan waktu yang terlalu mahal dan lama.
 
@@ -121,13 +121,13 @@ Berikut merupakan beberapa contoh \textit{big data} dan pemanfaatannya diberbaga
 		\item \textit{Support Large Cluster or Node}.
 		Jumlah node yang digunakan dapat mencapai ratusan bahkan ribuan node.
 		\item \textit{Support Parallel Processing Data}.
-		Proses yang dijalankan oleh hadoop dapat berjalan secara bersamaan pada cluster. Sehingga, kebutuhan akan waktu pengerjaan akan berkurang sebanding dengan banyaknya node yang dipakai.
+		Proses yang dijalankan oleh hadoop dapat berjalan secara bersamaan pada cluster. Sehingga, kebutuhan waktu pengerjaan berkurang sebanding dengan banyaknya node yang dipakai.
 		\item \textit{Distributed Data}.
-		Hadoop akan menangani pendistribusian data kepada setiap node pada cluster dan melakukan replikasi data untuk seluruh cluster.
+		Hadoop menangani pendistribusian data kepada setiap node pada cluster dan melakukan replikasi data untuk seluruh cluster.
 		\item \textit{Automatic Failover Management}.
-		Jika cluster/node mengalami kerusakan (\textit{fail}), maka hadoop secara otomatis akan membebankan proses yang dikerjakan oleh cluster/node yang mengalami kerusakan tersebut kepada node node baru yang siap dan melakukan replikasi seluruh konfigurasi dan data dari node yang mengalami kerusakan tersebut ke node node baru.
+		Jika cluster/node mengalami kerusakan (\textit{fail}), maka hadoop secara otomatis membebankan proses yang dikerjakan oleh cluster/node yang mengalami kerusakan tersebut kepada node node baru yang siap dan melakukan replikasi seluruh konfigurasi dan data dari node yang mengalami kerusakan tersebut ke node node baru.
 		\item \textit{Data Locality Optimization}.
-		Menggunakan konsep \textit{move-code-to-data}. Daripada menggunakan metode yang biasa digunakan, memasukan seluruh input ke dalam suatu kode, yang akan mengakibatkan \textit{bottleneck} pada jaringan transfer karena \textit{bandwidth} yang dibutuhkan tidak mampu melakukan transfer data yang sangat besar, lebih baik jika data tetap disimpan pada tempatnya,lalu kode kita yang dipindahkan ke tempat data tersebut berada. Karena, besaran file kode pasti akan jauh lebih kecil daripada data yang berukuran sangat besar. Sehingga, akan sangat menghemat waktu proses transfer yang berjalan.
+		Menggunakan konsep \textit{move-code-to-data}. Daripada menggunakan metode yang biasa digunakan, memasukan seluruh input ke dalam suatu kode, yang mengakibatkan \textit{bottleneck} pada jaringan transfer karena \textit{bandwidth} yang dibutuhkan tidak mampu melakukan transfer data yang sangat besar, lebih baik jika data tetap disimpan pada tempatnya,lalu kode kita yang dipindahkan ke tempat data tersebut berada. Karena, besaran file kode pasti jauh lebih kecil daripada data yang berukuran sangat besar. Sehingga, sangat menghemat waktu proses transfer yang berjalan.
 	\item \textit{Heterogeneous Cluster}.
 	Suatu *cluster, dapat terdiri dari komputer yang berbeda - beda spesifikasi, merek, maupun OS. Hal ini dapat memudahkan kita untuk membangun suatu \textit{commodity hardware}.
 	\item \textit{Scalability}.
@@ -135,7 +135,7 @@ Berikut merupakan beberapa contoh \textit{big data} dan pemanfaatannya diberbaga
 	\end{enumerate}
 	
 	\subsection{Cara Kerja Hadoop}
-	Hadoop menggunakan model pemrograman yang cukup sederhana untuk memproses data - data yang berukuran sangat besar melewati beberapa cluster mesin dan tempat penyimpanan memori yang terdistribusi. Oleh karena cara kerja hadoop yang menggunakan beberapa cluster mesin secara terdistribusi, besar kemungkinan untuk terjadi kegagalan dalam cluster tersebut pada saat ada proses yang sedang berjalan. Tetapi, kita tidak perlu khawatir dan mempersiapkan mekanisme penanganan untuk mengatasi hal tersebut, karena Hadoop sudah secara otomatis menangani hal tersebut agar apabila terjadi kegagalan (\textit{failure}) pada 1 atau lebih cluster/node, Hadoop akan mendistribusikan proses beserta seluruh sumber daya yang dibutuhkan oleh proses tersebut kepada mesin lain yang siap (\textit{available}). Hadoop sudah memiliki skema khusus untuk melindungi metadata dari kumpulan - kumpulan dataset yang berjumlah besar agar tidak hilang secara tidak sengaja, sehingga sangat aman digunakan (memiliki toleransi tinggi terhadap \textit{node failures}). Tahapan cara kerja hadoop adalah \cite{Holmes:2012:HP:2543981} : 
+	Hadoop menggunakan model pemrograman yang cukup sederhana untuk memproses data - data yang berukuran sangat besar melewati beberapa cluster mesin dan tempat penyimpanan memori yang terdistribusi. Oleh karena cara kerja hadoop yang menggunakan beberapa cluster mesin secara terdistribusi, besar kemungkinan untuk terjadi kegagalan dalam cluster tersebut pada saat ada proses yang sedang berjalan. Tetapi, kita tidak perlu khawatir dan mempersiapkan mekanisme penanganan untuk mengatasi hal tersebut, karena Hadoop sudah secara otomatis menangani hal tersebut agar apabila terjadi kegagalan (\textit{failure}) pada 1 atau lebih cluster/node, Hadoop mendistribusikan proses beserta seluruh sumber daya yang dibutuhkan oleh proses tersebut kepada mesin lain yang siap (\textit{available}). Hadoop sudah memiliki skema khusus untuk melindungi metadata dari kumpulan - kumpulan dataset yang berjumlah besar agar tidak hilang secara tidak sengaja, sehingga sangat aman digunakan (memiliki toleransi tinggi terhadap \textit{node failures}). Tahapan cara kerja hadoop adalah \cite{Holmes:2012:HP:2543981} : 
 	\begin{enumerate}
 		\item Membagi data input ke dalam bagian yang lebih kecil dan menyimpan setiap bagian dari data tersebut ke dalam node yang berbeda pada cluster.
 		\item Mereplikasi setiap bagian data tersebut kepada beberapa node yang berada di cluster yang sama maupun yang berbeda. Secara default direplikasi sebanyak 3 kali (\textit{default replication factor is 3}).
@@ -171,8 +171,8 @@ HDFS merupakan sebuah sistem penyimpanan terdistribusi yang menyediakan akses th
 			%\label{fig:IX-Secondary-NameNode}
 			%\end{figure}
 
-			Secondary NameNode merupakan MasterNode cadangan yang selalu aktif mencatat seluruh kegiatan dari NameNode untuk menjadi backup apabila server masternode yang utama mengalami kendala. Setiap transaksi yang dilakukan akan dicatat di dalam file editLog \footnote{File editLog adalah file yang menyimpan seluruh modifikasi yang dilakukan terhadap metadata}. Secondary NameNode akan memeriksa NameNode untuk menyimpan transaksi terbaru pada file editlog yang baru. Secondary NameNode akan membuat salinan dari fsImage \footnote{fsImage adalah file yang berisi snapshot lengkap mengenai metadata. Menyimpan semua blok yang dimiliki oleh suatu file dan file system property} dan editLog pada direktori \textit{checkpoint}. Setelah itu, ia akan menyimpan transaksi terbaru yang terjadi pada file editLog dan menyimpan seluruh informasi yang terbaru ke dalam \textit{compacted fsImage} baru. Secondary NameNode mengirim fsImage yang baru tersebut ke NameNode dan NameNode akan memilih fsImage yang baru tersebut. Proses ini akan berjalan setiap 1 jam sekali atau ketika besaran dari file editLog sudah mencapai 64MB. 
-			Seperti yang tertera pada gambar 2.2. Ketika NameNode baru dijalankan, ia akan membuat file fsImage dan file editLog dari disk. Lalu menuliskan semua transaksi ke dalam metadata dari editLog yang telah di salin ke dalam RAM. Setelah selesai, versi baru dari fsImage akan dikembalikan dari memori RAM kepada memori disk.
+			Secondary NameNode merupakan MasterNode cadangan yang selalu aktif mencatat seluruh kegiatan dari NameNode untuk menjadi backup apabila server masternode yang utama mengalami kendala. Setiap transaksi yang dilakukan dicatat di dalam file editLog \footnote{File editLog adalah file yang menyimpan seluruh modifikasi yang dilakukan terhadap metadata}. Secondary NameNode memeriksa NameNode untuk menyimpan transaksi terbaru pada file editlog yang baru. Secondary NameNode membuat salinan dari fsImage \footnote{fsImage adalah file yang berisi snapshot lengkap mengenai metadata. Menyimpan semua blok yang dimiliki oleh suatu file dan file system property} dan editLog pada direktori \textit{checkpoint}. Setelah itu, ia menyimpan transaksi terbaru yang terjadi pada file editLog dan menyimpan seluruh informasi yang terbaru ke dalam \textit{compacted fsImage} baru. Secondary NameNode mengirim fsImage yang baru tersebut ke NameNode dan NameNode memilih fsImage yang baru tersebut. Proses ini berjalan setiap 1 jam sekali atau ketika besaran dari file editLog sudah mencapai 64MB. 
+			Seperti yang tertera pada gambar 2.2. Ketika NameNode baru dijalankan, ia membuat file fsImage dan file editLog dari disk. Lalu menuliskan semua transaksi ke dalam metadata dari editLog yang telah di salin ke dalam RAM. Setelah selesai, versi baru dari fsImage dikembalikan dari memori RAM kepada memori disk.
 		\end{enumerate}		
 		
 			%\begin{figure}
@@ -212,10 +212,10 @@ HDFS merupakan sebuah sistem penyimpanan terdistribusi yang menyediakan akses th
 				\item Client menghubungi NameNode dan memberikan nama file lokasi pada file yang ingin dibaca.
 				\item NameNode memvalidasi client untuk memeriksa permission yang dimiliki oleh user tersebut terhadap file yang diminta. 
 				\item NameNode memberikan respon kembali kepada client dengan memberikan \textit{first block ID} \footnote{First block ID merepresentasikan tempat penyimpanan 64MB pertama dari data yang diminta tersebut. Memberikan informasi seperti pada rak dan DataNode yang menyimpan blok pertama pada file yang diminta.} dengan seluruh DataNode yang memiliki salinan/replikasi dari file yang dimintanya tersebut.
-				\item Setiap DataNode yang memiliki salinan akan diurutkan berdasarkan yang terdekat sebelum dikirimkan kepada client.
+				\item Setiap DataNode yang memiliki salinan diurutkan berdasarkan yang terdekat sebelum dikirimkan kepada client.
 				\item Setelah informasi - informasi di atas diterima oleh client, client dapat menghubungi secara langsung DataNode yang berhubungan dan membaca file nya.
-				\item Jika DataNode yang digunakan pada saat melakukan operasi baca ke HDFS mengalami kerusakan, maka client akan langsung mengarahkan pembacaan ke DataNode yang lainnya yang memiliki replikasi dari data tersebut. Ilustrasi pada gambar 2.5.
-				\item Jika replikasi yang dibutuhkan pada DataNode lainnya tidak ada, maka operasi baca akan mengalami kagagalan \textit{fail}. Ilustrasi pada gambar 2.6.
+				\item Jika DataNode yang digunakan pada saat melakukan operasi baca ke HDFS mengalami kerusakan, maka client langsung mengarahkan pembacaan ke DataNode yang lainnya yang memiliki replikasi dari data tersebut. Ilustrasi pada gambar 2.5.
+				\item Jika replikasi yang dibutuhkan pada DataNode lainnya tidak ada, maka operasi baca mengalami kagagalan \textit{fail}. Ilustrasi pada gambar 2.6.
 				
 			\begin{figure}[h]
 				\centering
@@ -251,21 +251,21 @@ HDFS merupakan sebuah sistem penyimpanan terdistribusi yang menyediakan akses th
 			%\end{figure}
 			
 		\begin{enumerate}
-			\item Client akan menghubungi NameNode dan memberikan nama file dan lokasi yang diinginkan dari file yang akan di tulis.
+			\item Client menghubungi NameNode dan memberikan nama file dan lokasi yang diinginkan dari file yang ditulis.
 			\item NameNode memvalidasi client untuk memeriksa permission yang dimiliki oleh user tersebut terhadap lokasi untuk penulisan file tersebut.
-			\item NameNode akan membukakan sebuah stream untuk client melakukan operasi tulis. Data yang ditulis pada stream akan dipecah menjadi bagian - bagian kecil yang berukuran 4KB dan disimpan ke dalam queue.
-			\item Client membuka thread yang berbeda yang akan bertanggung jawab untuk menuliskan data dari queue ke dalam HDFS.
-			\item Thread akan menghubungi NameNode untuk meminta list dari DataNode yang dibutuhkan untuk menyalin replikasi dari data baru ini.
-			\item Client akan menghubungi secara langsung DataNode pertama dan melakukan penulisan hingga sukses.
-			\item Setelah sukses, tahap tersebut akan diulangi untuk setiap node yang mereplikasi data tersebut yang diberikan dari NameNode.
-			\item Setelah selesai, ACK akan diberikan kepada client untuk memberi informasi bahwa penulisan telah selesai dan berhasil.
-			\item Jika ketika sedang penulisan telah mencapai maksimum dari block size, maka client akan kembali menghubungi NameNode untuk meminta kumpulan DataNode berikutnya yang dapat dilakukan operasi tulis.
-			\item Jika telah selesai, maka client akan menutup stream, lalu queue akan dibersihkan kembali, dan metada dari NameNode akan diupdate.
-			\item Jika pada saat penulisan terjadi kegagalan, maka data yang dikirimkan setelah ACK terakhir yang diterima oleh client akan dikembalikan ke queue. Lalu didelegasikan ke DataNode yang baru dengan block id yang baru.
+			\item NameNode membukakan sebuah stream untuk client melakukan operasi tulis. Data yang ditulis pada stream dipecah menjadi bagian - bagian kecil yang berukuran 4KB dan disimpan ke dalam queue.
+			\item Client membuka thread yang berbeda yang bertanggung jawab untuk menuliskan data dari queue ke dalam HDFS.
+			\item Thread menghubungi NameNode untuk meminta list dari DataNode yang dibutuhkan untuk menyalin replikasi dari data baru ini.
+			\item Client menghubungi secara langsung DataNode pertama dan melakukan penulisan hingga sukses.
+			\item Setelah sukses, tahap tersebut diulangi untuk setiap node yang mereplikasi data tersebut yang diberikan dari NameNode.
+			\item Setelah selesai, ACK diberikan kepada client untuk memberi informasi bahwa penulisan telah selesai dan berhasil.
+			\item Jika ketika sedang penulisan telah mencapai maksimum dari block size, maka client kembali menghubungi NameNode untuk meminta kumpulan DataNode berikutnya yang dapat dilakukan operasi tulis.
+			\item Jika telah selesai, maka client menutup stream, lalu queue dibersihkan kembali, dan metada dari NameNode diupdate.
+			\item Jika pada saat penulisan terjadi kegagalan, maka data yang dikirimkan setelah ACK terakhir yang diterima oleh client dikembalikan ke queue. Lalu didelegasikan ke DataNode yang baru dengan block id yang baru.
 		\end{enumerate}
 		
 		%HDFS memiliki satu \textit{NameNode} untuk mengatur seluruh file system metadata dan beberapa \textit{DataNodes} untuk menyimpan dataset yang sudah ter-partisi (direpresentasikan sebagai b1,b2,b3,dst.). \\
-		%Ketika sekumpulan dataset masuk kedalam HDFS, HDFS akan mendistribusikan penyimpanan data pada tiap cluster yang berhubungan agar data tidak bercampur aduk dan dapat diambil dengan cepat. Biasanya HDFS memiliki blok data sebesar 64-128MB dan setiap partisi-nya akan di copy/replika-kan ke beberapa node secara acak, agar jika terjadi kegagalan dapat dengan cepat di-\textit{handle} dengan mesin lainnya.
+		%Ketika sekumpulan dataset masuk kedalam HDFS, HDFS mendistribusikan penyimpanan data pada tiap cluster yang berhubungan agar data tidak bercampur aduk dan dapat diambil dengan cepat. Biasanya HDFS memiliki blok data sebesar 64-128MB dan setiap partisi-nya di copy/replika-kan ke beberapa node secara acak, agar jika terjadi kegagalan dapat dengan cepat di-\textit{handle} dengan mesin lainnya.
 		
 %\begin{figure}
 %\centering
@@ -283,12 +283,12 @@ HDFS merupakan sebuah sistem penyimpanan terdistribusi yang menyediakan akses th
 	\label{fig:map_reduce}
 \end{figure}
 		
-		MapReduce merupakan framework yang dirancang untuk memproses data secara paralel terdistribusi yang memiliki performa dan efisiensi yang sangat tinggi. Jenis pekerjaan pada fase map dan reduce yang dapat dikerjakan oleh framework ini merupakan jenis pekerjaan yang tidak memiliki hubungan berkesinambungan di antara  tiap proses-nya, sehingga dapat berjalan secara bersama - sama (\textit{concurrent}). Hadoop membagi/memecah seluruh dataset yang ada ke dalam beberapa partisi dan mendistribusikannya ke dalam kelompok/\textit{cluster}. MapReduce memproses data di setiap server terhadap blok - blok data yang sudah dibagikan sebelumnya, sehingga akan sangat menghemat waktu pekerjaan yang dihabiskan \cite{Lam:1965594:HA}. \\
+		MapReduce merupakan framework yang dirancang untuk memproses data secara paralel terdistribusi yang memiliki performa dan efisiensi yang sangat tinggi. Jenis pekerjaan pada fase map dan reduce yang dapat dikerjakan oleh framework ini merupakan jenis pekerjaan yang tidak memiliki hubungan berkesinambungan di antara  tiap proses-nya, sehingga dapat berjalan secara bersama - sama (\textit{concurrent}). Hadoop membagi/memecah seluruh dataset yang ada ke dalam beberapa partisi dan mendistribusikannya ke dalam kelompok/\textit{cluster}. MapReduce memproses data di setiap server terhadap blok - blok data yang sudah dibagikan sebelumnya, sehingga sangat menghemat waktu pekerjaan yang dihabiskan \cite{Lam:1965594:HA}. \\
 		Terdapat 3 fase utama pada MapReduce, yaitu fase \textit{map}, fase \textit{shuffle}, dan fase \textit{reduce}. 
 		\begin{enumerate}
 			\item Pada fase \textit{map}, melakukan \textit{convert} tiap partisi dari input kedalam pasangan \textit{key/value} (seperti pada struktur data HashMap) lalu menggabungkan setiap \textit{value} yang memiliki \textit{key} yang sama.
-			\item Pada fase shuffle, hasil keluaran dari fase Map akan di sort berdasarkan key dan pasangan \textit{key/value} tersebut akan di kirimkan ke reducer node yang menerima pasangan \textit{key/value} yang sesuai.
-			\item Pada fase \textit{reduce}, algoritma menerima sebuah pasangan key dengan himpunan dari value yang memiliki hubungan dengan key tersebut, lalu melakukan suatu proses yang nantinya akan menjadi keluaran dari program MapReduce.
+			\item Pada fase shuffle, hasil keluaran dari fase Map di sort berdasarkan key dan pasangan \textit{key/value} tersebut di kirimkan ke reducer node yang menerima pasangan \textit{key/value} yang sesuai.
+			\item Pada fase \textit{reduce}, algoritma menerima sebuah pasangan key dengan himpunan dari value yang memiliki hubungan dengan key tersebut, lalu melakukan suatu proses yang nantinya menjadi keluaran dari program MapReduce.
 		\end{enumerate} 
 		
 	Beberapa komponen utama dari \textit{MapReduce} terdiri dari \textit{JobTracker} dan \textit{TaskTracker}.
@@ -312,7 +312,7 @@ HDFS merupakan sebuah sistem penyimpanan terdistribusi yang menyediakan akses th
 \label{fig:Arsitektur YARN-1}
 \end{figure}
 		
-Pada YARN setiap pekerjaan akan memiliki JobTracker-nya masing - masing dan pada suatu cluster dapat memiliki beberapa JobTracker yang sedang bekerja. Setiap JobTracker pada node yang berbeda akan bisa berjalan pada software yang berbeda. Hal ini yang mendukung model  dari \textit{Heterogeneous Cluster}.
+Pada YARN setiap pekerjaan memiliki JobTracker-nya masing - masing dan pada suatu cluster dapat memiliki beberapa JobTracker yang sedang bekerja. Setiap JobTracker pada node yang berbeda bisa berjalan pada software yang berbeda. Hal ini yang mendukung model  dari \textit{Heterogeneous Cluster}.
 
 %\begin{figure}[ht]
 %\centering
@@ -349,11 +349,11 @@ Reducer berfungsi untuk mengurangi data yang tidak diperlukan (misal : data yang
 %\end{figure}
 
 \begin{enumerate}
-	\item MapReduce akan membaca setiap line dari input yang akan dijadikan sebagai input dari fase Map. Setiap line yang dibaca oleh fase Map merupakan pasangan \textit{key/value} dari line yang menjadi input tersebut (sebagai value) dan offset dari text tersebut terhadap awal file (sebagai key).
-	\item Fase map akan dijalankan sesuai apa yang kita perintahkan/implementasikan pada program Map yang dibuat. Keluaran dari fase Map merupakan pasangan \textit{key/value} yang telah diproses.
-	\item Keluaran dari fungsi map sebelum dijadikan sebagai hasil input dari fungsi reduce akan diproses oleh fase \textit{Shuffle and Sort}. Pada fase Shuffle and Sort, hasil keluaran dari fungsi map akan diakumulasi dan pengurutan. Untuk setiap key yang sama akan dikelompokan kedalam sebuah pasangan \textit{key/value} baru yang isinya merupakan key dari input tersebut dan value nya merupakan list dari seluruh pasangan \textit{key/value} yang memiliki key sama.
-	\item Setelah output fungsi map melewati proses shuffle and sort, maka output tersebut akan terurut berdasarkan key. Sehingga, reducer akan dengan tepat melihat key dan seluruh value yang bersangkutan, yang sudah ditetapkan untuk diproses pada reducer node yang akan menjalankan tugasnya.
-	\item Pada fase reduce, akan dijalankan fungsi reduce yang sudah diimplementasikan sebelumnya untuk memproses pasangan dari \textit{key/list-of-value-key} menjadi hasil yang dibutuhkan.
+	\item MapReduce membaca setiap line dari input yang dijadikan sebagai input dari fase Map. Setiap line yang dibaca oleh fase Map merupakan pasangan \textit{key/value} dari line yang menjadi input tersebut (sebagai value) dan offset dari text tersebut terhadap awal file (sebagai key).
+	\item Fase map dijalankan sesuai apa yang kita perintahkan/implementasikan pada program Map yang dibuat. Keluaran dari fase Map merupakan pasangan \textit{key/value} yang telah diproses.
+	\item Keluaran dari fungsi map sebelum dijadikan sebagai hasil input dari fungsi reduce diproses oleh fase \textit{Shuffle and Sort}. Pada fase Shuffle and Sort, hasil keluaran dari fungsi map diakumulasi dan pengurutan. Untuk setiap key yang sama dikelompokan kedalam sebuah pasangan \textit{key/value} baru yang isinya merupakan key dari input tersebut dan value nya merupakan list dari seluruh pasangan \textit{key/value} yang memiliki key sama.
+	\item Setelah output fungsi map melewati proses shuffle and sort, maka output tersebut terurut berdasarkan key. Sehingga, reducer dengan tepat melihat key dan seluruh value yang bersangkutan, yang sudah ditetapkan untuk diproses pada reducer node yang menjalankan tugasnya.
+	\item Pada fase reduce, dijalankan fungsi reduce yang sudah diimplementasikan sebelumnya untuk memproses pasangan dari \textit{key/list-of-value-key} menjadi hasil yang dibutuhkan.
 \end{enumerate}
 
 		
@@ -387,16 +387,16 @@ P(B|A) adalah probabilitas posterior dari B jika diberikan A
 
 	 \textit{Bayes Optimal Classifier} menghitung peluang dari satu kelas dari masing-masing kelompok atribut yang ada dan menentukan kelas mana yang paling optimal. Teori bayes memiliki asumsi bahwa probabilitas P(A|B) atau peluang kejadian A bila B terjadi tidak saling berhubungan dengan setiap kemungkinan dari nilai B yang diberikan (\textit{naive}). Hal ini disebut sebagai \textit{class conditional independence} . Sehingga memudahkan perhitungan yang dilakukan pada saat klasifikasi. Kemungkinan terjadinya kejadian A bila diberikan kejadian B dapat dihitung dengan menggunakan rumus diatas, yaitu mengalikan peluang dari kejadian B jika diberikan kejadian A dikalikan dengan peluang seluruh kejadian A dan dibagi dengan peluang dari seluruh kejadian B.
 
-	Seperti yang ditulis pada \cite{rish2001empirical}, \textit{naive bayes classifier} dapat didefinisikan sebagai berikut. Variabel - variabel dilambangkan dengan menggunakan huruf kapital seperti $X_i$, dan nilai-nya akan dilambangkan dengan huruf kecil seperti $x_i$, dan kumpulan dari variabel akan dilambangkan dengan huruf tebal seperti \textbf{$X$}.
+	Seperti yang ditulis pada \cite{rish2001empirical}, \textit{naive bayes classifier} dapat didefinisikan sebagai berikut. Variabel - variabel dilambangkan dengan menggunakan huruf kapital seperti $X_i$, dan nilai-nya dilambangkan dengan huruf kecil seperti $x_i$, dan kumpulan dari variabel dilambangkan dengan huruf tebal seperti \textbf{$X$}.
 
-Berdasarkan persamaan pada~\ref{eq:1}, untuk dataset $X$ dan sebuah kelas $C$, didapatkan persamaan seperti $P(C=c|X=x) = \dfrac{P(X=x|C=c)P(C=c)}{P(X=x)}$. Karena, $P(X=x)$ adalah sama untuk setiap kelas, maka bisa diabaikan. Oleh karena itu, maka fungsi dikriminan dapat ditulis menjadi $f^x = P(X=x|C=c)$, dimana $P(X=x|C=c)$ disebut sebagai CPD (\textit{class-conditional probability distribution}).
+Berdasarkan persamaan pada~\ref{eq:1}, untuk dataset $X$ dan sebuah kelas $C$, didapatkan persamaan seperti $P(C=c|X=x) = \dfrac{P(X=x|C=c)P(C=c)}{P(X=x)}$. Karena, $P(X=x)$ adalah sama untuk setiap kelas, maka bisa diabaikan. Oleh karena itu, maka fungsi dikriminan dapat ditulis menjadi $f^x = P(X=x|C=c)P(C=c)$, dimana $P(X=x|C=c)$ disebut sebagai CPD (\textit{class-conditional probability distribution}).
 
 Untuk menghitung nilai $P(C=c|X)$ (\textit{X merupakan dataset yang digunakan sebagai predictor}) dengan mengasumsikan bahwa masing - masing atribut tidak saling bergantung dengan atribut lainnya \textit{class conditional independence}, maka didapat : 
 \begin{equation}
 	P(C=c|X) = P(x_1|c) P(x_2|c) ... P(x_n|c) P(C=c)
 \end{equation}
 
-Sebuah dataset dapat ditentukan klasifikasi-nya dengan algoritma naive bayes setelah dihitung semua kemungkinan dari nilai $P(c_k|X)$ dan untuk nilai keluaran yang paling besar akan dipilih menjadi kelas yang paling optimal dari dataset tersebut.
+Sebuah dataset dapat ditentukan klasifikasi-nya dengan algoritma naive bayes setelah dihitung semua kemungkinan dari nilai $P(c_k|X)$ dan untuk nilai keluaran yang paling besar dipilih menjadi kelas yang paling optimal dari dataset tersebut.
 
 \textit{MAP Maximum A Posteriori}
 		\begin{equation}
@@ -413,7 +413,7 @@ Sebuah dataset dapat ditentukan klasifikasi-nya dengan algoritma naive bayes set
 \subsection{\textit{Zero-Frequency Problem} \cite{PeughMissing:2004}}
 \label{subsec:Zero-Frequency Problem}
 
-Ketika ada suatu nilai dari atribut prediktor yang tidak memiliki frekuensi kemunculan sama sekali terhadap setiap kelas (frekuensi=0), maka nilai 1 akan ditambahkan kepada setiap kombinasi dari frekuensi dari atribut terhadap tiap kelas. Pendekatan yang digunakan untuk dalam mengatasi hal ini adalah dengan menggunakan metode \textit{Laplacian Correction}. Pada metode tersebut, dikatakan bahwa kita perlu menambah nilai 1 kepada seluruh nilai pada table frekuensi untuk mengatasi masalah \textit{zero-frequency problems}. Asumsikan training database (D) itu sangat besar, dimana menambahkan frekuensi sebanyak 1 ke setiap jumlah perhitungan yang kita perlukan tidak akan memberikan pengaruh yang besar terhadap nilai kemungkinan akhir (Laplacian correction / Laplace estimator).
+Ketika ada suatu nilai dari atribut prediktor yang tidak memiliki frekuensi kemunculan sama sekali terhadap setiap kelas (frekuensi=0), maka nilai 1 ditambahkan kepada setiap kombinasi dari frekuensi dari atribut terhadap tiap kelas. Pendekatan yang digunakan untuk dalam mengatasi hal ini adalah dengan menggunakan metode \textit{Laplacian Correction}. Pada metode tersebut, dikatakan bahwa kita perlu menambah nilai 1 kepada seluruh nilai pada table frekuensi untuk mengatasi masalah \textit{zero-frequency problems}. Asumsikan training database (D) itu sangat besar, dimana menambahkan frekuensi sebanyak 1 ke setiap jumlah perhitungan yang kita perlukan tidak memberikan pengaruh yang besar terhadap nilai kemungkinan akhir (Laplacian correction / Laplace estimator).
 
 \subsection{Prediktor Numerik \cite{garg2013design}}
 
@@ -431,7 +431,90 @@ Ketika suatu atribut prediktor memiliki data bersifat kontinu atau numerik, terd
 	\textit{n} $=$ jumlah kemunculan atribut terhadap kelas
 	
 	
-\end{enumerate}	
+\end{enumerate}
+
+\subsection{Pengukuran \textit{Naive Bayes Classifier}}
+
+Pengukuran dari sebuah model NBC (\textit{Naive Bayes Classifier}) dapat dilakukan dengan melihat kepada contoh tabel \textit{confusion matrix}~\ref{tab:conf_matrix}. Dapat dilihat pada tabel~\ref{tab:conf_matrix}, bahwa kolom pada \textit{confusion matrix} menyatakan nilai dari kelas hasil klasifikasi model NBC dan baris pada \textit{confusion matrix} menyatakan nilai sebenarnya dari data yang diklasifikasi. Terdapat beberapa istilah yang umum digunakan pada perhitungan model klasifikasi, diantaranya adalah sebagai berikut:
+\begin{enumerate}
+	\item \texttt{TP =} data yang secara benar diklasifikasikan ke dalam kategori positif.
+	\item \texttt{FP =} data yang secara tidak benar diklasifikasikan ke dalam kategori positif (data sebenarnya bernilai negatif).
+	\item \texttt{TN =} data yang secara benar diklasifikasikan ke dalam kategori negatif.
+	\item \texttt{FN =} data yang secara tidak benar diklasifikasikan ke dalam kategori negatif (data sebenarnya bernilai positif).
+\end{enumerate}
+
+\begin{table}[h]
+\label{tab:conf_matrix}
+\centering
+\caption{Contoh \textit{Confusion Matrix}}
+\begin{tabular}{ | c | c | c | c | }
+\hline
+ & $Predicted=c_1$ & $Predicted=c_2$ & $Predicted=c_3$ \\ \hline \hline
+$Actual=c_1$ & $r$ & $s$ & $t$ \\ \hline
+$Actual=c_2$ & $u$ & $v$ & $w$ \\ \hline
+$Actual=c_3$ & $x$ & $y$ & $z$ \\ \hline
+\end{tabular}
+\end{table}
+
+
+\textit{Confusion matrix} digunakan untuk menguji model NBC yang memiliki nilai atribut lebih dari 2 (\textit{multi-class classification}). Pada \textit{confusion matrix}, terdapat beberapa perhitungan evaluasi model NBC yang dapat diperoleh dari \textit{confusion matrix}, berikut merupakan penjelasan dari tiap perhitungan evaluasi yang digunakan.
+\begin{enumerate}
+	\item \textit{Accuracy}\\
+	\textit{Accuracy} merupakan perhitungan kesalahan sistematik untuk melakuakn evaluasi terhadap model klasifikasi. \textit{Accuracy} dapat dihasilkan dengan menghitung jumlah seluruh data yang nilai klasifikasi-nya sama dengan nilai sebenarnya pada data tersebut dibagi dengan keseluruhan dataset. Pada \textit{confusion matrix}, perhitungan \textit{accuracy} dapat dilakukan dengan menjumlahkan seluruh garis diagonal pada matrix dan membaginya dengan seluruh dataset seperti pada tabel~\ref{tab:confusion_accuracy}.
+	
+\begin{table}[H]
+\label{tab:confusion_accuracy}
+\centering
+\caption{\textit{Confusion Matrix - Accuracy}}
+\begin{tabular}{ | c | c | c | c | }
+\hline
+ & $Predicted=c_1$ & $Predicted=c_2$ & $Predicted=c_3$ \\ \hline \hline
+$Actual=c_1$ & $TP$ & $s$ & $t$ \\ \hline
+$Actual=c_2$ & $u$ & $TP$ & $w$ \\ \hline
+$Actual=c_3$ & $x$ & $y$ & $TP$ \\ \hline
+\end{tabular}
+\end{table}
+
+	 \textit{Accuracy} tidak selalu dapat diandalkan jika menghadapi sejumlah dataset yang tidak umum. Seperti contoh, pada sebuah dataset yang memiliki 2 buah kategori kelas, 100\% dari dataset tersebut berasal dari kategori A dan tidak ada yang berasal dari kategori B. Hal ini menjadikan model klasifikasi yang dibuat menjadi tidak berguna. Hal ini disebut sebagai \textit{accuracy paradox}. Ketika TP < FP, maka nilai \textit{accuracy} selalu meningkat ketika kita mengganti aturan dari klasifikasi untuk selalu mengeluarkan nilai B. Begitu juga sebaliknya, ketika TN < FN, maka hal yang sama terjadi. Untuk menangani hal tersebut, digunakan perhitungan \textit{precision}, \textit{recall}, dan \textit{f-measure} yang dijelaskan pada poin berikutnya.
+	 
+	 \item \textit{Precision}\\
+	 \textit{Precision}(biasa disebut juga sebagai \textit{positive predictive value}) merupakan pecahan dari suatu data contoh yang relevan dan diambil terhadap seluruh data yang diambil. Pada \textit{confusion matrix} \textit{precision} dapat diperoleh dengan perhitungan berikut:
+
+	 \begin{equation}
+	 	Recall = \dfrac{TP}{(TP + FP)}
+	 \end{equation}
+	 
+	 Dimana TP dan FP merupakan jumlah dari prediksi yang menghasilkan nilai \textit{true positive} dan \textit{false positive} pada kelas tertentu. Contoh ilustrasi pada gambar~\ref{fig:precision_recall}. 
+	 
+	\begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.5]{precision_recall}
+	\caption[\textit{Precision dan Recall}, diambil dari \url{https://en.wikipedia.org/wiki/Precision_and_recall}]{\textit{Precision dan Recall}, diambil dari \url{https://en.wikipedia.org/wiki/Precision_and_recall}}
+	\label{fig:precision_recall}
+\end{figure}
+
+	 \item \textit{Recall}\\
+	 \textit{Recall}(biasa disebut juga sebagai \textit{sensitivity}) merupakan pecahan dari suatu data contoh yang relevan dan diambil terhadap seluruh data yang relevan. Contoh ilustrasi pada gambar~\ref{fig:precision_recall}. Pada \textit{confusion matrix} \textit{recall} dapat diperoleh dengan perhitungan berikut:
+
+	 \begin{equation}
+	 	Recall = \dfrac{TP}{(TP + FN)}
+	 \end{equation}
+	Dimana TP dan FN merupakan jumlah dari prediksi yang menghasilkan nilai \textit{true positive} dan \textit{false negative} pada kelas tertentu. Contoh ilustrasi pada gambar~\ref{fig:precision_recall}. 	 
+	 
+	 \item \textit{F-Measure}\\
+	  \textit{F-Measure} merupakan suatu pengukuran yang mengkombinasikan pengukuran \textit{precision} dan pengukuran \textit{recall}. Berdasarkan dari rumus turunan oleh \textit{van Rijsbergen's}, diperoleh perhitungan yang efektif untuk menghitung \textit{F-Measure} adalah sebagai berikut:
+	 
+	 \begin{equation}
+	 	\dfrac{1}{\alpha \dfrac{1}{P} + (1 - \alpha)\dfrac{1}{R}}
+	 \end{equation}
+	 Dimana, $\alpha$ merupakan koefisien berat dari \textit{recall} dan \textit{precision}, biasanya digunakan $balanced F1$ untuk mengisi nilai $\alpha$ :
+	 \begin{equation}
+	 	\dfrac{2PR}{P + R}
+	 \end{equation}
+
+\end{enumerate}
+
+
 	
 \section{Framework Yang Digunakan Dalam Membangun Perangkat Lunak}
 
@@ -446,7 +529,7 @@ Ketika suatu atribut prediktor memiliki data bersifat kontinu atau numerik, terd
 \end{enumerate}
 Spring menyediakan model pemrograman terbuka yang komprehensif, kohesif, mudah dipahami serta memiliki \textit{library} yang lengkap untuk melakukan integrasi ke \textit{service - service} lain seperti \textit{Hadoop-client Library}, \textit{Mysql-connector Library}, dsb. Inti dari framework ini lebih kepada untuk membangun aplikasi web, mengatur manajemen transaksi, akses data, messaging, pengujian dsb. Kita bisa mengembangkan aplikasi web berbasis MVC dan \textit{Web-Service} framework \textit{REST-ful}\footnote{REST merupakan \textit{standard} dalam arsitektur web yang menggunakan Protocol HTTP untuk pertukaran data.  Konsep REST menekankan bahwa komunikasi yang terjadi antara \textit{client} dan \textit{server} hanya sebatas melakukan \textit{request} dan memberikan \textit{response} saja.} (\textit{Representational State Transfer}).
 
-\textit{Design pattern} yang digunakan pada perangkat lunak yang dibuat akan menggunakan konsep MVC (\textit{model view controler}). Spring memiliki fitur khusus untuk membuat web berbasiskan \textit{design pattern} MVC. Berikut merupakan ilustrasi(diambil dari \url{https://docs.spring.io/spring/docs/current/spring-framework-reference/html/images/mvc.png.pagespeed.ce.tmIzOTr1gg.png}) dari \textit{request workflow} pada \textit{Spring Web} MVC.
+\textit{Design pattern} yang digunakan pada perangkat lunak yang dibuat menggunakan konsep MVC (\textit{model view controler}). Spring memiliki fitur khusus untuk membuat web berbasiskan \textit{design pattern} MVC. Berikut merupakan ilustrasi(diambil dari \url{https://docs.spring.io/spring/docs/current/spring-framework-reference/html/images/mvc.png.pagespeed.ce.tmIzOTr1gg.png}) dari \textit{request workflow} pada \textit{Spring Web} MVC.
 \begin{figure}[h]
 	\centering
 	\includegraphics[scale=0.5]{GambarIO/mvc_springdocs}
@@ -455,20 +538,20 @@ Spring menyediakan model pemrograman terbuka yang komprehensif, kohesif, mudah d
 \end{figure}
 
 \begin{enumerate}
-	\item \textit{\textbf{Model}} melakukan enkapsulasi dari data yang ada pada aplikasi dan secara umum akan berisi POJO\footnote{Istilah POJO (\textit{Plain Old Java Object}) digunakan untuk menunjukkan objek java yang hanya berisi variable serta \textit{accessor} dan \textit{mutator} -nya tanpa ada method proses lainnya}.
+	\item \textit{\textbf{Model}} melakukan enkapsulasi dari data yang ada pada aplikasi dan secara umum berisi POJO\footnote{Istilah POJO (\textit{Plain Old Java Object}) digunakan untuk menunjukkan objek java yang hanya berisi variable serta \textit{accessor} dan \textit{mutator} -nya tanpa ada method proses lainnya}.
 	
-	\item \textit{\textbf{View}} bertanggung jawab untuk melakukan \textit{rendering} data dengan view HTML yang diinginkan, lalu akan men-\textit{generate} output berupa HTML yang dapat diinterpretasikan oleh \textit{browser}.
+	\item \textit{\textbf{View}} bertanggung jawab untuk melakukan \textit{rendering} data dengan view HTML yang diinginkan, lalu men-\textit{generate} output berupa HTML yang dapat diinterpretasikan oleh \textit{browser}.
 
-	\item \textit{\textbf{Controller}} bertanggung jawab untuk memproses \textit{request} dari user dan lalu perlu memberikan model sesuai dengan yang diminta yang nantinya akan diberikan ke \textit{view} untuk proses \textit{rendering}.
+	\item \textit{\textbf{Controller}} bertanggung jawab untuk memproses \textit{request} dari user dan lalu perlu memberikan model sesuai dengan yang diminta yang nantinya diberikan ke \textit{view} untuk proses \textit{rendering}.
 	
 \end{enumerate}
 
-%\textit{Design pattern} perangkat lunak yang dibangun akan mengusung konsep dari MVC milik \textit{spring} dan beberapa tambahan \textit{layer - layer} untuk mempermudah jalannya perangkat lunak nantinya. Berikut merupakan ilustrasi
+%\textit{Design pattern} perangkat lunak yang dibangun mengusung konsep dari MVC milik \textit{spring} dan beberapa tambahan \textit{layer - layer} untuk mempermudah jalannya perangkat lunak nantinya. Berikut merupakan ilustrasi
 
 \subsection{\textit{Maven} \cite{MengenalMaven2015EGunawan}}
-Apache Maven adalah software build tools / project management yang dibangun dibawah \textit{Apache Software Foundation} yang digunakan untuk melakukan proses building project. Jadi, ketika project akan dibuild menggunakan Maven, project tersebut bisa kita buka menggunakan IDE lain.
+Apache Maven adalah software build tools / project management yang dibangun dibawah \textit{Apache Software Foundation} yang digunakan untuk melakukan proses building project. Jadi, ketika project dibuild menggunakan Maven, project tersebut bisa kita buka menggunakan IDE lain.
 
-Selain itu, keuntungan menggunakan maven adalah mendukung dependency management. Artinya, ketika kita membutuhkan suatu library ke dalam project, kita tidak perlu men-\textit{download}-nya secara manual yang kemudian dimasukkan ke dalam project. Tetapi, tinggal memasukkan \textit{dependency} untuk library yang dibutuhkan tersebut dan maven akan menangani proses \textit{download} library dan kompilasi project menggunakan \textit{library} tersebut.  Dengan begitu, ukuran project menjadi lebih kecil karena tidak memasukkan library ke dalam project. \textit{Maven} menyimpan seluruh library yang pernah kita gunakan pada direktori \texttt{.m2} milik user.
+Selain itu, keuntungan menggunakan maven adalah mendukung dependency management. Artinya, ketika kita membutuhkan suatu library ke dalam project, kita tidak perlu men-\textit{download}-nya secara manual yang kemudian dimasukkan ke dalam project. Tetapi, tinggal memasukkan \textit{dependency} untuk library yang dibutuhkan tersebut dan maven menangani proses \textit{download} library dan kompilasi project menggunakan \textit{library} tersebut.  Dengan begitu, ukuran project menjadi lebih kecil karena tidak memasukkan library ke dalam project. \textit{Maven} menyimpan seluruh library yang pernah kita gunakan pada direktori \texttt{.m2} milik user.
 
 Untuk mendownload Apache Maven bisa langsung ke websitenya di \url{http://maven.apache.org/}. Versi terbaru dari Apache Maven adalah 3.5.0.
 
@@ -482,7 +565,7 @@ Sebagai \textit{framework open source}, \textit{Thymeleaf} memiliki lisensi Apac
 
 
 		%\paragraph{Perhitungan pada \textit{Naive Bayes Classifier}}
-		%Untuk mengetahui perhitungan pada algoritma \textit{Naive Bayes}, pertama kita perlu mengetahui dan mengikuti table kontigensi 2-by-2. Terdapat 4 kondisi/\textit{state} dari setiap data yang kita evaluasi. Jika data sebenarnya merupakan instansiasi dari klasifikasi yang sedang dicoba dan klasifikasi yang kita lakukan pun menyatakan bahwa data tersebut masuk kedalam klasifikasi yang sedang dicoba, maka ia akan memiliki state \textit{true positive}. Jika data sebenarnya benar terklasifikasi tetapi \textit{classifier} kita mengatakan tidak, maka ia akan memiliki state \textit{false negative}. Jika data sebenarnya memang tidak terklasifikasi tetapi \textit{classifier} kita membuktikan bahwa data tersebut terklasifikasi, maka ia akan memiliki state \textit{false positive}. Dan yang terakhir adalah jika data sebenarnya tidak termasuk kedalam klasifikasi tersebut, dan \textit{classifier} kita menyatakan bahwa data tersebut memang tidak terklasifikasi, maka ia akan memiliki state \textit{true negative}. \\
+		%Untuk mengetahui perhitungan pada algoritma \textit{Naive Bayes}, pertama kita perlu mengetahui dan mengikuti table kontigensi 2-by-2. Terdapat 4 kondisi/\textit{state} dari setiap data yang kita evaluasi. Jika data sebenarnya merupakan instansiasi dari klasifikasi yang sedang dicoba dan klasifikasi yang kita lakukan pun menyatakan bahwa data tersebut masuk kedalam klasifikasi yang sedang dicoba, maka ia memiliki state \textit{true positive}. Jika data sebenarnya benar terklasifikasi tetapi \textit{classifier} kita mengatakan tidak, maka ia memiliki state \textit{false negative}. Jika data sebenarnya memang tidak terklasifikasi tetapi \textit{classifier} kita membuktikan bahwa data tersebut terklasifikasi, maka ia memiliki state \textit{false positive}. Dan yang terakhir adalah jika data sebenarnya tidak termasuk kedalam klasifikasi tersebut, dan \textit{classifier} kita menyatakan bahwa data tersebut memang tidak terklasifikasi, maka ia memiliki state \textit{true negative}. \\
 
 %\begin{table}
 %\centering

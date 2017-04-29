@@ -1,0 +1,629 @@
+\chapter{Eksperimen Pembuatan Model dan Testing}
+\label{lamp:E}
+
+\section{Hasil Pembuatan Model dan Testing Dataset-1}
+\label{lamp:E-Hasil Pembuatan Model dan Testing Dataset-1}
+
+\subsection{Contoh Dataset-1}
+\label{lamp:E-Contoh Datase1-1}
+\begin{lstlisting}
+class,cap-shape,cap-surface,cap-color,bruises,odor,gill-attachment,gill-spacing,gill-size,gill-color,stalk-shape,stalk-root,stalk-surface-above-ring,stalk-surface-below-ring,stalk-color-above-ring,stalk-color-below-ring,veil-type,veil-color,ring-number,ring-type,spore-print-color,population,habitat
+p,x,s,n,t,p,f,c,n,k,e,e,s,s,w,w,p,w,o,p,k,s,u
+e,x,s,y,t,a,f,c,b,k,e,c,s,s,w,w,p,w,o,p,n,n,g
+e,b,s,w,t,l,f,c,b,n,e,c,s,s,w,w,p,w,o,p,n,n,m
+p,x,y,w,t,p,f,c,n,n,e,e,s,s,w,w,p,w,o,p,k,s,u
+e,x,s,g,f,n,f,w,b,k,t,e,s,s,w,w,p,w,o,e,n,a,g
+e,x,y,y,t,a,f,c,b,n,e,c,s,s,w,w,p,w,o,p,k,n,g
+e,b,s,w,t,a,f,c,b,g,e,c,s,s,w,w,p,w,o,p,k,n,m
+e,b,y,w,t,l,f,c,b,n,e,c,s,s,w,w,p,w,o,p,n,s,m
+p,x,y,w,t,p,f,c,n,p,e,e,s,s,w,w,p,w,o,p,k,v,g
+e,b,s,y,t,a,f,c,b,g,e,c,s,s,w,w,p,w,o,p,k,s,m
+e,x,y,y,t,l,f,c,b,g,e,c,s,s,w,w,p,w,o,p,n,n,g
+e,x,y,y,t,a,f,c,b,n,e,c,s,s,w,w,p,w,o,p,k,s,m
+e,b,s,y,t,a,f,c,b,w,e,c,s,s,w,w,p,w,o,p,n,s,g
+p,x,y,w,t,p,f,c,n,k,e,e,s,s,w,w,p,w,o,p,n,v,u
+e,x,f,n,f,n,f,w,b,n,t,e,s,f,w,w,p,w,o,e,k,a,g
+e,s,f,g,f,n,f,c,n,k,e,e,s,s,w,w,p,w,o,p,n,y,u
+e,f,f,w,f,n,f,w,b,k,t,e,s,s,w,w,p,w,o,e,n,a,g
+p,x,s,n,t,p,f,c,n,n,e,e,s,s,w,w,p,w,o,p,k,s,g
+p,x,y,w,t,p,f,c,n,n,e,e,s,s,w,w,p,w,o,p,n,s,u
+p,x,s,n,t,p,f,c,n,k,e,e,s,s,w,w,p,w,o,p,n,s,u
+e,b,s,y,t,a,f,c,b,k,e,c,s,s,w,w,p,w,o,p,n,s,m
+p,x,y,n,t,p,f,c,n,n,e,e,s,s,w,w,p,w,o,p,n,v,g
+e,b,y,y,t,l,f,c,b,k,e,c,s,s,w,w,p,w,o,p,n,s,m
+e,b,y,w,t,a,f,c,b,w,e,c,s,s,w,w,p,w,o,p,n,n,m
+e,b,s,w,t,l,f,c,b,g,e,c,s,s,w,w,p,w,o,p,k,s,m
+p,f,s,w,t,p,f,c,n,n,e,e,s,s,w,w,p,w,o,p,n,v,g
+e,x,y,y,t,a,f,c,b,n,e,c,s,s,w,w,p,w,o,p,n,n,m
+e,x,y,w,t,l,f,c,b,w,e,c,s,s,w,w,p,w,o,p,n,n,m
+e,f,f,n,f,n,f,c,n,k,e,e,s,s,w,w,p,w,o,p,k,y,u
+e,x,s,y,t,a,f,w,n,n,t,b,s,s,w,w,p,w,o,p,n,v,d
+e,b,s,y,t,l,f,c,b,g,e,c,s,s,w,w,p,w,o,p,n,n,m
+p,x,y,w,t,p,f,c,n,k,e,e,s,s,w,w,p,w,o,p,n,s,u
+e,x,y,y,t,l,f,c,b,n,e,c,s,s,w,w,p,w,o,p,n,n,m
+e,x,y,n,t,l,f,c,b,p,e,r,s,y,w,w,p,w,o,p,n,y,p
+\end{lstlisting}
+
+
+\subsection{Hasil Pembuatan Model Dataset-1}
+\label{lamp:E-Hasil Pembuatan Model Dataset-1}
+\begin{lstlisting}
+class,e,1399076.0|CLASS	
+class,p,1300366.0|CLASS	
+bruises,f,class,e,484231.0|DISCRETE	
+bruises,f,class,p,1092949.0|DISCRETE	
+bruises,t,class,e,914845.0|DISCRETE	
+bruises,t,class,p,207417.0|DISCRETE	
+cap-color,b,class,e,15936.0|DISCRETE	
+cap-color,b,class,p,39840.0|DISCRETE	
+cap-color,c,class,e,10624.0|DISCRETE	
+cap-color,c,class,p,3984.0|DISCRETE	
+cap-color,e,class,e,207264.0|DISCRETE	
+cap-color,e,class,p,290832.0|DISCRETE	
+cap-color,g,class,e,343036.0|DISCRETE	
+cap-color,g,class,p,268260.0|DISCRETE	
+cap-color,n,class,e,420210.0|DISCRETE	
+cap-color,n,class,p,338766.0|DISCRETE	
+cap-color,p,class,e,18592.0|DISCRETE	
+cap-color,p,class,p,29217.0|DISCRETE	
+cap-color,r,class,e,5312.0|DISCRETE	
+cap-color,u,class,e,5312.0|DISCRETE	
+cap-color,w,class,e,239590.0|DISCRETE	
+cap-color,w,class,p,106363.0|DISCRETE	
+cap-color,y,class,e,133200.0|DISCRETE	
+cap-color,y,class,p,223104.0|DISCRETE	
+cap-shape,b,class,e,134384.0|DISCRETE	
+cap-shape,b,class,p,15936.0|DISCRETE	
+cap-shape,c,class,p,1328.0|DISCRETE	
+cap-shape,f,class,e,530494.0|DISCRETE	
+cap-shape,f,class,p,516715.0|DISCRETE	
+cap-shape,k,class,e,75696.0|DISCRETE	
+cap-shape,k,class,p,199200.0|DISCRETE	
+cap-shape,s,class,e,10656.0|DISCRETE	
+cap-shape,x,class,e,647846.0|DISCRETE	
+cap-shape,x,class,p,567187.0|DISCRETE	
+cap-surface,f,class,e,518690.0|DISCRETE	
+cap-surface,f,class,p,252324.0|DISCRETE	
+cap-surface,g,class,p,1328.0|DISCRETE	
+cap-surface,s,class,e,380481.0|DISCRETE	
+cap-surface,s,class,p,468909.0|DISCRETE	
+cap-surface,y,class,e,499905.0|DISCRETE	
+cap-surface,y,class,p,577805.0|DISCRETE	
+gill-attachment,a,class,e,63744.0|DISCRETE	
+gill-attachment,a,class,p,5976.0|DISCRETE	
+gill-attachment,f,class,e,1335332.0|DISCRETE	
+gill-attachment,f,class,p,1294390.0|DISCRETE	
+gill-color,b,class,p,573696.0|DISCRETE	
+gill-color,e,class,e,31872.0|DISCRETE	
+gill-color,g,class,e,82488.0|DISCRETE	
+gill-color,g,class,p,167330.0|DISCRETE	
+gill-color,h,class,e,67914.0|DISCRETE	
+gill-color,h,class,p,175297.0|DISCRETE	
+gill-color,k,class,e,114545.0|DISCRETE	
+gill-color,k,class,p,21311.0|DISCRETE	
+gill-color,n,class,e,311292.0|DISCRETE	
+gill-color,n,class,p,37246.0|DISCRETE	
+gill-color,o,class,e,21248.0|DISCRETE	
+gill-color,p,class,e,283281.0|DISCRETE	
+gill-color,p,class,p,212544.0|DISCRETE	
+gill-color,r,class,p,7968.0|DISCRETE	
+gill-color,u,class,e,147493.0|DISCRETE	
+gill-color,u,class,p,15936.0|DISCRETE	
+gill-color,w,class,e,317695.0|DISCRETE	
+gill-color,w,class,p,81734.0|DISCRETE	
+gill-color,y,class,e,21248.0|DISCRETE	
+gill-color,y,class,p,7304.0|DISCRETE	
+gill-size,b,class,e,1303268.0|DISCRETE	
+gill-size,b,class,p,561748.0|DISCRETE	
+gill-size,n,class,e,95808.0|DISCRETE	
+gill-size,n,class,p,738618.0|DISCRETE	
+gill-spacing,c,class,e,999837.0|DISCRETE	
+gill-spacing,c,class,p,1263181.0|DISCRETE	
+gill-spacing,w,class,e,399239.0|DISCRETE	
+gill-spacing,w,class,p,37185.0|DISCRETE	
+habitat,d,class,e,624637.0|DISCRETE	
+habitat,d,class,p,420978.0|DISCRETE	
+habitat,g,class,e,468551.0|DISCRETE	
+habitat,g,class,p,245808.0|DISCRETE	
+habitat,l,class,e,79680.0|DISCRETE	
+habitat,l,class,p,196544.0|DISCRETE	
+habitat,m,class,e,85248.0|DISCRETE	
+habitat,m,class,p,11952.0|DISCRETE	
+habitat,p,class,e,45248.0|DISCRETE	
+habitat,p,class,p,334657.0|DISCRETE	
+habitat,u,class,e,31968.0|DISCRETE	
+habitat,u,class,p,90427.0|DISCRETE	
+habitat,w,class,e,63744.0|DISCRETE	
+odor,a,class,e,133200.0|DISCRETE	
+odor,c,class,p,63745.0|DISCRETE	
+odor,f,class,p,717124.0|DISCRETE	
+odor,l,class,e,133200.0|DISCRETE	
+odor,m,class,p,11952.0|DISCRETE	
+odor,n,class,e,1132676.0|DISCRETE	
+odor,n,class,p,39840.0|DISCRETE	
+odor,p,class,p,85241.0|DISCRETE	
+odor,s,class,p,191232.0|DISCRETE	
+odor,y,class,p,191232.0|DISCRETE	
+population,a,class,e,127865.0|DISCRETE	
+population,c,class,e,95616.0|DISCRETE	
+population,c,class,p,17264.0|DISCRETE	
+population,n,class,e,133056.0|DISCRETE	
+population,s,class,e,292878.0|DISCRETE	
+population,s,class,p,122302.0|DISCRETE	
+population,v,class,e,396093.0|DISCRETE	
+population,v,class,p,945660.0|DISCRETE	
+population,y,class,e,353568.0|DISCRETE	
+population,y,class,p,215140.0|DISCRETE	
+ring-number,n,class,p,11952.0|DISCRETE	
+ring-number,o,class,e,1223780.0|DISCRETE	
+ring-number,o,class,p,1264510.0|DISCRETE	
+ring-number,t,class,e,175296.0|DISCRETE	
+ring-number,t,class,p,23904.0|DISCRETE	
+ring-type,e,class,e,335399.0|DISCRETE	
+ring-type,e,class,p,586976.0|DISCRETE	
+ring-type,f,class,e,15936.0|DISCRETE	
+ring-type,l,class,p,430276.0|DISCRETE	
+ring-type,n,class,p,11952.0|DISCRETE	
+ring-type,p,class,e,1047741.0|DISCRETE	
+ring-type,p,class,p,271162.0|DISCRETE	
+spore-print-color,b,class,e,15936.0|DISCRETE	
+spore-print-color,h,class,e,15936.0|DISCRETE	
+spore-print-color,h,class,p,525892.0|DISCRETE	
+spore-print-color,k,class,e,548095.0|DISCRETE	
+spore-print-color,k,class,p,74493.0|DISCRETE	
+spore-print-color,n,class,e,580021.0|DISCRETE	
+spore-print-color,n,class,p,74493.0|DISCRETE	
+spore-print-color,o,class,e,15936.0|DISCRETE	
+spore-print-color,r,class,p,23904.0|DISCRETE	
+spore-print-color,u,class,e,15984.0|DISCRETE	
+spore-print-color,w,class,e,191232.0|DISCRETE	
+spore-print-color,w,class,p,601584.0|DISCRETE	
+spore-print-color,y,class,e,15936.0|DISCRETE	
+stalk-color-above-ring,b,class,p,143426.0|DISCRETE	
+stalk-color-above-ring,c,class,p,11952.0|DISCRETE	
+stalk-color-above-ring,e,class,e,31872.0|DISCRETE	
+stalk-color-above-ring,g,class,e,191367.0|DISCRETE	
+stalk-color-above-ring,n,class,e,5312.0|DISCRETE	
+stalk-color-above-ring,n,class,p,143426.0|DISCRETE	
+stalk-color-above-ring,o,class,e,63744.0|DISCRETE	
+stalk-color-above-ring,p,class,e,191356.0|DISCRETE	
+stalk-color-above-ring,p,class,p,430272.0|DISCRETE	
+stalk-color-above-ring,w,class,e,915425.0|DISCRETE	
+stalk-color-above-ring,w,class,p,568634.0|DISCRETE	
+stalk-color-above-ring,y,class,p,2656.0|DISCRETE	
+stalk-color-below-ring,b,class,p,143426.0|DISCRETE	
+stalk-color-below-ring,c,class,p,11952.0|DISCRETE	
+stalk-color-below-ring,e,class,e,31872.0|DISCRETE	
+stalk-color-below-ring,g,class,e,191358.0|DISCRETE	
+stalk-color-below-ring,n,class,e,21248.0|DISCRETE	
+stalk-color-below-ring,n,class,p,148736.0|DISCRETE	
+stalk-color-below-ring,o,class,e,63744.0|DISCRETE	
+stalk-color-below-ring,p,class,e,191355.0|DISCRETE	
+stalk-color-below-ring,p,class,p,430274.0|DISCRETE	
+stalk-color-below-ring,w,class,e,899499.0|DISCRETE	
+stalk-color-below-ring,w,class,p,558010.0|DISCRETE	
+stalk-color-below-ring,y,class,p,7968.0|DISCRETE	
+stalk-root,?,class,e,239040.0|DISCRETE	
+stalk-root,?,class,p,584320.0|DISCRETE	
+stalk-root,b,class,e,637917.0|DISCRETE	
+stalk-root,b,class,p,616197.0|DISCRETE	
+stalk-root,c,class,e,170496.0|DISCRETE	
+stalk-root,c,class,p,14608.0|DISCRETE	
+stalk-root,e,class,e,287687.0|DISCRETE	
+stalk-root,e,class,p,85241.0|DISCRETE	
+stalk-root,r,class,e,63936.0|DISCRETE	
+stalk-shape,e,class,e,537312.0|DISCRETE	
+stalk-shape,e,class,p,631054.0|DISCRETE	
+stalk-shape,t,class,e,861764.0|DISCRETE	
+stalk-shape,t,class,p,669312.0|DISCRETE	
+stalk-surface-above-ring,f,class,e,135830.0|DISCRETE	
+stalk-surface-above-ring,f,class,p,47808.0|DISCRETE	
+stalk-surface-above-ring,k,class,e,47808.0|DISCRETE	
+stalk-surface-above-ring,k,class,p,739700.0|DISCRETE	
+stalk-surface-above-ring,s,class,e,1210126.0|DISCRETE	
+stalk-surface-above-ring,s,class,p,510202.0|DISCRETE	
+stalk-surface-above-ring,y,class,e,5312.0|DISCRETE	
+stalk-surface-above-ring,y,class,p,2656.0|DISCRETE	
+stalk-surface-below-ring,f,class,e,151764.0|DISCRETE	
+stalk-surface-below-ring,f,class,p,47808.0|DISCRETE	
+stalk-surface-below-ring,k,class,e,47808.0|DISCRETE	
+stalk-surface-below-ring,k,class,p,717124.0|DISCRETE	
+stalk-surface-below-ring,s,class,e,1130256.0|DISCRETE	
+stalk-surface-below-ring,s,class,p,510202.0|DISCRETE	
+stalk-surface-below-ring,y,class,e,69248.0|DISCRETE	
+stalk-surface-below-ring,y,class,p,25232.0|DISCRETE	
+veil-color,n,class,e,31872.0|DISCRETE	
+veil-color,o,class,e,31872.0|DISCRETE	
+veil-color,w,class,e,1335332.0|DISCRETE	
+veil-color,w,class,p,1297710.0|DISCRETE	
+veil-color,y,class,p,2656.0|DISCRETE	
+veil-type,p,class,e,1399076.0|DISCRETE	
+veil-type,p,class,p,1300366.0|DISCRETE
+\end{lstlisting}
+
+\subsection{Hasil Testing Dataset-1}
+\label{lamp:E-Hasil Testing Dataset-1}
+\begin{lstlisting}
+@class
+####
+-------------
+|   | e | p |
+-------------
+| e | 567548| 2720|
+| p | 5576| 526746|
+-------------
+####	
+****
+Accuracy:
+1094294/1102590 = 0.992475897659148
+*For Value = p
+Precision:
+-> 526746 / 526746 + 2720 = 0.9948627485050976
+Recall:
+-> 526746 / 526746 + 5576 = 0.9895251370411142
+F-Measure:
+-> {1 / { 0.99 {1 / P}+(1- 0.99 ) {1 / R} }} = 0.9948208212990071
+*For Value = e
+Precision:
+-> 567548 / 567548 + 5576 = 0.9902708663395705
+Recall:
+-> 567548 / 567548 + 2720 = 0.9952303127652262
+F-Measure:
+-> {1 / { 0.99 {1 / P}+(1- 0.99 ) {1 / R} }} = 0.9903066721004551
+****
+\end{lstlisting}
+
+
+\section{Hasil Pembuatan Model dan Testing Dataset-2}
+\label{lamp:E-Hasil Pembuatan Model dan Testing Dataset-2}
+
+
+\subsection{Contoh Dataset-2}
+\label{lamp:E-Contoh Datase1-2}
+\begin{lstlisting}
+buying,maint,doors,persons,lug_boot,safety,class
+vhigh,vhigh,2,2,small,low,unacc
+vhigh,vhigh,2,2,small,med,unacc
+vhigh,vhigh,2,2,small,high,unacc
+vhigh,vhigh,2,2,med,low,unacc
+vhigh,vhigh,2,2,med,med,unacc
+vhigh,vhigh,2,2,med,high,unacc
+vhigh,vhigh,2,2,big,low,unacc
+vhigh,vhigh,2,2,big,med,unacc
+vhigh,vhigh,2,2,big,high,unacc
+vhigh,vhigh,2,4,small,low,unacc
+vhigh,vhigh,2,4,small,med,unacc
+vhigh,vhigh,2,4,small,high,unacc
+vhigh,vhigh,2,4,med,low,unacc
+vhigh,vhigh,2,4,med,med,unacc
+vhigh,vhigh,2,4,med,high,unacc
+vhigh,vhigh,2,4,big,low,unacc
+vhigh,vhigh,2,4,big,med,unacc
+vhigh,vhigh,2,4,big,high,unacc
+vhigh,vhigh,2,more,small,low,unacc
+vhigh,vhigh,2,more,small,med,unacc
+vhigh,vhigh,2,more,small,high,unacc
+vhigh,vhigh,2,more,med,low,unacc
+vhigh,vhigh,2,more,med,med,unacc
+vhigh,vhigh,2,more,med,high,unacc
+vhigh,vhigh,2,more,big,low,unacc
+vhigh,vhigh,2,more,big,med,unacc
+vhigh,vhigh,2,more,big,high,unacc
+vhigh,vhigh,3,2,small,low,unacc
+vhigh,vhigh,3,2,small,med,unacc
+vhigh,vhigh,3,2,small,high,unacc
+vhigh,vhigh,3,2,med,low,unacc
+vhigh,vhigh,3,2,med,med,unacc
+vhigh,vhigh,3,2,med,high,unacc
+vhigh,vhigh,3,2,big,low,unacc
+vhigh,vhigh,3,2,big,med,unacc
+vhigh,vhigh,3,2,big,high,unacc
+\end{lstlisting}
+
+\subsection{Hasil Pembuatan Model Dataset-2}
+\label{lamp:E-Hasil Pembuatan Model Dataset-2}
+\begin{lstlisting}
+class,acc,327168.0|CLASS    
+class,good,58788.0|CLASS    
+class,unacc,1030069.0|CLASS    
+class,vgood,54528.0|CLASS    
+buying,high,class,acc,92016.0|DISCRETE    
+buying,high,class,unacc,276048.0|DISCRETE    
+buying,low,class,acc,75828.0|DISCRETE    
+buying,low,class,good,39192.0|DISCRETE    
+buying,low,class,unacc,219816.0|DISCRETE    
+buying,low,class,vgood,32376.0|DISCRETE    
+buying,med,class,acc,97980.0|DISCRETE    
+buying,med,class,good,19596.0|DISCRETE    
+buying,med,class,unacc,228336.0|DISCRETE    
+buying,med,class,vgood,22152.0|DISCRETE    
+buying,vhigh,class,acc,61344.0|DISCRETE    
+buying,vhigh,class,unacc,305869.0|DISCRETE    
+doors,2,class,acc,69012.0|DISCRETE    
+doors,2,class,good,12780.0|DISCRETE    
+doors,2,class,unacc,276901.0|DISCRETE    
+doors,2,class,vgood,8520.0|DISCRETE    
+doors,3,class,acc,84348.0|DISCRETE    
+doors,3,class,good,15336.0|DISCRETE    
+doors,3,class,unacc,255600.0|DISCRETE    
+doors,3,class,vgood,12780.0|DISCRETE    
+doors,4,class,acc,86904.0|DISCRETE    
+doors,4,class,good,15336.0|DISCRETE    
+doors,4,class,unacc,248784.0|DISCRETE    
+doors,4,class,vgood,17040.0|DISCRETE    
+doors,5more,class,acc,86904.0|DISCRETE    
+doors,5more,class,good,15336.0|DISCRETE    
+doors,5more,class,unacc,248784.0|DISCRETE    
+doors,5more,class,vgood,16188.0|DISCRETE    
+lug_boot,big,class,acc,122688.0|DISCRETE    
+lug_boot,big,class,good,20448.0|DISCRETE    
+lug_boot,big,class,unacc,313536.0|DISCRETE    
+lug_boot,big,class,vgood,33228.0|DISCRETE    
+lug_boot,med,class,acc,115020.0|DISCRETE    
+lug_boot,med,class,good,20448.0|DISCRETE    
+lug_boot,med,class,unacc,333984.0|DISCRETE    
+lug_boot,med,class,vgood,21300.0|DISCRETE    
+lug_boot,small,class,acc,89460.0|DISCRETE    
+lug_boot,small,class,good,17892.0|DISCRETE    
+lug_boot,small,class,unacc,382549.0|DISCRETE    
+maint,high,class,acc,89460.0|DISCRETE    
+maint,high,class,unacc,267528.0|DISCRETE    
+maint,high,class,vgood,11076.0|DISCRETE    
+maint,low,class,acc,78384.0|DISCRETE    
+maint,low,class,good,39192.0|DISCRETE    
+maint,low,class,unacc,228336.0|DISCRETE    
+maint,low,class,vgood,21300.0|DISCRETE    
+maint,med,class,acc,97980.0|DISCRETE    
+maint,med,class,good,19596.0|DISCRETE    
+maint,med,class,unacc,228336.0|DISCRETE    
+maint,med,class,vgood,22152.0|DISCRETE    
+maint,vhigh,class,acc,61344.0|DISCRETE    
+maint,vhigh,class,unacc,305869.0|DISCRETE    
+persons,2,class,unacc,489901.0|DISCRETE    
+persons,4,class,acc,168696.0|DISCRETE    
+persons,4,class,good,30672.0|DISCRETE    
+persons,4,class,unacc,265824.0|DISCRETE    
+persons,4,class,vgood,25560.0|DISCRETE    
+persons,more,class,acc,158472.0|DISCRETE    
+persons,more,class,good,28116.0|DISCRETE    
+persons,more,class,unacc,274344.0|DISCRETE    
+persons,more,class,vgood,28968.0|DISCRETE    
+safety,high,class,acc,173808.0|DISCRETE    
+safety,high,class,good,25560.0|DISCRETE    
+safety,high,class,unacc,236004.0|DISCRETE    
+safety,high,class,vgood,54528.0|DISCRETE    
+safety,low,class,unacc,489901.0|DISCRETE    
+safety,med,class,acc,153360.0|DISCRETE    
+safety,med,class,good,33228.0|DISCRETE    
+safety,med,class,unacc,304164.0|DISCRETE
+\end{lstlisting}
+
+\subsection{Hasil Testing Dataset-2}
+\label{lamp:E-Hasil Testing Dataset-2}
+\begin{lstlisting}
+@class
+####
+-----------------------------------------
+|       | acc   | good  | unacc | vgood |
+-----------------------------------------
+| acc   | 100572| 3480  | 29580 | 0     |
+| good  | 15660 | 7656  | 0     | 696   |
+| unacc | 16008 | 696   | 404028| 0     |
+| vgood | 9744  | 0     | 0     | 12529 |
+-----------------------------------------
+####    
+****
+Accuracy:
+524785/600649 = 0.8736966181580257
+*For Value = acc
+Precision:
+-> 100572 / 100572 + 41412 = 0.7083333333333334
+Recall:
+-> 100572 / 100572 + 33060 = 0.7526041666666666
+F-Measure:
+-> {1 / { 0.73 {1 / P}+(1- 0.73 ) {1 / R} }} = 0.7197735849056603
+*For Value = unacc
+Precision:
+-> 404028 / 404028 + 29580 = 0.9317817014446228
+Recall:
+-> 404028 / 404028 + 16704 = 0.9602977667493796
+F-Measure:
+-> {1 / { 0.95 {1 / P}+(1- 0.95 ) {1 / R} }} = 0.9332831042737595
+*For Value = vgood
+Precision:
+-> 12529 / 12529 + 696 = 0.9473724007561437
+Recall:
+-> 12529 / 12529 + 9744 = 0.562519642616621
+F-Measure:
+-> {1 / { 0.71 {1 / P}+(1- 0.71 ) {1 / R} }} = 0.7886805407916486
+*For Value = good
+Precision:
+-> 7656 / 7656 + 4176 = 0.6470588235294118
+Recall:
+-> 7656 / 7656 + 16356 = 0.3188405797101449
+F-Measure:
+-> {1 / { 0.43 {1 / P}+(1- 0.43 ) {1 / R} }} = 0.4070414945212862
+****
+\end{lstlisting}
+
+\section{Hasil Pembuatan Model dan Testing Dataset-3}
+\label{lamp:E-Hasil Pembuatan Model dan Testing Dataset-3}
+
+\subsection{Contoh Dataset-3}
+\label{lamp:E-Contoh Datase1-3}
+\begin{lstlisting}
+Record ID,Agency Code,Agency Name,Agency Type,City,State,Year,Month,Incident,Crime Type,Crime Solved,Victim Sex,Victim Age,Victim Race,Victim Ethnicity,Perpetrator Sex,Perpetrator Age,Perpetrator Race,Perpetrator Ethnicity,Relationship,Weapon,Victim Count,Perpetrator Count,Record Source
+000001,AK00101,Anchorage,Municipal Police,Anchorage,Alaska,1980,January,1,Murder or Manslaughter,Yes,Male,14,Native American/Alaska Native,Unknown,Male,15,Native American/Alaska Native,Unknown,Acquaintance,Blunt Object,0,0,FBI
+000002,AK00101,Anchorage,Municipal Police,Anchorage,Alaska,1980,March,1,Murder or Manslaughter,Yes,Male,43,White,Unknown,Male,42,White,Unknown,Acquaintance,Strangulation,0,0,FBI
+000003,AK00101,Anchorage,Municipal Police,Anchorage,Alaska,1980,March,2,Murder or Manslaughter,No,Female,30,Native American/Alaska Native,Unknown,Unknown,0,Unknown,Unknown,Unknown,Unknown,0,0,FBI
+000004,AK00101,Anchorage,Municipal Police,Anchorage,Alaska,1980,April,1,Murder or Manslaughter,Yes,Male,43,White,Unknown,Male,42,White,Unknown,Acquaintance,Strangulation,0,0,FBI
+000005,AK00101,Anchorage,Municipal Police,Anchorage,Alaska,1980,April,2,Murder or Manslaughter,No,Female,30,Native American/Alaska Native,Unknown,Unknown,0,Unknown,Unknown,Unknown,Unknown,0,1,FBI
+000006,AK00101,Anchorage,Municipal Police,Anchorage,Alaska,1980,May,1,Murder or Manslaughter,Yes,Male,30,White,Unknown,Male,36,White,Unknown,Acquaintance,Rifle,0,0,FBI
+000007,AK00101,Anchorage,Municipal Police,Anchorage,Alaska,1980,May,2,Murder or Manslaughter,Yes,Female,42,Native American/Alaska Native,Unknown,Male,27,Black,Unknown,Wife,Knife,0,0,FBI
+000008,AK00101,Anchorage,Municipal Police,Anchorage,Alaska,1980,June,1,Murder or Manslaughter,Yes,Female,99,White,Unknown,Male,35,White,Unknown,Wife,Knife,0,0,FBI
+000009,AK00101,Anchorage,Municipal Police,Anchorage,Alaska,1980,June,2,Murder or Manslaughter,No,Male,32,White,Unknown,Unknown,0,Unknown,Unknown,Unknown,Firearm,0,0,FBI
+000010,AK00101,Anchorage,Municipal Police,Anchorage,Alaska,1980,June,3,Murder or Manslaughter,Yes,Male,38,White,Unknown,Male,40,Unknown,Unknown,Unknown,Firearm,0,1,FBI
+000011,AK00101,Anchorage,Municipal Police,Anchorage,Alaska,1980,July,1,Murder or Manslaughter,No,Male,36,Native American/Alaska Native,Unknown,Unknown,0,Unknown,Unknown,Unknown,Unknown,0,1,FBI
+000012,AK00101,Anchorage,Municipal Police,Anchorage,Alaska,1980,July,2,Murder or Manslaughter,Yes,Male,20,White,Unknown,Male,49,White,Unknown,Stranger,Shotgun,0,0,FBI
+000013,AK00101,Anchorage,Municipal Police,Anchorage,Alaska,1980,July,3,Murder or Manslaughter,Yes,Female,36,Black,Unknown,Male,39,Black,Unknown,Girlfriend,Blunt Object,0,0,FBI
+000014,AK00101,Anchorage,Municipal Police,Anchorage,Alaska,1980,August,1,Murder or Manslaughter,Yes,Male,20,Native American/Alaska Native,Unknown,Male,49,White,Unknown,Unknown,Fall,0,0,FBI
+000015,AK00101,Anchorage,Municipal Police,Anchorage,Alaska,1980,August,2,Murder or Manslaughter,No,Male,48,White,Unknown,Unknown,0,Unknown,Unknown,Unknown,Handgun,0,0,FBI
+000016,AK00101,Anchorage,Municipal Police,Anchorage,Alaska,1980,August,3,Murder or Manslaughter,Yes,Male,31,Black,Unknown,Female,29,Black,Unknown,Ex-Husband,Handgun,0,0,FBI
+000017,AK00101,Anchorage,Municipal Police,Anchorage,Alaska,1980,December,1,Murder or Manslaughter,Yes,Male,16,Unknown,Unknown,Male,19,Unknown,Unknown,Acquaintance,Knife,0,0,FBI
+000018,AK00103,Juneau,Municipal Police,Juneau,Alaska,1980,November,1,Murder or Manslaughter,Yes,Male,33,Native American/Alaska Native,Unknown,Male,23,Native American/Alaska Native,Unknown,Brother,Blunt Object,0,1,FBI
+000019,AK00106,Nome,Municipal Police,Nome,Alaska,1980,June,1,Murder or Manslaughter,Yes,Male,27,Native American/Alaska Native,Unknown,Male,33,Native American/Alaska Native,Unknown,Acquaintance,Handgun,0,0,FBI
+000020,AK00113,Bethel,Municipal Police,Bethel,Alaska,1980,February,1,Murder or Manslaughter,Yes,Male,33,Native American/Alaska Native,Unknown,Male,35,Native American/Alaska Native,Unknown,Brother,Handgun,0,0,FBI
+000021,AK00118,North Slope Borough,County Police,North Slope,Alaska,1980,August,1,Murder or Manslaughter,Yes,Female,31,Unknown,Unknown,Male,29,Unknown,Unknown,Stepdaughter,Rifle,2,0,FBI
+000022,AK00118,North Slope Borough,County Police,North Slope,Alaska,1980,August,1,Murder or Manslaughter,Yes,Male,21,Unknown,Unknown,Male,29,Unknown,Unknown,Stepdaughter,Rifle,2,0,FBI
+000023,AK00118,North Slope Borough,County Police,North Slope,Alaska,1980,June,1,Murder or Manslaughter,Yes,Male,60,Unknown,Unknown,Male,26,Unknown,Unknown,Acquaintance,Knife,0,0,FBI
+000024,AK00118,North Slope Borough,County Police,North Slope,Alaska,1980,July,1,Manslaughter by Negligence,Yes,Female,40,Unknown,Unknown,Male,41,Unknown,Unknown,Wife,Blunt Object,0,0,FBI
+000025,AK00118,North Slope Borough,County Police,North Slope,Alaska,1980,August,1,Murder or Manslaughter,Yes,Female,16,Unknown,Unknown,Male,29,Unknown,Unknown,Stepdaughter,Rifle,2,0,FBI
+000026,AK00123,Kenai,Municipal Police,Kenai Peninsula,Alaska,1980,February,1,Murder or Manslaughter,Yes,Female,36,White,Unknown,Male,42,White,Unknown,Wife,Handgun,0,0,FBI
+000027,AKASP00,Alaska State Police,State Police,Juneau,Alaska,1980,February,1,Murder or Manslaughter,No,Male,27,Black,Unknown,Unknown,0,Unknown,Unknown,Unknown,Handgun,0,0,FBI
+000028,AKASP00,Alaska State Police,State Police,Juneau,Alaska,1980,February,2,Murder or Manslaughter,Yes,Male,31,Native American/Alaska Native,Unknown,Female,28,Native American/Alaska Native,Unknown,Husband,Handgun,0,0,FBI
+000029,AKASP00,Alaska State Police,State Police,Juneau,Alaska,1980,February,3,Murder or Manslaughter,Yes,Male,27,Native American/Alaska Native,Unknown,Female,36,Native American/Alaska Native,Unknown,Brother,Rifle,0,0,FBI
+000030,AKASP00,Alaska State Police,State Police,Juneau,Alaska,1980,April,1,Murder or Manslaughter,Yes,Male,18,Unknown,Unknown,Male,61,Native American/Alaska Native,Unknown,Unknown,Shotgun,0,0,FBI
+000031,AKASP00,Alaska State Police,State Police,Juneau,Alaska,1980,May,1,Murder or Manslaughter,Yes,Male,27,White,Unknown,Male,25,White,Unknown,Brother,Rifle,0,0,FBI
+000032,AKASP00,Alaska State Police,State Police,Juneau,Alaska,1980,June,1,Manslaughter by Negligence,Yes,Female,8,Asian/Pacific Islander,Unknown,Male,7,Asian/Pacific Islander,Unknown,Sister,Rifle,0,0,FBI
+000033,AKASP00,Alaska State Police,State Police,Juneau,Alaska,1980,July,1,Murder or Manslaughter,No,Male,25,White,Unknown,Unknown,0,Unknown,Unknown,Unknown,Unknown,0,0,FBI
+000034,AKASP00,Alaska State Police,State Police,Juneau,Alaska,1980,July,2,Murder or Manslaughter,No,Male,24,Native American/Alaska Native,Unknown,Unknown,0,Unknown,Unknown,Unknown,Unknown,0,0,FBI
+\end{lstlisting}
+
+\subsection{Hasil Pembuatan Model Dataset-3}
+\label{lamp:E-Hasil Pembuatan Model Dataset-3}
+\begin{lstlisting}
+Crime Solved,No,402574.0|CLASS	
+Crime Solved,Yes,957057.0|CLASS	
+Perpetrator Age,Crime Solved,No	;0.1182937795287326|2.4457411091986474|NUMERIC
+Perpetrator Age,Crime Solved,Yes	;29.0008306715274|14.321070443589633|NUMERIC
+Victim Age,Crime Solved,No	;37.58024860025734|56.74201059843596|NUMERIC
+Victim Age,Crime Solved,Yes	;34.01415485180089|32.193393210331394|NUMERIC
+Crime Type,Manslaughter by Negligence,Crime Solved,No,796.0|DISCRETE	
+Crime Type,Manslaughter by Negligence,Crime Solved,Yes,18475.0|DISCRETE	
+Crime Type,Murder or Manslaughter,Crime Solved,No,401778.0|DISCRETE	
+Crime Type,Murder or Manslaughter,Crime Solved,Yes,938582.0|DISCRETE	
+Perpetrator Ethnicity,Hispanic,Crime Solved,No,47.0|DISCRETE	
+Perpetrator Ethnicity,Hispanic,Crime Solved,Yes,101065.0|DISCRETE	
+Perpetrator Ethnicity,Not Hispanic,Crime Solved,No,505.0|DISCRETE	
+Perpetrator Ethnicity,Not Hispanic,Crime Solved,Yes,326796.0|DISCRETE	
+Perpetrator Ethnicity,Unknown,Crime Solved,No,402022.0|DISCRETE	
+Perpetrator Ethnicity,Unknown,Crime Solved,Yes,529196.0|DISCRETE	
+Relationship,Acquaintance,Crime Solved,No,4823.0|DISCRETE	
+Relationship,Acquaintance,Crime Solved,Yes,267426.0|DISCRETE	
+Relationship,Boyfriend,Crime Solved,No,31.0|DISCRETE	
+Relationship,Boyfriend,Crime Solved,Yes,15641.0|DISCRETE	
+Relationship,Boyfriend/Girlfriend,Crime Solved,No,244.0|DISCRETE	
+Relationship,Boyfriend/Girlfriend,Crime Solved,Yes,2771.0|DISCRETE	
+Relationship,Brother,Crime Solved,No,40.0|DISCRETE	
+Relationship,Brother,Crime Solved,Yes,11980.0|DISCRETE	
+Relationship,Common-Law Husband,Crime Solved,No,15.0|DISCRETE	
+Relationship,Common-Law Husband,Crime Solved,Yes,4493.0|DISCRETE	
+Relationship,Common-Law Wife,Crime Solved,No,17.0|DISCRETE	
+Relationship,Common-Law Wife,Crime Solved,Yes,5407.0|DISCRETE	
+Relationship,Daughter,Crime Solved,No,110.0|DISCRETE	
+Relationship,Daughter,Crime Solved,Yes,15796.0|DISCRETE	
+Relationship,Employee,Crime Solved,No,9.0|DISCRETE	
+Relationship,Employee,Crime Solved,Yes,813.0|DISCRETE	
+Relationship,Employer,Crime Solved,Yes,1078.0|DISCRETE	
+Relationship,Ex-Husband,Crime Solved,No,7.0|DISCRETE	
+Relationship,Ex-Husband,Crime Solved,Yes,1428.0|DISCRETE	
+Relationship,Ex-Wife,Crime Solved,No,14.0|DISCRETE	
+Relationship,Ex-Wife,Crime Solved,Yes,4238.0|DISCRETE	
+Relationship,Family,Crime Solved,No,145.0|DISCRETE	
+Relationship,Family,Crime Solved,Yes,20117.0|DISCRETE	
+Relationship,Father,Crime Solved,No,17.0|DISCRETE	
+Relationship,Father,Crime Solved,Yes,9348.0|DISCRETE	
+Relationship,Friend,Crime Solved,No,489.0|DISCRETE	
+Relationship,Friend,Crime Solved,Yes,46556.0|DISCRETE	
+Relationship,Girlfriend,Crime Solved,No,120.0|DISCRETE	
+Relationship,Girlfriend,Crime Solved,Yes,34308.0|DISCRETE	
+Relationship,Husband,Crime Solved,No,62.0|DISCRETE	
+Relationship,Husband,Crime Solved,Yes,19845.0|DISCRETE	
+Relationship,In-Law,Crime Solved,No,22.0|DISCRETE	
+Relationship,In-Law,Crime Solved,Yes,8104.0|DISCRETE	
+Relationship,Mother,Crime Solved,No,23.0|DISCRETE	
+Relationship,Mother,Crime Solved,Yes,8969.0|DISCRETE	
+Relationship,Neighbor,Crime Solved,No,81.0|DISCRETE	
+Relationship,Neighbor,Crime Solved,Yes,13737.0|DISCRETE	
+Relationship,Sister,Crime Solved,No,8.0|DISCRETE	
+Relationship,Sister,Crime Solved,Yes,2754.0|DISCRETE	
+Relationship,Son,Crime Solved,No,137.0|DISCRETE	
+Relationship,Son,Crime Solved,Yes,20919.0|DISCRETE	
+Relationship,Stepdaughter,Crime Solved,Yes,1601.0|DISCRETE	
+Relationship,Stepfather,Crime Solved,No,4.0|DISCRETE	
+Relationship,Stepfather,Crime Solved,Yes,2958.0|DISCRETE	
+Relationship,Stepmother,Crime Solved,Yes,459.0|DISCRETE	
+Relationship,Stepson,Crime Solved,No,3.0|DISCRETE	
+Relationship,Stepson,Crime Solved,Yes,2514.0|DISCRETE	
+Relationship,Stranger,Crime Solved,No,20948.0|DISCRETE	
+Relationship,Stranger,Crime Solved,Yes,186551.0|DISCRETE	
+Relationship,Unknown,Crime Solved,No,375102.0|DISCRETE	
+Relationship,Unknown,Crime Solved,Yes,197657.0|DISCRETE	
+Relationship,Wife,Crime Solved,No,103.0|DISCRETE	
+Relationship,Wife,Crime Solved,Yes,49589.0|DISCRETE	
+Weapon,Blunt Object,Crime Solved,No,34179.0|DISCRETE	
+Weapon,Blunt Object,Crime Solved,Yes,109518.0|DISCRETE	
+Weapon,Drowning,Crime Solved,No,465.0|DISCRETE	
+Weapon,Drowning,Crime Solved,Yes,2156.0|DISCRETE	
+Weapon,Drugs,Crime Solved,No,406.0|DISCRETE	
+Weapon,Drugs,Crime Solved,Yes,2836.0|DISCRETE	
+Weapon,Explosives,Crime Solved,No,327.0|DISCRETE	
+Weapon,Explosives,Crime Solved,Yes,801.0|DISCRETE	
+Weapon,Fall,Crime Solved,No,53.0|DISCRETE	
+Weapon,Fall,Crime Solved,Yes,370.0|DISCRETE	
+Weapon,Fire,Crime Solved,No,4457.0|DISCRETE	
+Weapon,Fire,Crime Solved,Yes,8933.0|DISCRETE	
+Weapon,Firearm,Crime Solved,No,46858.0|DISCRETE	
+Weapon,Firearm,Crime Solved,Yes,50126.0|DISCRETE	
+Weapon,Gun,Crime Solved,No,1871.0|DISCRETE	
+Weapon,Gun,Crime Solved,Yes,2736.0|DISCRETE	
+Weapon,Handgun,Crime Solved,No,210743.0|DISCRETE	
+Weapon,Handgun,Crime Solved,Yes,462317.0|DISCRETE	
+Weapon,Knife,Crime Solved,No,44244.0|DISCRETE	
+Weapon,Knife,Crime Solved,Yes,161758.0|DISCRETE	
+Weapon,Poison,Crime Solved,No,174.0|DISCRETE	
+Weapon,Poison,Crime Solved,Yes,807.0|DISCRETE	
+Weapon,Rifle,Crime Solved,No,7168.0|DISCRETE	
+Weapon,Rifle,Crime Solved,Yes,43687.0|DISCRETE	
+Weapon,Shotgun,Crime Solved,No,10271.0|DISCRETE	
+Weapon,Shotgun,Crime Solved,Yes,57345.0|DISCRETE	
+Weapon,Strangulation,Crime Solved,No,8166.0|DISCRETE	
+Weapon,Strangulation,Crime Solved,Yes,9493.0|DISCRETE	
+Weapon,Suffocation,Crime Solved,No,2176.0|DISCRETE	
+Weapon,Suffocation,Crime Solved,Yes,6249.0|DISCRETE	
+Weapon,Unknown,Crime Solved,No,31016.0|DISCRETE	
+Weapon,Unknown,Crime Solved,Yes,37925.0|DISCRETE
+\end{lstlisting}
+
+
+\subsection{Hasil Testing Dataset-3}
+\label{lamp:E-Hasil Testing Dataset-3}
+\begin{lstlisting}
+@crime solved
+####
+-------------------
+|     | no  | yes |
+-------------------
+| no  | 165350| 2796|
+| yes | 14377| 372866|
+-------------------
+####	
+****
+Accuracy:
+538216/555389 = 0.969079329983129
+*For Value = no
+Precision:
+-> 165350 / 165350 + 14377 = 0.920006454233365
+Recall:
+-> 165350 / 165350 + 2796 = 0.9833715937340168
+F-Measure:
+-> {1 / { 0.95 {1 / P}+(1- 0.95 ) {1 / R} }} = 0.9229422965985126
+*For Value = yes
+Precision:
+-> 372866 / 372866 + 2796 = 0.9925571391303885
+Recall:
+-> 372866 / 372866 + 14377 = 0.9628734412242442
+F-Measure:
+-> {1 / { 0.98 {1 / P}+(1- 0.98 ) {1 / R} }} = 0.9918688375767613
+****
+\end{lstlisting}

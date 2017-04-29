@@ -1,11 +1,11 @@
 \chapter{Perancangan}
-Berdasarkan analisis yang telah dilakukan, terdapat beberapa hal yang perlu dirancang untuk pembangunan perangkat lunak naive bayes berbasis \textit{hadoop mapreduce}. Pada bab ini akan dijelaskan perancangan yang diperlukan untuk membangun perangkat lunak yaitu perancang-
+Berdasarkan analisis yang telah dilakukan, terdapat beberapa hal yang perlu dirancang untuk pembangunan perangkat lunak naive bayes berbasis \textit{hadoop mapreduce}. Pada bab ini dijelaskan perancangan yang diperlukan untuk membangun perangkat lunak yaitu perancang-
 an antarmuka, diagram kelas rinci, serta rincian metode.
 			
 \section{Perancangan Antarmuka}
 \label{sec:Perancangan Antarmuka}
 
-Perangkat lunak \textit{naive bayes classification} memiliki 6 buah tampilan untuk yang tidak berbasis \textit{MapReduce}, yaitu: (1) \textit{Dashboard} (2) \textit{Input Set Manager} (3) \textit{Renew Model Manager} (4) \textit{Testing Manager} (5) \textit{Classification Manager} (6) \textit{Error Rate Dashboard}. Untuk program yang berbasis \textit{MapReduce} tidak akan memiliki antarmuka yang khusus, karena program hanya perlu dijalankan dengan menggunakan CLI (\textit{command line interface}). Berikut adalah penjelasan dan gambar dari tiap antarmuka yang dirancang:
+Perangkat lunak \textit{naive bayes classification} memiliki 6 buah tampilan untuk yang tidak berbasis \textit{MapReduce}, yaitu: (1) \textit{Dashboard} (2) \textit{Input Set Manager} (3) \textit{Renew Model Manager} (4) \textit{Testing Manager} (5) \textit{Classification Manager} (6) \textit{Error Rate Dashboard}. Untuk program yang berbasis \textit{MapReduce} tidak memiliki antarmuka yang khusus, karena program hanya perlu dijalankan dengan menggunakan CLI (\textit{command line interface}). Berikut adalah penjelasan dan gambar dari tiap antarmuka yang dirancang:
 
 \subsection{\textit{Dashboard}}
 \label{subsec:Dashboard}
@@ -20,7 +20,7 @@ Perangkat lunak \textit{naive bayes classification} memiliki 6 buah tampilan unt
 \begin{enumerate}
 	\item Berisi nama - nama atribut kelas dan total frekeunsi kemunculannya tiap nilai.
 	\item Berisi nama - nama atribut prediktor dan frekuensi kemunculannya untuk prediktor bertipe diskrit dan \textit{mean} \verb|&| \textit{sigma} untuk yang bertipe numerik.
-	\item \textit{Bayesian model} merupakan model dari NBC yang akan digunakan untuk testing dan klasifikasi. Model ini merupakan model yang langsung di-import dari hasil training di dalam HDFS.
+	\item \textit{Bayesian model} merupakan model dari NBC yang digunakan untuk testing dan klasifikasi. Model ini merupakan model yang langsung di-import dari hasil training di dalam HDFS.
 \end{enumerate}
 
 \subsection{\textit{Input Set Manager}}
@@ -36,10 +36,10 @@ Perangkat lunak \textit{naive bayes classification} memiliki 6 buah tampilan unt
 \begin{enumerate}
 	\item User dapat memilih tipe model input yang sudah ada dalam HDFS.
 	\item Jika ingin membuat tipe model input baru pada HDFS, maka user perlu mengisi kolom ini dan mengisi nama model yang diinginkan.
-	\item User dapat memilih file input yang akan dikirimkan ke dalam HDFS. User dapat memilih > 1 file sekaligus.
+	\item User dapat memilih file input yang dikirimkan ke dalam HDFS. User dapat memilih > 1 file sekaligus.
 	\item User dapat memilih file info mengenai file input, yang dikirimkan ke dalam HDFS.
-	\item User dapat memilih presentase pembagian data antara data \textit{training} dan data \textit{testing} dari keseluruhan data input yang akan dimasukkan ke dalam HDFS.
-	\item Setelah memillih file info, user dapat memilih atribut mana saja yang akan digunakan untuk training. User juga dapat memilih tipe(diskrit/numerik) dari atribut tersebut beserta jenisnya (kelas/prediktor).
+	\item User dapat memilih presentase pembagian data antara data \textit{training} dan data \textit{testing} dari keseluruhan data input yang dimasukkan ke dalam HDFS.
+	\item Setelah memillih file info, user dapat memilih atribut mana saja yang digunakan untuk training. User juga dapat memilih tipe(diskrit/numerik) dari atribut tersebut beserta jenisnya (kelas/prediktor).
 \end{enumerate}
 
 \subsection{\textit{Renew Model Manager}}
@@ -51,7 +51,7 @@ Perangkat lunak \textit{naive bayes classification} memiliki 6 buah tampilan unt
 	\caption[\textit{Renew Model Manager}]{\textit{Renew Model Manager}}
 	\label{fig:Renew Model Manager}
 \end{figure}
-\textit{Renew Model Manager} dibuat agar user selalu bisa memperbaharui model NBC pada perangkat lunak yang dibikin.
+\textit{Renew Model Manager} dibuat agar user selalu bisa memperbaharui model NBC pada perangkat lunak yang dibuat.
 \begin{enumerate}
 	\item User dapat memilih file model NBC hasil dari training dari sistem penyimpanan \textit{local}.
 	\item User dapat memilih file model NBC hasil dari training langsung dari HDFS.
@@ -100,16 +100,16 @@ Perangkat lunak \textit{naive bayes classification} memiliki 6 buah tampilan unt
 \textit{Error Rate Dashboard} dibuat untuk memonitor hasil \textit{error rate} yang sudah dihitung setelah menjalani proses testing. 
 \begin{enumerate}
 	\item \textit{Confusion matrix} untuk setiap atribut kelas.
-	\item Error rate yang akan dihasilkan setelah melakukan klasifikasi meliputi: (1)$Accuracy$; (2)$Precision$; (3)$Recall$; (4)$F-Measure$.
+	\item Error rate yang dihasilkan setelah melakukan klasifikasi meliputi: (1)$Accuracy$; (2)$Precision$; (3)$Recall$; (4)$F-Measure$.
 \end{enumerate}
 
 
 
-\section{Diagram Kelas Lengkap dan Design Pattern}
+\section{Diagram Kelas Lengkap}
 Berikut adalah penjelasan dari kelas - kelas pada keempat modul yang dibuat beserta penjelasan setiap atribut dan operasi yang dimiliki oleh kelas - kelas tersebut.
 
 \subsection{Diagram Kelas Modul \textit{Train Naive Bayes M-R Based}}
-Pada diagram kelas ini terdapat terdapat 2 \textit{package} utama yang akan menjadi inti dari modul ini, salah satunya merupakan \textit{package} yang dimiliki oleh \textit{library} dari \textit{hadoop client} untuk dapat menjalankan proses \textit{mapreduce}. Berikut adalah gambar dari \textit{package - package} tersebut:
+Pada diagram kelas ini terdapat terdapat 2 \textit{package} utama yang menjadi inti dari modul ini, salah satunya merupakan \textit{package} yang dimiliki oleh \textit{library} dari \textit{hadoop client} untuk dapat menjalankan proses \textit{mapreduce}. Berikut adalah gambar dari \textit{package - package} tersebut:
 \begin{figure}[H]
 	\centering
 	\includegraphics[scale=0.6]{ClassDiagramLengkap/CD_Train_MR}
@@ -118,106 +118,106 @@ Pada diagram kelas ini terdapat terdapat 2 \textit{package} utama yang akan menj
 \end{figure}
 
 \paragraph{\textit{Package} $org.apache.hadoop.mapreduce$}
-Dalam \textit{package} ini terdapat 2 kelas utama yang akan menjadi kelas \textit{parent} dari kelas \textit{reducer} dan \textit{mapper} yang di-implementasikan.
+Dalam \textit{package} ini terdapat 2 kelas utama yang menjadi kelas \textit{parent} dari kelas \textit{reducer} dan \textit{mapper} yang di-implementasikan.
 \begin{enumerate}
 	\item{Kelas \textit{Mapper}}\\
 	Kelas ini memiliki 4 buah \textit{generic types}\footnote{A generic type is a generic class or interface that is parameterized over types \cite{GenericTypeJavaOracle}} yang perlu di-implementasikan pada kelas yang mengimplementasi method ini. Parameter \textit{generic types} tersebut antara lain adalah:
 	\begin{itemize}
 		\item{\textit{KEYIN}}\\
-		Kelas ini merupakan tipe kelas yang akan menjadi \textit{key} masukan pada proses Map untuk program \textit{Mapreduce} yang dibuat.		
+		Kelas ini merupakan tipe kelas yang menjadi \textit{key} masukan pada proses Map untuk program \textit{Mapreduce} yang dibuat.		
 		\item{\textit{VALUEIN}}\\
-		Merupakan tipe kelas yang akan menjadi \textit{value} dari masukan pada proses Map untuk program \textit{Mapreduce} yang dibuat.
+		Merupakan tipe kelas yang menjadi \textit{value} dari masukan pada proses Map untuk program \textit{Mapreduce} yang dibuat.
 		\item{\textit{KEYOUT}}\\
-		Merupakan tipe kelas yang akan menjadi \textit{key} keluaran pada proses Map untuk program \textit{Mapreduce} yang dibuat.
+		Merupakan tipe kelas yang menjadi \textit{key} keluaran pada proses Map untuk program \textit{Mapreduce} yang dibuat.
 		\item{\textit{VALUEOUT}}\\
-		Merupakan tipe kelas yang akan menjadi \textit{value} keluaran pada proses Map untuk program \textit{Mapreduce} yang dibuat.
+		Merupakan tipe kelas yang menjadi \textit{value} keluaran pada proses Map untuk program \textit{Mapreduce} yang dibuat.
 	\end{itemize}
 	
 	\item{Kelas \textit{Reducer}}\\
 	Kelas ini memiliki 4 buah \textit{generic types} yang perlu di-implementasikan pada kelas yang mengimplementasi method ini. Parameter \textit{generic types} tersebut antara lain adalah:
 	\begin{itemize}
 		\item{\textit{KEYIN}}\\
-		Kelas ini merupakan tipe kelas yang akan menjadi \textit{key} masukan pada proses \textit{Reduce} untuk program \textit{Mapreduce} yang dibuat.		
+		Kelas ini merupakan tipe kelas yang menjadi \textit{key} masukan pada proses \textit{Reduce} untuk program \textit{Mapreduce} yang dibuat.		
 		\item{\textit{VALUEIN}}\\
-		Merupakan tipe kelas yang akan menjadi \textit{value} dari masukan pada proses \textit{Reduce} untuk program \textit{Mapreduce} yang dibuat.
+		Merupakan tipe kelas yang menjadi \textit{value} dari masukan pada proses \textit{Reduce} untuk program \textit{Mapreduce} yang dibuat.
 		\item{\textit{KEYOUT}}\\
-		Merupakan tipe kelas yang akan menjadi \textit{key} keluaran pada proses \textit{Reduce} untuk program \textit{Mapreduce} yang dibuat.
+		Merupakan tipe kelas yang menjadi \textit{key} keluaran pada proses \textit{Reduce} untuk program \textit{Mapreduce} yang dibuat.
 		\item{\textit{VALUEOUT}}\\
-		Merupakan tipe kelas yang akan menjadi \textit{value} keluaran pada proses \textit{Reduce} untuk program \textit{Mapreduce} yang dibuat.
+		Merupakan tipe kelas yang menjadi \textit{value} keluaran pada proses \textit{Reduce} untuk program \textit{Mapreduce} yang dibuat.
 	\end{itemize}
 \end{enumerate}
 
 \paragraph{\textit{Package} $mczal.bayes$}
-Dalam \textit{package} ini terdapat beberapa \textit{package} lagi dan kelas - kelas yang akan dijadikan implementasi dari kelas \textit{Mapper} dan \textit{Reducer} pada package \textit{org.apache.hadoop.mapreduce} untuk proses \textit{MapReduce}.
+Dalam \textit{package} ini terdapat beberapa \textit{package} lagi dan kelas - kelas yang dijadikan implementasi dari kelas \textit{Mapper} dan \textit{Reducer} pada package \textit{org.apache.hadoop.mapreduce} untuk proses \textit{MapReduce}.
 \begin{enumerate}
 	\item{Kelas \textit{TrainApp}}\\
-	Kelas ini merupakan kelas utama(\textit{main class}) yang akan dijalankan pertama kali program ini dieksekusi. Kelas ini memiliki 1 atribut \textit{static} dan 1 method \textit{main}.
+	Kelas ini merupakan kelas utama(\textit{main class}) yang dijalankan pertama kali program ini dieksekusi. Kelas ini memiliki 1 atribut \textit{static} dan 1 method \textit{main}.
 	\begin{enumerate}
 		\item Atribut \verb|HDFS_AUTHORITY| \\
 		Atribut ini bertipe \textit{String} dan memiliki \textit{modifier} \textit{static} dan \textit{final} agar nilainya tidak dapat diubah - ubah. Inisialisasi pertama dari atribut ini adalah: \verb|"hdfs://master:9000"|. \verb|"hdfs://master:9000"| merupakan url dari node master yang digunakan untuk dapat berkomunikasi dengan node master pada lingkungan \textit{hadoop}. Atribut ini digunakan untuk \textit{request} operasi baca file \textit{meta.info} pada HDFS.
 		
 		\item Operasi \verb|main|\\
-		Operasi ini akan menjadi operasi pertama yang dijalankan ketika melakukan eksekusi program mapreduce pada modul ini. Operasi ini akan men-\textit{set} kelas \textit{mapper} dan kelas \textit{reducer} yang akan digunakan serta variabel - variabel yang perlu dikirimkan kepada tiap node yang dibutuhkan oleh mereka.
+		Operasi ini menjadi operasi pertama yang dijalankan ketika melakukan eksekusi program mapreduce pada modul ini. Operasi ini men-\textit{set} kelas \textit{mapper} dan kelas \textit{reducer} yang digunakan serta variabel - variabel yang perlu dikirimkan kepada tiap node yang dibutuhkan oleh mereka.
 	\end{enumerate}
 
 	\item{Kelas \textit{MyTrainingMapper}}\\
 	Kelas ini merupakan kelas turunan dari kelas \textit{Mapper} yang ada pada package \verb|org.apache.hadoop.mapreduce|. \textit{Generic type} kelas parent dari kelas ini adalah:
 	\begin{enumerate}
 		\item{Object} merupakan tipe \textit{key} masukan dari proses \textit{map}.
-		\item{Text} merupakan tipe \textit{key} masukan dari proses \textit{map}. Karena, data masukan akan berupa \textit{string}.
-		\item{Text} merupakan tipe \textit{key} keluaran dari proses \textit{map}. Karena, \textit{key} pada hasil dari fase \textit{map} akan mengeluarkan data yang bertipe \textit{string}.
-		\item{DoubleWritable} merupakan tipe \textit{value} keluaran dari proses \textit{map}. Karena, \textit{value} keluaran pada proses \textit{map} akan berisi jumlah frekuensi atau nilai dari atribut prediktor-numerik yang bertipe numerik.
+		\item{Text} merupakan tipe \textit{key} masukan dari proses \textit{map}. Karena, data masukan berupa \textit{string}.
+		\item{Text} merupakan tipe \textit{key} keluaran dari proses \textit{map}. Karena, \textit{key} pada hasil dari fase \textit{map} mengeluarkan data yang bertipe \textit{string}.
+		\item{DoubleWritable} merupakan tipe \textit{value} keluaran dari proses \textit{map}. Karena, \textit{value} keluaran pada proses \textit{map} berisi jumlah frekuensi atau nilai dari atribut prediktor-numerik yang bertipe numerik.
 	\end{enumerate}
 	Kelas ini memiliki 8 atribut. Diantaranya adalah:
 	\begin{enumerate}
-		\item \verb|_CLASS| merupakan atribut bertipe \textit{string} yang memiliki \textit{modifier} \textit{static} dan \textit{final}. Atribut ini memiliki nilai inisialisasi awal = $"|$\verb|_|$class|"$ yang akan digunakan untuk membedakan bahwa data keluaran yang memiliki string berisi $"|$\verb|_|$class|"$ merupakan data keluaran yang akan digunakan untuk menghitung jumlah frekuensi dari kemunculan atribut bertipe kelas.
-		\item \verb|_DISCRETE| merupakan atribut bertipe \textit{string} yang memiliki \textit{modifier} \textit{static} dan \textit{final}. Atribut ini memiliki nilai inisialisasi awal = $"|disc|"$ yang akan digunakan untuk membedakan bahwa data keluaran yang memiliki string berisi $"|disc|"$ merupakan data keluaran yang akan digunakan untuk menghitung jumlah frekuensi dari kemunculan atribut prediktor bertipe diskrit berdasarkan atribut kelas tertentu.
-		\item \verb|_CONTINUOUS| merupakan atribut bertipe \textit{string} yang memiliki \textit{modifier} \textit{static} dan \textit{final}. Atribut ini memiliki nilai inisialisasi awal = $"|cont|"$ yang akan digunakan untuk membedakan bahwa data keluaran yang memiliki string berisi $"|cont|"$ merupakan data keluaran yang akan digunakan untuk mencatat nilai dari atribut numerik berdasarkan atribut kelas tertentu.
-		\item \verb|DISCRETE_TYPE| merupakan atribut bertipe \textit{string} yang memiliki \textit{modifier} \textit{static} dan \textit{final}. Atribut ini memiliki nilai inisialisasi awal = $"DISCRETE"$ yang akan digunakan untuk membedakan bahwa data input setelah displit dengan regex ',' pada indeks tertentu memiliki info bertipe diskrit.
-		\item \verb|NUMERIC_TYPE| merupakan atribut bertipe \textit{string} yang memiliki \textit{modifier} \textit{static} dan \textit{final}. Atribut ini memiliki nilai inisialisasi awal = $"NUMERICAL"$ yang akan digunakan untuk membedakan bahwa data input setelah displit dengan regex ',' pada indeks tertentu memiliki info bertipe numerik.
-		\item \verb|one| merupakan atribut bertipe \textit{DoubleWritable} yang memiliki \textit{modifier} \textit{static}. Atribut ini memiliki nilai inisialisasi awal = integer bernilai 1 yang akan digunakan untuk mencatat tiap kemunculan atribut prediktor terhadap atribut kelas tertentu yang sedang diperiksa dengan jumlah kemunculan sebanyak 1.
-		\item \verb|wordAttr| merupakan atribut bertipe \textit{Text} yang memiliki \textit{modifier} \textit{static}. Atribut ini akan digunakan untuk mencatat tiap atribut prediktor yang akan ditulis menjadi \textit{output key} untuk perhitungan probabilitas posterior dari atribut tertentu pada atribut kelas tertentu.
-		\item \verb|wordClass| merupakan atribut bertipe \textit{Text} yang memiliki \textit{modifier} \textit{static}. Atribut ini akan digunakan untuk mencatat tiap kemunculan atribut kelas tertentu dan akan ditulis menjadi \textit{output key} untuk perhitungan frekuensi atribut kelas.
+		\item \verb|_CLASS| merupakan atribut bertipe \textit{string} yang memiliki \textit{modifier} \textit{static} dan \textit{final}. Atribut ini memiliki nilai inisialisasi awal = $"|$\verb|_|$class|"$ yang digunakan untuk membedakan bahwa data keluaran yang memiliki string berisi $"|$\verb|_|$class|"$ merupakan data keluaran yang digunakan untuk menghitung jumlah frekuensi dari kemunculan atribut bertipe kelas.
+		\item \verb|_DISCRETE| merupakan atribut bertipe \textit{string} yang memiliki \textit{modifier} \textit{static} dan \textit{final}. Atribut ini memiliki nilai inisialisasi awal = $"|disc|"$ yang digunakan untuk membedakan bahwa data keluaran yang memiliki string berisi $"|disc|"$ merupakan data keluaran yang digunakan untuk menghitung jumlah frekuensi dari kemunculan atribut prediktor bertipe diskrit berdasarkan atribut kelas tertentu.
+		\item \verb|_CONTINUOUS| merupakan atribut bertipe \textit{string} yang memiliki \textit{modifier} \textit{static} dan \textit{final}. Atribut ini memiliki nilai inisialisasi awal = $"|cont|"$ yang digunakan untuk membedakan bahwa data keluaran yang memiliki string berisi $"|cont|"$ merupakan data keluaran yang digunakan untuk mencatat nilai dari atribut numerik berdasarkan atribut kelas tertentu.
+		\item \verb|DISCRETE_TYPE| merupakan atribut bertipe \textit{string} yang memiliki \textit{modifier} \textit{static} dan \textit{final}. Atribut ini memiliki nilai inisialisasi awal = $"DISCRETE"$ yang digunakan untuk membedakan bahwa data input setelah displit dengan regex ',' pada indeks tertentu memiliki info bertipe diskrit.
+		\item \verb|NUMERIC_TYPE| merupakan atribut bertipe \textit{string} yang memiliki \textit{modifier} \textit{static} dan \textit{final}. Atribut ini memiliki nilai inisialisasi awal = $"NUMERICAL"$ yang digunakan untuk membedakan bahwa data input setelah displit dengan regex ',' pada indeks tertentu memiliki info bertipe numerik.
+		\item \verb|one| merupakan atribut bertipe \textit{DoubleWritable} yang memiliki \textit{modifier} \textit{static}. Atribut ini memiliki nilai inisialisasi awal = integer bernilai 1 yang digunakan untuk mencatat tiap kemunculan atribut prediktor terhadap atribut kelas tertentu yang sedang diperiksa dengan jumlah kemunculan sebanyak 1.
+		\item \verb|wordAttr| merupakan atribut bertipe \textit{Text} yang memiliki \textit{modifier} \textit{static}. Atribut ini digunakan untuk mencatat tiap atribut prediktor yang ditulis menjadi \textit{output key} untuk perhitungan probabilitas posterior dari atribut tertentu pada atribut kelas tertentu.
+		\item \verb|wordClass| merupakan atribut bertipe \textit{Text} yang memiliki \textit{modifier} \textit{static}. Atribut ini digunakan untuk mencatat tiap kemunculan atribut kelas tertentu dan ditulis menjadi \textit{output key} untuk perhitungan frekuensi atribut kelas.
 	\end{enumerate}
-	Kelas ini memiliki 1 buah operasi. Operasi tersebut adalah operasi \textit{map(key : Object, value : Text, context : Context) : void} yang akan melakukan operasi pada fase map untuk proses training pada modul ini. Seperti yang digambarkan pada DFD sebelumnya, proses ini akan melakukan perhitungan jumlah frekuensi kemunculan tiap atribut. Terkecuali untuk atribut prediktor yang bertipe numerik, operasi ini akan mengeluarkan kembali nilai yang dibaca dari input.
+	Kelas ini memiliki 1 buah operasi. Operasi tersebut adalah operasi \textit{map(key : Object, value : Text, context : Context) : void} yang melakukan operasi pada fase map untuk proses training pada modul ini. Seperti yang digambarkan pada DFD sebelumnya, proses ini melakukan perhitungan jumlah frekuensi kemunculan tiap atribut. Terkecuali untuk atribut prediktor yang bertipe numerik, operasi ini mengeluarkan kembali nilai yang dibaca dari input.
 	
 \begin{algorithm}[H]
 \caption{NBC Model Map Algorithm}\label{alg:NBCGenMap}
 \begin{algorithmic}[1]
 \Procedure{Map}{$key,value,context$}\Comment{Map function}
-\State $ $\verb|_|$CLASS \gets "|$\verb|_|$class|"$
-\State $ $\verb|_|$DISCRETE \gets "|disc|"$
-\State $ $\verb|_|$CONTINUOUS \gets "|cont|"$
-\State $ one \gets 1$
-\State $ NUMERIC$\verb|_|$TYPE \gets "NUMERICAL"$
-\State $ DISCRETE$\verb|_|$TYPE \gets "DISCRETE"$
+\State \verb|_|\texttt{CLASS} $\gets$ \texttt{"|}$\verb|_|$\texttt{class|"}
+\State \verb|_|\texttt{DISCRETE} $\gets$ \texttt{"|disc|"}
+\State \verb|_|\texttt{CONTINUOUS} $\gets$ \texttt{"|cont|"}
+\State \texttt{one} $\gets$ \texttt{1}
+\State \texttt{NUMERIC}\verb|_|\texttt{TYPE} $\gets$ \texttt{"NUMERICAL"}
+\State \texttt{DISCRETE}\verb|_|\texttt{TYPE} $\gets$ \texttt{"DISCRETE"}
 
-\State $ countColumn \gets getInputColumnCount$
-\State $ inputSplit[] \gets value.split(',')$
-\If{inputSplit.length != countCols}\Comment{Ignoring missing values}
+\State \texttt{countColumn} $\gets$ \texttt{getInputColumnCount}
+\State \texttt{inputSplit[]} $\gets$ \texttt{value.split(',')}
+\If{\texttt{inputSplit.length != countCols}}\Comment{Ignoring missing values}
 	\State \Return
 \EndIf
 
-\State $classConf \gets getClassInfo$\Comment{get class info from meta.info}
-\State $classSplitConf[] \gets classConf.split(";")$
+\State \texttt{classConf} $\gets$ getClassInfo \Comment{\texttt{get class info from meta.info}}
+\State \texttt{classSplitConf[]} $\gets$ \texttt{classConf.split(";")}
 
-\State $attrConf \gets getAttributeInfo$\Comment{get predictor info from meta.info}
-\State $attrSplitConf[] \gets attrConf.split(";")$
+\State \texttt{attrConf} $\gets$ \texttt{getAttributeInfo} \Comment{\texttt{get predictor info from meta.info}}
+\State \texttt{attrSplitConf[]} $\gets$ \texttt{attrConf.split(";")}
 
-\State $checkerClassPrior \gets classSplitConf.length$
+\State \texttt{checkerClassPrior} $\gets$ \texttt{classSplitConf.length}
 %\For $i \gets 0$ \To $attrSplitConf.length$ \Do
-\For{$i \gets 0$ \textbf{to} $attrSplitConf.length$}	
-	\If{$attrSplitConf[i].split(",")[2].equals(DISCRETE_TYPE)$}
+\For{$i \gets 0$ \textbf{to} \texttt{attrSplitConf.length}}	
+	\If{\texttt{attrSplitConf[i].split(",")[2].equals(DISCRETETYPE)}}
 		%\For $j \gets 0$ \To $classSplitConf.length$ \Do
-		\For{$j \gets 0$ \textbf{to} $classSplitConf.length$}	
-			\State $currKey \gets $\verb|_| $DISCRETE + attrSplitConf[i].split(",")[0]
-              + "," + inputSplit[Integer.parseInt(attrSplitConf[i]
-              .split(",")[1])]
-              + "," + classSplitConf[j].split(",")[0]
-              + "," + inputSplit[Integer.parseInt(classSplitConf[j]
-              .split(",")[1])];$
-          	\State $wordAttr.set(currKey);$
-          	\State $context.write(wordAttr, one)$
+		\For{$j \gets 0$ \textbf{to} \texttt{classSplitConf.length}}	
+			\State currKey $ \gets $ \verb|_|\texttt{DISCRETE + attrSplitConf[i].split(",")[0]}
+              \texttt{+ "," + inputSplit[Integer.parseInt(attrSplitConf[i]}
+              \texttt{.split(",")[1])]}
+              \texttt{+ "," + classSplitConf[j].split(",")[0]}
+              \texttt{+ "," + inputSplit[Integer.parseInt(classSplitConf[j]}
+              \texttt{.split(",")[1])];}
+          	\State \texttt{wordAttr.set(currKey);}
+          	\State \texttt{context.write(wordAttr, one)}
 		\EndFor
 	\EndIf
 \EndFor
@@ -231,19 +231,19 @@ Dalam \textit{package} ini terdapat beberapa \textit{package} lagi dan kelas - k
 	\begin{enumerate}
 		\item Text merupakan tipe \textit{key} masukan dari proses \textit{reduce} yang dikirim dari proses sebelumnya yaitu proses \textit{map}
 		\item DoubleWritable merupakan tipe \textit{value} masukan dari proses \textit{reduce} yang dikriim dari proses sebelumnya yaitu proses \textit{map}.
-		\item Text merupakan tipe \textit{key} keluaran dari proses \textit{reduce}. Karena data keluaran berupa model NBC akan memiliki key berisi string.
-		\item Text merupakan tipe \textit{value} keluaran dari proses \textit{reduce}. Karena data keluaran berupa model NBC akan memiliki \textit{value} berisi string.
+		\item Text merupakan tipe \textit{key} keluaran dari proses \textit{reduce}. Karena data keluaran berupa model NBC memiliki key berisi string.
+		\item Text merupakan tipe \textit{value} keluaran dari proses \textit{reduce}. Karena data keluaran berupa model NBC memiliki \textit{value} berisi string.
 	\end{enumerate}
 	Kelas ini memiliki 3 atribut yang memiliki \textit{modifier} \textit{static} dan \textit{final}. Atribut tersebut diantaranya adalah:
 	\begin{enumerate}
-		\item \verb|CLASS_TYPE| merupakan atribut bertipe string yang memiliki nilai inisialisasi awal = \textit{"CLASS"}. Atribut ini akan digunakan sebagai pembeda pada data keluaran yang merupakan atribut kelas.
+		\item \verb|CLASS_TYPE| merupakan atribut bertipe string yang memiliki nilai inisialisasi awal = \textit{"CLASS"}. Atribut ini digunakan sebagai pembeda pada data keluaran yang merupakan atribut kelas.
 				
-		\item \verb|DISCRETE_TYPE| merupakan atribut bertipe string yang memiliki nilai inisialisasi awal = \textit{"DISCRETE"}. Atribut ini akan digunakan sebagai pembeda pada data keluaran yang merupakan atribut prediktor bertipe diskrit.
+		\item \verb|DISCRETE_TYPE| merupakan atribut bertipe string yang memiliki nilai inisialisasi awal = \textit{"DISCRETE"}. Atribut ini digunakan sebagai pembeda pada data keluaran yang merupakan atribut prediktor bertipe diskrit.
 
-		\item \verb|NUMERIC_TYPE| merupakan atribut bertipe string yang memiliki nilai inisialisasi awal = \textit{"NUMERIC"}. Atribut ini akan digunakan sebagai pembeda pada data keluaran yang merupakan atribut prediktor bertipe numerik.
+		\item \verb|NUMERIC_TYPE| merupakan atribut bertipe string yang memiliki nilai inisialisasi awal = \textit{"NUMERIC"}. Atribut ini digunakan sebagai pembeda pada data keluaran yang merupakan atribut prediktor bertipe numerik.
 	\end{enumerate}
 	
-	Kelas ini memiliki 1 buah operasi. Operasi tersebut adalah operasi \textit{reduce(key : Text, values : Iterable<DoubleWritable>, context : Context) : void} yang akan melakukan operasi pada fase reduce untuk proses training pada modul ini. Seperti yang digambarkan pada DFD sebelumnya, proses ini akan melakukan akumulasi dari tiap perhitungan jumlah frekuensi kemunculan tiap value yang memiliki key yang sama. Terkecuali untuk atribut prediktor yang bertipe numerik, operasi ini akan menghitung nilai rata - rata dari tiap value pada key tersebut dan lalu dilanjutkan menghitung nilai standar deviasi pada probabilitas posterior atribut numerik tersebut.
+	Kelas ini memiliki 1 buah operasi. Operasi tersebut adalah operasi \textit{reduce(key : Text, values : Iterable<DoubleWritable>, context : Context) : void} yang melakukan operasi pada fase reduce untuk proses training pada modul ini. Seperti yang digambarkan pada DFD sebelumnya, proses ini melakukan akumulasi dari tiap perhitungan jumlah frekuensi kemunculan tiap value yang memiliki key yang sama. Terkecuali untuk atribut prediktor yang bertipe numerik, operasi ini menghitung nilai rata - rata dari tiap value pada key tersebut dan lalu dilanjutkan menghitung nilai standar deviasi pada probabilitas posterior atribut numerik tersebut.
 	
 	
 \begin{algorithm}[H]
@@ -300,7 +300,7 @@ Dalam \textit{package} ini terdapat beberapa \textit{package} lagi dan kelas - k
 \end{enumerate}
 
 \subsection{Diagram Kelas Modul \textit{Testing Naive Bayes M-R Based}}
-Pada diagram kelas ini terdapat 1 kelas utama(\textit{main}) yang akan dijalankan pertama kali saat program dieksekusi dan 3 package utama yang merupakan implementasi dari modul \textit{testing naive bayes}. Untuk kelas yang berfungsi sebagai \textit{mapper} dan \textit{reducer} pada modul ini, sama dengan diagram kelas pada modul "\textit{Training Naive Bayes M-R Based}" merupakan kelas implementasi(kelas turunan) dari 2 kelas Mapper dan Reducer milik hadoop pada package \verb|org.apache.hadoop.mapreduce|. Karena bentuk relasi-nya sama persis dengan yang ada pada modul "\textit{Training Naive Bayes M-R Based}", pada modul ini tidak akan digambarkan relasi kelas mapper dan reducer dengan 2 kelas parent milik \textit{library hadoop}.
+Pada diagram kelas ini terdapat 1 kelas utama(\textit{main}) yang dijalankan pertama kali saat program dieksekusi dan 3 package utama yang merupakan implementasi dari modul \textit{testing naive bayes}. Untuk kelas yang berfungsi sebagai \textit{mapper} dan \textit{reducer} pada modul ini, sama dengan diagram kelas pada modul "\textit{Training Naive Bayes M-R Based}" merupakan kelas implementasi(kelas turunan) dari 2 kelas Mapper dan Reducer milik hadoop pada package \verb|org.apache.hadoop.mapreduce|. Karena bentuk relasi-nya sama persis dengan yang ada pada modul "\textit{Training Naive Bayes M-R Based}", pada modul ini tidak digambarkan relasi kelas mapper dan reducer dengan 2 kelas parent milik \textit{library hadoop}.
 
 \subsubsection{Kelas \textit{Main}}
 \begin{figure}[H]
@@ -309,13 +309,13 @@ Pada diagram kelas ini terdapat 1 kelas utama(\textit{main}) yang akan dijalanka
 	\caption[Diagram Kelas Modul \textit{Testing: Main}]{Diagram Kelas Modul \textit{Testing: Main}}
 	\label{fig:Diagram Kelas Modul Testing: Main}
 \end{figure}
-	Kelas \textit{TestingApp} ini merupakan kelas utama(\textit{main class}) yang akan dijalankan pertama kali program \textit{MapReduce} ini dieksekusi. Kelas ini memiliki 1 atribut \textit{static} dan 1 method \textit{main}.
+	Kelas \textit{TestingApp} ini merupakan kelas utama(\textit{main class}) yang dijalankan pertama kali program \textit{MapReduce} ini dieksekusi. Kelas ini memiliki 1 atribut \textit{static} dan 1 method \textit{main}.
 	\begin{enumerate}
 		\item Atribut \verb|HDFS_AUTHORITY| \\
 		Atribut ini bertipe \textit{String} dan memiliki \textit{modifier} \textit{static} dan \textit{final} agar nilainya tidak dapat diubah - ubah. Inisialisasi pertama dari atribut ini adalah: \verb|"hdfs://master:9000"|. \verb|"hdfs://master:9000"| merupakan url dari node master yang digunakan untuk dapat berkomunikasi dengan node master pada lingkungan \textit{hadoop}. Atribut ini digunakan untuk \textit{request} operasi baca file \textit{meta.info} pada HDFS.
 		
 		\item Operasi \verb|main|\\
-		Operasi ini akan menjadi operasi pertama yang dijalankan ketika melakukan eksekusi program mapreduce pada modul ini. Operasi ini akan men-\textit{set} kelas \textit{mapper} dan kelas \textit{reducer} yang akan digunakan serta variabel - variabel yang perlu dikirimkan kepada tiap node yang dibutuhkan oleh mereka.
+		Operasi ini menjadi operasi pertama yang dijalankan ketika melakukan eksekusi program mapreduce pada modul ini. Operasi ini men-\textit{set} kelas \textit{mapper} dan kelas \textit{reducer} yang digunakan serta variabel - variabel yang perlu dikirimkan kepada tiap node yang dibutuhkan oleh mereka.
 	\end{enumerate}
 
 
@@ -327,7 +327,7 @@ Pada diagram kelas ini terdapat 1 kelas utama(\textit{main}) yang akan dijalanka
 	\label{fig:Diagram Kelas Modul Testing: Package Base}
 \end{figure}
 
-Pada package ini terdapat 3 kelas utama yang akan menjadi kelas \textit{parent}(\textit{superclass}) dari kelas - kelas yang akan mengimplementasikan-nya. Kelas - kelas parent pada package ini dibuat untuk memenuhi konsep inheritance yang baik dan menghindari terjadinya duplikasi kode pada kelas - kelas terseubt. Kelas - kelas ini juga akan meminimumkan kode yang nantinya dibuat. Berikut adalah penjelasan lebih lanjut mengenai tiap kelas serta atribut dan operasi yang dimilikinya:
+Pada package ini terdapat 3 kelas utama yang menjadi kelas \textit{parent}(\textit{superclass}) dari kelas - kelas yang mengimplementasikan-nya. Kelas - kelas parent pada package ini dibuat untuk memenuhi konsep inheritance yang baik dan menghindari terjadinya duplikasi kode pada kelas - kelas terseubt. Kelas - kelas ini juga meminimumkan kode yang nantinya dibuat. Berikut adalah penjelasan lebih lanjut mengenai tiap kelas serta atribut dan operasi yang dimilikinya:
 
 \begin{enumerate}
 	\item \texttt{Enum}\footnote{Enum adalah sebuah tipe data yang nilainya hanya terbatas dari pilihan nilai-nilai yang telah didefinisikan terlebih dahulu. \textit{Enumeration} di Java baru diperkenalkan pada versi Java 5.} \textit{Type}\\ ini berisi:
@@ -336,25 +336,25 @@ Pada package ini terdapat 3 kelas utama yang akan menjadi kelas \textit{parent}(
 		\item DISCRETE
 		\item CLASS
 	\end{enumerate}
-	\textit{Enum} ini akan digunakan sebagai pengenal tipe dari tiap atribut yang ada pada model NBC.
+	\textit{Enum} ini digunakan sebagai pengenal tipe dari tiap atribut yang ada pada model NBC.
 	
 	\item{Kelas \texttt{AttributeMetaInfo}}\\
-	Kelas ini memiliki 1 buah parameter \textit{generic type} yang perlu diimplementasikan pada kelas yang akan menjadi turunan dari kelas ini. \textit{Generic type} pada kelas ini harus merupakan turunan dari kelas \texttt{AttributeDetail}. Kelas ini akan mencatat seluruh atribut(jenis: prediktor,kelas;tipe: numerik,diskrit) yang ada pada model NBC. Atribut yang akan dimiliki oleh kelas ini merupakan atribut yang merepresentasikan atribut pada model NBC secara umum. Atribut - atribut pada kelas ini adalah:
+	Kelas ini memiliki 1 buah parameter \textit{generic type} yang perlu diimplementasikan pada kelas yang menjadi turunan dari kelas ini. \textit{Generic type} pada kelas ini harus merupakan turunan dari kelas \texttt{AttributeDetail}. Kelas ini mencatat seluruh atribut(jenis: prediktor,kelas;tipe: numerik,diskrit) yang ada pada model NBC. Atribut yang dimiliki oleh kelas ini merupakan atribut yang merepresentasikan atribut pada model NBC secara umum. Atribut - atribut pada kelas ini adalah:
 	\begin{enumerate}
 		\item{\texttt{name}}\\ 
-		Atribut ini bertipe \texttt{string} yang akan merepresentasikan nama dari atribut pada model NBC.
+		Atribut ini bertipe \texttt{string} yang merepresentasikan nama dari atribut pada model NBC.
 
 		\item{\texttt{type}}\\
-		Atribut ini bertipe \texttt{Enum Type} yang akan merepresentasikan jenis dari atribut pada model NBC.
+		Atribut ini bertipe \texttt{Enum Type} yang merepresentasikan jenis dari atribut pada model NBC.
 
 		\item{\texttt{sigma}}\\
-		Atribut ini bertipe \texttt{double} yang akan merepresentasikan nilai standar deviasi dari keseluruhan data atribut ini pada model NBC jika dan hanya jika tipe dari atribut ini merupakan numerik. Jika tidak, maka nilai atribut ini akan selalu dikosongkan.
+		Atribut ini bertipe \texttt{double} yang merepresentasikan nilai standar deviasi dari keseluruhan data atribut ini pada model NBC jika dan hanya jika tipe dari atribut ini merupakan numerik. Jika tidak, maka nilai atribut ini selalu dikosongkan.
 
 		\item{\texttt{mean}}\\
-		Atribut ini bertipe \texttt{double} yang akan merepresentasikan nilai rata - rata dari keseluruhan data atribut ini pada model NBC jika dan hanya jika tipe dari atribut ini merupakan numerik. Jika tidak, maka nilai atribut ini akan selalu dikosongkan.
+		Atribut ini bertipe \texttt{double} yang merepresentasikan nilai rata - rata dari keseluruhan data atribut ini pada model NBC jika dan hanya jika tipe dari atribut ini merupakan numerik. Jika tidak, maka nilai atribut ini selalu dikosongkan.
 
 		\item{\texttt{attrDetailMap}}\\
-		Atribut ini bertipe \texttt{Map} dengan \texttt{key=string} dan \texttt{value=T(generic type)} yang akan merepresentasikan kumpulan dari semua nilai yang dimiliki oleh atribut ini jika dan hanya jika tipe dari atribut ini merupakan diskrit atau atribut kelas. Jika tidak, maka nilai atribut ini akan selalu dikosongkan.
+		Atribut ini bertipe \texttt{Map} dengan \texttt{key=string} dan \texttt{value=T(generic type)} yang merepresentasikan kumpulan dari semua nilai yang dimiliki oleh atribut ini jika dan hanya jika tipe dari atribut ini merupakan diskrit atau atribut kelas. Jika tidak, maka nilai atribut ini selalu dikosongkan.
 	\end{enumerate}
 	
 	Kelas ini menerima 2 buah operasi konstruktor untuk membuat instansiasi dan menginisialisasi nilai - nilai dari atribut di dalamnya. Konstruktor tersebut antara lain adalah:
@@ -367,12 +367,12 @@ Pada package ini terdapat 3 kelas utama yang akan menjadi kelas \textit{parent}(
 	\end{enumerate}
 	
 	\item{Kelas \texttt{AttributeDetail}}\\
-	Kelas ini akan merepresentasikan tiap nilai diskrit dari atribut diskrit/kelas yang ada pada model NBC. Selain mencatat nama dari nilai diskrit atribut diskrit/kelas pada NBC, kelas ini juga akan mencatat jumlah frekuensi dari atribut ini pada model NBC.
+	Kelas ini merepresentasikan tiap nilai diskrit dari atribut diskrit/kelas yang ada pada model NBC. Selain mencatat nama dari nilai diskrit atribut diskrit/kelas pada NBC, kelas ini juga mencatat jumlah frekuensi dari atribut ini pada model NBC.
 	Kelas ini memiliki 2 atribut dan 1 operasi konstruktor, diantaranya adalah:
 	\begin{enumerate}
-		\item Atribut \texttt{count} bertipe \texttt{integer} yang akan digunakan untuk mencatat jumlah frekuensi dari kemunculan nilai atribut ini.
-		\item Atribut \texttt{value} bertipe \texttt{string} yang akan digunakan untuk mencatat nama dari nilai diskrit instansiasi dari kelas ini.
-		\item Operasi konstruktor \texttt{AttributeDetail(value : String, count : int): void} akan menginisialisasi nilai awal seluruh atribut yang dimiliki oleh kelas ini pada saat instansiasi objek dari kelas ini.
+		\item Atribut \texttt{count} bertipe \texttt{integer} yang digunakan untuk mencatat jumlah frekuensi dari kemunculan nilai atribut ini.
+		\item Atribut \texttt{value} bertipe \texttt{string} yang digunakan untuk mencatat nama dari nilai diskrit instansiasi dari kelas ini.
+		\item Operasi konstruktor \texttt{AttributeDetail(value : String, count : int): void} menginisialisasi nilai awal seluruh atribut yang dimiliki oleh kelas ini pada saat instansiasi objek dari kelas ini.
 	\end{enumerate} 
 	
 \end{enumerate}
@@ -384,10 +384,10 @@ Pada package ini terdapat 3 kelas utama yang akan menjadi kelas \textit{parent}(
 	\caption[Diagram Kelas Modul \textit{Testing: Package Mapper}]{Diagram Kelas Modul \textit{Testing: Package Mapper}}
 	\label{fig:Diagram Kelas Modul Testing: Package Mapper}
 \end{figure}
-Pada package ini terdapat 7 kelas utama yang akan digunakan untuk melakukan proses pada fase \textit{map} pada modul testing. Berikut merupakan penjelasan tiap package dan kelas - kelas yang ada pada \texttt{Package mapper}:
+Pada package ini terdapat 7 kelas utama yang digunakan untuk melakukan proses pada fase \textit{map} pada modul testing. Berikut merupakan penjelasan tiap package dan kelas - kelas yang ada pada \texttt{Package mapper}:
 \begin{enumerate}
 	\item{Kelas \texttt{MyTestingMapper}}\\
-	Kelas ini merupakan kelas utama yang akan dijalankan pada proses map. Kelas ini memiliki 5 atribut dan 3 operasi yang akan digunakan untuk dapat melakukan operasi pada fase map secara keseluruhan. Berikut merupakan penjelasan mengenai atribut dan operasi pada kelas ini:
+	Kelas ini merupakan kelas utama yang dijalankan pada proses map. Kelas ini memiliki 5 atribut dan 3 operasi yang digunakan untuk dapat melakukan operasi pada fase map secara keseluruhan. Berikut merupakan penjelasan mengenai atribut dan operasi pada kelas ini:
 	\begin{itemize}
 		\item{Atribut}
 		\begin{enumerate}
@@ -395,10 +395,10 @@ Pada package ini terdapat 7 kelas utama yang akan digunakan untuk melakukan pros
 		Atribut ini bertipe \textit{String} dan memiliki \textit{modifier} \textit{static} dan \textit{final} agar nilainya tidak dapat diubah - ubah. Inisialisasi pertama dari atribut ini adalah: \verb|"hdfs://master:9000"|. \verb|"hdfs://master:9000"| merupakan url dari node master yang digunakan untuk dapat berkomunikasi dengan node master pada lingkungan \textit{hadoop}. Atribut ini digunakan untuk \textit{request} operasi baca file \textit{meta.info} dan model NBC pada HDFS.
 		
 		\item{\texttt{classContainer}}\\
-		Atribut ini bertipe \texttt{ClassContainer} yang akan menyimpan seluruh model atribut NBC yang merupakan atribut kelas. 
+		Atribut ini bertipe \texttt{ClassContainer} yang menyimpan seluruh model atribut NBC yang merupakan atribut kelas. 
 
 		\item{\texttt{predictorContainer}}\\
-		Atribut ini bertipe \texttt{PredictorContainer} yang akan menyimpan seluruh model atribut NBC yang merupakan atribut prediktor. 
+		Atribut ini bertipe \texttt{PredictorContainer} yang menyimpan seluruh model atribut NBC yang merupakan atribut prediktor. 
 
 		\item{\texttt{classSplitConf}}\\
 		Atribut ini bertipe \texttt{array of string} yang menyimpan seluruh keterangan mengenai field - field yang merupakan atribut bertipe kelas yang digunakan pada model NBC. Keterangan yang disimpan pada atribut ini adalah: (1) nomor indeks; (2) name field; (3) jenis atribut. 
@@ -411,77 +411,77 @@ Pada package ini terdapat 7 kelas utama yang akan digunakan untuk melakukan pros
 		\item{Operasi}
 		\begin{enumerate}
 			\item{\texttt{map(}}
-			Operasi ini akan melakukan proses pada fase \textit{map} untuk proses testing pada modul ini. Proses yang dilakukan akan meliputi perhitungan nilai probabilitas posterior untuk setiap input pada value. Proses perhitungan tersebut akan dibagi menjadi 2 proses yang terpisah untuk atribut numerik dan diskrit. Setelah diketahui hasilnya, lalu akan disimpan hasil-nya untuk dijadikan keluaran pada operasi ini. Berikut merupakan \texttt{pseudo-code} pada operasi ini:
+			Operasi ini melakukan proses pada fase \textit{map} untuk proses testing pada modul ini. Proses yang dilakukan meliputi perhitungan nilai probabilitas posterior untuk setiap input pada value. Proses perhitungan tersebut dibagi menjadi 2 proses yang terpisah untuk atribut numerik dan diskrit. Setelah diketahui hasilnya, lalu disimpan hasil-nya untuk dijadikan keluaran pada operasi ini. Berikut merupakan \texttt{pseudo-code} pada operasi ini:
 			\begin{algorithm}[H]
 			\caption{NBC Testing algorithm}\label{alg:NBCTestMap}
 			\begin{algorithmic}[1]
-			\Procedure{Map}{$key,value,context$}\Comment{Map function}
+			\Procedure{Map}{\texttt{key,value,context}}\Comment{Map function}
 			\State \texttt{input} $\gets$ \texttt{value.toString().trim().split(",")}
 			\State \texttt{allResults} $\gets$ \texttt{List<String>}\Comment{\texttt{Format:[CN|CV|Res|Act]}}
-			\ForAll{$(classIdx,className) \in classSplitConf$}
-				\State $currInClassValue \gets input[classIdx]$
-				\State $classPrior \gets classContainer[className]$
-				\State $allClassResult \gets ListOfString$\Comment{seluruh hasil dari tiap kelas}
-				\ForAll{$(classPriorDetail) \in classPrior$}
-					\State $currClassAllPredictorResult \gets 1.0$
-					\State $flag \gets 0$
-					\State $outer:$
+			\ForAll{\texttt{(classIdx,className)}$ \in $\texttt{classSplitConf}}
+				\State \texttt{currInClassValue}$ \gets $\texttt{input[classIdx]}
+				\State \texttt{classPrior}$ \gets $\texttt{classContainer[className]}
+				\State \texttt{allClassResult}$ \gets $\texttt{ListOfString}\Comment{seluruh hasil dari tiap kelas}
+				\ForAll{\texttt{(classPriorDetail)}$ \in $\texttt{classPrior}}
+					\State \texttt{currClassAllPredictorResult}$ \gets $\texttt{1.0}
+					\State \texttt{flag} $\gets$ \texttt{0}
+					\State \texttt{outer:}
 					
-					\ForAll{$(attrIdx,attrName,attrType) \in attrSplitConf$}
-						\State $currInAttrValue \gets input[attrIdx]$	
+					\ForAll{(attrIdx,attrName,attrType) $\in$ attrSplitConf}
+						\State \texttt{currInAttrValue}$ \gets $\texttt{input[attrIdx]}	
 						
-						\If{$attrType \gets $discrete}
-							\State $predictor \gets predictorContainer[attrName]$
-							\State $predDetail \gets predictor.getDetail[currInAttrValue]$
-							\State $countDividend \gets classPriorDetail.getCount$
-							\State $divClassPrior \gets predidctor.getClassPrior[className]$
-							\State $divClassPriorDetail \gets divClassPrior.getDetail[classPriorDetail]$
-							\State $divisor \gets divClassPriorDetail.getCount$
-							\State $currRes \gets (countDividend) / (divisor)$
-							\State $currClassAllPredictorResult *= currRes$
-						\ElsIf{$attrType \gets $numeric}
-							\State $predictor \gets predictorContainer[attrName]$
-							\State $mean \gets classPriorDetail.getMean$
-							\State $sigma \gets classPriorDetail.getSigma$
-							\State $divisor \gets \sqrt{2.0 * \Pi * sigma}$
-							\State $powerDividend \gets currInAttrValue - mean)^2 * -1$
+						\If{\texttt{attrType} $\gets$ \texttt{discrete}}
+							\State \texttt{predictor} $\gets$ \texttt{predictorContainer[attrName]}
+							\State \texttt{predDetail} $\gets$ \texttt{predictor.getDetail[currInAttrValue]}
+							\State \texttt{countDividend} $\gets$ \texttt{classPriorDetail.getCount}
+							\State \texttt{divClassPrior} $\gets$ \texttt{predidctor.getClassPrior[className]}
+							\State \texttt{divClassPriorDetail} $\gets$ \texttt{divClassPrior.getDetail[classPriorDetail]}
+							\State \texttt{divisor} $\gets$ \texttt{divClassPriorDetail.getCount}
+							\State \texttt{currRes} $\gets$ \texttt{(countDividend) / (divisor)}
+							\State \texttt{currClassAllPredictorResult *= currRes}
+						\ElsIf{\texttt{attrType} $\gets$ \texttt{numeric}}
+							\State \texttt{predictor} $\gets$ \texttt{predictorContainer[attrName]}
+							\State \texttt{mean} $\gets$ \texttt{classPriorDetail.getMean}
+							\State \texttt{sigma} $\gets$ \texttt{classPriorDetail.getSigma}
+							\State \texttt{divisor} $\gets \sqrt{2.0 * \Pi * sigma}$
+							\State \texttt{powerDividend} $\gets currInAttrValue - mean)^2 * -1$
 							\State $powerDivisor \gets 2.0 * \frac{sigma}{2}$
-							\State $resPower \gets powerDividend / powerDivisor$
-							\State $currRes \gets (1/divisor) * Math.E^{resPower}$
-							\State $currClassAllPredictorResult *= currRes$
+							\State resPower $\gets$ powerDividend / powerDivisor
+							\State currRes $\gets$ (1/divisor) * $Math.E^{resPower}$
+							\State \texttt{currClassAllPredictorResult *= currRes}
 						\EndIf
 						
-						\State $currClassCount \gets classPriorDetail.getCount()$
-						\State $allCurrClassCount \gets 0.0$
+						\State currClassCount $\gets$ classPriorDetail.getCount()
+						\State allCurrClassCount $\gets$ 0.0
 
-						\ForAll{$x \in classPrior.getDetail$}
-							\State $allCurrClassCount += x.getCount$
+						\ForAll{\texttt{x} $\in$ \texttt{classPrior.getDetail}}
+							\State \texttt{allCurrClassCount += x.getCount}
 						\EndFor
 												
-						\State $currClassAllPredictorResult *= (currClassCount/allCurrClassCount)$
-						\State $allClassResult.add(currClassAllPredictorResult)$
+						\State \texttt{currClassAllPredictorResult *= (currClassCount/allCurrClassCount)}
+						\State \texttt{allClassResult.add(currClassAllPredictorResult)}
 					\EndFor					
 					
 				\EndFor
 				
-				\State $maxClass \gets ""$
-				\State $checker \gets Double.MIN$\verb|_|$VALUE$
-				\State $divisorNorm \gets 0.0$
+				\State \texttt{maxClass $\gets$ ""}
+				\State \texttt{checker} $\gets$ \texttt{Double.MIN}\verb|_|\texttt{VALUE}
+				\State \texttt{divisorNorm $\gets$ 0.0}
 				
-				\ForAll{$result \in allClassResult$}
-					\State $divisorNorm += result.currentVal$
-					\If{$checker < currentVal$}
-						\State $checker = currentVal$
-          				\State $maxClass = s$
+				\ForAll{\texttt{result $\in$ allClassResult}}
+					\State \texttt{divisorNorm += result.currentVal}
+					\If{\texttt{checker < currentVal}}
+						\State \texttt{checker = currentVal}
+          				\State \texttt{maxClass = s}
 					\EndIf
 				\EndFor
 				
-				\State $allResults.add(maxClass)$
+				\State \texttt{allResults.add(maxClass)}
 				
 			\EndFor
 			
-			\ForAll{$result \in allResults$}
-				\State $write(result)$
+			\ForAll{\texttt{result} $\in$ \texttt{allResults}}
+				\State \texttt{write(result)}
 			\EndFor
 
 			\EndProcedure
@@ -489,43 +489,42 @@ Pada package ini terdapat 7 kelas utama yang akan digunakan untuk melakukan pros
 			\end{algorithm}
 			
 			\item{\texttt{setup(}}
-			Operasi ini akan melakukan pembacaan model NBC yang sudah dibuat pada proses sebelumnya pada modul training dalam HDFS serta melakukan konversi data dari \textit{plain text} model NBC pada HDFS ke dalam objek - objek kelas dan prediktor. Lalu, memasukkannya ke dalam kontainer - kontainer sesuai dengan tipe atribut tersebut.
+			Operasi ini melakukan pembacaan model NBC yang sudah dibuat pada proses sebelumnya pada modul training dalam HDFS serta melakukan konversi data dari \textit{plain text} model NBC pada HDFS ke dalam objek - objek kelas dan prediktor. Lalu, memasukkannya ke dalam kontainer - kontainer sesuai dengan tipe atribut tersebut.
 
 			
 			\item{\texttt{laplacianSmoothing()}}
-			Operasi ini akan melakukan \textit{smoothing} pada mode NBC yang diperoleh pada saat operasi \texttt{setup()} dijalankan. Proses ini akan melakukan penambahan tiap frekuensi pada atribut bertipe diskrit serta kelasnya sebanyak parameter yang diterima (\texttt{default=1}). Operasi ini dibuat untuk menangani terjadinya \textit{zero-frequency problem} pada model NBC yang telah dibuat. Berikut merupakan \textit{pseudo-code} pada operasi ini:
+			Operasi ini melakukan \textit{smoothing} pada mode NBC yang diperoleh pada saat operasi \texttt{setup()} dijalankan. Proses ini melakukan penambahan tiap frekuensi pada atribut bertipe diskrit serta kelasnya sebanyak parameter yang diterima (\texttt{default=1}). Operasi ini dibuat untuk menangani terjadinya \textit{zero-frequency problem} pada model NBC yang telah dibuat. Berikut merupakan \textit{pseudo-code} pada operasi ini:
 			\begin{algorithm}[H]
 			\caption{Laplacian Smoothing algorithm}\label{alg:NBCTestLaplace}
 			\begin{algorithmic}[1]
 
-			\ForAll{$(className,classPrior) \in classContainer$}
+			\ForAll{\texttt{(className,classPrior)}$ \in $\texttt{classContainer}}
 
-				\ForAll{$(classValue,classPriorDetail) \in classPrior$}
+				\ForAll{\texttt{(classValue,classPriorDetail)}$ \in $\texttt{classPrior}}
 				
-					\ForAll{$(predictorName, predictor) \in predictorContainer$}
+					\ForAll{\texttt{(predictorName, predictor)}$ \in $\texttt{predictorContainer}}
 					
-						\State $totalAdditionForCurrClassDetail \gets 0$
+						\State \texttt{totalAdditionForCurrClassDetail}$ \gets 0$
 						
-						\ForAll{$(predictorDetailName, predictorDetail) \in predictor$}
+						\ForAll{\texttt{(predictorDetailName, predictorDetail)}$ \in $\texttt{predictor}}
 							\State \texttt{classPriorDetailChecker} $\gets$ \texttt{predictorDetail.classPrior[className]} \texttt{.getDetail[classValue]}
 														
-							\If{$classPriorDetailChecker \gets null$}
-								\State $classPriorDetailChecker \gets new ClassPriorDetail$ \texttt{(classValue,laplacianSmoothingAdder)}
+							\If{\texttt{classPriorDetailChecker}$ \gets $\texttt{null}}
+								\State \texttt{classPriorDetailChecker}$ \gets $\texttt{new ClassPriorDetail} \texttt{(classValue,laplacianSmoothingAdder)}
 								\State \texttt{predictorDetail.classPrior[className]} \texttt{.putDetail(classValue,classPriorDetailChecker)}
-								\State $tmpClassPriorDetail \gets classPrior.get[classValue]$
-								\State $tmpClassPriorDetail.setCount(tmpClassPriorDetail.getCount() + laplacianSmoothingAdder)$
-								
+								\State \texttt{tmpClassPriorDetail}$ \gets $\texttt{classPrior.get[classValue]}
+								\State \texttt{tmpClassPriorDetail.setCount(tmpClassPriorDetail.getCount() + laplacianSmoothingAdder)}		
 							\Else
-								\State $classPriorDetailChecker .setCount( classPriorDetailModify.getCount() + laplacianSmoothingAdder)$
+								\State \texttt{classPriorDetailChecker .setCount( classPriorDetailModify.getCount() + laplacianSmoothingAdder)}
 							\EndIf
 							
-							\For{$i \gets 0 $ \textbf{to} $ laplacianSmoothingAdder$}
-								\State $totalAdditionForCurrClassDetail.incrementAndGet()$
+							\For{$i \gets 0 $ \textbf{to} \texttt{laplacianSmoothingAdder}}
+								\State \texttt{totalAdditionForCurrClassDetail.incrementAndGet()}
 							\EndFor
 							
 						\EndFor
 						
-						\State $classPriorDetailSecondHandler \gets$ \texttt{predictor.classPrior[className]} \texttt{.getDetail[classValue]}
+						\State \texttt{classPriorDetailSecondHandler}$ \gets $ \texttt{predictor.classPrior[className]} \texttt{.getDetail[classValue]}
 						\State \texttt{classPriorDetailSecondHandler.setCount(}  \texttt{classPriorDetailSecondHandler} \texttt{.getCount()+totalAdditionForCurrClassDetail.get())}
 					\EndFor
 				
@@ -542,30 +541,30 @@ Pada package ini terdapat 7 kelas utama yang akan digunakan untuk melakukan pros
 	\end{itemize}
 
 	\item{\texttt{package utils.class}}\\
-	Pada package ini terdapat 3 kelas utama yang akan digunakan sebagai model dari atribut kelas NBC sekaligus kelas kontainer untuk penyimpanannya. Berikut merupakan kelas - kelas yang ada pada \texttt{package utils.class}:
+	Pada package ini terdapat 3 kelas utama yang digunakan sebagai model dari atribut kelas NBC sekaligus kelas kontainer untuk penyimpanannya. Berikut merupakan kelas - kelas yang ada pada \texttt{package utils.class}:
 	\begin{enumerate}
 		\item \texttt{ClassContainer}\\
-		Kelas ini akan digunakan sebagai penyimpanan seluruh atribut kelas pada model NBC. Kelas ini memiliki 1 atribut yaitu \texttt{classPriorMap} yang bertipe \texttt{Map}. Atribut ini memiliki \texttt{key=String} dan \texttt{value=ClassPrior}. Atribut ini akan berisi kumpulan dari atribut kelas pada NBC.
+		Kelas ini digunakan sebagai penyimpanan seluruh atribut kelas pada model NBC. Kelas ini memiliki 1 atribut yaitu \texttt{classPriorMap} yang bertipe \texttt{Map}. Atribut ini memiliki \texttt{key=String} dan \texttt{value=ClassPrior}. Atribut ini berisi kumpulan dari atribut kelas pada NBC.
 
 		\item \texttt{ClassPrior}\\
-		Kelas ini akan merepresentasikan atribut kelas pada model NBC yang ada. Kelas ini merupakan turunan dari kelas \texttt{AttributeMetaInfo}. Sehingga, kelas ini secara tidak langsung memiliki atribut yang dimiliki oleh kelas \texttt{AttributeMetaInfo}.
+		Kelas ini merepresentasikan atribut kelas pada model NBC yang ada. Kelas ini merupakan turunan dari kelas \texttt{AttributeMetaInfo}. Sehingga, kelas ini secara tidak langsung memiliki atribut yang dimiliki oleh kelas \texttt{AttributeMetaInfo}.
 
 		\item \texttt{ClassPriorDetail}\\
-		Kelas ini akan merepresentasikan nilai diskrit dari atribut kelas pada model NBC yang ada. Kelas ini merupakan kelas turunan dari kelas \texttt{AttributeDetail}. Sehingga, kelas ini secara tidak langsung memiliki atribut yang dimiliki oleh kelas \texttt{AttributeDetail}. Karena kelas ini merepresentasikan atribut bertipe diskrit, maka nilai awal untuk atribut \texttt{mean} dan \texttt{sigma} pada kelas \textit{parent}-nya akan di-\textit{override} dan diinisialisasi dengan nilai -1.
+		Kelas ini merepresentasikan nilai diskrit dari atribut kelas pada model NBC yang ada. Kelas ini merupakan kelas turunan dari kelas \texttt{AttributeDetail}. Sehingga, kelas ini secara tidak langsung memiliki atribut yang dimiliki oleh kelas \texttt{AttributeDetail}. Karena kelas ini merepresentasikan atribut bertipe diskrit, maka nilai awal untuk atribut \texttt{mean} dan \texttt{sigma} pada kelas \textit{parent}-nya di-\textit{override} dan diinisialisasi dengan nilai -1.
 		
 	\end{enumerate}
 	
 	\item{\texttt{package utils.predictor}}\\
-	Pada package ini terdapat 3 kelas utama yang akan digunakan sebagai model dari atribut prediktor NBC sekaligus kelas kontainer untuk penyimpanannya. Berikut merupakan kelas - kelas yang ada pada \texttt{package utils.predictor}:
+	Pada package ini terdapat 3 kelas utama yang digunakan sebagai model dari atribut prediktor NBC sekaligus kelas kontainer untuk penyimpanannya. Berikut merupakan kelas - kelas yang ada pada \texttt{package utils.predictor}:
 	\begin{enumerate}
 		\item \texttt{PredictorContainer}\\
-		Kelas ini akan digunakan sebagai penyimpanan seluruh atribut prediktor pada model NBC. Kelas ini memiliki 1 atribut yaitu \texttt{predictorMap} yang bertipe \texttt{Map}. Atribut ini memiliki \texttt{key=String} dan \texttt{value=Predictor}. Atribut ini akan berisi kumpulan dari atribut predictor pada NBC.
+		Kelas ini digunakan sebagai penyimpanan seluruh atribut prediktor pada model NBC. Kelas ini memiliki 1 atribut yaitu \texttt{predictorMap} yang bertipe \texttt{Map}. Atribut ini memiliki \texttt{key=String} dan \texttt{value=Predictor}. Atribut ini berisi kumpulan dari atribut predictor pada NBC.
 
 		\item \texttt{Predictor}\\
-		Kelas ini akan merepresentasikan atribut prediktor pada model NBC yang ada. Kelas ini merupakan turunan dari kelas \texttt{AttributeMetaInfo}. Sehingga, kelas ini secara tidak langsung memiliki atribut yang dimiliki oleh kelas \texttt{AttributeMetaInfo}. Atribut tambahan yang dimiliki secara eksklusif oleh kelas ini merupakan atribut \texttt{classPriorMap}. Atribut ini akan berisi tentang seluruh kelas dari probabilitas posterior atribut prediktor tersebut.
+		Kelas ini merepresentasikan atribut prediktor pada model NBC yang ada. Kelas ini merupakan turunan dari kelas \texttt{AttributeMetaInfo}. Sehingga, kelas ini secara tidak langsung memiliki atribut yang dimiliki oleh kelas \texttt{AttributeMetaInfo}. Atribut tambahan yang dimiliki secara eksklusif oleh kelas ini merupakan atribut \texttt{classPriorMap}. Atribut ini berisi tentang seluruh kelas dari probabilitas posterior atribut prediktor tersebut.
 
 		\item \texttt{PredictorDetail}\\
-		Kelas ini akan merepresentasikan nilai diskrit dari atribut prediktor yang bertipe diskrit pada model NBC yang ada. Kelas ini merupakan kelas turunan dari kelas \texttt{AttributeDetail}. Sehingga, kelas ini secara tidak langsung memiliki atribut yang dimiliki oleh kelas \texttt{AttributeDetail}.
+		Kelas ini merepresentasikan nilai diskrit dari atribut prediktor yang bertipe diskrit pada model NBC yang ada. Kelas ini merupakan kelas turunan dari kelas \texttt{AttributeDetail}. Sehingga, kelas ini secara tidak langsung memiliki atribut yang dimiliki oleh kelas \texttt{AttributeDetail}.
 	\end{enumerate}
 	
 \end{enumerate}
@@ -578,11 +577,11 @@ Pada package ini terdapat 7 kelas utama yang akan digunakan untuk melakukan pros
 	\caption[Diagram Kelas Modul \textit{Testing: Package Reducer}]{Diagram Kelas Modul \textit{Testing: Package Reducer}}
 	\label{fig:Diagram Kelas Modul Testing: Package Reducer}
 \end{figure}
-Pada package ini terdapat 4 kelas utama yang akan digunakan untuk menjalankan proses \textit{reduce} pada modul \textit{testing}. Sebagian diantaranya berada di dalam \textit{sub-package} yang berbeda. Berikut merupakan penjelasan tiap package dan kelas:
+Pada package ini terdapat 4 kelas utama yang digunakan untuk menjalankan proses \textit{reduce} pada modul \textit{testing}. Sebagian diantaranya berada di dalam \textit{sub-package} yang berbeda. Berikut merupakan penjelasan tiap package dan kelas:
 
 \begin{enumerate}
 	\item Kelas \texttt{MyTestingReducer}
-	Kelas ini merupakan kelas utama yang akan dijalankan pada proses reduce. Kelas ini memiliki 2 atribut dan 3 operasi yang akan digunakan untuk dapat melakukan operasi pada fase reduce secara keseluruhan. Berikut merupakan penjelasan mengenai atribut dan operasi pada kelas ini:
+	Kelas ini merupakan kelas utama yang dijalankan pada proses reduce. Kelas ini memiliki 2 atribut dan 3 operasi yang digunakan untuk dapat melakukan operasi pada fase reduce secara keseluruhan. Berikut merupakan penjelasan mengenai atribut dan operasi pada kelas ini:
 	\begin{itemize}
 		\item{Atribut}
 		\begin{enumerate}
@@ -590,14 +589,14 @@ Pada package ini terdapat 4 kelas utama yang akan digunakan untuk menjalankan pr
 			Atribut ini bertipe \textit{String} dan memiliki \textit{modifier} \textit{static} dan \textit{final} agar nilainya tidak dapat diubah - ubah. Inisialisasi pertama dari atribut ini adalah: \verb|"hdfs://master:9000"|. \verb|"hdfs://master:9000"| merupakan url dari node master yang digunakan untuk dapat berkomunikasi dengan node master pada lingkungan \textit{hadoop}. Atribut ini digunakan untuk \textit{request} operasi baca file \textit{meta.info} dan model NBC pada HDFS.
 		
 			\item{\texttt{classContainerReducer}}\\
-			Atribut ini bertipe \texttt{ClassContainerReducer} yang akan digunakan untuk menyimpan seluruh atribut kelas pada NBC. 
+			Atribut ini bertipe \texttt{ClassContainerReducer} yang digunakan untuk menyimpan seluruh atribut kelas pada NBC. 
 			
 		\end{enumerate}
 		
 		\item{Operasi}
 		\begin{enumerate}
 			\item{\texttt{reduce()}}\\
-			Operasi ini akan melakukan proses pada fase \textit{reduce} untuk proses testing pada modul ini. Proses yang dilakukan akan meliputi perhitungan nilai - nilai pada \texttt{confusion matrix} untuk setiap atribut kelas berdasarkan hasil klasifikasi pada fase \textit{map} sebelumnya. Setelah itu, proses ini juga akan melakukan kalkulasi untuk \textit{error rate}. Variabel yang akan digunakan pada perhitungan \textit{error rate} adalah: (1) \texttt{Accuracy} (2) \texttt{Precision} (3) \texttt{Recall} (4) \texttt{F-Measure}. Berikut merupakan \textit{pseudo-code} untuk proses \textit{reduce} pada modul \textit{testing}:
+			Operasi ini melakukan proses pada fase \textit{reduce} untuk proses testing pada modul ini. Proses yang dilakukan meliputi perhitungan nilai - nilai pada \texttt{confusion matrix} untuk setiap atribut kelas berdasarkan hasil klasifikasi pada fase \textit{map} sebelumnya. Setelah itu, proses ini juga melakukan kalkulasi untuk \textit{error rate}. Variabel yang digunakan pada perhitungan \textit{error rate} adalah: (1) \texttt{Accuracy} (2) \texttt{Precision} (3) \texttt{Recall} (4) \texttt{F-Measure}. Berikut merupakan \textit{pseudo-code} untuk proses \textit{reduce} pada modul \textit{testing}:
 			\begin{algorithm}[H]
 			\caption{NBC Testing algorithm}\label{alg:NBCTestMap}
 			\begin{algorithmic}[1]
@@ -676,11 +675,11 @@ Pada package ini terdapat 4 kelas utama yang akan digunakan untuk menjalankan pr
 			\end{algorithm}
 			
 			\item{\texttt{setup()}}\\
-			Operasi ini akan melakukan pembacaan pada model NBC yang sudah dibuat sebelumnya dalam HDFS. Model NBC yang dibaca hanya yang untuk atribut yang bertipe kelas dan lalu memasukkannya ke dalam kelas kontainer pada proses ini.
+			Operasi ini melakukan pembacaan pada model NBC yang sudah dibuat sebelumnya dalam HDFS. Model NBC yang dibaca hanya yang untuk atribut yang bertipe kelas dan lalu memasukkannya ke dalam kelas kontainer pada proses ini.
 			
 			
 			\item{\texttt{separateBetweenConfusionMatrix(s)}}\\
-			Operasi ini akan melakukan penambahan pada \textit{string parameter} dengan separator yang ditentukan di dalam operasi ini.
+			Operasi ini melakukan penambahan pada \textit{string parameter} dengan separator yang ditentukan di dalam operasi ini.
 			
 		\end{enumerate}
 	
@@ -690,23 +689,23 @@ Pada package ini terdapat 4 kelas utama yang akan digunakan untuk menjalankan pr
 	\end{itemize}
 	
 	\item \texttt{package utils}
-	Pada kelas \textit{package} ini	terdapat 3 kelas utama yang digunakan untuk menyimpan atribut kelas dari model NBC dan penyimpanan untuk \texttt{confusion matrix} yang akan digunakan untuk melakukan perhitungan \textit{error rate}. Berikut merupakan penjeleasan kelas - kelas yang terdapat pada \textit{package} ini:
+	Pada kelas \textit{package} ini	terdapat 3 kelas utama yang digunakan untuk menyimpan atribut kelas dari model NBC dan penyimpanan untuk \texttt{confusion matrix} yang digunakan untuk melakukan perhitungan \textit{error rate}. Berikut merupakan penjeleasan kelas - kelas yang terdapat pada \textit{package} ini:
 	\begin{enumerate}
 		\item \texttt{ClassContainerRed}\\
-		Kelas ini akan digunakan sebagai penyimpanan seluruh atribut kelas pada model NBC. Kelas ini memiliki 1 atribut yaitu \texttt{classPriorRed} yang bertipe \texttt{HashMap}. Atribut ini memiliki \texttt{key=String} sebagai nama dari kelas tersebut dan \texttt{value=ClassPriorRed} sebagai kelas yang akan menyimpan detail dari kelas tersebut. Atribut ini akan berisi kumpulan dari atribut kelas pada NBC.
+		Kelas ini digunakan sebagai penyimpanan seluruh atribut kelas pada model NBC. Kelas ini memiliki 1 atribut yaitu \texttt{classPriorRed} yang bertipe \texttt{HashMap}. Atribut ini memiliki \texttt{key=String} sebagai nama dari kelas tersebut dan \texttt{value=ClassPriorRed} sebagai kelas yang menyimpan detail dari kelas tersebut. Atribut ini berisi kumpulan dari atribut kelas pada NBC.
 		
 		\item \texttt{ClassPriorRed}\\
-		Kelas ini akan merepresentasikan atribut kelas pada model NBC yang ada. Kelas ini memiliki 2 atribut, diantaranya adalah:
+		Kelas ini merepresentasikan atribut kelas pada model NBC yang ada. Kelas ini memiliki 2 atribut, diantaranya adalah:
 		\begin{enumerate}
 			\item \texttt{name}\\
-			Atribut ini akan berisi nama dari atribut kelas model NBC ini.
+			Atribut ini berisi nama dari atribut kelas model NBC ini.
 			
 			\item \texttt{values}\\
-			Atribut ini akan berisi nilai - nilai diskrit dari atribut kelas model NBC ini.
+			Atribut ini berisi nilai - nilai diskrit dari atribut kelas model NBC ini.
 		\end{enumerate}
 		
 		\item \texttt{ConfusionMatrix}\\		
-		Kelas ini akan merepresentasikan nilai dari \texttt{matrix confusion} yang akan diisi dengan kesesuaian antara hasil prediksi dari algoritma NBC dengan nilai aktual milik record input tersebut. Nilai - nilai dari \texttt{matrix confusion} yang ada pada kelas ini juga akan digunakan untuk melakukan perhitungan \textit{error rate}: (1) \textit{Accuracy}; (2) \textit{Precision}; (3) \textit{Recall}; (4) \textit{F-Measure}. Kelas ini memiliki 2 atribut dan 5 operasi, berikut merupakan penjelasan lebih lanjut:
+		Kelas ini merepresentasikan nilai dari \texttt{matrix confusion} yang diisi dengan kesesuaian antara hasil prediksi dari algoritma NBC dengan nilai aktual milik record input tersebut. Nilai - nilai dari \texttt{matrix confusion} yang ada pada kelas ini juga digunakan untuk melakukan perhitungan \textit{error rate}: (1) \textit{Accuracy}; (2) \textit{Precision}; (3) \textit{Recall}; (4) \textit{F-Measure}. Kelas ini memiliki 2 atribut dan 5 operasi, berikut merupakan penjelasan lebih lanjut:
 		\begin{itemize}
 			\item Atribut
 			\begin{enumerate}
@@ -714,26 +713,26 @@ Pada package ini terdapat 4 kelas utama yang akan digunakan untuk menjalankan pr
 				Atribut ini bertipe \texttt{HashMap} dengan \texttt{key=string} untuk menyimpan nama dari nilai diskrit pada atribut kelas tertentu dan \texttt{value=integer} untuk menyimpan nomor dari indeks pada matrix yang merepresentasikan kelas tersebut.
 			
 				\item \texttt{matrix[][]}\\
-				Atribut ini bertipe matrix 2 dimensi yang akan merepresentasikan matrix \textit{confusion} dari atribut kelas tertentu.
+				Atribut ini bertipe matrix 2 dimensi yang merepresentasikan matrix \textit{confusion} dari atribut kelas tertentu.
 			
 			\end{enumerate}
 			
 			\item Operasi
 			\begin{enumerate}
 				\item \texttt{ConfusionMatrix()}\\
-				Operasi ini merupakan konstruktor untuk mengisi nilai awal dari dari atribut - atribut pada kelas ini. Operasi ini akan menerima 2 buah parameter yang berisi (1) classPriorRed untuk mencatat tiap nilai diskrit dari atribut kelas tersebut dan (2) panjang dari matrix yang nantinya akan menjadi panjang dari matrix 2 dimensi yang dimiliki oleh kelas ini.
+				Operasi ini merupakan konstruktor untuk mengisi nilai awal dari dari atribut - atribut pada kelas ini. Operasi ini menerima 2 buah parameter yang berisi (1) classPriorRed untuk mencatat tiap nilai diskrit dari atribut kelas tersebut dan (2) panjang dari matrix yang nantinya menjadi panjang dari matrix 2 dimensi yang dimiliki oleh kelas ini.
 				
 				\item \texttt{sAddLessSpace()}\\
-				Operasi ini melakukan penambahan spasi pada \textit{string parameter input}. Operasi ini akan digunakan untuk men-\textit{generate} keseluruhan matrix dalam bentuk string	.
+				Operasi ini melakukan penambahan spasi pada \textit{string parameter input}. Operasi ini digunakan untuk men-\textit{generate} keseluruhan matrix dalam bentuk string	.
 				
 				\item \texttt{sFindDigitLengthNumber()}\\
-				Operasi ini melakukan pencarian panjang digit dari \textit{integer} pada \textit{parameter}. Operasi ini akan digunakan untuk men-\textit{generate} keseluruhan matrix dalam bentuk string.
+				Operasi ini melakukan pencarian panjang digit dari \textit{integer} pada \textit{parameter}. Operasi ini digunakan untuk men-\textit{generate} keseluruhan matrix dalam bentuk string.
 				
 				\item \texttt{sNewLine()}\\
-				Operasi ini penambahan baris baru pada \textit{string parameter}. Operasi ini akan digunakan untuk men-\textit{generate} keseluruhan matrix dalam bentuk string.
+				Operasi ini penambahan baris baru pada \textit{string parameter}. Operasi ini digunakan untuk men-\textit{generate} keseluruhan matrix dalam bentuk string.
 				
 				\item \texttt{stringPrintedMatrix()}\\
-				Operasi ini akan melakukan konversi dari matrix 2 dimensi milik atribut \texttt{matrix[][]} ke dalam bentuk \texttt{string} yang nantinya akan di-\textit{print} menjadi keluaran proses ini.
+				Operasi ini melakukan konversi dari matrix 2 dimensi milik atribut \texttt{matrix[][]} ke dalam bentuk \texttt{string} yang nantinya di-\textit{print} menjadi keluaran proses ini.
 				
 			\end{enumerate}					
 
@@ -746,7 +745,7 @@ Pada package ini terdapat 4 kelas utama yang akan digunakan untuk menjalankan pr
 
 \subsection{Diagram Kelas Modul Kelola Input}
 
-Struktur kelas diagram pada modul input dirancang dengan mengikuti \textit{design pattern} milik \textit{Spring Web MVC} yang telah dijelaskan pada landasan teori mengenai \textit{Spring framework} pada \ref{subsec:Spring Framework} dengan tambahan beberapa modifikasi pada layer tengahnya. Berikut merupakan ilustrasi dari package kelas yang akan dirancang pada modul ini:
+Struktur kelas diagram pada modul input dirancang dengan mengikuti \textit{design pattern} milik \textit{Spring Web MVC} yang telah dijelaskan pada landasan teori mengenai \textit{Spring framework} pada \ref{subsec:Spring Framework} dengan tambahan beberapa modifikasi pada layer tengahnya. Berikut merupakan ilustrasi dari package kelas yang dirancang pada modul ini:
 \begin{figure}[H]
 	\centering
 	\includegraphics[scale=0.7]{ClassDiagramLengkap/springmvc_rev1}
@@ -757,39 +756,39 @@ Struktur kelas diagram pada modul input dirancang dengan mengikuti \textit{desig
 Berikut merupakan gambar dari kelas diagram milik modul kelola \textit{input}:
 \begin{figure}[H]
 	\centering
-	\includegraphics[scale=0.54]{ClassDiagramLengkap/CD_Input}
+	\includegraphics[scale=0.45]{ClassDiagramLengkap/CD_Input}
 	\caption[Diagram Kelas Modul Kelola Input]{Diagram Kelas Modul Kelola Input}
 	\label{fig:Diagram Kelas Modul Kelola Input}
 \end{figure}
 
-Pada modul ini terdapat 3 kelas utama yang akan digunakan untuk melakukan operasi tulis ke dalam HDFS. Selain itu, ada pula 2 kelas milik \textit{springframework} yang digunakan untuk kebutuhan http \textit{request} dan \textit{response} pada \textit{java web servlet}. Berikut merupakan penjelasan kelas - kelas tersebut.
+Pada modul ini terdapat 3 kelas utama yang digunakan untuk melakukan operasi tulis ke dalam HDFS. Selain itu, ada pula 2 kelas milik \textit{springframework} yang digunakan untuk kebutuhan http \textit{request} dan \textit{response} pada \textit{java web servlet}. Berikut merupakan penjelasan kelas - kelas tersebut.
 %\begin{enumerate}
 \subsubsection{\texttt{InputController}}
 	%\item \texttt{InputController}\\
-	Kelas ini akan melakukan \textit{handle} request http dari user dan megembalikan \textit{response} yang sesuai dengan apa yang diminta oleh user berkaitan dengan pengelolaan input. Kelas ini akan meneruskan request http dari user ke pada service yang sesuai. Kelas ini memiliki 3 atribut dan 2 operasi, diantaranya adalah:
+	Kelas ini melakukan \textit{handle} request http dari user dan megembalikan \textit{response} yang sesuai dengan apa yang diminta oleh user berkaitan dengan pengelolaan input. Kelas ini meneruskan request http dari user ke pada service yang sesuai. Kelas ini memiliki 3 atribut dan 2 operasi, diantaranya adalah:
 	%\begin{itemize}
 	
 	\paragraph{Atribut}
 		\begin{enumerate}
 			\item \verb|ABSOLUTE_PATH|\\
-			Atribut ini bertipe \texttt{string} serta memiliki \textit{modifier static} dan \texttt{final} agar tidak bisa diubah nilai-nya yang akan merepresentasikan path namespace\footnote{\textit{Namespace} merupakan nama pengenal yang unik untuk suatu entitas tertentu.} untuk kelas ini. Atribut ini memiliki nilai inisialisasi awal yang berisi \texttt{"/admin/input-set"}. Jadi, setiap method yang merepresentasikan suatu \textit{request url} dalam kelas ini akan diawali dengan \texttt{"/admin/input-set"}.
+			Atribut ini bertipe \texttt{string} serta memiliki \textit{modifier static} dan \texttt{final} agar tidak bisa diubah nilai-nya yang merepresentasikan path namespace\footnote{\textit{Namespace} merupakan nama pengenal yang unik untuk suatu entitas tertentu.} untuk kelas ini. Atribut ini memiliki nilai inisialisasi awal yang berisi \texttt{"/admin/input-set"}. Jadi, setiap method yang merepresentasikan suatu \textit{request url} dalam kelas ini diawali dengan \texttt{"/admin/input-set"}.
 
 			\item \verb|LAYOUTS_ADMIN|\\
-			Atribut ini bertipe \texttt{string} serta memiliki \texttt{modifier static} dan \texttt{final} yang akan menyimpan nama view layout dari tampilan html yang akan dirender oleh view. NIlai awal dari atribut ini adalah \texttt{"layouts/admin"}.
+			Atribut ini bertipe \texttt{string} serta memiliki \texttt{modifier static} dan \texttt{final} yang menyimpan nama view layout dari tampilan html yang dirender oleh view. NIlai awal dari atribut ini adalah \texttt{"layouts/admin"}.
 
 			\item \texttt{hdfsService}\\
-			Atribut ini bertipe \texttt{HdfsService} yang akan digunakan untuk memanggil operasi operasi yang dienkapsulasi ke dalam layer service. \texttt{HdfsService} akan melakukan request secara lansung kepada node master HDFS untuk melakukan operasi baca dan tulis (\textit{hadoop client}).
+			Atribut ini bertipe \texttt{HdfsService} yang digunakan untuk memanggil operasi operasi yang dienkapsulasi ke dalam layer service. \texttt{HdfsService} melakukan request secara lansung kepada node master HDFS untuk melakukan operasi baca dan tulis (\textit{hadoop client}).
 
 		\end{enumerate}
 					
 	\paragraph{Operasi}
 		\begin{enumerate}
 			\item \texttt{index(model : Model)}\\
-			Operasi ini akan meng-\textit{handle} http request bertipe GET dengan url yang ditentukan pada atribute \verb|ASBOLUTE_PATH| dan akan mengembalikan halaman utama dari modul kelola input ini.
+			Operasi ini meng-\textit{handle} http request bertipe GET dengan url yang ditentukan pada atribute \verb|ASBOLUTE_PATH| dan mengembalikan halaman utama dari modul kelola input ini.
 			
 			\item \texttt{postFile(inputSetDtoRequest : InputSetDtoRequest,
       redirectAttributes : RedirectAttributes)}\\
-			Operasi ini akan meng-\textit{handle} http request bertipe POST dengan url yang ditentukan pada atribute \verb|ASBOLUTE_PATH| dan akan melakukan operasi tulis file ke dalam HDFS. Jika berhasil akan mengembalikan data sukses ke pada html yang akan di-\textit{render} oleh view.
+			Operasi ini meng-\textit{handle} http request bertipe POST dengan url yang ditentukan pada atribute \verb|ASBOLUTE_PATH| dan melakukan operasi tulis file ke dalam HDFS. Jika berhasil mengembalikan data sukses ke pada html yang di-\textit{render} oleh view.
 
 		\end{enumerate}
 		
@@ -798,37 +797,37 @@ Pada modul ini terdapat 3 kelas utama yang akan digunakan untuk melakukan operas
 
 \subsubsection{\texttt{HdfsService}}
 		
-	Kelas ini merupakan kelas yang akan berhubungan langsung dengan master node pada lingkungan hadoop untuk mengakses HDFS. Kelas ini memiliki 4 atribut dan 4 operasi yang digunakan untuk melakukan operasi baca/tulis ke dalam HDFS. Atribut dan operasi tersebut adalah:
+	Kelas ini merupakan kelas yang berhubungan langsung dengan master node pada lingkungan hadoop untuk mengakses HDFS. Kelas ini memiliki 4 atribut dan 4 operasi yang digunakan untuk melakukan operasi baca/tulis ke dalam HDFS. Atribut dan operasi tersebut adalah:
 	%\begin{itemize}
 	\paragraph{Atribut}
 		\begin{enumerate}
 			\item \verb|HDFS_PATH|\\
-			Atribut ini bertipe \texttt{string} serta memiliki \textit{modifier} \texttt{static} dan \texttt{final} yang akan merepresentasikan \textit{path namespace} pada HDFS yang digunakan oleh keseluruhan perangkat lunak. Atribut ini memiliki nilai inisialisasi awal yang berisi \texttt{"/bayes/"}.
+			Atribut ini bertipe \texttt{string} serta memiliki \textit{modifier} \texttt{static} dan \texttt{final} yang merepresentasikan \textit{path namespace} pada HDFS yang digunakan oleh keseluruhan perangkat lunak. Atribut ini memiliki nilai inisialisasi awal yang berisi \texttt{"/bayes/"}.
 
 			\item \verb|HDFS_AUTHORITY|\\
-			Atribut ini bertipe \texttt{string} serta memiliki \textit{modifier} \texttt{static} dan \texttt{final} yang akan merepresentasikan server authority dari node master HDFS yang digunakan untuk mengakses file - file dalam HDFS. Atribut ini memiliki nilai inisialisasi awal yang berisi \texttt{"hdfs://localhost:9000"}.
+			Atribut ini bertipe \texttt{string} serta memiliki \textit{modifier} \texttt{static} dan \texttt{final} yang merepresentasikan server authority dari node master HDFS yang digunakan untuk mengakses file - file dalam HDFS. Atribut ini memiliki nilai inisialisasi awal yang berisi \texttt{"hdfs://localhost:9000"}.
 
 			\item \verb|configuration|\\
-			Atribut ini bertipe Configuration yang berasal dari \textit{library hadoop}. Atribut ini akan mengatur seluruh konfigurasi yang dibutuhkan untuk dapat melakukan komunikasi dengan lingkungan hadoop untuk dapat mengakses HDFS.
+			Atribut ini bertipe Configuration yang berasal dari \textit{library hadoop}. Atribut ini mengatur seluruh konfigurasi yang dibutuhkan untuk dapat melakukan komunikasi dengan lingkungan hadoop untuk dapat mengakses HDFS.
 
 			\item \verb|regex|\\
-			Atribut ini akan digunakan untuk pemisah setiap field yang ada dalam tiap baris pada input.
+			Atribut ini digunakan untuk pemisah setiap field yang ada dalam tiap baris pada input.
 			
 		\end{enumerate}				
 
 	\paragraph{Operasi}
 		\begin{enumerate}
 			\item \texttt{cleanHdfsDir()}\\
-			Operasi ini akan melakukan pembersihan seluruh file yang ada pada HDFS dengan url pada parameter yang diberikan. Operasi ini akan mengembalikan true apabila berhasil dan false apabila gagal melakukan komunikasi dengan HDFS.
+			Operasi ini melakukan pembersihan seluruh file yang ada pada HDFS dengan url pada parameter yang diberikan. Operasi ini mengembalikan true apabila berhasil dan false apabila gagal melakukan komunikasi dengan HDFS.
 			
 			\item \texttt{listInputDirOnPath()}\\
-			Operasi ini akan melakukan pencarian setiap model direktori yang sudah ada pada HDFS. Operasi ini akan mengembalikan tiap model direktori pada HDFS.
+			Operasi ini melakukan pencarian setiap model direktori yang sudah ada pada HDFS. Operasi ini mengembalikan tiap model direktori pada HDFS.
 			
 			\item \texttt{transformAndTransferInfoToHdfsInfo()}\\
-			Operasi ini akan melakukan penulisan untuk file info yang telah diinput oleh user sebelumnya untuk dijadikan file \texttt{meta.info} yang disimpan untuk model direktori tertentu pada HDFS. Jika sukses, operasi ini akan mengembalikan jumlah field yang digunakan pada file input yang user masukan.
+			Operasi ini melakukan penulisan untuk file info yang telah diinput oleh user sebelumnya untuk dijadikan file \texttt{meta.info} yang disimpan untuk model direktori tertentu pada HDFS. Jika sukses, operasi ini mengembalikan jumlah field yang digunakan pada file input yang user masukan.
 			
 			\item \texttt{transportToHdfs}\\
-			Operasi ini akan melakukan penulisan file input yang telah dimasukan oleh user, ke dalam HDFS. Selain itu, operasi ini juga akan menerima presentase yang digunakan pada file yang di-input oleh user untuk dijadikan data training dan data testing. Jika sukses, akan mengembalikan \texttt{boolean} bernilai \textit{true}.
+			Operasi ini melakukan penulisan file input yang telah dimasukan oleh user, ke dalam HDFS. Selain itu, operasi ini juga menerima presentase yang digunakan pada file yang di-input oleh user untuk dijadikan data training dan data testing. Jika sukses, mengembalikan \texttt{boolean} bernilai \textit{true}.
 			
 		\end{enumerate}
 		
@@ -843,7 +842,7 @@ Pada modul ini terdapat 3 kelas utama yang akan digunakan untuk melakukan operas
 
 \subsection{Diagram Kelas Modul Klasifikasi \textit{Naive Bayes}}
 
-Sama seperti pada modul kelola input, struktur kelas diagram pada modul ini juga dirancang dengan mengikuti \textit{design pattern} milik \textit{Spring Web MVC} yang telah dijelaskan pada landasan teori mengenai \textit{Spring framework} pada \ref{subsec:Spring Framework} dengan tambahan beberapa modifikasi pada layer tengahnya. Berikut merupakan ilustrasi dari package kelas yang akan dirancang pada modul ini:
+Sama seperti pada modul kelola input, struktur kelas diagram pada modul ini juga dirancang dengan mengikuti \textit{design pattern} milik \textit{Spring Web MVC} yang telah dijelaskan pada landasan teori mengenai \textit{Spring framework} pada \ref{subsec:Spring Framework} dengan tambahan beberapa modifikasi pada layer tengahnya. Berikut merupakan ilustrasi dari package kelas yang dirancang pada modul ini:
 \begin{figure}[H]
 	\centering
 	\includegraphics[scale=0.7]{ClassDiagramLengkap/springmvc_rev1}
@@ -851,7 +850,7 @@ Sama seperti pada modul kelola input, struktur kelas diagram pada modul ini juga
 	\label{fig:Struktur MVC Pada Modul Klasifikasi}
 \end{figure}
 
-Terdapat 3 bagian \textit{layer} yang akan dijelaskan pada kelas diagram modul ini, yaitu (1) \textit{controller}; (2) \textit{service}; (3) \textit{model}. Berikut merupakan penjelasan lebih rinci mengenai tiap \textit{layer} tersebut.
+Terdapat 3 bagian \textit{layer} yang dijelaskan pada kelas diagram modul ini, yaitu (1) \textit{controller}; (2) \textit{service}; (3) \textit{model}. Berikut merupakan penjelasan lebih rinci mengenai tiap \textit{layer} tersebut.
 
 \subsubsection{\textit{Controller}}
 \begin{figure}[H]
@@ -861,64 +860,64 @@ Terdapat 3 bagian \textit{layer} yang akan dijelaskan pada kelas diagram modul i
 	\label{fig:Diagram Kelas Modul Kelola Input}
 \end{figure}
 
-Di dalam \textit{layer controller} terdapat 2 kelas utama sebagai layer yang secara langsung akan menangani request dari user dan memberikan response kepada user. Layer ini menggunakan utility pattern untuk melakukan enkapsulasi perhitungan - perhitungan yang dapat dipisahkan menjadi beberapa bagian operasi tambahan. Kelas tersebut diantara lain adalah:
+Di dalam \textit{layer controller} terdapat 2 kelas utama sebagai layer yang secara langsung menangani request dari user dan memberikan response kepada user. Layer ini menggunakan utility pattern untuk melakukan enkapsulasi perhitungan - perhitungan yang dapat dipisahkan menjadi beberapa bagian operasi tambahan. Kelas tersebut diantara lain adalah:
 \begin{enumerate}
 	\item \texttt{TestingController}\\
-	Kelas ini akan melakukan \textit{handle} request http dari user dan megembalikan \textit{response} yang sesuai dengan apa yang diminta oleh user berkaitan dengan klasifikasi dan \textit{testing} model NBC. Kelas ini akan meneruskan request http dari user ke pada service yang sesuai untuk melakukan klasifikasi maupun \textit{testing}. Kelas ini memiliki 8 atribut dan 7 operasi, diantaranya adalah:
+	Kelas ini melakukan \textit{handle} request http dari user dan megembalikan \textit{response} yang sesuai dengan apa yang diminta oleh user berkaitan dengan klasifikasi dan \textit{testing} model NBC. Kelas ini meneruskan request http dari user ke pada service yang sesuai untuk melakukan klasifikasi maupun \textit{testing}. Kelas ini memiliki 8 atribut dan 7 operasi, diantaranya adalah:
 	%\begin{itemize}
 	\paragraph{Atribut}
 		\begin{enumerate}
 			\item \verb|ABSOLUTE_PATH|\\
-			Atribut ini bertipe \texttt{string} serta memiliki \textit{modifier static} dan \texttt{final} agar tidak bisa diubah nilai-nya yang akan merepresentasikan path namespace untuk kelas ini. Atribut ini memiliki nilai inisialisasi awal yang berisi \texttt{"/admin/input-set"}. Jadi, setiap method yang merepresentasikan suatu \textit{request url} dalam kelas ini akan diawali dengan \texttt{"/admin/testing"}.
+			Atribut ini bertipe \texttt{string} serta memiliki \textit{modifier static} dan \texttt{final} agar tidak bisa diubah nilai-nya yang merepresentasikan path namespace untuk kelas ini. Atribut ini memiliki nilai inisialisasi awal yang berisi \texttt{"/admin/input-set"}. Jadi, setiap method yang merepresentasikan suatu \textit{request url} dalam kelas ini diawali dengan \texttt{"/admin/testing"}.
 
 			\item \verb|LAYOUTS_ADMIN|\\
-			Atribut ini bertipe \texttt{string} serta memiliki \texttt{modifier static} dan \texttt{final} yang akan menyimpan nama view layout dari tampilan html yang akan dirender oleh view. NIlai awal dari atribut ini adalah \texttt{"layouts/admin"}.
+			Atribut ini bertipe \texttt{string} serta memiliki \texttt{modifier static} dan \texttt{final} yang menyimpan nama view layout dari tampilan html yang dirender oleh view. NIlai awal dari atribut ini adalah \texttt{"layouts/admin"}.
 
 
 			\item \texttt{classInfoDetailService}\\
-			Atribut ini akan merepresentasikan \textit{service} dari nilai - nilai diskrit dari atribut kelas tertentu secara spesifik/detil. \texttt{ClassInfoDetailService} dibuat untuk menyimpan logika program yang berguna untuk menyimpan, memperoleh, dan melakukan pembaharuan terhadap nilai detil dari atribut kelas pada model NBC.
+			Atribut ini merepresentasikan \textit{service} dari nilai - nilai diskrit dari atribut kelas tertentu secara spesifik/detil. \texttt{ClassInfoDetailService} dibuat untuk menyimpan logika program yang berguna untuk menyimpan, memperoleh, dan melakukan pembaharuan terhadap nilai detil dari atribut kelas pada model NBC.
 
 			\item \texttt{classInfoService}\\
-			Atribut ini akan merepresentasikan \textit{service} dari atribut kelas pada model NBC secara umum. \texttt{ClassInfoService} dibuat untuk menyimpan logika program yang berguna untuk menyimpan, memperoleh, dan melakukan pembaharuan terhadap atribut kelas yang ada pada model NBC.
+			Atribut ini merepresentasikan \textit{service} dari atribut kelas pada model NBC secara umum. \texttt{ClassInfoService} dibuat untuk menyimpan logika program yang berguna untuk menyimpan, memperoleh, dan melakukan pembaharuan terhadap atribut kelas yang ada pada model NBC.
 
 			\item \texttt{confusionMatrixService}\\
-			Atribut ini akan merepresentasikan \textit{service} matrix \textit{confusion} dari hasil test klasifikasi pada model NBC. \texttt{ConfusionMatrixService} dibuat untuk menyimpan logika program yang berguna untuk menyimpan, memperoleh, dan melakukan pembaharuan yang spesifik terhadap nilai matrix \textit{confusion} serta seluruh kelas yang dicatat di dalamnya.
+			Atribut ini merepresentasikan \textit{service} matrix \textit{confusion} dari hasil test klasifikasi pada model NBC. \texttt{ConfusionMatrixService} dibuat untuk menyimpan logika program yang berguna untuk menyimpan, memperoleh, dan melakukan pembaharuan yang spesifik terhadap nilai matrix \textit{confusion} serta seluruh kelas yang dicatat di dalamnya.
 
 			\item \texttt{errorRateService}\\
-			Atribut ini akan merepresentasikan \textit{service} \textit{error rate} dari hasil test klasifikasi pada model NBC. \texttt{ErrorRateService} dibuat untuk menyimpan logika program yang berguna untuk menyimpan, memperoleh, dan melakukan pembaharuan yang spesifik terhadap nilai - nilai \textit{error rate} pada tiap kelas.
+			Atribut ini merepresentasikan \textit{service} \textit{error rate} dari hasil test klasifikasi pada model NBC. \texttt{ErrorRateService} dibuat untuk menyimpan logika program yang berguna untuk menyimpan, memperoleh, dan melakukan pembaharuan yang spesifik terhadap nilai - nilai \textit{error rate} pada tiap kelas.
 
 			\item \texttt{predictorInfoService}\\
-			Atribut ini akan merepresentasikan \textit{service} dari atribut prediktor pada model NBC secara umum. \texttt{PredictorInfoService} dibuat untuk menyimpan logika program yang berguna untuk menyimpan, memperoleh, dan melakukan pembaharuan terhadap seluruh atribut prediktor yang ada pada model NBC.
+			Atribut ini merepresentasikan \textit{service} dari atribut prediktor pada model NBC secara umum. \texttt{PredictorInfoService} dibuat untuk menyimpan logika program yang berguna untuk menyimpan, memperoleh, dan melakukan pembaharuan terhadap seluruh atribut prediktor yang ada pada model NBC.
 
 			\item \texttt{testingUtils}\\
-			Atribut ini bertipe \textit{TestingUtils} yang akan melakukan enkapsulasi untuk beberapa operasi yang dilakukan pada kelas \texttt{TestingController}. Sehingga, program dapat lebih mudah dibaca.
+			Atribut ini bertipe \textit{TestingUtils} yang melakukan enkapsulasi untuk beberapa operasi yang dilakukan pada kelas \texttt{TestingController}. Sehingga, program dapat lebih mudah dibaca.
 
 		\end{enumerate}
 		
 	\paragraph{Operasi}
 		\begin{enumerate}
 			\item \texttt{- calculateErrorRate(confusionEachClass : HashMap<String,ConfusionMatrix>): void}\\
-			Operasi ini akan melakukan perhitungan \textit{error rate} untuk (1) \textit{Accuracy}; (2) \textit{Precision}; (3) \textit{Recall}; (4) \textit{F-Measure}, yang dihasilkan dari pengolahan matrix \textit{confusion} dan akan menerima parameter matrix \textit{confusion} untuk mengkalkulasi nilai TP \textit{(true positive)}, FP \textit{(false positive)} TN \textit{(true negative)} FN \textit{(false negative)}. Setelah hasil didapat,  akan langsung melakukan penyimpanan ke dalam \textit{database}.
+			Operasi ini melakukan perhitungan \textit{error rate} untuk (1) \textit{Accuracy}; (2) \textit{Precision}; (3) \textit{Recall}; (4) \textit{F-Measure}, yang dihasilkan dari pengolahan matrix \textit{confusion} dan menerima parameter matrix \textit{confusion} untuk mengkalkulasi nilai TP \textit{(true positive)}, FP \textit{(false positive)} TN \textit{(true negative)} FN \textit{(false negative)}. Setelah hasil didapat,  langsung melakukan penyimpanan ke dalam \textit{database}.
 			
 			\item \texttt{+ index(model : Model): String}\\
-			Operasi ini akan meng-\textit{handle} http request bertipe GET dengan url yang ditentukan pada atribute \verb|ASBOLUTE_PATH| dan akan mengembalikan halaman utama dari modul klasifikasi ini.
+			Operasi ini meng-\textit{handle} http request bertipe GET dengan url yang ditentukan pada atribute \verb|ASBOLUTE_PATH| dan mengembalikan halaman utama dari modul klasifikasi ini.
 
 			\item \texttt{+ predictNewCase(model : Model): String}\\
-			Operasi ini akan meng-\textit{handle} http request bertipe GET dengan url \verb|ASBOLUTE_PATH+"/predict-new-case"| dan akan mengembalikan halaman untuk melakukan klasifikasi untuk 1 kasus.
+			Operasi ini meng-\textit{handle} http request bertipe GET dengan url \verb|ASBOLUTE_PATH+"/predict-new-case"| dan mengembalikan halaman untuk melakukan klasifikasi untuk 1 kasus.
 
 			\item \texttt{+ testFileFromHdfs(modelHdfs : RenewModelHdfsFormRequest, redirectAttributes : RedirectAttributes): String}\\
-			Operasi ini akan meng-\textit{handle} http \textit{request} bertipe POST dengan url \verb|ASBOLUTE_PATH+"/files-from-hdfs"| dan akan menerima parameter \texttt{modelHdfs} bertipe \texttt{RenewModelHdfsFormRequest} yang akan diisi dengan keterangan path file yang ada dalam HDFS. Setelah menerima \textit{request}, operasi ini akan meneruskan-nya ke pada \texttt{hdfsService} untuk dilakukan proses klasifikasi dengan data yang sudah ada di dalam HDFS. 
+			Operasi ini meng-\textit{handle} http \textit{request} bertipe POST dengan url \verb|ASBOLUTE_PATH+"/files-from-hdfs"| dan menerima parameter \texttt{modelHdfs} bertipe \texttt{RenewModelHdfsFormRequest} yang diisi dengan keterangan path file yang ada dalam HDFS. Setelah menerima \textit{request}, operasi ini meneruskan-nya ke pada \texttt{hdfsService} untuk dilakukan proses klasifikasi dengan data yang sudah ada di dalam HDFS. 
 
 			\item \texttt{+ testFiles(testFile : TestFile, redirectAttributes : RedirectAttributes): String}\\
-			Operasi ini akan meng-\textit{handle} http \textit{request} bertipe POST dengan url \verb|ASBOLUTE_PATH+"/files"| dan akan menerima parameter \texttt{testFile} bertipe \texttt{TestFile} yang akan berisi mengenai seluruh file dan keterangan lainnya untuk melakukan testing. Setelah menerima \textit{request} akan langsung melakukan perhitungan untuk setiap file yang diinput oleh user. 
+			Operasi ini meng-\textit{handle} http \textit{request} bertipe POST dengan url \verb|ASBOLUTE_PATH+"/files"| dan menerima parameter \texttt{testFile} bertipe \texttt{TestFile} yang berisi mengenai seluruh file dan keterangan lainnya untuk melakukan testing. Setelah menerima \textit{request} langsung melakukan perhitungan untuk setiap file yang diinput oleh user. 
 
 
 			\item \texttt{- testFilesEncapsuled(br1s : List<String>, br2 : BufferedReader, redirectAttributes : RedirectAttributes): String}\\
-			Operasi ini merupakan enkapsulasi dari proses testing pada operasi \texttt{testFiles()} dan akan melakukan test pada model NBC untuk setiap file yang diterima pada parameter.
+			Operasi ini merupakan enkapsulasi dari proses testing pada operasi \texttt{testFiles()} dan melakukan test pada model NBC untuk setiap file yang diterima pada parameter.
 
 
 			\item \texttt{+ testSingleton(singletonQuery : SingletonQuery, confusionEachClassz : HashMap<String,ConfusionMatrix>, resultPerClasses : ArrayList <HashMap <String,String>>) : String}\\
-			Setiap operasi testing pada modul ini akan memanggil operasi ini. Operasi ini akan melakukan perhitungan klasifikasi untuk tiap satu baris/\textit{record} dari file input. Hampir seluruh pemanggilan operasi - operasi lain untuk membantu melakukan perhitungan klasifikasi model NBC pada atribut \texttt{testingUtils} yang bertipe \texttt{TestingUtils} berada pada operasi ini.
+			Setiap operasi testing pada modul ini memanggil operasi ini. Operasi ini melakukan perhitungan klasifikasi untuk tiap satu baris/\textit{record} dari file input. Hampir seluruh pemanggilan operasi - operasi lain untuk membantu melakukan perhitungan klasifikasi model NBC pada atribut \texttt{testingUtils} yang bertipe \texttt{TestingUtils} berada pada operasi ini.
 
 		\end{enumerate}
 		
@@ -930,20 +929,20 @@ Di dalam \textit{layer controller} terdapat 2 kelas utama sebagai layer yang sec
 	\paragraph{Atribut}
 		\begin{enumerate}
 			\item \texttt{bayesianModelService}\\
-			Atribut ini bertipe \texttt{BayesianModelService} yang akan digunakan untuk memanggil operasi operasi yang dienkapsulasi ke dalam layer service untuk langsung melakukan koneksi ke dalam database milik \textit{BayesianModel}. \texttt{BayesianModelService}.
+			Atribut ini bertipe \texttt{BayesianModelService} yang digunakan untuk memanggil operasi operasi yang dienkapsulasi ke dalam layer service untuk langsung melakukan koneksi ke dalam database milik \textit{BayesianModel}. \texttt{BayesianModelService}.
 			
 		\end{enumerate}				
 
 	\paragraph{Operasi}
 		\begin{enumerate}
 			\item \texttt{- calcNormalDist}\\
-			Operasi ini akan membantu operasi pada \texttt{calcNormDistEachClass} untuk menghitung fungsi normal distribusi dari parameter yang diberikan
+			Operasi ini membantu operasi pada \texttt{calcNormDistEachClass} untuk menghitung fungsi normal distribusi dari parameter yang diberikan
 			
 			\item \texttt{+ calcDiscrete}\\
-			Operasi ini akan membantu \texttt{TestingController} dalam melakukan proses klasifikasi untuk menghitung probabilitas posterior atribut yang bertipe disrkit.
+			Operasi ini membantu \texttt{TestingController} dalam melakukan proses klasifikasi untuk menghitung probabilitas posterior atribut yang bertipe disrkit.
 
 			\item \texttt{- calcNormDistEachClass}\\
-			Operasi ini akan membantu \texttt{TestingController} dalam melakukan proses klasifikasi untuk menghitung probabilitas posterior atribut yang bertipe numerik dengan menghitung normal distribusi dari atribut tersebut.
+			Operasi ini membantu \texttt{TestingController} dalam melakukan proses klasifikasi untuk menghitung probabilitas posterior atribut yang bertipe numerik dengan menghitung normal distribusi dari atribut tersebut.
 
 		\end{enumerate}
 		
@@ -969,44 +968,44 @@ Di dalam \textit{layer controller} terdapat 2 kelas utama sebagai layer yang sec
 	Kelas ini merupakan \textit{base class} sebagian besar kelas service lainnya dan memiliki \textit{generic type} \texttt{T} yang perlu diberikan untuk tiap kelas yang menjadi \textit{descendant}-nya. Terdapat 5 \textit{method} abstrak yang dimiliki oleh kelas ini, \textit{method - method} tersebut diantara lain adalah:
 	\begin{enumerate}
 		\item \texttt{delete(id: Integer): void}\\
-		\textit{Method} ini merupakan \textit{method} abstrak yang perlu diimplementasikan oleh seluruh kelas yang menjadi turunan dari kelas ini dan akan melakukan penghapusan \textit{object} bertipe \texttt{T} yang memiliki \texttt{id} pada parameter masukan \textit{method} ini.
+		\textit{Method} ini merupakan \textit{method} abstrak yang perlu diimplementasikan oleh seluruh kelas yang menjadi turunan dari kelas ini dan melakukan penghapusan \textit{object} bertipe \texttt{T} yang memiliki \texttt{id} pada parameter masukan \textit{method} ini.
 		
 		\item \texttt{findById(id: Integer): T}\\
-		\textit{Method} ini merupakan \textit{method} abstrak yang perlu diimplementasikan oleh seluruh kelas yang menjadi turunan dari kelas ini dan akan melakukan pencarian \textit{object} bertipe \texttt{T} yang memiliki \texttt{id} pada parameter masukan \textit{method} ini.
+		\textit{Method} ini merupakan \textit{method} abstrak yang perlu diimplementasikan oleh seluruh kelas yang menjadi turunan dari kelas ini dan melakukan pencarian \textit{object} bertipe \texttt{T} yang memiliki \texttt{id} pada parameter masukan \textit{method} ini.
 
 		\item \texttt{listAll(): List<T>}\\
-		\textit{Method} ini merupakan \textit{method} abstrak yang perlu diimplementasikan oleh seluruh kelas yang menjadi turunan dari kelas ini dan akan melakukan pengambilan seluruh \textit{object} bertipe \texttt{T} pada \textit{database}.
+		\textit{Method} ini merupakan \textit{method} abstrak yang perlu diimplementasikan oleh seluruh kelas yang menjadi turunan dari kelas ini dan melakukan pengambilan seluruh \textit{object} bertipe \texttt{T} pada \textit{database}.
 
 		\item \texttt{save(domainObject: T): T}\\
-		\textit{Method} ini merupakan \textit{method} abstrak yang perlu diimplementasikan oleh seluruh kelas yang menjadi turunan dari kelas ini dan akan melakukan pembuatan \textit{object} baru bertipe \texttt{T} dan memasukkannya ke dalam \textit{database}.
+		\textit{Method} ini merupakan \textit{method} abstrak yang perlu diimplementasikan oleh seluruh kelas yang menjadi turunan dari kelas ini dan melakukan pembuatan \textit{object} baru bertipe \texttt{T} dan memasukkannya ke dalam \textit{database}.
 
 		\item \texttt{update(domainObject: T): T}\\
-		\textit{Method} ini merupakan \textit{method} abstrak yang perlu diimplementasikan oleh seluruh kelas yang menjadi turunan dari kelas ini dan akan melakukan perbaharuan \textit{object} bertipe \texttt{T} dan melakukan \textit{update} ke dalam \textit{database}.
+		\textit{Method} ini merupakan \textit{method} abstrak yang perlu diimplementasikan oleh seluruh kelas yang menjadi turunan dari kelas ini dan melakukan perbaharuan \textit{object} bertipe \texttt{T} dan melakukan \textit{update} ke dalam \textit{database}.
 		
 	\end{enumerate}
 	
 	\item \texttt{PredictorInfoService}\\
-	Kelas ini merupakan kelas \textit{service} turunan dari kelas \texttt{CRUDService} yang akan menangani proses baca tulis ke dalam database pada \textit{object} yang bertipe \texttt{PredictorInfo}. Sehingga, secara langsung akan memiliki juga operasi - operasi pada \textit{base class} tersebut. 
+	Kelas ini merupakan kelas \textit{service} turunan dari kelas \texttt{CRUDService} yang menangani proses baca tulis ke dalam database pada \textit{object} yang bertipe \texttt{PredictorInfo}. Sehingga, secara langsung memiliki juga operasi - operasi pada \textit{base class} tersebut. 
 	
 	\item \texttt{ConfusionMatrixService}\\
-	Kelas ini merupakan kelas \textit{service} turunan dari kelas \texttt{CRUDService} yang akan menangani proses baca tulis ke dalam database pada \textit{object} yang bertipe \texttt{PredictorInfo}. Sehingga, secara langsung akan memiliki juga \textit{operasi - operasi} pada \textit{base class} tersebut. Kelas ini memiliki beberapa operasi tambahan yang diperlkan khusus untuk kelas \texttt{ConfusionMatrixService}.
+	Kelas ini merupakan kelas \textit{service} turunan dari kelas \texttt{CRUDService} yang menangani proses baca tulis ke dalam database pada \textit{object} yang bertipe \texttt{PredictorInfo}. Sehingga, secara langsung memiliki juga \textit{operasi - operasi} pada \textit{base class} tersebut. Kelas ini memiliki beberapa operasi tambahan yang diperlkan khusus untuk kelas \texttt{ConfusionMatrixService}.
 	\begin{enumerate}
-		\item \texttt{deleteAll()} akan melakukan penghapusan seluruh record/model yang merepresentasikan \textit{object} instansiasi dari kelas ini.
-		\item \texttt{findByClassName(name: String)} akan melakukan pencarian \textit{object} instansiasi dari kelas ini dengan memberikan nama atribut kelas sebagai parameter masukan.
+		\item \texttt{deleteAll()} melakukan penghapusan seluruh record/model yang merepresentasikan \textit{object} instansiasi dari kelas ini.
+		\item \texttt{findByClassName(name: String)} melakukan pencarian \textit{object} instansiasi dari kelas ini dengan memberikan nama atribut kelas sebagai parameter masukan.
 	\end{enumerate}
 	
 	\item \texttt{ErrorRateService}\\
-	Kelas ini merupakan kelas \textit{service} turunan dari kelas \texttt{CRUDService} yang akan menangani proses baca tulis ke dalam database pada \textit{object} yang bertipe \texttt{ErrorRate}. Sehingga, secara langsung akan memiliki juga \textit{operasi - operasi} pada \textit{base class} tersebut. Kelas ini memiliki 1 operasi tambahan yang diperlukan khusus untuk kelas \texttt{ErrorRateService}, yaitu \texttt{resetAll()} yang akan melakukan penghapusan seluruh instansiasi dari \textit{object} \textit{ErrorRate} di dalam \textit{database} yang sudah ada sebelumnya.
+	Kelas ini merupakan kelas \textit{service} turunan dari kelas \texttt{CRUDService} yang menangani proses baca tulis ke dalam database pada \textit{object} yang bertipe \texttt{ErrorRate}. Sehingga, secara langsung memiliki juga \textit{operasi - operasi} pada \textit{base class} tersebut. Kelas ini memiliki 1 operasi tambahan yang diperlukan khusus untuk kelas \texttt{ErrorRateService}, yaitu \texttt{resetAll()} yang melakukan penghapusan seluruh instansiasi dari \textit{object} \textit{ErrorRate} di dalam \textit{database} yang sudah ada sebelumnya.
 	
 	\item \texttt{ClassInfoService}\\
-	Kelas ini merupakan kelas \textit{service} turunan dari kelas \texttt{CRUDService} yang akan menangani proses baca tulis ke dalam database pada \textit{object} yang bertipe \texttt{ErrorRate}. Sehingga, secara langsung akan memiliki juga \textit{operasi - operasi} pada \textit{base class} tersebut. Kelas ini memiliki beberapa operasi tambahan yang diperlukan khusus untuk kelas \texttt{ClassInfoService}.
+	Kelas ini merupakan kelas \textit{service} turunan dari kelas \texttt{CRUDService} yang menangani proses baca tulis ke dalam database pada \textit{object} yang bertipe \texttt{ErrorRate}. Sehingga, secara langsung memiliki juga \textit{operasi - operasi} pada \textit{base class} tersebut. Kelas ini memiliki beberapa operasi tambahan yang diperlukan khusus untuk kelas \texttt{ClassInfoService}.
 	\begin{enumerate}
-		\item \texttt{findByClassName(className: String): ClassInfo} akan melakukan pencarian untuk instansiasi \textit{object} pada kelas ini dalam \textit{database} dengan parameter masukan nama kelas.
-		\item \texttt{getAllWithErrorDetails(): List<ClassInfo>} akan mengembalikan seluruh instansiasi dari \textit{object} \texttt{ClassInfo} dengan mengikutsertakan relasi - relasi yang dimiliki tiap \textit{object} dengan kelas \texttt{ErrorRate}.
+		\item \texttt{findByClassName(className: String): ClassInfo} melakukan pencarian untuk instansiasi \textit{object} pada kelas ini dalam \textit{database} dengan parameter masukan nama kelas.
+		\item \texttt{getAllWithErrorDetails(): List<ClassInfo>} mengembalikan seluruh instansiasi dari \textit{object} \texttt{ClassInfo} dengan mengikutsertakan relasi - relasi yang dimiliki tiap \textit{object} dengan kelas \texttt{ErrorRate}.
 	\end{enumerate}
 	
 	\item \texttt{ClassInfoDetailService}\\
-	Kelas ini merupakan satu - satunya kelas \textit{service} yang bukan merupakan turunan dari kelas \texttt{CRUDService}. Kelas ini dibuat khusus untuk pencarian detil dari atribut kelas spesifik dan akan melakukan update terhadap \textit{errorRate} yang merupakan relasi dari instansiasi \textit{object} kelas \texttt{ClassInfoDetail}. Operasi yang dimiliki pada kelas ini adalah \texttt{findByClassInfoAndValue(classInfo: ClassInfo, value: String): CLassInfoDetail}, yang akan mengembalikan instansiasi dari \textit{object} kelas ini dengan parameter masukan object kelas info serta nama dari nilai diskrit \textit{object} kelas tersebut. 
+	Kelas ini merupakan satu - satunya kelas \textit{service} yang bukan merupakan turunan dari kelas \texttt{CRUDService}. Kelas ini dibuat khusus untuk pencarian detil dari atribut kelas spesifik dan melakukan update terhadap \textit{errorRate} yang merupakan relasi dari instansiasi \textit{object} kelas \texttt{ClassInfoDetail}. Operasi yang dimiliki pada kelas ini adalah \texttt{findByClassInfoAndValue(classInfo: ClassInfo, value: String): CLassInfoDetail}, yang mengembalikan instansiasi dari \textit{object} kelas ini dengan parameter masukan object kelas info serta nama dari nilai diskrit \textit{object} kelas tersebut. 
 
 \end{enumerate}
 
@@ -1018,28 +1017,28 @@ Di dalam \textit{layer controller} terdapat 2 kelas utama sebagai layer yang sec
 	\label{fig:Diagram Kelas Modul Kelola Input}
 \end{figure}
 
-\textit{Layer model} akan merepresentasikan seluruh \textit{object} model yang dimiliki pada modul ini dan juga akan sekaligus merepresentasikan entitas-entitas/tabel-tabel yang ada pada modul. Layer ini memanfaatkan fitur ORM\footnote{\textit{Spring} menyediakan integrasi dengan \textit{Hibernate, JPA(Java Pesistence API), dan JDO(Java Data Objects)} untuk melakukan pemodelan object milik java dengan model pada DBMS serta relasi - relasi yang dibutuhkan pada DBMS} (\textit{Object Relational Model}) milik \textit{spring framework} yang akan mengatasi seluruh transformasi dari object pada java ke model pada DBMS. Kelas - kelas pada layer ini merupakan kelas POJO pada java. Berikut merupakan penjelasan lebih rinci mengenai kelas - kelas pada \textit{layer} ini:
+\textit{Layer model} merepresentasikan seluruh \textit{object} model yang dimiliki pada modul ini dan juga sekaligus merepresentasikan entitas-entitas/tabel-tabel yang ada pada modul. Layer ini memanfaatkan fitur ORM\footnote{\textit{Spring} menyediakan integrasi dengan \textit{Hibernate, JPA(Java Pesistence API), dan JDO(Java Data Objects)} untuk melakukan pemodelan object milik java dengan model pada DBMS serta relasi - relasi yang dibutuhkan pada DBMS} (\textit{Object Relational Model}) milik \textit{spring framework} yang mengatasi seluruh transformasi dari object pada java ke model pada DBMS. Kelas - kelas pada layer ini merupakan kelas POJO pada java. Berikut merupakan penjelasan lebih rinci mengenai kelas - kelas pada \textit{layer} ini:
 
 \begin{enumerate}
 	\item \texttt{ConfusionMatrix}\\
-	Kelas model ini akan merepresentasikan matrix \textit{confusion} yang digunakan untuk melakukan perhitungan hasil klasifikasi dari suatu data \textit{testing}. Kelas ini memiliki 6 atribut, diantaranya adalah:
+	Kelas model ini merepresentasikan matrix \textit{confusion} yang digunakan untuk melakukan perhitungan hasil klasifikasi dari suatu data \textit{testing}. Kelas ini memiliki 6 atribut, diantaranya adalah:
 	\begin{enumerate}
 		\item \texttt{id}, bertipe \textit{integer} digunakan sebagai atribut unik untuk pengenal setiap instansiasi dari \textit{object} kelas ini.
 
-		\item \texttt{classInfo}, bertipe \texttt{ClassInfo} merupakan relasi 1-ke-1 dengan kelas ini. Setiap matrix \textit{confusion} akan memiliki 1 atribut kelas info dan begitu juga sebaliknya.
+		\item \texttt{classInfo}, bertipe \texttt{ClassInfo} merupakan relasi 1-ke-1 dengan kelas ini. Setiap matrix \textit{confusion} memiliki 1 atribut kelas info dan begitu juga sebaliknya.
 	
-		\item \texttt{confusionMatrixDetails}, bertipe \texttt{List <ConfusionMatrixDetail>} merupakan relasi \textit{1-to-many} dengan kelas ini. \texttt{confusionMatrixDetails} akan menyimpan seluruh keterangan detail mengenai tiap matrix \textit{confusion}.
+		\item \texttt{confusionMatrixDetails}, bertipe \texttt{List <ConfusionMatrixDetail>} merupakan relasi \textit{1-to-many} dengan kelas ini. \texttt{confusionMatrixDetails} menyimpan seluruh keterangan detail mengenai tiap matrix \textit{confusion}.
 
-		\item \texttt{createdDate}, bertipe \texttt{Date} akan mencatat waktu \textit{timestamp} \textit{object} instansiasi dari kelas ini dibuat.		
+		\item \texttt{createdDate}, bertipe \texttt{Date} mencatat waktu \textit{timestamp} \textit{object} instansiasi dari kelas ini dibuat.		
 
 		\item \texttt{className}, bertipe \texttt{String} sebagai nama atribut kelas dari instansiasi \textit{object} kelas ini.
 
-		\item \texttt{printedConfusionMatrix}, bertipe \texttt{String} akan merepresentasikan suatu matrix dari kelas ini dalam bentuk \texttt{string}.
+		\item \texttt{printedConfusionMatrix}, bertipe \texttt{String} merepresentasikan suatu matrix dari kelas ini dalam bentuk \texttt{string}.
 
 	\end{enumerate}		
 	
 	\item \texttt{ConfusionMatrixDetail}\\
-	Kelas model ini akan merepresentasikan detil dari atribut matrix \textit{confusion}. Kelas ini memiliki 5 atribut, diantaranya adalah:
+	Kelas model ini merepresentasikan detil dari atribut matrix \textit{confusion}. Kelas ini memiliki 5 atribut, diantaranya adalah:
 	\begin{enumerate}
 		\item \texttt{id}, bertipe \textit{integer} digunakan sebagai atribut unik untuk pengenal setiap instansiasi dari \textit{object} kelas ini.
 				
@@ -1058,7 +1057,7 @@ Di dalam \textit{layer controller} terdapat 2 kelas utama sebagai layer yang sec
 
 
 	\item \texttt{ClassInfo}\\
-	Kelas model ini akan merepresentasikan atribut kelas pada model NBC yang ada. Kelas ini memiliki 5 atribut, diantaranya adalah:
+	Kelas model ini merepresentasikan atribut kelas pada model NBC yang ada. Kelas ini memiliki 5 atribut, diantaranya adalah:
 	\begin{enumerate}
 		\item \texttt{id}, bertipe \textit{integer} digunakan sebagai atribut unik untuk pengenal setiap instansiasi dari \textit{object} kelas ini.
 		
@@ -1066,7 +1065,7 @@ Di dalam \textit{layer controller} terdapat 2 kelas utama sebagai layer yang sec
 		
 		\item \texttt{className}, bertipe \texttt{string} merupakan nama dari atribut kelas ini pada NBC.
 		
-		\item \texttt{confusionMatrix}, bertipe \texttt{ConfusionMatrix} merupakan relasi 1-ke-1 dengan kelas ini. Setiap instansiasi dari \textit{object} \textit{ClassInfo} akan memiliki 1 atribut \texttt{confusionMatrix} dan begitu juga sebaliknya.
+		\item \texttt{confusionMatrix}, bertipe \texttt{ConfusionMatrix} merupakan relasi 1-ke-1 dengan kelas ini. Setiap instansiasi dari \textit{object} \textit{ClassInfo} memiliki 1 atribut \texttt{confusionMatrix} dan begitu juga sebaliknya.
 		
 		\item \texttt{accuracy}, bertipe \texttt{ErrorRate} merupakan hasil \textit{error rate} bertipe \textit{accuracy} setelah klasifikasi dilakukan.
 		
@@ -1074,7 +1073,7 @@ Di dalam \textit{layer controller} terdapat 2 kelas utama sebagai layer yang sec
 	\end{enumerate}
 
 	\item \texttt{ClassInfoDetail}\\
-	Kelas model ini akan merepresentasikan detil dari atribut kelas pada kelas \texttt{ClassInfo}. Kelas ini memiliki 5 atribut, diantaranya adalah:
+	Kelas model ini merepresentasikan detil dari atribut kelas pada kelas \texttt{ClassInfo}. Kelas ini memiliki 5 atribut, diantaranya adalah:
 	\begin{enumerate}
 		\item \texttt{id}, bertipe \textit{integer} digunakan sebagai atribut unik untuk pengenal setiap instansiasi dari \textit{object} kelas ini.
 		
@@ -1089,15 +1088,15 @@ Di dalam \textit{layer controller} terdapat 2 kelas utama sebagai layer yang sec
 	\end{enumerate}
 
 	\item \texttt{ErrorRate}\\
-	Kelas model ini akan merepresentasikan nilai - nilai perhitungan \textit{error rate} yang dihasilkan setelah proses klasifikasi pada data \textit{testing} dilakukan. Kelas ini memiliki 5 atribut, diantaranya adalah:
+	Kelas model ini merepresentasikan nilai - nilai perhitungan \textit{error rate} yang dihasilkan setelah proses klasifikasi pada data \textit{testing} dilakukan. Kelas ini memiliki 5 atribut, diantaranya adalah:
 	\begin{enumerate}
 		\item \texttt{id}, bertipe \textit{integer} digunakan sebagai atribut unik untuk pengenal setiap instansiasi dari \textit{object} kelas ini.
 		
 		\item \texttt{type}, bertipe \textit{ErrorType} merupakan tipe \textit{error rate} pada \textit{object} instansiasi dari kelas ini. 
 		
-		\item \texttt{classInfoDetail}, bertipe \textit{ClassInfoDetail} merupakan relasi \textit{many-to-1} ke kelas \texttt{ClassInfoDetail}. Sehingga, setiap instansiasi dari kelas ini akan memiliki relasi dengan 1 instansiasi dari kelas \texttt{ClassInfoDetail}.
+		\item \texttt{classInfoDetail}, bertipe \textit{ClassInfoDetail} merupakan relasi \textit{many-to-1} ke kelas \texttt{ClassInfoDetail}. Sehingga, setiap instansiasi dari kelas ini memiliki relasi dengan 1 instansiasi dari kelas \texttt{ClassInfoDetail}.
 		
-		\item \texttt{operation}, bertipe \textit{string} akan digunakan sebagai pencatat operasi yang dilakukan untuk memperoleh hasil pada atribut \textit{result}. Atribut ini dibuat untuk memudahkan user dalam melihat kalkulasi perhitungan sebenarnya pada program dalam menguji kebenaran program.
+		\item \texttt{operation}, bertipe \textit{string} digunakan sebagai pencatat operasi yang dilakukan untuk memperoleh hasil pada atribut \textit{result}. Atribut ini dibuat untuk memudahkan user dalam melihat kalkulasi perhitungan sebenarnya pada program dalam menguji kebenaran program.
 		
 		\item \texttt{result}, bertipe \textit{Double} merupakan nilai dari hasil perhitungan \textit{error rate} pada tipe yang spesifik.
 		
@@ -1114,11 +1113,11 @@ Di dalam \textit{layer controller} terdapat 2 kelas utama sebagai layer yang sec
 	\end{itemize}	 
 
 	\item \texttt{PredictorInfo}\\
-	Kelas model ini akan merepresentasikan atribut prediktor pada model NBC yang ada. Atribut prediktor tersebut bisa memiliki tipe numerik atau diskrit. Kelas ini memiliki 4 atribut, diantaranya adalah:
+	Kelas model ini merepresentasikan atribut prediktor pada model NBC yang ada. Atribut prediktor tersebut bisa memiliki tipe numerik atau diskrit. Kelas ini memiliki 4 atribut, diantaranya adalah:
 	\begin{enumerate}
 		\item \texttt{id}, bertipe \textit{integer} digunakan sebagai atribut unik untuk pengenal setiap instansiasi dari \textit{object} kelas ini.
 		
-		\item \texttt{predictorInfoDetail}, bertipe \textit{Set<PredictorInfoDetail>} akan berguna untuk mencatat seluruh kumpulan detil dari instansiasi kelas ini.
+		\item \texttt{predictorInfoDetail}, bertipe \textit{Set<PredictorInfoDetail>} berguna untuk mencatat seluruh kumpulan detil dari instansiasi kelas ini.
 
 		\item \texttt{predictorName}, bertipe \textit{String} merupakan nama dari atribut prediktor NBC pada kelas ini.
 		
@@ -1128,7 +1127,7 @@ Di dalam \textit{layer controller} terdapat 2 kelas utama sebagai layer yang sec
 	\end{enumerate}
 
 	\item \texttt{PredictorInfoDetail}\\
-	Kelas model ini akan merepresentasikan detil dari atribut kelas pada kelas \texttt{PredictorInfo}. Kelas ini memiliki 9 atribut, diantaranya adalah:
+	Kelas model ini merepresentasikan detil dari atribut kelas pada kelas \texttt{PredictorInfo}. Kelas ini memiliki 9 atribut, diantaranya adalah:
 	\begin{enumerate}
 		\item \texttt{id}, bertipe \textit{integer} digunakan sebagai atribut unik untuk pengenal setiap instansiasi dari \textit{object} kelas ini.
 		
