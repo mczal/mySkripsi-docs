@@ -1,8 +1,9 @@
 \chapter{Implementasi, Pengujian, dan Eksperimen}
+\label{chap:Implementasi, Pengujian, dan Eksperimen}
 
 \section{Deskripsi Perangkat Keras dan Lunak yang Digunakan}
 \label{sec:desc_perangkat}
-Pembangunan perangkat lunak pada skripsi ini dilakukan dengan menggunakan aplikasi perangkat lunak \textit{IntelliJ IDEA Ultimate} 2017.1. Semua kode ditulis dengan menggunakan bahasa pemrograman \textit{Java}. \textit{Framework Hadoop} yang digunakan adalah Hadoop versi 2.7.2. Hadoop dipasang pada 5 komputer dengan spesifikasi sebagai berikut:
+Pembangunan perangkat lunak pada skripsi ini dilakukan dengan menggunakan aplikasi perangkat lunak \textit{IntelliJ IDEA Ultimate} 2017.1. Semua kode ditulis dengan menggunakan bahasa pemrograman \textit{Java}. \textit{Framework Hadoop} yang digunakan adalah Hadoop versi 2.7.2. Hadoop dipasang pada 5 komputer yang ada di Laboratorium Komputasi, Jurusan Teknik Informatika, Fakultas Teknologi Informasi dan Sains, Universitas Katolik Parahyangan. Berikut merupakan spesifikasi komputer - komputer yang digunakan:
 \begin{itemize}
 	\item Sistem Operasi: Ubuntu 14.04 LTS
 	\item Tipe SO: 64-bit
@@ -135,6 +136,7 @@ Implementasi untuk setiap modul dari kelas-kelas dan method-method hasil dari an
 \end{enumerate}
 
 \section{Pengujian Kebenaran}
+\label{sec:Pengujian Kebenaran}
 Bagian ini menunjukkan pengujian kebenaran terhadap perangkat lunak yang dibangun dengan membandingkan perhitungan manual yang dilakukan pada bagian~\ref{subsec:Perhitungan Manual Dengan Data Studi Kasus} dengan perhitungan dengan menggunakan program pada bagian~\ref{subsec:Perhitungan Menggunakan Perangkat Lunak yang Dibangun Dengan Data Studi Kasus} dengan data yang sama. Data yang digunakan pada kedua perhitungan tersebut merupakan data yang sama. Data studi kasus diperoleh dengan cara mengambil dari situs \url{http://cse-wiki.unl.edu/wiki/images/e/e0/Golf_dataset.png} yang diambil pada pada 23 April 20117, dan telah dilakukan modifikasi sedikit terhadap data agar menjadi lebih simpel.
 
 \subsection{Perhitungan Manual Dengan Data Studi Kasus}
@@ -571,7 +573,31 @@ Data yang sudah diperbanyak tersebut dimasukkan ke dalam HDFS melalui perangkat 
 
 Setelah melakukan eksekusi program untuk melakukan pembuatan model dengan menggunakan 70\% dari dataset-1, diperoleh hasil model NBC yang tertera pada lampiran~\ref{lamp:E-Hasil Pembuatan Model Dataset-1}.
 
-Setelah model NBC dihasilkan, dilakukan juga eksperimen testing untuk mengetahui kualitas dari NBC yang dihasilkan dengan menggunakan 30\% dari dataset-1, diperoleh hasil testing yang tertera pada lampiran~\ref{lamp:E-Hasil Testing Dataset-1}. Pada lampiran tersebut, dapat dilihat bahwa model NBC yang dihasilkan memiliki tingkat akurasi yang cukup tinggi. Hal tersebut dapat terlihat dari hasil nilai perhitungan evaluasi model NBC pada nilai \texttt{accuracy} yang mencapai nilai \texttt{99\%} dan nilai \textit{recall}, \textit{precision}, dan \textit{f-measure} untuk setiap nilai kelas yang juga memiliki nilai sebesar \texttt{99\%}.
+Setelah model NBC dihasilkan, dilakukan juga eksperimen testing untuk mengetahui kualitas dari NBC yang dihasilkan dengan menggunakan 30\% dari dataset-1, diperoleh hasil testing yang tertera pada lampiran~\ref{lamp:E-Hasil Testing Dataset-1}. Pada lampiran tersebut, dapat dilihat bahwa model NBC yang dihasilkan memiliki tingkat akurasi yang cukup tinggi. Hal tersebut dapat terlihat dari hasil \textit{confusion matrix} dan nilai perhitungan evaluasi model NBC yang tertera pada Tabel~\ref{tab:confusion matrix - mushroom} dan Tabel~\ref{tab:model evaluation - mushroom}. Pada nilai \texttt{accuracy} yang mencapai nilai \texttt{99\%} dan nilai \textit{recall}, \textit{precision}, dan \textit{f-measure} untuk setiap nilai kelas yang juga memiliki nilai sebesar \texttt{99\%}.
+
+\begin{table}[H]
+\label{tab:confusion matrix - mushroom}
+\centering
+\caption{\textit{Confusion Matrix - mushroom classification}}
+\begin{tabular}{ | c | c | c | }
+\hline
+& \textbf{e} & \textbf{p}\\ \hline \hline
+\textbf{e} & 567548 & 2720 \\ \hline
+\textbf{p} & 5576 & 526746 \\ \hline
+\end{tabular}
+\end{table}
+
+\begin{table}[H]
+\label{tab:model evaluation - mushroom}
+\centering
+\caption{Hasil Evaluasi Model NBC - \textit{mushroom classification}}
+\begin{tabular}{ | c | c | c | c | c | }
+\hline
+\textit{\textbf{Class}} & \textit{\textbf{Accuracy}} & \textit{\textbf{Precision}} & \textit{\textbf{Recall}} & \textit{\textbf{F-Measure}}\\ \hline \hline
+\textbf{p} & 0.992 & 0.994 & 0.989 & 0.994 \\ \hline
+\textbf{e} & 0.992 & 0.990 & 0.995 & 0.990 \\ \hline
+\end{tabular}
+\end{table}
 
 \subsubsection{Dataset-2}
 
@@ -599,7 +625,35 @@ Data yang sudah diperbanyak tersebut dimasukkan ke dalam HDFS melalui perangkat 
 
 Setelah melakukan eksekusi program untuk melakukan pembuatan model dengan menggunakan 70\% dari dataset-2, diperoleh hasil model NBC yang tertera pada lampiran~\ref{lamp:E-Hasil Pembuatan Model Dataset-2}.
 
-Setelah model NBC dihasilkan, dilakukan juga eksperimen testing untuk mengetahui kualitas dari NBC yang dihasilkan dengan menggunakan 30\% dari dataset-2, diperoleh hasil testing yang tertera pada lampiran~\ref{lamp:E-Hasil Testing Dataset-2}. Pada lampiran tersebut, dapat dilihat bahwa model NBC yang dihasilkan memiliki tingkat akurasi yang cukup tinggi. Hal tersebut dapat terlihat dari hasil nilai perhitungan evaluasi model NBC pada nilai \texttt{accuracy} yang mencapai nilai \texttt{87\%} dan nilai \textit{recall}, \textit{precision}, dan \textit{f-measure} untuk setiap nilai kelas yang juga memiliki nilai rata - rata sebesar \texttt{70\%}.
+Setelah model NBC dihasilkan, dilakukan juga eksperimen testing untuk mengetahui kualitas dari NBC yang dihasilkan dengan menggunakan 30\% dari dataset-2, diperoleh hasil testing yang tertera pada lampiran~\ref{lamp:E-Hasil Testing Dataset-2}. Pada lampiran tersebut, dapat dilihat bahwa model NBC yang dihasilkan memiliki tingkat akurasi yang cukup tinggi. Hal tersebut dapat terlihat dari hasil \textit{confusion matrix} dan nilai perhitungan evaluasi model NBC yang tertera pada Tabel~\ref{tab:confusion matrix - car} dan Tabel~\ref{tab:model evaluation - car}. Pada hasil evaluasi tersebut, dapat dilihat bahwa nilai \texttt{accuracy} mencapai nilai \texttt{87\%} dan nilai \textit{recall}, \textit{precision}, dan \textit{f-measure} untuk setiap nilai kelas yang juga memiliki nilai rata - rata sebesar \texttt{70\%}.
+
+\begin{table}[H]
+\label{tab:confusion matrix - car}
+\centering
+\caption{\textit{Confusion Matrix - car evaluation}}
+\begin{tabular}{ | c | c | c | c | c | }
+\hline
+& \textbf{acc} & \textbf{good} & \textbf{unacc} & \textbf{vgood} \\ \hline \hline
+\textbf{acc} & 100572 & 3480 & 29580 & 0 \\ \hline
+\textbf{good} & 15660 & 7656 & 0 & 696 \\ \hline
+\textbf{unacc} & 16008 & 696 & 404028 & 0 \\ \hline
+\textbf{vgood} & 9744 & 0 & 0 & 12529 \\ \hline
+\end{tabular}
+\end{table}
+
+\begin{table}[H]
+\label{tab:model evaluation - car}
+\centering
+\caption{Hasil Evaluasi Model NBC - \textit{car evaluation}}
+\begin{tabular}{ | c | c | c | c | c | }
+\hline
+\textit{\textbf{Class}} & \textit{\textbf{Accuracy}} & \textit{\textbf{Precision}} & \textit{\textbf{Recall}} & \textit{\textbf{F-Measure}}\\ \hline \hline
+\textbf{acc} & 0.873 & 0.708 & 0.752 & 0.719 \\ \hline
+\textbf{good} & 0.873 & 0.647 & 0.318 & 0.407 \\ \hline
+\textbf{unacc} & 0.873 & 0.931 & 0.960 & 0.933 \\ \hline
+\textbf{vgood} & 0.873 & 0.947 & 0.562 & 0.788 \\ \hline
+\end{tabular}
+\end{table}
 
 \subsubsection{Dataset-3}
 \label{subsubsec:Dataset-3}
@@ -645,6 +699,120 @@ Data yang sudah diperbanyak tersebut dimasukkan ke dalam HDFS melalui perangkat 
 
 Setelah melakukan eksekusi program untuk melakukan pembuatan model dengan menggunakan 70\% dari dataset-2, diperoleh hasil model NBC yang tertera pada lampiran~\ref{lamp:E-Hasil Pembuatan Model Dataset-3}.
 
-Setelah model NBC dihasilkan, dilakukan juga eksperimen testing untuk mengetahui kualitas dari NBC yang dihasilkan dengan menggunakan 30\% dari dataset-3, diperoleh hasil testing yang tertera pada lampiran~\ref{lamp:E-Hasil Testing Dataset-3}. Pada lampiran berikut dapat dilihat bahwa model NBC memiliki nilai \textit{accuracy} yang cukup tinggi, yaitu sebesar 96\%. Untuk nilai evaluasi model yang spesifik terhadap nilai kelas seperti nilai \textit{precision}, \textit{recall}, dan \textit{f-measure} juga memiliki nilai yang berkisar diantara 90\%. Dapat disimpulkan bahwa model NBC yang dibuat cukup bagus, karena nilai pehitungan evaluasi model NBC yang dihasilkan tidak ada yang berada dibawah 90\%.
+Setelah model NBC dihasilkan, dilakukan juga eksperimen testing untuk mengetahui kualitas dari NBC yang dihasilkan dengan menggunakan 30\% dari dataset-3, diperoleh hasil testing yang tertera pada lampiran~\ref{lamp:E-Hasil Testing Dataset-3}. Pada lampiran berikut dapat dilihat bahwa model NBC memiliki nilai \textit{accuracy} yang cukup tinggi. Hal tersebut dapat dilihat pada hasil \textit{matrix confusion} dan hasil evaluasi dari model NBC yang tertera pada Tabel~\ref{tab:confusion matrix - homicide} dan Tabel~\ref{tab:model evaluation - homicide}. \textit{Accuracy} memiliki nilai sebesar 96\%. Untuk nilai evaluasi model yang spesifik terhadap nilai kelas seperti nilai \textit{precision}, \textit{recall}, dan \textit{f-measure} juga memiliki nilai yang berkisar diantara 90\%. Dapat disimpulkan bahwa model NBC yang dibuat cukup bagus, karena nilai pehitungan evaluasi model NBC yang dihasilkan tidak ada yang berada dibawah 90\%.
+
+\begin{table}[H]
+\label{tab:confusion matrix - homicide}
+\centering
+\caption{\textit{Confusion Matrix - homicide reports}}
+\begin{tabular}{ | c | c | c | }
+\hline
+& \textbf{no} & \textbf{yes} \\ \hline \hline
+\textbf{no} & 165350 & 2796 \\ \hline
+\textbf{yes} & 14377 & 372866 \\ \hline
+\end{tabular}
+\end{table}
+
+\begin{table}[H]
+\label{tab:model evaluation - homicide}
+\centering
+\caption{Hasil Evaluasi Model NBC - \textit{homicide reports}}
+\begin{tabular}{ | c | c | c | c | c | }
+\hline
+\textit{\textbf{Class}} & \textit{\textbf{Accuracy}} & \textit{\textbf{Precision}} & \textit{\textbf{Recall}} & \textit{\textbf{F-Measure}}\\ \hline \hline
+\textbf{no} & 0.969 & 0.920 & 0.983 & 0.922 \\ \hline
+\textbf{yes} & 0.969 & 0.992 & 0.962 & 0.991 \\ \hline
+\end{tabular}
+\end{table}
 
 \subsection{Performansi Big Data}
+Eksperimen perangkat lunak yang dilakukan dengan menggunakan Big Data memiliki tujuan untuk menguji kemampuan dari perangkat lunak terhadap sebuah Big Data dan variabel-variabel pada Hadoop. Eksperimen ini dilakukan dengan menggunakan Big Data "Homicide Reports" dari eksperimen pembuatan model dataset-3 pada bagian~\ref{subsubsec:Dataset-3}. Data tersebut diletakan pada HDFS tepatnya pada direktori masuk-an. Terdapat dua buah variabel yang akan dibandingkan pada eksperimen ini, yaitu (1) ukuran blok HDFS dan (2) banyaknya node pada cluster (skalabilitas). Pengujian akan dilakukan sebanyak 3 kali untuk masing - masing variabel dengan nilai yang berbeda - beda.
+
+Untuk setiap eksperimen, akan dilakukan 2x eksekusi program berbasis \textit{MapReduce}, yaitu untuk pembuatan model NBC(pada modul \textit{train naive bayes}) dan pengujian model NBC(pada model \textit{testing naive bayes}). Setiap eksekusi akan dilakukan sebanyak 3x untuk ditentukan rata - rata dari waktu eksekusi program dan standar deviasi untuk tiap \textit{run}.
+
+\subsubsection{Uji Pengaruh Ukuran Blok Terhadap Kecepatan}
+
+Pengujian pengaruh ukuran blok terhadap waktu dilakukan dengan spesifikasi seperti berikut:
+
+\begin{itemize}
+	\item Jumlah slave node: 4 node
+	\item Ukuran data: ...GB
+\end{itemize}
+
+\begin{table}[H]
+\label{tab:uji pengaruh ukuran blok}
+\centering
+\caption{Hasil uji pengaruh ukuran blok terhadap kecepatan program dalam detik}
+\begin{tabular}{ | l | l | l | l | l | }
+\hline
+Ukuran blok & 16MB & 32MB & 64MB & 128MB \\ \hline \hline
+Run 1: Training & ?? & 1338 & ?? & ?? \\ \hline
+Run 2: Training & ?? & 972 & ?? & ?? \\ \hline
+Run 3: Training & ?? & ?? & ?? & ?? \\ \hline
+\textbf{Rata - rata: Training} & ?? & ?? & ?? & ?? \\ \hline
+\textbf{Standar deviasi: Training} & ?? & ?? & ?? & ?? \\ \hline
+ & & & & \\ \hline
+Run 1: Testing & ?? & ?? & ?? & ?? \\ \hline
+Run 2: Testing & ?? & ?? & ?? & ?? \\ \hline
+Run 3: Testing & ?? & ?? & ?? & ?? \\ \hline
+\textbf{Rata - rata: Testing} & ?? & ?? & ?? & ?? \\ \hline
+\textbf{Standar deviasi: Testing} & ?? & ?? & ?? & ?? \\ \hline
+\end{tabular}
+\end{table}
+
+Hasil pengujian tertera pada Tabel~\ref{tab:uji pengaruh ukuran blok}. Pada Gambar~\ref{Grafik pengaruh ukuran blok terhadap rata-rata waktu eksekusi} memperlihatkan grafik rata-rata waktu ekskusi. Dari grafik dapat dilihat bahwa ukuran blok memiliki pengaruh terhadap waktu eksekusi program. Waktu eksekusi tercepat adalah pada ukuran blok 128 MB.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.4]{Eksperimen_Bigdata/contoh}
+	\caption[Grafik pengaruh ukuran blok terhadap rata-rata waktu eksekusi]{Grafik pengaruh ukuran blok terhadap rata-rata waktu eksekusi}
+	\label{fig:Grafik pengaruh ukuran blok terhadap rata-rata waktu eksekusi}
+\end{figure}
+
+
+\subsubsection{Uji Pengaruh Ukuran Data}
+
+Pengujian pengaruh ukuran data terhadap waktu dilakukan dengan spesifikasi seperti berikut:
+
+\begin{itemize}
+	\item Jumlah slave node: 4
+	\item Ukuran blok: 128MB
+\end{itemize}
+
+\begin{table}[H]
+\label{tab:uji pengaruh jumlah node}
+\centering
+\caption{Hasil uji pengaruh jumlah node terhadap kecepatan program dalam detik}
+\begin{tabular}{ | l | l | l | l | l | }
+\hline
+jumlah node & 1 & 2 & 3 & 4 \\ \hline \hline
+Run 1: Training & ?? & ?? & ?? & ?? \\ \hline
+Run 2: Training & ?? & ?? & ?? & ?? \\ \hline
+Run 3: Training & ?? & ?? & ?? & ?? \\ \hline
+\textbf{Rata - rata: Training} & ?? & ?? & ?? & ?? \\ \hline
+\textbf{Standar deviasi: Training} & ?? & ?? & ?? & ?? \\ \hline
+ & & & & \\ \hline
+Run 1: Testing & ?? & ?? & ?? & ?? \\ \hline
+Run 2: Testing & ?? & ?? & ?? & ?? \\ \hline
+Run 3: Testing & ?? & ?? & ?? & ?? \\ \hline
+\textbf{Rata - rata: Testing} & ?? & ?? & ?? & ?? \\ \hline
+\textbf{Standar deviasi: Testing} & ?? & ?? & ?? & ?? \\ \hline
+\end{tabular}
+\end{table}
+
+Hasil pengujian tertera pada Tabel~\ref{tab:uji pengaruh jumlah node}. Pada Gambar~\ref{fig:Grafik pengaruh jumlah node terhadap rata-rata waktu eksekusi} memperlihatkan grafik rata-rata waktu ekskusi. Dari grafik dapat dilihat bahwa jumlah node yang digunakan memiliki pengaruh terhadap waktu eksekusi program. Waktu eksekusi tercepat adalah pada jumlah node yang sama dengan 4.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[scale=0.4]{Eksperimen_Bigdata/contoh}
+	\caption[Grafik pengaruh jumlah node terhadap rata-rata waktu eksekusi]{Grafik pengaruh jumlah node terhadap rata-rata waktu eksekusi}
+	\label{fig:Grafik pengaruh jumlah node terhadap rata-rata waktu eksekusi}
+\end{figure}
+
+\subsubsection{Kesimpulan}
+Berdasarkan eksperimen - eksperimen yang telah dilakukan, maka dapat diambil kesimpulan sebagai berikut:
+
+\begin{itemize}
+	\item Ukuran blok berpengaruh pada performa kecepatan eksekusi dari program yang dijalankan. Oleh karena itu pemilihan ukuran blok yang tepat perlu dilakukan dengan baik, agar program yang dieksekusi dapat berjalan secara optimal.
+	\item Jumlah node sangat berpengaruh pada kecepatan eksekusi program. Program MapReduce menghasilkan performa yang lebih baik apabila jumlah node-nya banyak.
+\end{itemize}

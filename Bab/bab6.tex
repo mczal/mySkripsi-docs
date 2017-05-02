@@ -1,0 +1,40 @@
+\chapter{Kesimpulan dan Saran}
+
+\section{Kesimpulan}
+
+Hadoop merupakan platform \textit{open source} yang cocok untuk melakukan proses terhadap data yang berukuran besar, memiliki skalabilitas yang baik, dan juga memiliki mekanisme penanganan error(\textit{fault tolerance}) yang bagus dapat memberikan solusi bagi industri untuk mengambil informasi dari \textit{big data} dengan waktu yang cukup singkat. Model dari pemrograman \textit{MapReduce} juga cukup mudah dimengerti dan diimplementasikan, dengan pemahaman yang tidak terlalu mendalam mengenai detil dari desain internal pada Hadoop, orang sudah dapat membuat program \textit{MapReduce}. Dengan adanya Hadoop streaming, saat ini program \textit{MapReduce} sudah dapat dibuat menggunakan bahasa lain seperti dengan skrip Python dsb. Hal ini dapat cukup menghilangkan batasan bahasa pemrograman dalam membuat program berbasis \textit{MapReduce} untuk dapat dieksekusi pada lingkungan Hadoop.
+
+Algoritma klasifkasi \textit{naive bayes} merupakan salah satu algoritma dalam teknik penambangan data dan \textit{machine learning} yang dapat sangat bermanfaat pada era \textit{big data} seperti saat ini. Pada era \textit{big data}, teknik penambangan data dapat digunakan oleh perusahaan besar dalam mengubah data yang sudah tidak berguna menjadi sebuah informasi yang sangat berharga, sehingga dapat membantu perusahaan dalam membuat suatu keputusan.
+
+Pada penelitian ini telah berhasil dibangun perangkat lunak yang terdiri dari beberapa modul yang menerapkan algoritma klasifikasi \textit{naive bayes} berbasis \textit{MapReduce} untuk dapat berjalan pada sistem terdistribusi Hadoop. Terdapat 2 modul yang dibuat untuk pembuatan model klasifikasi \textit{naive bayes} dan melakukan evaluasi terhadap model \textit{naive bayes} yang sudah dibuat. Sedangkan 2 modul lainnya dibuat dengan berbasiskan web untuk melakukan pengelolaan input file dalam HDFS dan klasifikasi untuk tiap kasus yang di-input-kan oleh user secara manual.
+
+Sebelum \textit{big data} diumpankan ke dalam algoritma klasifikasi \textit{naive bayes}, big data sebuah studi kasus mengenai pembunuhan yang terjadi di US terlebih dahulu disimpan ke dalam HDFS menggunakan modul kelola input yang telah dibuat dan dilakukan pemilihan atribut kelas dan prediktor yang akan digunakan pada data tersebut. Setelah itu, proses \textit{training} pada pembuatan model klasifikasi \textit{naive bayes} dapat dilakukan dengan pertama - tama membuat tabel frekuensi untuk setiap kemunculan atribut prediktor terhadap atribut kelas tertentu dan untuk atribut bertipe numerik akan melakukan perhitungan rata - rata seluruh atribut tersebut berdasarkan atribut kelas yang lalu diteruskan dengan menghitung standar deviasi untuk digunakan pada perhitungan distribusi normal atribut prediktor numerik terhadap atribut kelas. Akan dilakukan proses evaluasi pada model NBC yang sudah jadi dengan proses yang terpisah dengan proses training untuk melakukan evaluasi terhadap model NBC yang sudah dibuat. Proses evaluasi dan klasifikasi tidak saling bergantung, karena dua - duanya hanya akan menggunaka model NBC yang sudah dibuat sebelumnya.
+
+Berdasarkan hasil pengujian perangkat lunak dan eksperimen yang telah dilakukan pada Bab~\ref{chap:Implementasi, Pengujian, dan Eksperimen}, dapat disimpulkan bahwa :
+
+\begin{itemize}
+	\item Perangkat lunak untuk menerapkan algoritma klasifikasi \textit{naive bayes} yang dibuat berbasiskan \textit{MapReduce} pada lingkungan terdistribusi Hadoop telah diuji kebenaran-nya dengan melakukan perbandingan terhadap perhitungan manual pada bagian~\ref{sec:Pengujian Kebenaran} dan menghasilkan nilai yang cukup sama. Perbedaan hanya terjadi pada pembulatan bilangan desimal pada angka dibelakang koma.
+	\item Algoritma klasifikasi \textit{naive bayes} pada sistem terdistribusi Hadoop dapat menangani data yang termasuk ke dalam golongan \textit{big data}.
+	\item Eksperimen yang telah dilakukan untuk menguji efisiensi dan kecepatan perangkat lunak pada variabel - variabel yang berubah. Berikut ini adalah variabel-variabel beserta kesimpulan hasil eksperimen :
+	\begin{itemize}
+		\item Ukuran blok HDFS\\
+		Pada data berukuran 1GB, Semakin besar ukuran blok HDFS untuk file input maka waktu yang dihabiskan untuk menjalankan proses perangkat lunak berbasis \textit{MapReduce} semakin sedikit. Tetapi, perlu diperhatikan bahwa pemilihan ukuran blok file input akan sangat berpengaruh terhadap besaran ukuran file input itu sendiri. Karena, jika ukuran blok HDFS lebih besar atau sama dengan ukuran file itu sendiri, maka file tidak akan didistribusikan kepada tiap \textit{datanode}.
+		
+		\item Ukuran data\\
+		Ukuran data mempengaruhi efisiensi dan kecepatan perangkat lunak. Meskipun perbedaan waktu terjadi mungkin karena performa komputer yang jika mengolah data lebih banyak akan memanas dan sedikit melambat.
+	\end{itemize}
+\end{itemize}
+
+\section{Saran Penelitian Lanjutan}
+
+Penelitian pada skripsi kali ini hanya merupakan sebuah langkah kecil dalam memanfaatkan teknik penambangan data berbasis \textit{MapReduce} pada sistem terdistribusi Hadoop. Penelitian selanjutnya diharapkan dapat melakukan lebih banyak lagi penerapan teknik/algoritma penambangan data dan/atau \textit{machine learning} pada sistem terdistribusi hadoop mengguanakan pemrograman berbasis \textit{MapReduce}. Selain itu, dapat juga dilakukan pemahaman lebih dalam mengenai internal desain dari sistem Hadoop untuk dapat memanfaatkan sumber daya dari \textit{cluster} yang kita miliki dengan maksimal. Seperti misalnya, menganalisis jumlah \textit{mapper} dan \textit{reducer} yang optimal untuk digunakan pada suatu proses \textit{MapReduce} untuk memaksimalkan penggunaan sumber daya dan meningkatkan efisiensi waktu pada pemrosesan data berukuran besar yang kita miliki.
+
+Adapun penelitian yang dapat dilanjutkan jika mengacu pada penelitian ini adalah sebagai berikut:
+\begin{itemize}
+	\item Dapat dilakukan penambahan untuk menerapkan teknik \textit{predictive regression} pada perangkat lunak yang sudah dibangun untuk melakukan prediksi terhadap atribut numerik.
+	\item Dapat dilakukan pengembangan untuk dapat melakukan eksekusi program berbasis \textit{MapReduce} pada sistem terdistribusi hadoop menggunakan GUI (\textit{Graphical User Interface}) yang telah dibuat untuk modul kelola input dan klasifikasi. Sehingga, akan memudahkan \textit{end-user}(misalnya: pegawai pada perusahaan) untuk menjalankan program berbasis \textit{MapReduce}.
+	\item Dapat dilakukan penambahan untuk menerapkan beberapa teknik penanganan atribut bertipe numerik seperti metode binning dsb.
+	\item Melakukan eksperimen pada cluster yang lebih besar yang dapat mengikutsertakan lebih banyak node dari saat ini.
+	\item Menganalisis variabel - variabel pada Hadoop yang dapat dikelola secara manual untuk mengoptimalkan kinerja dari program \textit{MapReduce} yang berjalan.
+\end{itemize}
+

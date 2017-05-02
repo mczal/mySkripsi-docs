@@ -76,11 +76,11 @@
 % Jika tidak ingin mencetak daftar tabel/gambar (misalkan karena tidak ada 
 % isinya), edit manual di baris 439 dan 440 pada file main.tex
 %=============================================================================
- \mode{kosong}
+% \mode{kosong}
 % \mode{cover}
 % \mode{sidang}
-% \mode{sidang_akhir}
-%\mode{final} 
+ \mode{sidang_akhir}
+% \mode{final} 
 %=============================================================================
 
 %_____________________________________________________________________________
@@ -140,7 +140,7 @@
 % Catatan: Jika ingin menambahkan bab ke-10 dan seterusnya, harus dilakukan 
 % secara manual
 %=============================================================================
-\bab{5}
+\bab{5,6}
 %=============================================================================
 
 %_____________________________________________________________________________
@@ -211,8 +211,16 @@
 % PERHATIAN: langsung mulai setelah '{' awal, jangan mulai menulis di baris 
 %			 bawahnya
 %=============================================================================
-\abstrakINA{<<Tuliskan abstrak anda di sini, dalam bahasa Indonesia>> \\\kant[1]}
-\abstrakENG{<<Tuliskan abstrak anda di sini, dalam bahasa Inggris>> \\\kant[2]} 
+\abstrakINA{
+Internet saat ini telah menjadi sebagai salah satu sarana utama untuk melakukan komunikasi, pencarian informasi, bahkan untuk melakukan transaksi jual beli barang untuk pembeli dan untuk penjual yang menyediakan tokonya secara \textit{online}. Melihat pengguna internet yang sangat banyak dan bermacam - macam bahkan bisa diakses dari segala penjuru dunia yang juga menggunakan internet, hal ini menyebabkan data yang diproses menjadi sangat banyak dan tidak beraturan. Saking banyaknya pengguna dan data yang dioper di dalam internet maka kebutuhan untuk mengolah data yang sangat bervariasi dalam jumlah yang sangat besar dan dengan kebutuhan akan kecepatan pemrosesan yang tinggi menjadi pokok permasalahan yang dihadapi saat ini \textit{( Big Data)}. 
+
+Sebuah sistem terdistribusi adalah salah satu dampak kemajuan teknologi yang dapat mengolah big data dengan komputasi secara paralel terdistribusi. Hadoop adalah contoh kerangka kerja yang dapat menjalankan perangkat lunak dengan sistem yang terdistribusi. Hadoop adalah salah satu kerangka kerja yang dirancang untuk memproses dan menganalisis data yang sangat banyak. Hadoop memiliki komponen-komponen yang dapat mengolah data dibanyak komputer dalam satu waktu secara paralel, sehingga waktu yang dieksekusi selama pemrosesan data menjadi minimum.
+
+Untuk dapat mengetahui dan mengambil informasi berharga yang tersembunyi dalam \textit{big data}, dibutuhkan teknik \textit{data mining}/\textit{machine-learning} untuk melakukan proses pembuatan model spesifik yang nantinya bisa digunakan untuk memprediksi kemunculan data berikutnya. Hal ini dapat berguna untuk suatu perusahaan dalam melakukan \textit{predictive analysis} untuk menaikkan nilai perusahaan tersebut.
+
+Pada penelitian ini, telah berhasil dikembangkan sebuah perangkat lunak yang berjalan di dalam lingkungan Hadoop berbasiskan \textit{MapReduce} yang mampu melakukan pembuatan model klasifikasi \textit{naive bayes} sekaligus melakukan pengujian terhadap model tersebut menggunakan \textit{big data}. Pada eksperimen yang telah dilakukan menggunakan \textit{cluster} hadoop yang ada pada laboratorium milik FTIS (Fakultas Teknologi Informasi dan Sains), ditetapkan 2 variabel eksperimen, yaitu (1) ukuran \textit{big data} dan (2) ukuran blok. Dari hasil eksperimen yang telah dilakukan diketahui bahwa ukuran \textit{big data} yang diumpankan pada perangkat lunak sangat bergantung pada spesifikasi perangkat keras milik \textit{cluster} hadoop, sehingga dapat mempengaruhi waktu eksekusi. Lalu, ukuran blok pada HDFS (\textit{Hadoop Distributed File System}) juga mempengaruhi waktu eksekusi perangkat lunak yang berjalan pada sistem terdistribusi hadoop.
+}
+\abstrakENG{MY ABSTRACT}
 %=============================================================================
 
 %_____________________________________________________________________________
@@ -223,8 +231,8 @@
 % - kunciINA: kata-kata kunci dalam bahasa indonesia
 % - kunciENG: keywords in english
 %=============================================================================
-\kunciINA{<<Tuliskan di sini kata-kata kunci yang anda gunakan, dalam bahasa Indonesia>>}
-\kunciENG{<<Tuliskan di sini kata-kata kunci yang anda gunakan, dalam bahasa Inggris>>}
+\kunciINA{Hadoop, Apache, Map Reduce, Big Data, Naive Bayes}
+\kunciENG{Hadoop, Apache, Map Reduce, Big Data, Naive Bayes}
 %=============================================================================
 
 %_____________________________________________________________________________
@@ -233,7 +241,7 @@
 %=============================================================================
 % Persembahan : kepada siapa anda mempersembahkan skripsi ini ...
 %=============================================================================
-\untuk{<<kepada siapa anda mempersembahkan skripsi ini\ldots?>>}
+\untuk{Kepada Siapa siapa siapa}
 %=============================================================================
 
 %_____________________________________________________________________________
@@ -243,7 +251,7 @@
 % Kata Pengantar: tempat anda menuliskan kata pengantar dan ucapan terima 
 % kasih kepada yang telah membantu anda bla bla bla ....  
 %=============================================================================
-\prakata{\kant[3-4]}
+\prakata{Kata Pengantar Bro}
 %=============================================================================
 
 %_____________________________________________________________________________
