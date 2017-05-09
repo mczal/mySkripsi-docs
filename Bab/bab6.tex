@@ -16,13 +16,23 @@ Berdasarkan hasil pengujian perangkat lunak dan eksperimen yang telah dilakukan 
 	\item Perangkat lunak untuk menerapkan algoritma klasifikasi \textit{naive bayes} yang dibuat berbasiskan \textit{MapReduce} pada lingkungan terdistribusi Hadoop telah diuji kebenaran-nya dengan melakukan perbandingan terhadap perhitungan manual pada bagian~\ref{sec:Pengujian Kebenaran} dan menghasilkan nilai yang cukup sama. Perbedaan hanya terjadi pada pembulatan bilangan desimal pada angka dibelakang koma.
 	\item Algoritma klasifikasi \textit{naive bayes} pada sistem terdistribusi Hadoop dapat menangani data yang termasuk ke dalam golongan \textit{big data}.
 	\item Eksperimen yang telah dilakukan untuk menguji efisiensi dan kecepatan perangkat lunak pada variabel - variabel yang berubah. Berikut ini adalah variabel-variabel beserta kesimpulan hasil eksperimen :
-	\begin{itemize}
+	\begin{enumerate}[label=(\alph*)]
 		\item Ukuran blok HDFS\\
 		Pada data berukuran 1GB, Semakin besar ukuran blok HDFS untuk file input maka waktu yang dihabiskan untuk menjalankan proses perangkat lunak berbasis \textit{MapReduce} semakin sedikit. Tetapi, perlu diperhatikan bahwa pemilihan ukuran blok file input akan sangat berpengaruh terhadap besaran ukuran file input itu sendiri. Karena, jika ukuran blok HDFS lebih besar atau sama dengan ukuran file itu sendiri, maka file tidak akan didistribusikan kepada tiap \textit{datanode}.
 		
 		\item Ukuran data\\
-		Ukuran data mempengaruhi efisiensi dan kecepatan perangkat lunak. Meskipun perbedaan waktu terjadi mungkin karena performa komputer yang jika mengolah data lebih banyak akan memanas dan sedikit melambat.
-	\end{itemize}
+		Ukuran data mempengaruhi waktu eksekusi perangkat lunak. Meskipun perbedaan waktu terjadi mungkin karena performa komputer yang jika mengolah data lebih banyak akan memanas dan sedikit melambat.
+		
+		\item Jumlah Atribut\\
+		Jumlah atribut mempengaruhi waktu eksekusi perangkat lunak. Hal tersebut dikarenakan algoritma klasifikasi \textit{naive bayes} melakukan perhitungan jumlah frekuensi untuk tiap nilai atribut prediktor terhadap tiap nilai atribut kelas.
+		
+		\item Tipe Atribut Prediktor\\
+		Perbedaan waktu eksekusi data yg memiliki atribut numerik dibandingkan hanya memiliki atribut diskret memiliki perbedaan yang sangat signifikan. Untuk data yang memiliki atribut numerik memiliki waktu eksekusi yang jauh lebih lama dibandingkan jika seluruh datanya hanya berisi atribut diskrit. Hal tersebut disebabkan karena perhitungan komputasi yang melibatkan atribut numerik memiliki kompleksitas \verb|O(2n)| yang menyebabkan waktu eksekusi akan 2 kali lipat lebih lama daripada atribut diskrit dan melakukan penulisan ke dalam HDFS (untuk output) untuk setiap iterasi.%between marking
+		Perbedaan ukuran data yang dapat ditangani oleh perangkat lunak dengan spesifikasi yang sudah dijelaskan jika semua atribut berupa diskret dengan yang memiliki atribut numerik terlihat sangat jauh berbeda. Untuk data yang memiliki atribut numerik hanya mampu memproses hingga ukurannya mencapai 1,11GB saja, selebihnya akan terkena limit pada memori \textit{node} pekerja yang terbatas. Hal tersebut terjadi karena untuk atribut numerik akan melakukan penyimpanan objek \texttt{double} sebanyak 2 kali lipat dari data asli, yang membutuhkan memori sebesar 8 bytes untuk setiap objeknya. Sehingga menyebabkan limit memori yang diperlukan melebihi kapasitas memori yang dimiliki oleh \textit{node} pekerja.
+	\end{enumerate}
+
+	Berdasarkan hasil eksperimen juga didapat bahwa perangkat lunak yang dibangun memiliki waktu eksekusi cukup cepat untuk menangani perhitungan dengan atribut prediktor bertipe diskrit. Tetapi, untuk atribut prediktor bertipe numerik, perangkat lunak yang dibangun belum memiliki waktu eksekusi yang cukup cepat, dikarenakan hanya mampu menjalankan program dengan data yang maksimal berukuran sebesar 1.11GB saja pada spesifikasi perangkat keras yang sudah dijelaskan pada Subbab~\ref{sec:desc_perangkat}.
+	
 \end{itemize}
 
 \section{Saran Penelitian Lanjutan}
@@ -31,6 +41,8 @@ Penelitian pada skripsi kali ini hanya merupakan sebuah langkah kecil dalam mema
 
 Adapun penelitian yang dapat dilanjutkan jika mengacu pada penelitian ini adalah sebagai berikut:
 \begin{itemize}
+	\item Dapat dilakukan penambahan teknik penanganan untuk atribut bertipe numerik dengan menghitung nilai standard deviasi menggunakan pendekatan aproksimasi, dimana nilai standard deviasi didapat pada iterasi sebelumnya yang mengakibatkan nilai tersebut tidak mutlak kebenarannya tetapi dapat membantu perangkat lunak dalam mempercepat waktu eksekusi.
+	\item Dapat dilakukan penambahan teknik penanganan untuk atribut bertipe numerik dengan memodifikasi alur kerja dari framework \textit{MapReduce} pada \textit{Hadoop} untuk mengulangi fase reduce setelah perhitungan rata - rata didapat pada fase reduce sebelumnya menggunakan \texttt{Chain Mapper}\footnote{\textit{Chain Mapper} merupakan fitur dari \textit{MapReduce} untuk menggunakan lebih dari satu kelas mapper pada satu pekerjaan. Sumber: \url{http://hadoop.apache.org/docs/r2.7.2/api/org/apache/hadoop/mapreduce/lib/chain/ChainMapper.html}}
 	\item Dapat dilakukan penambahan untuk menerapkan teknik \textit{predictive regression} pada perangkat lunak yang sudah dibangun untuk melakukan prediksi terhadap atribut numerik.
 	\item Dapat dilakukan pengembangan untuk dapat melakukan eksekusi program berbasis \textit{MapReduce} pada sistem terdistribusi hadoop menggunakan GUI (\textit{Graphical User Interface}) yang telah dibuat untuk modul kelola input dan klasifikasi. Sehingga, akan memudahkan \textit{end-user}(misalnya: pegawai pada perusahaan) untuk menjalankan program berbasis \textit{MapReduce}.
 	\item Dapat dilakukan penambahan untuk menerapkan beberapa teknik penanganan atribut bertipe numerik seperti metode binning dsb.

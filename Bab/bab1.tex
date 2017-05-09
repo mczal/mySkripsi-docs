@@ -29,8 +29,8 @@ Dari latar belakang tersebut, rumusan masalah yang dibahas pada penelitian ini a
 \begin{enumerate}
 	\item Bagaimana merancang algoritma {\it Naive Bayes Classifier} berbasis \textit{MapReduce} pada lingkungan sistem terdistribusi Hadoop ?
 	\item Bagaimana mengimplementasikan algoritma {\it Naive Bayes Classifier} berbasis \textit{MapReduce} pada lingkungan sistem terdistribusi Hadoop ?
-	\item Bagaimana melakukan pengujian pada algoritma \textit{Naive Bayes Classifier} berbsis \textit{MapReduce} ?	
-	\item Bagaimana melakukan eksperimen terhadap algoritma \textit{Naive Bayes Classifier} pada lingkungan terdistribusi Hadoop menggunakan \textit{Big Data}?
+	\item Bagaimana melakukan pengujian pada algoritma \textit{Naive Bayes Classifier} berbasis \textit{MapReduce} dengan \textit{Big Data} ?	
+	\item Bagaimana melakukan eksperimen terhadap algoritma \textit{Naive Bayes Classifier} pada lingkungan terdistribusi Hadoop menggunakan \textit{Big Data} ?
 \end{enumerate}
 
 \section{Tujuan}
@@ -40,17 +40,17 @@ Berdasarkan identifikasi masalah, tujuan penelitian sebagai berikut:
 \begin{enumerate}
 	\item Merancang algoritma \textit{Naive Bayes Classifier} berbasis \textit{MapReduce} pada lingkungan terdistribusi Hadoop.
 	\item Mengimplementasikan algoritma \textit{Naive Bayes Classifier} berbasis \textit{MapReduce} pada lingkungan terdistribusi Hadoop.
-	\item Menguji hasil implementasi algoritma \textit{Naive Bayes Classifier} untuk analisis \textit{Big Data}.
+	\item Menguji hasil implementasi algoritma \textit{Naive Bayes Classifier} dengan \textit{Big Data}.
 	\item Melakukan eksperimen pada algoritma \textit{Naive Bayes Classifier} pada lingkungan terdistribusi Hadoop menggunakan Big Data
 \end{enumerate}
 
-%\section{Batasan Masalah}
+\section{Batasan Masalah}
 
-%Batasan masalah dari penelitian ini antara lain :
-%\begin{enumerate}
-%	\item abc
-%	\item def
-%\end{enumerate}
+Batasan masalah dari penelitian ini antara lain :
+\begin{enumerate}
+	\item Karena keterbatasan sumber daya yang dimiliki, digunakan 1 komputer sebagai \textit{master node} dan 4 komputer sebagai \textit{slave node} selama pengujian dan eksperimen berlangsung.
+	\item Pada eksperimen dengan big data, digunakan data nyata (diperoleh dari \url{https://www.kaggle.com/murderaccountability/homicide-reports}) yang digandakan.
+\end{enumerate}
 
 \section{Metodologi Penelitian}
 
@@ -91,7 +91,7 @@ Sistematika pembahasan penelitian ini, yaitu :
 \begin{enumerate}
 	\item Bab 1 Pendahuluan, berisi tentang permasalahan utama yang dibahas pada penelitian ini dan dipecahkan menjadi beberapa poin penting, tujuan dari penelitian, batasan masalah, metodologi penelitian yang digunakan, dan sistematika pembahasan pada penelitian ini. 
 	\item Bab 2 Landasan Teori, berisi tentang teori dasar dan pengetahuan mengenai Sistem Terdistribusi Hadoop dan Algoritma \textit{Naive Bayes Classifier}. Pada bab ini dijelaskan juga mengenai beberapa \textit{framework} yang digunakan dalam membangun perangkat lunak.
-	\item Bab 3 Analisis, berisi tentang analisis masalah yang telah dideskripsikan pada Bab 1 dan menentukan beberapa kebutuhan dari perangkat lunak. Selain itu juga melakukan perhitungan manual algoritma \textit{naive bayes classification} dengan studi kasus.
+	\item Bab 3 Analisis, berisi tentang analisis masalah yang telah dideskripsikan pada Bab 1 dan menentukan seluruh kebutuhan dari perangkat lunak yang dibangun.
 	\item Bab 4 Perancangan Perangkat Lunak, berisi tentang rancangan perangkat lunak yang dibangun. Perancangan perangkat lunak meliputi perancangan antarmuka, diagram kelas lengkap, dan rincian metode - metode yang ada pada kelas.
 	\item Bab 5 Implementasi, Pengujian, dan Eksperimen Perangkat Lunak, berisi tentang hasil dari implementasi, pengujian, dan eksperimen yang dilakukan pada perangkat lunak pada lingkungan terdistribusi Hadoop.
 	\item Bab 6 Kesimpulan dan Saran, berisi tentang kesimpulan atas hasil penelitian yang telah dilakukan, apakah semua masalah pada rumusan masalah dapat terselesaikan atau tidak, serta saran untuk penelitian yang masih bisa dikembangkan dari penelitian ini.

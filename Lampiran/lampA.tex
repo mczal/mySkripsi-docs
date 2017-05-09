@@ -1,7 +1,27 @@
 %versi 2 (8-10-2016)
 \chapter{Struktur dan Kode Program Modul Train Naive Bayes M-R Based}
 \label{lamp:A}
+\section{Struktur Program}
+\begin{lstlisting}
++--mapreduce-naivebayes-training/
+|  +--src/
+|  |  +--main/
+|  |  |  +--resources/
+|  |  |  |  +--application.properties
+|  |  |  +--java/
+|  |  |  |  +--mapper/
+|  |  |  |  |  +--MyMapper.java
+|  |  |  |  +--mczal/
+|  |  |  |  |  +--bayes/
+|  |  |  |  |  |  +--App.java
+|  |  |  |  +--combiner/
+|  |  |  |  |  +--MyCombiner.java
+|  |  |  |  +--reducer/
+|  |  |  |  |  +--MyReducer.java
+|  +--pom.xml
+\end{lstlisting}
 
+\section{Kode Program}
 %selalu gunakan single spacing untuk source code !!!!!
 \singlespacing 
 % language: bahasa dari kode program
@@ -11,64 +31,364 @@
 % terdapat beberapa pilihan : tiny, scriptsize, footnotesize, dll
 %
 % caption : nama yang akan ditampilkan di dokumen akhir, lihat contoh
-\begin{lstlisting}[language=Java,basicstyle=\tiny,caption=MyFurSet.java]
+\begin{lstlisting}[language=xml,basicstyle=\tiny,caption=pom.xml]
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>mczal.bayes</groupId>
+  <artifactId>mapreduce</artifactId>
+  <version>1.0-SNAPSHOT</version>
+  <dependencies>
+    <dependency>
+      <groupId>org.apache.hadoop</groupId>
+      <artifactId>hadoop-client</artifactId>
+      <version>2.6.0</version>
+    </dependency>
+  </dependencies>
+  <build>
+    <plugins>
+      <plugin>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.3</version>
+        <configuration>
+          <source>1.7</source>
+          <target>1.7</target>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-shade-plugin</artifactId>
+        <executions>
+          <execution>
+            <phase>package</phase>
+            <goals>
+              <goal>shade</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <finalName>uber-mapreduce-1.0-SNAPSHOT</finalName>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <configuration>
+          <source>1.8</source>
+          <target>1.8</target>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+</project>
+\end{lstlisting}
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashSet; 
 
-/**
- *
- * @author Lionov
- */
+\begin{lstlisting}[language=Java,basicstyle=\tiny,caption=App.java]
+package mczal.bayes;
 
-//class for set of vertices close to furthest edge
-public class MyFurSet {
-    protected int id;                                  //id of the set
-    protected MyEdge FurthestEdge;                     //the furthest edge
-    protected HashSet<MyVertex> set;                   //set of vertices close to furthest edge
-    protected ArrayList<ArrayList<Integer>> ordered;   //list of all vertices in the set for each trajectory
-    protected ArrayList<Integer> closeID;              //store the ID of all vertices
-    protected ArrayList<Double> closeDist;             //store the distance of all vertices
-    protected int totaltrj;                            //total trajectories in the set
+import combiner.MyCombiner;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import mapper.MyMapper;
+import org.apache.hadoop.conf.Configuration;
+import org.apache.hadoop.fs.FileSystem;
+import org.apache.hadoop.fs.Path;
+import org.apache.hadoop.io.DoubleWritable;
+import org.apache.hadoop.io.Text;
+import org.apache.hadoop.mapreduce.Job;
+import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
+import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
+import reducer.MyReducer;
 
-    /**
-     * Constructor
-     * @param id : id of the set
-     * @param totaltrj : total number of trajectories in the set
-     * @param FurthestEdge : the furthest edge
-     */
-    public MyFurSet(int id,int totaltrj,MyEdge FurthestEdge) {
-        this.id = id;
-        this.totaltrj = totaltrj;
-        this.FurthestEdge = FurthestEdge;
-        set = new HashSet<MyVertex>();
-        ordered = new ArrayList<ArrayList<Integer>>();
-        for (int i=0;i<totaltrj;i++) ordered.add(new ArrayList<Integer>());
-        closeID = new ArrayList<Integer>(totaltrj);
-        closeDist = new ArrayList<Double>(totaltrj);
-        for (int i = 0;i <totaltrj;i++) {
-            closeID.add(-1);
-            closeDist.add(Double.MAX_VALUE);
-        }
+public class App {
+
+  public static final String HDFS_AUTHORITY = "hdfs://master:9000";
+
+  public static void main(String[] args) throws Exception {
+    if (args.length != 1) {
+      String argsExcp =
+          "Error catched by custom Impl. Please read the following line below.\n"
+              + "-----------------------------\n"
+              + "-> Arguments must only consist of 1 path.\n"
+              + "-> It located the model of input you want to execute in HDFS.\n"
+              + "-> Ex: \n"
+              + "-> If args[0]=/user/root/bayes/weather -> \n"
+              + "-> Then, that path must had : \n"
+              + "-> (1) info path + file => /bayes/weather/info/meta.info\n"
+              + "-> (2) input path + file => /bayes/weather/input/...\n"
+              + "-> (3) testing path for input split file => /bayes/weather/testing/input/...\n"
+              + "-> The output file will be located in /bayes/weather/output/...\n"
+              + "-----------------------------";
+      throw new IllegalArgumentException(argsExcp);
     }
 
-    /**
-     * set a vertex into the set
-     * @param v : vertex to be added to the set
-     */
-    public void add(MyVertex v) {
-        set.add(v);
+    String inputPath = args[0];
+    String outputPath = args[0];
+    String infoPathFile = args[0];
+    if (args[0].charAt(args[0].length() - 1) == '/') {
+      inputPath += "input";
+      outputPath += "output";
+      infoPathFile += "info/meta.info";
+    } else {
+      inputPath += "/input";
+      outputPath += "/output";
+      infoPathFile += "/info/meta.info";
     }
 
-    /**
-     * check whether vertex v is a member of the set
-     * @param v : vertex to be checked
-     * @return true if v is a member of the set, false otherwise
-     */
-    public boolean contains(MyVertex v) {
-        return this.set.contains(v);
+    String cols = "predictor,pred_val,class_name,class_val,count";
+    Configuration conf = new Configuration();
+
+    FileSystem fs = FileSystem.get(conf);
+    /* Check if output path (args[1])exist or not */
+    if (fs.exists(new Path(outputPath))) {
+      /* If exist delete the output path */
+      fs.delete(new Path(outputPath), true);
     }
+
+    Path path = new Path(HDFS_AUTHORITY + infoPathFile);
+    BufferedReader br = new BufferedReader(new InputStreamReader(fs.open(path)));
+    String currClass = br.readLine();
+    String currAttr = br.readLine();
+    /**
+     * Addition per March 20th
+     * */
+    Integer countCols = Integer.parseInt(br.readLine().split(":")[1].trim());
+    conf.set("countCols", countCols + "");
+
+    conf.set("classes", currClass.split(":")[1]);
+    conf.set("attributes", currAttr.split(":")[1]);
+
+    Job job = Job.getInstance(conf, "bayes");
+    job.setJarByClass(App.class);
+    job.setMapperClass(MyMapper.class);
+    job.setCombinerClass(MyCombiner.class);
+    job.setReducerClass(MyReducer.class);
+    job.setMapOutputKeyClass(Text.class); // your mapper - not shown in this example
+    job.setMapOutputValueClass(DoubleWritable.class);
+    job.setOutputKeyClass(Text.class);
+    job.setOutputValueClass(Text.class);
+
+    FileInputFormat.addInputPath(job, new Path(inputPath));
+    FileOutputFormat.setOutputPath(job, new Path(outputPath));
+    System.exit(job.waitForCompletion(true) ? 0 : 1);
+  }
 }
 \end{lstlisting}
+
+
+\begin{lstlisting}[language=Java,basicstyle=\tiny,caption=MyMapper.java]
+package mapper;
+
+import java.io.IOException;
+import org.apache.hadoop.io.DoubleWritable;
+import org.apache.hadoop.io.Text;
+import org.apache.hadoop.mapreduce.Mapper;
+
+public class MyMapper extends Mapper<Object, Text, Text, DoubleWritable> {
+
+  public final static String _CLASS = "|_class|";
+  public final static String _DISCRETE = "|disc|";
+  public final static String _CONTINUOUS = "|cont|";
+  private final static DoubleWritable one = new DoubleWritable(1);
+  private final static String NUMERIC_TYPE = "NUMERICAL";
+  private final static String DISCRETE_TYPE = "DISCRETE";
+  private Text wordAttr = new Text();
+  private Text wordClass = new Text();
+
+  public void map(Object key, Text value, Context context)
+      throws IOException, InterruptedException {
+    /**
+     * Addition per March 20th
+     * */
+    int countCols = Integer.parseInt(context.getConfiguration().get("countCols").trim());
+
+    String val = value.toString();
+    String[] inputSplit = val.split(",");
+    if (inputSplit.length != countCols) {
+      /**
+       * Ignoring record with missing value detected!
+       * */
+      return;
+    }
+
+    String classConf = context.getConfiguration().get("classes");
+    String[] classSplitConf = classConf.split(";");
+
+    String attrConf = context.getConfiguration().get("attributes");
+    String[] attrSplitConf = attrConf.split(";");
+
+    int checkerClassPrior = classSplitConf.length;
+    /* New Impl */
+
+		/* For Attr */
+    for (int i = 0; i < attrSplitConf.length; i++) {
+      String type = attrSplitConf[i].split(",")[2];
+      if (type.equals(DISCRETE_TYPE)) {
+        for (int j = 0; j < classSplitConf.length; j++) {
+          String currKey = _DISCRETE + attrSplitConf[i].split(",")[0]
+              + "," + inputSplit[Integer.parseInt(attrSplitConf[i]
+              .split(",")[1])]
+              + "," + classSplitConf[j].split(",")[0]
+              + "," + inputSplit[Integer.parseInt(classSplitConf[j]
+              .split(",")[1])];
+          wordAttr.set(currKey);
+          context.write(wordAttr, one);
+
+				/* DEBUG ABOVE */
+        /* Calculate Class Prior Probability */
+          /** Untuk iterasi attrSplit ke dua
+           * sudah tidak menghitung class prior lagi ! */
+          if (checkerClassPrior > 0) {
+            String currClassKey = _CLASS + classSplitConf[j].split(",")[0]
+                + "," + inputSplit[Integer.parseInt(classSplitConf[j]
+                .split(",")[1])];
+            wordClass.set(currClassKey);
+            context.write(wordClass, one);
+            checkerClassPrior--;
+          }
+        }
+      } else if (type.equals(NUMERIC_TYPE)) {
+
+        for (int j = 0; j < classSplitConf.length; j++) {
+          String currKey = _CONTINUOUS + attrSplitConf[i].split(",")[0] +
+              "," + classSplitConf[j].split(",")[0] +
+              "," + inputSplit[Integer.parseInt(classSplitConf[j]
+              .split(",")[1])];
+          wordAttr.set(currKey);
+          DoubleWritable valNum;
+          String numericIn = inputSplit[Integer
+              .parseInt(attrSplitConf[i].split(",")[1])];
+          if (numericIn.contains(".")) {
+            valNum = new DoubleWritable(Double.parseDouble(numericIn));
+          } else {
+            valNum = new DoubleWritable(Integer.parseInt(numericIn) * 1.0);
+          }
+          context.write(wordAttr, valNum);
+
+          /* Calculate Class Prior Probability */
+          /** Untuk iterasi attrSplit ke dua
+           * sudah tidak menghitung class prior lagi ! */
+          if (checkerClassPrior > 0) {
+            String currClassKey = _CLASS + classSplitConf[j].split(",")[0]
+                + "," + inputSplit[Integer.parseInt(classSplitConf[j]
+                .split(",")[1])];
+            wordClass.set(currClassKey);
+            context.write(wordClass, one);
+            checkerClassPrior--;
+          }
+        }
+      } else {
+        throw new IllegalArgumentException("Undefined Type: " + type);
+      }
+    }
+  }
+}
+\end{lstlisting}
+
+
+\begin{lstlisting}[language=Java,basicstyle=\tiny,caption=MyCombiner.java]
+package combiner;
+
+import com.google.common.util.concurrent.AtomicDouble;
+import java.io.IOException;
+import mapper.MyMapper;
+import org.apache.hadoop.io.DoubleWritable;
+import org.apache.hadoop.io.Text;
+import org.apache.hadoop.mapreduce.Reducer;
+
+/**
+ * Created by mczal on 24/01/17.
+ */
+public class MyCombiner extends Reducer<Text, DoubleWritable, Text, DoubleWritable> {
+
+  @Override
+  protected void reduce(Text key, Iterable<DoubleWritable> values, Context context)
+      throws IOException, InterruptedException {
+
+    if (key.toString().contains(MyMapper._DISCRETE) || key.toString().contains(MyMapper._CLASS)) {
+      AtomicDouble sum = new AtomicDouble(0.0);
+      values.forEach(val -> {
+        sum.addAndGet(val.get());
+      });
+      context.write(key, new DoubleWritable(sum.get()));
+    } else if (key.toString().contains(MyMapper._CONTINUOUS)) {
+      values.forEach(s -> {
+        try {
+          context.write(key, s);
+        } catch (Exception e) {
+          e.printStackTrace();
+        }
+      });
+    }
+  }
+}
+\end{lstlisting}
+
+
+\begin{lstlisting}[language=Java,basicstyle=\tiny,caption=MyReducer.java]
+package reducer;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import mapper.MyMapper;
+import org.apache.hadoop.io.DoubleWritable;
+import org.apache.hadoop.io.Text;
+import org.apache.hadoop.mapreduce.Reducer;
+
+//import db.DBOutputWritable;
+
+public class MyReducer extends Reducer<Text, DoubleWritable, Text, Text> {
+
+  private static final String DISCRETE_TYPE = "DISCRETE";
+  private static final String NUMERIC_TYPE = "NUMERIC";
+  private static final String CLASS_TYPE = "CLASS";
+
+  public void reduce(Text key, Iterable<DoubleWritable> values, Context context)
+      throws IOException, InterruptedException {
+
+    double sum = 0;
+    int count = 0;
+
+    List<Double> caches = new ArrayList<Double>();
+
+    for (DoubleWritable val : values) {
+      caches.add(val.get());
+      sum += val.get();
+      count++;
+    }
+
+    if (key.toString().contains(MyMapper._DISCRETE)) {
+      String splitter = key.toString().split("\\|")[2];
+      String resWrite = splitter + "," + sum + "|" + DISCRETE_TYPE;
+      Text result = new Text(resWrite + "");
+      context.write(result, new Text());
+    } else if (key.toString().contains(MyMapper._CLASS)) {
+      String splitter = key.toString().split("\\|")[2];
+      String resWrite = splitter + "," + sum + "|" + CLASS_TYPE;
+      Text txt = new Text(resWrite + "");
+      context.write(txt, new Text());
+    } else if (key.toString().contains(MyMapper._CONTINUOUS)) {
+      Double mean = sum / count * 1.0;
+      Double calcTemp = 0.0;
+      for (Double c : caches) {
+
+        calcTemp += Math.pow(c - mean, 2);
+      }
+      calcTemp = calcTemp * (1.0 / (count - 1) * 1.0);
+      Double sigma = Math.pow(calcTemp, 0.5);
+      String resWrite = key.toString().split("\\|")[2];
+      context.write(
+          new Text(resWrite),
+          new Text(";" + mean + "|" + sigma + "|" + NUMERIC_TYPE));
+    }
+  }
+
+}
+\end{lstlisting}
+
+
 

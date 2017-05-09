@@ -1,7 +1,43 @@
 %versi 2 (8-10-2016)
 \chapter{Struktur dan Kode Program Modul Testing Naive Bayes M-R Based}
 \label{lamp:B}
+\section{Struktur Program}
+\begin{lstlisting}
++--mapreduce-naivebayes-testing/
+|  +--src/
+|  |  +--main/
+|  |  |  +--resources/
+|  |  |  |  +--log4j.properties
+|  |  |  +--java/
+|  |  |  |  +--mapper/
+|  |  |  |  |  +--TestingMapper.java
+|  |  |  |  |  +--utils/
+|  |  |  |  |  |  +--classp/
+|  |  |  |  |  |  |  +--ClassPrior.java
+|  |  |  |  |  |  |  +--ClassContainer.java
+|  |  |  |  |  |  |  +--ClassPriorDetail.java
+|  |  |  |  |  |  +--predictor/
+|  |  |  |  |  |  |  +--PredictorDetail.java
+|  |  |  |  |  |  |  +--Predictor.java
+|  |  |  |  |  |  |  +--PredictorContainer.java
+|  |  |  |  +--App.java
+|  |  |  |  +--base/
+|  |  |  |  |  +--AttributeDetail.java
+|  |  |  |  |  +--TypeModel.java
+|  |  |  |  |  +--TypeInfo.java
+|  |  |  |  |  +--AttributeMetaInfo.java
+|  |  |  |  +--reducer/
+|  |  |  |  |  +--utils/
+|  |  |  |  |  |  +--ClassPriorRed.java
+|  |  |  |  |  |  +--ClassContainerRed.java
+|  |  |  |  |  |  +--ConfusionMatrix.java
+|  |  |  |  |  +--TestingReducer.java
+|  |  +--test/
+|  |  |  +--java/
+|  +--pom.xml
+\end{lstlisting}
 
+\section{Kode Program}
 %selalu gunakan single spacing untuk source code !!!!!
 \singlespacing 
 % language: bahasa dari kode program
@@ -11,63 +47,1415 @@
 % terdapat beberapa pilihan : tiny, scriptsize, footnotesize, dll
 %
 % caption : nama yang ditampilkan di dokumen akhir, lihat contoh
-\begin{lstlisting}[language=Java,basicstyle=\tiny,caption=MyFurSet.java]
+\begin{lstlisting}[language=xml,basicstyle=\tiny,caption=pom.xml]
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashSet; 
+  <groupId>mapreduce-nb</groupId>
+  <artifactId>testing</artifactId>
+  <version>1.0-SNAPSHOT</version>
+  <dependencies>
+    <dependency>
+      <groupId>org.apache.hadoop</groupId>
+      <artifactId>hadoop-client</artifactId>
+      <version>2.6.0</version>
+    </dependency>
+  </dependencies>
+  <build>
+    <plugins>
+      <plugin>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.3</version>
+        <configuration>
+          <source>1.7</source>
+          <target>1.7</target>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-shade-plugin</artifactId>
+        <executions>
+          <execution>
+            <phase>package</phase>
+            <goals>
+              <goal>shade</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <finalName>uber-mapreduce-1.0-SNAPSHOT</finalName>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <configuration>
+          <source>1.8</source>
+          <target>1.8</target>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+
+</project>
+\end{lstlisting}
+
+\subsection{Package Base}
+
+\begin{lstlisting}[language=Java,basicstyle=\tiny,caption=AttributeDetail.java]
+package base;
 
 /**
- *
- * @author Lionov
+ * Created by mczal on 22/02/17.
  */
+public class AttributeDetail {
 
-//class for set of vertices close to furthest edge
-public class MyFurSet {
-    protected int id;                                  //id of the set
-    protected MyEdge FurthestEdge;                     //the furthest edge
-    protected HashSet<MyVertex> set;                   //set of vertices close to furthest edge
-    protected ArrayList<ArrayList<Integer>> ordered;   //list of all vertices in the set for each trajectory
-    protected ArrayList<Integer> closeID;              //store the ID of all vertices
-    protected ArrayList<Double> closeDist;             //store the distance of all vertices
-    protected int totaltrj;                            //total trajectories in the set
+  private String value;
 
-    /**
-     * Constructor
-     * @param id : id of the set
-     * @param totaltrj : total number of trajectories in the set
-     * @param FurthestEdge : the furthest edge
-     */
-    public MyFurSet(int id,int totaltrj,MyEdge FurthestEdge) {
-        this.id = id;
-        this.totaltrj = totaltrj;
-        this.FurthestEdge = FurthestEdge;
-        set = new HashSet<MyVertex>();
-        ordered = new ArrayList<ArrayList<Integer>>();
-        for (int i=0;i<totaltrj;i++) ordered.add(new ArrayList<Integer>());
-        closeID = new ArrayList<Integer>(totaltrj);
-        closeDist = new ArrayList<Double>(totaltrj);
-        for (int i = 0;i <totaltrj;i++) {
-            closeID.add(-1);
-            closeDist.add(Double.MAX_VALUE);
-        }
-    }
+  private int count;
 
-    /**
-     * set a vertex into the set
-     * @param v : vertex to be added to the set
-     */
-    public void add(MyVertex v) {
-        set.add(v);
-    }
+  public AttributeDetail(String value, int count) {
+    this.value = value;
+    this.count = count;
+  }
 
-    /**
-     * check whether vertex v is a member of the set
-     * @param v : vertex to be checked
-     * @return true if v is a member of the set, false otherwise
-     */
-    public boolean contains(MyVertex v) {
-        return this.set.contains(v);
-    }
+  public AttributeDetail(String value) {
+    this.value = value;
+  }
+
+  public void addCountWith(int addition) {
+    this.count += addition;
+  }
+
+  public int getCount() {
+    return count;
+  }
+
+  public void setCount(int count) {
+    this.count = count;
+  }
+
+  public String getValue() {
+    return value;
+  }
+
+  public void setValue(String value) {
+    this.value = value;
+  }
+
+  @Override
+  public String toString() {
+    return "AttributeDetail{" +
+        "value='" + value + '\'' +
+        ", count=" + count +
+        '}';
+  }
+
 }
+\end{lstlisting}
+
+
+\begin{lstlisting}[language=Java,basicstyle=\tiny,caption=AttributeMetaInfo.java]
+package base;
+
+import java.util.HashMap;
+import java.util.Map;
+
+/**
+ * Created by mczal on 22/02/17.
+ */
+public class AttributeMetaInfo<T extends AttributeDetail> {
+
+  private String name;
+
+  private TypeModel typeModel;
+
+  private double sigma;
+
+  private double mean;
+
+  private Map<String, T> attrDetailMap = new HashMap<String, T>();
+
+  public AttributeMetaInfo(String name, TypeModel typeModel) {
+    this.name = name;
+    this.typeModel = typeModel;
+  }
+
+  public AttributeMetaInfo(String name, TypeModel typeModel, double sigma, double mean) {
+    this.name = name;
+    this.typeModel = typeModel;
+    this.sigma = sigma;
+    this.mean = mean;
+  }
+
+  public double getSigma() {
+    return sigma;
+  }
+
+  public double getMean() {
+    return mean;
+  }
+
+  public TypeModel getTypeModel() {
+    return typeModel;
+  }
+
+  public Map<String, T> getAttrDetailMap() {
+    return attrDetailMap;
+  }
+
+  public String getName() {
+    return name;
+  }
+
+  @Override
+  public String toString() {
+    return "AttributeMetaInfo{" +
+        "name='" + name + '\'' +
+        ", typeModel=" + typeModel +
+        ", sigma=" + sigma +
+        ", mean=" + mean +
+        ", attrDetailMap=" + attrDetailMap +
+        '}';
+  }
+}
+\end{lstlisting}
+
+
+\begin{lstlisting}[language=Java,basicstyle=\tiny,caption=TypeInfo.java]
+package base;
+
+/**
+ * Created by mczal on 24/02/17.
+ */
+public enum TypeInfo {
+  DISCRETE,
+  NUMERICAL
+}
+\end{lstlisting}
+
+
+\begin{lstlisting}[language=Java,basicstyle=\tiny,caption=TypeModel.java]
+package base;
+
+/**
+ * Created by mczal on 22/02/17.
+ */
+public enum TypeModel {
+  NUMERIC,
+  DISCRETE,
+  CLASS
+}
+\end{lstlisting}
+
+
+\subsection{Package Mapper}
+
+\begin{lstlisting}[language=Java,basicstyle=\tiny,caption=ClassContainer.java]
+package mapper.utils.classp;
+
+import java.util.HashMap;
+import java.util.Map;
+
+/**
+ * Created by mczal on 22/02/17.
+ */
+public class ClassContainer {
+
+  private Map<String, ClassPrior> classPriorMap = new HashMap<String, ClassPrior>();
+
+  public Map<String, ClassPrior> getClassPriorMap() {
+    return classPriorMap;
+  }
+
+  public void setClassPriorMap(Map<String, ClassPrior> classPriorMap) {
+    this.classPriorMap = classPriorMap;
+  }
+
+  @Override
+  public String toString() {
+    return "ClassContainer{" +
+        "classPriorMap=" + classPriorMap +
+        '}';
+  }
+}
+\end{lstlisting}
+
+
+\begin{lstlisting}[language=Java,basicstyle=\tiny,caption=ClassPrior.java]
+package mapper.utils.classp;
+
+import base.AttributeMetaInfo;
+import base.TypeModel;
+
+/**
+ * Created by mczal on 22/02/17.
+ */
+public class ClassPrior extends AttributeMetaInfo<ClassPriorDetail> {
+
+  public ClassPrior(String name) {
+    super(name, TypeModel.CLASS);
+  }
+
+  @Override
+  public String toString() {
+    return "ClassPrior{} " + super.toString();
+  }
+}
+\end{lstlisting}
+
+
+\begin{lstlisting}[language=Java,basicstyle=\tiny,caption=ClassPriorDetail.java]
+package mapper.utils.classp;
+
+import base.AttributeDetail;
+
+/**
+ * Created by mczal on 22/02/17.
+ */
+public class ClassPriorDetail extends AttributeDetail {
+
+  private double sigma = -1;
+
+  private double mean = -1;
+
+  public ClassPriorDetail(String value, int count) {
+    super(value, count);
+  }
+
+  public ClassPriorDetail(String value) {
+    super(value);
+  }
+
+  public ClassPriorDetail(String value, int count, double mean, double sigma) {
+    super(value, count);
+    this.sigma = sigma;
+    this.mean = mean;
+  }
+
+  @Override
+  public String toString() {
+    return "ClassPriorDetail{" +
+        "sigma=" + sigma +
+        ", mean=" + mean +
+        "} " + super.toString();
+  }
+
+  public double getSigma() {
+    return sigma;
+  }
+
+  public void setSigma(double sigma) {
+    this.sigma = sigma;
+  }
+
+  public double getMean() {
+    return mean;
+  }
+
+  public void setMean(double mean) {
+    this.mean = mean;
+  }
+
+}
+\end{lstlisting}
+
+
+\begin{lstlisting}[language=Java,basicstyle=\tiny,caption=Predictor.java]
+package mapper.utils.predictor;
+
+import base.AttributeMetaInfo;
+import base.TypeModel;
+import java.util.HashMap;
+import java.util.Map;
+import mapper.utils.classp.ClassPrior;
+
+/**
+ * Created by mczal on 22/02/17.
+ */
+public class Predictor extends AttributeMetaInfo<PredictorDetail> {
+
+  private Map<String, ClassPrior> classPriorMap = new HashMap<String, ClassPrior>();
+
+  public Predictor(String name, TypeModel typeModel) {
+    super(name, typeModel);
+  }
+
+  public Predictor(String name, TypeModel typeModel, double sigma, double mean) {
+    super(name, typeModel, sigma, mean);
+  }
+
+  public Map<String, ClassPrior> getClassPriorMap() {
+    return classPriorMap;
+  }
+}
+\end{lstlisting}
+
+
+\begin{lstlisting}[language=Java,basicstyle=\tiny,caption=PredictorContainer.java]
+package mapper.utils.predictor;
+
+import java.util.HashMap;
+import java.util.Map;
+
+/**
+ * Created by mczal on 22/02/17.
+ */
+public class PredictorContainer {
+
+  private Map<String, Predictor> predictorMap = new HashMap<String, Predictor>();
+
+  public Map<String, Predictor> getPredictorMap() {
+    return predictorMap;
+  }
+
+  public void setPredictorMap(
+      Map<String, Predictor> predictorMap) {
+    this.predictorMap = predictorMap;
+  }
+
+  @Override
+  public String toString() {
+    return "PredictorContainer{" +
+        "predictorMap=" + predictorMap +
+        '}';
+  }
+}
+\end{lstlisting}
+
+
+\begin{lstlisting}[language=Java,basicstyle=\tiny,caption=PredictorDetail.java]
+package mapper.utils.predictor;
+
+import base.AttributeDetail;
+import java.util.HashMap;
+import java.util.Map;
+import mapper.utils.classp.ClassPrior;
+import mapper.utils.classp.ClassPriorDetail;
+
+/**
+ * Created by mczal on 22/02/17.
+ */
+public class PredictorDetail extends AttributeDetail {
+
+  private Map<String, ClassPrior> classPriorMap = new HashMap<String, ClassPrior>();
+
+  public Map<String, ClassPrior> getClassPriorMap() {
+    return classPriorMap;
+  }
+
+  public PredictorDetail(String value, int count) {
+    super(value, count);
+  }
+}
+\end{lstlisting}
+
+
+\begin{lstlisting}[language=Java,basicstyle=\tiny,caption=TestingMapper.java]
+package mapper;
+
+import base.TypeInfo;
+import base.TypeModel;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map.Entry;
+import java.util.concurrent.atomic.AtomicInteger;
+import mapper.utils.classp.ClassContainer;
+import mapper.utils.classp.ClassPrior;
+import mapper.utils.classp.ClassPriorDetail;
+import mapper.utils.predictor.Predictor;
+import mapper.utils.predictor.PredictorContainer;
+import mapper.utils.predictor.PredictorDetail;
+import org.apache.hadoop.conf.Configuration;
+import org.apache.hadoop.fs.FileStatus;
+import org.apache.hadoop.fs.FileSystem;
+import org.apache.hadoop.fs.Path;
+import org.apache.hadoop.io.IntWritable;
+import org.apache.hadoop.io.Text;
+import org.apache.hadoop.mapreduce.Mapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+/**
+ * Created by mczal on 22/02/17.
+ */
+public class TestingMapper extends Mapper<Object, Text, Text, Text> {
+
+  private static final String HDFS_AUTHORITY = "hdfs://master:9000";
+
+  private final Logger logger = LoggerFactory.getLogger(this.getClass());
+
+  private final IntWritable one = new IntWritable(1);
+  private ClassContainer classContainer = new ClassContainer();
+  private PredictorContainer predictorContainer = new PredictorContainer();
+  private String[] classSplitConf;
+  private String[] attrSplitConf;
+
+  @Override
+  protected void map(Object key, Text value, final Context context)
+      throws IOException, InterruptedException {
+    String[] in = value.toString().trim().split(",");
+
+    /**
+     * Fixed result for each class
+     * allResults format :
+     *      [ClassName|ClassVal|Result|InputClassValue]
+     * */
+    List<String> allResults = new ArrayList<String>();
+    for (int i = 0; i < classSplitConf.length; i++) {
+      int classIdx = Integer.parseInt(classSplitConf[i].trim().split(",")[1].trim());
+      String className = classSplitConf[i].trim().split(",")[0].trim().toLowerCase();
+
+      String currInClassValue = in[classIdx].trim().toLowerCase();
+
+      ClassPrior sumClassPrior = classContainer.getClassPriorMap().get(className);
+      if (sumClassPrior == null) {
+        throw new IllegalArgumentException(
+            "SUM_CLASS_PRIOR IS NULL on line 48 : TestingMapper.class \n"
+                + "for: " + className + "\n"
+                + "from: " + sumClassPrior);
+      }
+
+      /**
+       * Checking for every value of current class and get the greatest
+       * currPredictorResult format :
+       *      [ClassName|ClassVal|Result|InputClassValue]
+       * */
+      List<String> allClassResult = new ArrayList<String>();
+
+      for (Iterator<Entry<String, ClassPriorDetail>> p = sumClassPrior.getAttrDetailMap().entrySet()
+          .iterator(); p.hasNext(); ) {
+        ClassPriorDetail forSumClassPriorDetail = p.next().getValue();
+
+        double currClassAllPredictorResult = 1.0;
+        int flag = 0;
+        outer:
+        for (int j = 0; j < attrSplitConf.length; j++) {
+          int attrIdx = Integer.parseInt(attrSplitConf[j].trim().split(",")[1]);
+          String attrName = attrSplitConf[j].trim().split(",")[0].trim().toLowerCase();
+          String attrType = attrSplitConf[j].trim().split(",")[2].trim().toLowerCase();
+
+          String currInAttrValue = in[attrIdx].trim().toLowerCase();
+
+          if (attrType.equalsIgnoreCase(TypeInfo.DISCRETE.name())) {
+
+            Predictor pred = predictorContainer.getPredictorMap().get(attrName);
+            if (pred == null) {
+              throw new IllegalArgumentException("PRED IS NULL ON line 93 : TestingMapper.class");
+            }
+            PredictorDetail predictorDetail = pred.getAttrDetailMap().get(currInAttrValue);
+            if (predictorDetail == null) {
+              throw new IllegalArgumentException(
+                  "PRED_DETAIL IS NULL ON line 97 : TestingMapper.class\n For Val="
+                      + currInAttrValue + "\n"
+                      + "From: " + pred.getAttrDetailMap().toString());
+            }
+            ClassPrior classPrior = predictorDetail.getClassPriorMap().get(className);
+//            ClassPrior classPrior = classContainer.getClassPriorMap().get(className);
+            if (classPrior == null) {
+              throw new IllegalArgumentException(
+                  "CLASS_PRIOR IS NULL ON line 104 : TestingMapper.class" + " => " + predictorDetail
+                      .toString());
+            }
+
+            ClassPriorDetail classPriorDetail = classPrior.getAttrDetailMap()
+                .get(forSumClassPriorDetail.getValue());
+            if (classPriorDetail == null) {
+              /**
+               * TODO: ZERO FREQ HANDLING
+               * */
+              String from = classPrior.getAttrDetailMap().toString();
+              throw new RuntimeException(
+                  "Zero frequency problem occured for: ,predictorName=" + pred.getName()
+                      + ",predVal=" + predictorDetail.getValue() + ",classPrior=" + classPrior
+                      .getName() + ",classPriorDetail=" + forSumClassPriorDetail.getValue()
+                      + ". Will Skip Attribute [" + pred.getName() + "]\n\n"
+                      + "From: classPrior.getAttrDetailMap() -> " + from);
+            }
+            int countDividend = classPriorDetail.getCount();
+            /**
+             * [START]
+             * DEBUG SECTION
+             * */
+            ClassPrior divClassPrior = pred.getClassPriorMap().get(className);
+            if (divClassPrior == null) {
+              throw new IllegalArgumentException(
+                  "DIV_CLASS_PRIOR IS NULL ON line 132 : TestingMapper.class :: \n" +
+                      "pred.getClassPriorMap() => " + pred.getClassPriorMap().toString() + "\n" +
+                      "className => " + className);
+            }
+            ClassPriorDetail divClassPriorDetail = divClassPrior.getAttrDetailMap()
+                .get(forSumClassPriorDetail.getValue());
+            if (divClassPriorDetail == null) {
+              throw new IllegalArgumentException(
+                  "DIV_CLASS_PRIOR_DETAIL IS NULL ON line 140 : TestingMapper.class :: \n" +
+                      "divClassPrior.getAttrDetailMap() => " + divClassPrior.getAttrDetailMap()
+                      .toString() + "\n" +
+                      "currInAttrValue => " + forSumClassPriorDetail.getValue());
+            }
+            /**
+             * [END]
+             * DEBUG SECTION
+             * */
+            int divisor = divClassPriorDetail.getCount();
+            double currRes = (countDividend * 1.0) / (divisor * 1.0);
+
+            currClassAllPredictorResult *= currRes;
+
+          } else if (attrType.equals(TypeInfo.NUMERICAL.name().toLowerCase())) {
+            /**
+             * use currInAttrValue
+             * */
+            Predictor pred = predictorContainer.getPredictorMap().get(attrName);
+            if (pred == null) {
+              throw new IllegalArgumentException(
+                  "PRED IS NULL ON line 176 : TestingMapper.class for:\nattrName='" + attrName
+                      + "'\n"
+                      + "from: " + predictorContainer.getPredictorMap().toString());
+            }
+            ClassPrior classPrior = pred.getClassPriorMap().get(className);
+            if (classPrior == null) {
+              throw new IllegalArgumentException(
+                  "CLASS_PRIOR IS NULL ON line 183 : TestingMapper.class for:\nclassName='"
+                      + className + "'\n"
+                      + "from: " + pred.getClassPriorMap().toString());
+            }
+            ClassPriorDetail detail = classPrior.getAttrDetailMap()
+                .get(forSumClassPriorDetail.getValue());
+            if (detail == null) {
+              throw new IllegalArgumentException(
+                  "CLASS_DETAIL IS NULL ON line 191 : TestingMapper.class for:\nclassVal='"
+                      + forSumClassPriorDetail.getValue() + "'\n"
+                      + "from: " + classPrior.getAttrDetailMap().toString());
+            }
+
+            /**
+             * Calculate Norm.Dist. =>
+             * */
+            String debugSecNum = "!!!!!!!!!!!!\n"
+                + "For Class=" + forSumClassPriorDetail.getValue() + "\n";
+
+            double mean = detail.getMean();
+            double sigma = detail.getSigma();
+            debugSecNum += "mean=" + mean + "\n"
+                + "sigma=" + sigma + "\n";
+
+            double divisor = Math.sqrt(2.0 * Math.PI * sigma);
+            debugSecNum += "divisor=" + divisor + "\n";
+
+            Double currNumericalInAttrValue;
+            if (currInAttrValue.contains(".")) {
+              currNumericalInAttrValue = Double.parseDouble(currInAttrValue);
+            } else {
+              currNumericalInAttrValue = Integer.parseInt(currInAttrValue) * 1.0;
+            }
+            double powerDividend = Math.pow((currNumericalInAttrValue - mean), 2) * -1;
+
+            debugSecNum += "currNumericalInAttrValue=" + currNumericalInAttrValue + "\n";
+            debugSecNum += "powerDividend=" + powerDividend + "\n";
+
+            double powerDivisor = 2.0 * Math.pow(sigma, 2);
+
+            debugSecNum += "powerDivisor=" + powerDivisor + "\n";
+
+            double resPower = powerDividend / powerDivisor;
+
+            debugSecNum += "resPower=" + resPower + "\n";
+
+            double currRes = (1 / divisor) * (Math.pow(Math.E, resPower));
+
+            debugSecNum += "currRes=" + currRes + "\n";
+            debugSecNum += "!!!!!!!!!!!!";
+
+            currClassAllPredictorResult *= currRes;
+
+          } else {
+            throw new IllegalArgumentException(
+                "System Error : INVALID TYPE HERE => " + attrType + " != " + TypeInfo.DISCRETE
+                    .name().toLowerCase() + " or " + TypeInfo.NUMERICAL.name().toLowerCase());
+          }
+        }
+
+        if (flag == 0) {
+          /**
+           *  times with P(C=c) possibilities of current class prior
+           * currPredRes *= (classInfoDetail.getCount() * 1.0) / (accFinal * 1.0);
+           */
+          ClassPrior classPrior = classContainer.getClassPriorMap().get(className);
+          if (classPrior == null) {
+            throw new IllegalArgumentException(
+                "ClassPrior is null on line 221 className=" + className + "\n"
+                    + "from: " + classContainer.getClassPriorMap().toString());
+          }
+          ClassPriorDetail detail = classPrior.getAttrDetailMap()
+              .get(forSumClassPriorDetail.getValue());
+          if (detail == null) {
+            throw new IllegalArgumentException(
+                "ClassPriorDetail is null on line 229. classVal=" + forSumClassPriorDetail
+                    .getValue()
+                    + "\n"
+                    + "from: " + classPrior.getAttrDetailMap().toString());
+          }
+          double currClassCount = detail.getCount();
+          double allCurrClassCount = 0.0;
+          for (Entry<String, ClassPriorDetail> ent : classPrior
+              .getAttrDetailMap().entrySet()) {
+            allCurrClassCount += ent.getValue().getCount();
+          }
+          /**
+           * [ClassName|ClassVal|Result|InputClassValue]
+           * */
+          currClassAllPredictorResult *= (currClassCount / allCurrClassCount);
+          allClassResult.add(className + "|" + forSumClassPriorDetail.getValue() + "|"
+              + currClassAllPredictorResult + "|" + currInClassValue);
+        } else {
+          throw new IllegalArgumentException("FLAG \nFLAG\nZero frequency problem occured.\n"
+              + "Ignore for Class=" + sumClassPrior.getName() + " -> Value="
+              + forSumClassPriorDetail.getValue());
+        }
+      }
+
+      /**
+       *
+       * maxClass format :
+       *      [ClassName|ClassVal|Result|InputClassValue]
+       * */
+      String maxClass = "";
+      double checker = Double.MIN_VALUE;
+      double divisorNorm = 0.0;
+      /**
+       * [ClassName|ClassVal|Result|InputClassValue]
+       * */
+      for (String s : allClassResult) {
+
+        double currentVal = Double.parseDouble(s.split("\\|")[2]);
+        divisorNorm += currentVal;
+
+        if (checker < currentVal) {
+          checker = currentVal;
+          maxClass = s;
+        }
+      }
+      double resNorm = (checker / divisorNorm) * 100;
+      String[] splitter = maxClass.split("\\|");
+      DecimalFormat df = new DecimalFormat("#.00");
+      df.setRoundingMode(RoundingMode.HALF_UP);
+      String maxResult =
+          splitter[0] + "|" + "predicted=" + splitter[1] + "|percentage=" + df.format(resNorm)
+              + "%"
+              + "|"
+              + "actual=" + splitter[3];
+      allResults.add(maxResult);
+    }
+    for (String s : allResults) {
+      String[] splitter = s.split("\\|");
+      String outputKey = splitter[0];
+      String outputVal = splitter[1] + "|" + splitter[2] + "|" + splitter[3];
+      /**
+       * TODO: FVKING
+       * */
+      context.write(new Text(outputKey), new Text(outputVal));
+
+    }
+  }
+
+  @Override
+  protected void setup(Context context) throws IOException, InterruptedException {
+    Configuration conf = context.getConfiguration();
+
+    /**
+     * Getting conf
+     * */
+    classSplitConf = context.getConfiguration().get("classes").split(";");
+    attrSplitConf = context.getConfiguration().get("attributes").split(";");
+
+    String outputModelPath = conf.get("outputModelPath");
+    int laplacianSmoothingAdder = Integer.parseInt(conf.get("laplacianSmoothingAdder"));
+
+    FileSystem fs = FileSystem.get(conf);
+    Path path = new Path(HDFS_AUTHORITY + outputModelPath);
+    FileStatus[] fileStatuses = fs.listStatus(path);
+    for (int i = 0; i < fileStatuses.length; i++) {
+      BufferedReader br = new BufferedReader(
+          new InputStreamReader(fs.open(fileStatuses[i].getPath())));
+
+      while (br.ready()) {
+        String currLine = br.readLine().trim().toLowerCase();
+        String[] currLineSplitter = currLine.split("\\|");
+
+        String currType = currLineSplitter[currLineSplitter.length - 1].trim();
+        int bayesianCount = 1;
+        /**
+         * IF CLASS
+         * */
+        if (currType.equalsIgnoreCase(TypeModel.CLASS.name().toLowerCase())) {
+          String[] specSplitter = currLine.split("\\|")[0].split(",");
+          ClassPrior classPrior = classContainer.getClassPriorMap().get(specSplitter[0].trim());
+          if (classPrior == null) {
+            classPrior = new ClassPrior(specSplitter[0].trim());
+          }
+          ClassPriorDetail classPriorDetail = new ClassPriorDetail(specSplitter[1].trim(),
+              (int) Double.parseDouble(specSplitter[2].trim()));
+          classPrior.getAttrDetailMap().put(specSplitter[1].trim(), classPriorDetail);
+          classContainer.getClassPriorMap().put(specSplitter[0].trim(), classPrior);
+        }
+        /**
+         * IF DISCRETE
+         * */
+        else if (currType.equalsIgnoreCase(TypeModel.DISCRETE.name().toLowerCase())) {
+          String[] specSplitter = currLine.split("\\|")[0].split(",");
+          Predictor predictor = predictorContainer.getPredictorMap().get(specSplitter[0].trim());
+          if (predictor == null) {
+            predictor = new Predictor(specSplitter[0], TypeModel.DISCRETE);
+          }
+
+          /**
+           * [START]
+           * Additional Section For SUM Count Predictor Of ClassPrior Value
+           * */
+          ClassPrior addClassPrior = predictor.getClassPriorMap().get(specSplitter[2].trim());
+          if (addClassPrior == null) {
+            addClassPrior = new ClassPrior(specSplitter[2].trim());
+            predictor.getClassPriorMap().put(specSplitter[2].trim(), addClassPrior);
+          }
+          ClassPriorDetail addClassPriorDetail = addClassPrior.getAttrDetailMap()
+              .get(specSplitter[3].trim());
+          if (addClassPriorDetail == null) {
+            addClassPriorDetail = new ClassPriorDetail(specSplitter[3].trim(),
+                (int) Double.parseDouble(specSplitter[4]));
+            addClassPrior.getAttrDetailMap().put(specSplitter[3].trim(), addClassPriorDetail);
+          } else {
+            addClassPriorDetail.addCountWith((int) Double.parseDouble(specSplitter[4]));
+          }
+          /**
+           * [END]
+           * */
+
+          PredictorDetail predictorDetail = predictor.getAttrDetailMap()
+              .get(specSplitter[1].trim());
+          if (predictorDetail == null) {
+            predictorDetail = new PredictorDetail(specSplitter[1].trim(),
+                -1);
+            predictor.getAttrDetailMap().put(specSplitter[1].trim(), predictorDetail);
+          }
+          ClassPrior classPrior = predictorDetail.getClassPriorMap().get(specSplitter[2].trim());
+          if (classPrior == null) {
+            classPrior = new ClassPrior(specSplitter[2].trim());
+            predictorDetail.getClassPriorMap().put(specSplitter[2].trim(), classPrior);
+          }
+          ClassPriorDetail classPriorDetail = new ClassPriorDetail(specSplitter[3].trim(),
+              (int) Double.parseDouble(specSplitter[4].trim()));
+          classPrior.getAttrDetailMap().put(specSplitter[3].trim(), classPriorDetail);
+          predictorContainer.getPredictorMap().put(specSplitter[0].trim(), predictor);
+        }
+        /**
+         * IF NUMERIC
+         * */
+        else if (currType.equalsIgnoreCase(TypeModel.NUMERIC.name().toLowerCase())) {
+          String[] metaSplitter = currLine.split(";");
+
+          String[] specInfoSplitter = metaSplitter[0].split(",");
+          String[] specDetailSplitter = metaSplitter[1].split("\\|");
+
+          Predictor predictor = predictorContainer.getPredictorMap()
+              .get(specInfoSplitter[0].trim());
+          if (predictor == null) {
+            predictor = new Predictor(specInfoSplitter[0].trim(), TypeModel.NUMERIC);
+          }
+          ClassPrior classPrior = predictor.getClassPriorMap().get(specInfoSplitter[1].trim());
+          if (classPrior == null) {
+            classPrior = new ClassPrior(specInfoSplitter[1].trim());
+            predictor.getClassPriorMap().put(specInfoSplitter[1].trim(), classPrior);
+          }
+          ClassPriorDetail classPriorDetail = new ClassPriorDetail(specInfoSplitter[2].trim(), -1,
+              Double.parseDouble(specDetailSplitter[0].trim()),
+              Double.parseDouble(specDetailSplitter[1].trim()));
+          classPrior.getAttrDetailMap().put(specInfoSplitter[2].trim(), classPriorDetail);
+          predictorContainer.getPredictorMap().put(specInfoSplitter[0].trim(), predictor);
+        }
+        /**
+         * ERROR
+         * */
+        else {
+          throw new IllegalArgumentException(
+              "ON LINE : 400 .\nNO TYPE : " + currType + " !!! VIOLATION ON MODELS");
+        }
+      }
+    }
+    this.laplacianSmoothing(laplacianSmoothingAdder);
+  }
+
+  private void laplacianSmoothing(int laplacianSmoothingAdder) {
+    if (classContainer.getClassPriorMap().size() <= 0) {
+      throw new RuntimeException("Class container size is equal to zero.");
+    }
+    classContainer.getClassPriorMap().forEach((className, classPrior) -> {
+      /**
+       * FOR EACH CLASS
+       * */
+      classPrior.getAttrDetailMap().forEach((classValue, classPriorDetail) -> {
+        /**
+         * FOR EACH CLASS VALUE
+         * */
+        if (predictorContainer.getPredictorMap().size() <= 0) {
+          throw new RuntimeException("Predictor container size is equal to zero.");
+        }
+        predictorContainer.getPredictorMap().forEach((predictorName, predictor) -> {
+          AtomicInteger totalAdditionForCurrClassDetail = new AtomicInteger(0);
+          /**
+           * FOR EACH PREDICTOR
+           * */
+          predictor.getAttrDetailMap().forEach((predictorDetailName, predictorDetail) -> {
+            /**
+             * FOR EACH PREDICTOR DETAIL
+             * DO ADDITION FOR AVAILABLE ATTR AND CREATE NEW IF NOT AVAILABLE
+             * */
+            /**
+             * CHECKER METHOD
+             * */
+            ClassPriorDetail classPriorDetailModify = predictorDetail.getClassPriorMap()
+                .get(className)
+                .getAttrDetailMap()
+                .get(classValue);
+            if (classPriorDetailModify == null) {
+              classPriorDetailModify = new ClassPriorDetail(classValue, laplacianSmoothingAdder);
+              predictorDetail.getClassPriorMap().get(className).getAttrDetailMap()
+                  .put(classValue, classPriorDetailModify);
+              ClassPriorDetail tmpClassPriorDetail = classPrior.getAttrDetailMap().get(classValue);
+              tmpClassPriorDetail
+                  .setCount(tmpClassPriorDetail.getCount() + laplacianSmoothingAdder);
+              /**
+               * ----------------- WORK-SEPARATOR (UNUSED)-----------------
+               * */
+
+            } else {
+              classPriorDetailModify
+                  .setCount(classPriorDetailModify.getCount() + laplacianSmoothingAdder);
+              /**
+               * ----------------- WORK-SEPARATOR (UNUSED) -----------------
+               * */
+
+            }
+            /**
+             * HANDLER FOR CLASS PRIOR
+             * */
+            for (int i = 0; i < laplacianSmoothingAdder; i++) {
+              totalAdditionForCurrClassDetail.incrementAndGet();
+            }
+          });
+          ClassPriorDetail classPriorDetailSecondHandler = predictor.getClassPriorMap()
+              .get(className)
+              .getAttrDetailMap().get(classValue);
+          classPriorDetailSecondHandler
+              .setCount(
+                  classPriorDetailSecondHandler.getCount() + totalAdditionForCurrClassDetail.get());
+        });
+      });
+    });
+  }
+
+}
+\end{lstlisting}
+
+\subsection{Package Reducer}
+
+\begin{lstlisting}[language=Java,basicstyle=\tiny,caption=ClassContainerRed.java]
+package reducer.utils;
+
+import java.util.HashMap;
+
+/**
+ * Created by mczal on 07/03/17.
+ */
+public class ClassContainerRed {
+
+  private HashMap<String, ClassPriorRed> classPriorRedHashMap = new HashMap<String, ClassPriorRed>();
+
+  public HashMap<String, ClassPriorRed> getClassPriorRedHashMap() {
+    return classPriorRedHashMap;
+  }
+
+  public void setClassPriorRedHashMap(
+      HashMap<String, ClassPriorRed> classPriorRedHashMap) {
+    this.classPriorRedHashMap = classPriorRedHashMap;
+  }
+
+}
+\end{lstlisting}
+
+
+\begin{lstlisting}[language=Java,basicstyle=\tiny,caption=ClassPriorRed.java]
+package reducer.utils;
+
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * Created by mczal on 07/03/17.
+ */
+public class ClassPriorRed {
+
+  private String name;
+
+  private List<String> values = new ArrayList<String>();
+
+  public ClassPriorRed(String name) {
+    this.name = name;
+  }
+
+  public String getName() {
+    return name;
+  }
+
+  public void setName(String name) {
+    this.name = name;
+  }
+
+  public List<String> getValues() {
+    return values;
+  }
+
+  public void setValues(List<String> values) {
+    this.values = values;
+  }
+
+  @Override
+  public String toString() {
+    return "ClassPriorRed{" +
+        "name='" + name + '\'' +
+        ", values=" + values +
+        '}';
+  }
+
+}
+\end{lstlisting}
+
+
+\begin{lstlisting}[language=Java,basicstyle=\tiny,caption=ConfusionMatrix.java]
+package reducer.utils;
+
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+
+/**
+ * Created by Gl552 on 3/5/2017.
+ */
+public class ConfusionMatrix {
+
+  /**
+   * <ClassValue,Index>
+   */
+  private HashMap<String, Integer> info = new HashMap<String, Integer>();
+
+  /**
+   * [actual][predicted]
+   */
+  private int[][] matrix;
+
+  public ConfusionMatrix(int length, ClassPriorRed classPriorRed) {
+    matrix = new int[length][length];
+    for (int i = 0; i < matrix.length; i++) {
+      for (int j = 0; j < matrix.length; j++) {
+        matrix[i][j] = 0;
+      }
+    }
+    for (int i = 0; i < classPriorRed.getValues().size(); i++) {
+      info.put(classPriorRed.getValues().get(i), i);
+    }
+  }
+
+  private String sAddLessSpace(int size, String res, int lengthCurrentPrint) {
+    int length = size - lengthCurrentPrint;
+    for (int i = 0; i < length; i++) {
+      res += " ";
+    }
+    return res;
+  }
+
+  private int sFindDigitLength(int digit) {
+    int length = 0;
+    int tmpDigit = digit;
+    //    System.out.println("For Digit: " + digit);
+    while (tmpDigit > 0) {
+      length++;
+      tmpDigit /= 10;
+    }
+    return (length == 0 ? 1 : length);
+  }
+
+  private String sNewLine(int horizontalLength, String res) {
+    res += "\n";
+    for (int i = 0; i < horizontalLength; i++) {
+      res += "-";
+    }
+    res += "\n";
+    return res;
+  }
+
+  public HashMap<String, Integer> getInfo() {
+    return info;
+  }
+
+  public void setInfo(HashMap<String, Integer> info) {
+    this.info = info;
+  }
+
+  public int[][] getMatrix() {
+    return matrix;
+  }
+
+  public void setMatrix(int[][] matrix) {
+    this.matrix = matrix;
+  }
+
+  public String stringPrintedMatrix() {
+    HashMap<Integer, String> infoFromIdx = new HashMap<Integer, String>();
+    int mostLongLength = 0;
+    for (Iterator<Map.Entry<String, Integer>> itr = info.entrySet().iterator(); itr.hasNext(); ) {
+      Map.Entry<String, Integer> entry = itr.next();
+      infoFromIdx.put(entry.getValue(), entry.getKey());
+      if (mostLongLength < entry.getKey().length()) {
+        mostLongLength = entry.getKey().length();
+      }
+    }
+    mostLongLength++;
+    String res = "|";
+    res = sAddLessSpace(mostLongLength, res, 0);
+    res += " ";
+    for (int i = 0; i < infoFromIdx.size(); i++) {
+      String s = infoFromIdx.get(i);
+      if (s == null) {
+        throw new IllegalArgumentException("String infoFromIdx is null");
+      }
+      //      res += s + "  ";
+      res += "| " + s;
+      res = sAddLessSpace(mostLongLength, res, s.length());
+    }
+    res += "|";
+    res.trim();
+    int horizontalLength = res.length();
+    res = sNewLine(horizontalLength, new String()) + res;
+    res = sNewLine(horizontalLength, res);
+    for (int i = 0; i < matrix.length; i++) {
+
+      res += "| " + infoFromIdx.get(i);
+      res = sAddLessSpace(mostLongLength, res, infoFromIdx.get(i).length());
+      for (int j = 0; j < matrix[0].length; j++) {
+        res += "| " + matrix[i][j];
+        res = sAddLessSpace(mostLongLength, res, sFindDigitLength(matrix[i][j]));
+      }
+      res += "|";
+      res.trim();
+      res += "\n";
+    }
+
+    return sNewLine(horizontalLength, res.trim()).trim();
+  }
+
+  @Override
+  public String toString() {
+    return "ConfusionMatrix{" + "info=" + info + ", matrix=" + Arrays.toString(matrix) + '}';
+  }
+}
+\end{lstlisting}
+
+
+\begin{lstlisting}[language=Java,basicstyle=\tiny,caption=TestingReducer.java]
+package reducer;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.Map.Entry;
+import org.apache.hadoop.conf.Configuration;
+import org.apache.hadoop.fs.FileStatus;
+import org.apache.hadoop.fs.FileSystem;
+import org.apache.hadoop.fs.Path;
+import org.apache.hadoop.io.Text;
+import org.apache.hadoop.mapreduce.Reducer;
+import reducer.utils.ClassContainerRed;
+import reducer.utils.ClassPriorRed;
+import reducer.utils.ConfusionMatrix;
+
+/**
+ * Created by mczal on 22/02/17.
+ */
+public class TestingReducer extends Reducer<Text, Text, Text, Text> {
+
+  private static final String HDFS_AUTHORITY = "hdfs://master:9000";
+  private ClassContainerRed classContainerRed = new ClassContainerRed();
+  private String[] classSplitConf;
+  private String[] attrSplitConf;
+
+  @Override
+  protected void reduce(Text key, Iterable<Text> values, Context context)
+      throws IOException, InterruptedException {
+    ClassPriorRed classPriorRed = classContainerRed.getClassPriorRedHashMap()
+        .get(key.toString().trim());
+    if (classPriorRed == null) {
+      throw new IllegalArgumentException(
+          "\nNULL EXCEPTION ON TestingReducer.class for class: " + key.toString().trim() + "\n"
+              + "Available: " + classPriorRed.toString());
+    }
+    ConfusionMatrix confusionMatrix = new ConfusionMatrix(classPriorRed.getValues().size(),
+        classPriorRed);
+
+    String outKey = "@" + key.toString().trim() + System.lineSeparator();
+    String outVal = "";
+    for (Text i : values) {
+      String s = i.toString().trim();
+      String[] splitter = s.split("\\|");
+      String actual = splitter[2].split("=")[1].trim();
+      String predicted = splitter[0].split("=")[1].trim();
+      String percentage = splitter[1].split("=")[1].trim();
+      try {
+        int predIndex = confusionMatrix.getInfo().get(predicted);
+        int actIndex = confusionMatrix.getInfo().get(actual);
+        confusionMatrix.getMatrix()[actIndex][predIndex]++;
+      } catch (Exception e) {
+        e.printStackTrace();
+        System.out.println(e.toString());
+      }
+    }
+    outKey = separateBetConfusion(outKey);
+    outKey += System.lineSeparator();
+    outKey += confusionMatrix.stringPrintedMatrix() + System.lineSeparator();
+    outKey += separateBetConfusion(outVal);
+
+    /**
+     * Calculate ErrorRates
+     * */
+    /**
+     *  Accuracy
+     * */
+    int dividend = 0;
+    int divisor = 0;
+    for (int i = 0; i < confusionMatrix.getMatrix().length; i++) {
+      for (int j = 0; j < confusionMatrix.getMatrix().length; j++) {
+        if (i == j) {
+          dividend += confusionMatrix.getMatrix()[i][j];
+        }
+        divisor += confusionMatrix.getMatrix()[i][j];
+      }
+    }
+    outVal += System.lineSeparator();
+    String accuracyOperator = dividend + "/" + divisor;
+    double accuracyResult = (dividend * 1.0) / (divisor * 1.0);
+    outVal += "****" + System.lineSeparator() + "Accuracy:" + System.lineSeparator();
+    outVal += accuracyOperator + " = " + accuracyResult;
+    outVal += System.lineSeparator();
+
+    for (Entry<String, Integer> stringIntegerEntry : confusionMatrix.getInfo().entrySet()) {
+      String className = stringIntegerEntry.getKey();
+      Integer index = stringIntegerEntry.getValue();
+      outVal += "*For Value = " + className + System.lineSeparator();
+      int currTP = confusionMatrix.getMatrix()[index][index];
+      int currFP = 0;
+      int currFN = 0;
+      for (int i = 0; i < confusionMatrix.getMatrix().length; i++) {
+        if (i != index) {
+          currFP += confusionMatrix.getMatrix()[i][index];
+          currFN += confusionMatrix.getMatrix()[index][i];
+        }
+      }
+      /**
+       * Precision
+       * */
+      outVal += "Precision:" + System.lineSeparator();
+      String precisionOperation = currTP + " / " + currTP + " + " + currFP;
+      double precisionResult = currTP * 1.0 / (currTP + currFP) * 1.0;
+      outVal += "-> " + precisionOperation + " = " + precisionResult + System.lineSeparator();
+      /**
+       * Recall
+       * */
+      outVal += "Recall:" + System.lineSeparator();
+      String recallOperation = currTP + " / " + currTP + " + " + currFN;
+      double recallResult = currTP * 1.0 / (currTP + currFN) * 1.0;
+      outVal += "-> " + recallOperation + " = " + recallResult + System.lineSeparator();
+
+      /**
+       * F Measure
+       * */
+      double alpha = (2.0 * precisionResult * recallResult) / (precisionResult + recallResult);
+      String fMeasureOperation =
+          "{1 / { " + String.format("%.2f", alpha) + " {1 / P}+(1- " + String
+              .format("%.2f", alpha) + " ) {1 / R} }}";
+      double fMeasureResult = 1 /
+          ((alpha * (1 / precisionResult)) + ((1 - alpha) * (1 / recallResult)));
+      outVal += "F-Measure:" + System.lineSeparator();
+      outVal += "-> " + fMeasureOperation + " = " + fMeasureResult + System.lineSeparator();
+    }
+    outVal += "****";
+    /**
+     * End Of Calculate ErrorRates
+     * */
+
+    context.write(new Text(outKey), new Text(outVal));
+  }
+
+  private String separateBetConfusion(String s) {
+    int length = 4;
+    for (int i = 0; i < length; i++) {
+      s += "#";
+    }
+    return s;
+  }
+
+  @Override
+  protected void setup(Context context) throws IOException, InterruptedException {
+    Configuration conf = context.getConfiguration();
+
+    String outputModelPath = conf.get("outputModelPath");
+
+    FileSystem fs = FileSystem.get(conf);
+    Path path = new Path(HDFS_AUTHORITY + outputModelPath);
+    FileStatus[] fileStatuses = fs.listStatus(path);
+    for (int i = 0; i < fileStatuses.length; i++) {
+      BufferedReader br = new BufferedReader(
+          new InputStreamReader(fs.open(fileStatuses[i].getPath())));
+      while (br.ready()) {
+        String currLine = br.readLine().toLowerCase();
+        String splitterBetweenType[] = currLine.split("\\|");
+        String currType = splitterBetweenType[splitterBetweenType.length - 1].trim();
+        String[] splitterDetail = splitterBetweenType[0].trim().split(",");
+        if (currType.trim().equalsIgnoreCase("CLASS")) {
+          ClassPriorRed classPriorRed = classContainerRed.getClassPriorRedHashMap()
+              .get(splitterDetail[0].trim());
+          if (classPriorRed == null) {
+            classPriorRed = new ClassPriorRed(splitterDetail[0].trim());
+            classContainerRed.getClassPriorRedHashMap()
+                .put(splitterDetail[0].trim(), classPriorRed);
+          }
+          classPriorRed.getValues().add(splitterDetail[1].trim());
+        }
+      }
+    }
+  }
+}
+\end{lstlisting}
+
+
+\begin{lstlisting}[language=Java,basicstyle=\tiny,caption=App.java]
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import mapper.TestingMapper;
+import org.apache.hadoop.conf.Configuration;
+import org.apache.hadoop.fs.FileSystem;
+import org.apache.hadoop.fs.Path;
+import org.apache.hadoop.io.Text;
+import org.apache.hadoop.mapreduce.Job;
+import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
+import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
+import reducer.TestingReducer;
+
+/**
+ * Created by mczal on 22/02/17.
+ */
+public class App {
+
+  private static final String HDFS_AUTHORITY = "hdfs://master:9000";
+
+  /**
+   * @param args : [0] model path
+   */
+  public static void main(String[] args) throws Exception {
+
+    if (args.length != 1) {
+      String argsExcp =
+          "Error catched by custom Impl. Please read the following line below.\n"
+              + "-----------------------------\n"
+              + "-> Arguments must only consist of 1 path.\n"
+              + "-> It located the model of input you want to execute in HDFS.\n"
+              + "-> Ex: \n"
+              + "-> If args[0]=/user/root/bayes/weather -> \n"
+              + "-> Then, that path must had : \n"
+              + "-> (1) info path + file => /user/root/bayes/weather/info/meta.info\n"
+              + "-> (2) model output path + file => /user/root/bayes/weather/output/...\n"
+              + "-> (3) testing path for input split file => /user/root/bayes/weather/testing/input/...\n"
+              + "-> The output file will be located in /user/root/bayes/weather/output/...\n"
+              + "-----------------------------";
+      throw new IllegalArgumentException(argsExcp);
+    }
+
+    Configuration conf = new Configuration();
+
+    String infoPathFile = args[0];
+    String inputPath = args[0];
+    String outputPath = args[0];
+    String outputModelPath = args[0]; // For model classifier that has been generated with different module program
+    if (args[0].charAt(args[0].length() - 1) == '/') {
+      inputPath += "testing/input";
+      outputPath += "testing/output";
+      infoPathFile += "info/meta.info";
+      outputModelPath += "output"; // For model classifier that has been generated with different module program
+    } else {
+      inputPath += "/testing/input";
+      outputPath += "/testing/output";
+      infoPathFile += "/info/meta.info";
+      outputModelPath += "/output"; // For model classifier that has been generated with different module program
+    }
+
+    conf.set("outputModelPath", outputModelPath);
+    conf.set("laplacianSmoothingAdder", "1");
+
+    FileSystem fs = FileSystem.get(conf);
+    /* Check if output path (outputPath)exist or not */
+    if (fs.exists(new Path(outputPath))) {
+      /* If exist delete the output path */
+      fs.delete(new Path(outputPath), true);
+    }
+    Path path = new Path(HDFS_AUTHORITY + infoPathFile);
+    BufferedReader br = new BufferedReader(new InputStreamReader(fs.open(path)));
+    String currClass = br.readLine();
+    String currAttr = br.readLine();
+
+    conf.set("classes", currClass.split(":")[1]);
+    conf.set("attributes", currAttr.split(":")[1]);
+
+    Job job = Job.getInstance(conf, "bayes_testing");
+    job.setJarByClass(App.class);
+    job.setMapperClass(TestingMapper.class);
+    job.setReducerClass(TestingReducer.class);
+    job.setMapOutputKeyClass(Text.class); // your mapper - not shown in this example
+    job.setMapOutputValueClass(Text.class);
+    job.setOutputKeyClass(Text.class);
+    job.setOutputValueClass(Text.class);
+
+    FileInputFormat.addInputPath(job, new Path(inputPath));
+    FileOutputFormat.setOutputPath(job, new Path(outputPath));
+    System.exit(job.waitForCompletion(true) ? 0 : 1);
+
+  }
+}
+\end{lstlisting}
+
+
+\begin{lstlisting}[language=Java,basicstyle=\tiny,caption=log4j.properties]
+# Root logger option
+log4j.rootLogger=DEBUG, stdout, file
+
+# Redirect log messages to console
+log4j.appender.stdout=org.apache.log4j.ConsoleAppender
+log4j.appender.stdout.Target=System.out
+log4j.appender.stdout.layout=org.apache.log4j.PatternLayout
+log4j.appender.stdout.layout.ConversionPattern=%d{yyyy-MM-dd HH:mm:ss} %-5p %c{1}:%L - %m%n
+
+# Redirect log messages to a log file, support file rolling.
+log4j.appender.file=org.apache.log4j.RollingFileAppender
+log4j.appender.file.File=/home/mczal/Projects/mapreduce-naivebayes-testing/logs/app.log
+log4j.appender.file.MaxFileSize=5MB
+log4j.appender.file.MaxBackupIndex=10
+log4j.appender.file.layout=org.apache.log4j.PatternLayout
+log4j.appender.file.layout.ConversionPattern=%d{yyyy-MM-dd HH:mm:ss} %-5p %c{1}:%L - %m%n
 \end{lstlisting}

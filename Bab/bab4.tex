@@ -42,13 +42,13 @@ Perangkat lunak \textit{naive bayes classification} memiliki 6 buah tampilan unt
 	\item Setelah memillih file info, user dapat memilih atribut mana saja yang digunakan untuk training. User juga dapat memilih tipe(diskrit/numerik) dari atribut tersebut beserta jenisnya (kelas/prediktor).
 \end{enumerate}
 
-\subsection{\textit{Renew Model Manager}}
+\subsection{\textit{Renew NBC Model Manager}}
 \label{subsec:Renew Model Manager}
 
 \begin{figure}[H]
 	\centering
 	\includegraphics[scale=0.45]{Mockup/mockup_renewmodel_manager}
-	\caption[\textit{Renew Model Manager}]{\textit{Renew Model Manager}}
+	\caption[\textit{Renew NBC Model Manager}]{\textit{Renew NBC Model Manager}}
 	\label{fig:Renew Model Manager}
 \end{figure}
 \textit{Renew Model Manager} dibuat agar user selalu bisa memperbaharui model NBC pada perangkat lunak yang dibuat.
@@ -60,12 +60,13 @@ Perangkat lunak \textit{naive bayes classification} memiliki 6 buah tampilan unt
 \subsection{\textit{Testing Manager}}
 \label{subsec:Testing Manager}
 
+\textit{Testing Manager} dibuat untuk melakukan testing pada model NBC yang sudah di-import ke dalam program sebelumnya.
+
 \begin{figure}[H]
 	\centering
 	\includegraphics[scale=0.45]{Mockup/mockup_testing_manager}
 	\caption[\textit{Testing Manager}]{\textit{Testing Manager}}
 	\label{fig:Testing Manager}
-\textit{Testing Manager} dibuat untuk melakukan testing pada model NBC yang sudah di-import ke dalam program sebelumnya.
 \end{figure}
 \begin{enumerate}
 	\item User dapat memilih file input dan file info dari penyimpanan \textit{local} milik user.
@@ -109,7 +110,7 @@ Perangkat lunak \textit{naive bayes classification} memiliki 6 buah tampilan unt
 Berikut adalah penjelasan dari kelas - kelas pada keempat modul yang dibuat beserta penjelasan setiap atribut dan operasi yang dimiliki oleh kelas - kelas tersebut.
 
 \subsection{Diagram Kelas Modul \textit{Train Naive Bayes M-R Based}}
-Pada diagram kelas ini terdapat terdapat 2 \textit{package} utama yang menjadi inti dari modul ini, salah satunya merupakan \textit{package} yang dimiliki oleh \textit{library} dari \textit{hadoop client} untuk dapat menjalankan proses \textit{mapreduce}. Berikut adalah gambar dari \textit{package - package} tersebut:
+Pada diagram kelas ini terdapat terdapat 2 \textit{package} utama yang menjadi inti dari modul ini, salah satunya merupakan \textit{package} yang dimiliki oleh \textit{library} dari \textit{hadoop client} untuk dapat menjalankan proses \textit{mapreduce}. Pada diagram kelas modul ini, terdapat sedikit perbedaan dengan yang sudah dianalisis pada Bab~\ref{subsubsec:Modul Training dan Testing Naive Bayes M-R Based}. Terdapat penambahan kelas yang bernama \texttt{MyCombiner} di dalam package \texttt{combiner}. Berikut adalah penjelasan dan gambar dari \textit{package - package} dan kelas - kelas tersebut:
 \begin{figure}[H]
 	\centering
 	\includegraphics[scale=0.6]{ClassDiagramLengkap/CD_Train_MR}
@@ -150,7 +151,7 @@ Dalam \textit{package} ini terdapat 2 kelas utama yang menjadi kelas \textit{par
 \paragraph{\textit{Package} $mczal.bayes$}
 Dalam \textit{package} ini terdapat beberapa \textit{package} lagi dan kelas - kelas yang dijadikan implementasi dari kelas \textit{Mapper} dan \textit{Reducer} pada package \textit{org.apache.hadoop.mapreduce} untuk proses \textit{MapReduce}.
 \begin{enumerate}
-	\item{Kelas \textit{TrainApp}}\\
+	\item{Kelas \texttt{TrainApp}}\\
 	Kelas ini merupakan kelas utama(\textit{main class}) yang dijalankan pertama kali program ini dieksekusi. Kelas ini memiliki 1 atribut \textit{static} dan 1 method \textit{main}.
 	\begin{enumerate}
 		\item Atribut \verb|HDFS_AUTHORITY| \\
@@ -160,7 +161,7 @@ Dalam \textit{package} ini terdapat beberapa \textit{package} lagi dan kelas - k
 		Operasi ini menjadi operasi pertama yang dijalankan ketika melakukan eksekusi program mapreduce pada modul ini. Operasi ini men-\textit{set} kelas \textit{mapper} dan kelas \textit{reducer} yang digunakan serta variabel - variabel yang perlu dikirimkan kepada tiap node yang dibutuhkan oleh mereka.
 	\end{enumerate}
 
-	\item{Kelas \textit{MyTrainingMapper}}\\
+	\item{Kelas \texttt{MyTrainingMapper}}\\
 	Kelas ini merupakan kelas turunan dari kelas \textit{Mapper} yang ada pada package \verb|org.apache.hadoop.mapreduce|. \textit{Generic type} kelas parent dari kelas ini adalah:
 	\begin{enumerate}
 		\item{Object} merupakan tipe \textit{key} masukan dari proses \textit{map}.
@@ -226,7 +227,7 @@ Dalam \textit{package} ini terdapat beberapa \textit{package} lagi dan kelas - k
 \end{algorithmic}
 \end{algorithm}
 	
-	\item{Kelas \textit{MyTrainingReducer}}\\
+	\item{Kelas \texttt{MyTrainingReducer}}\\
 	Kelas ini merupakan kelas turunan dari kelas \textit{Reducer} pada \textit{package org.apache.hadoop.mapreduce}. \textit{Generic type} kelas parent dari kelas ini adalah: 
 	\begin{enumerate}
 		\item Text merupakan tipe \textit{key} masukan dari proses \textit{reduce} yang dikirim dari proses sebelumnya yaitu proses \textit{map}
@@ -296,7 +297,33 @@ Dalam \textit{package} ini terdapat beberapa \textit{package} lagi dan kelas - k
 \EndProcedure
 \end{algorithmic}
 \end{algorithm}
+
+\item Kelas \texttt{MyTrainingCombiner}
+Kelas ini merupakan kelas yang akan menjadi \textit{combiner} pada modul ini. Kelas ini akan melakukan penyatuan data yang memiliki key sama pada node pekerja fase \textit{map} terlebih dahulu sebelum dikirimkan ke fase \textit{reducer}. Sama seperti pada kelas \texttt{MyTrainingReducer}, kelas ini juga merupakan turunan dari kelas \textit{Reducer} milik hadoop yang melakukan \textit{reducer} setelah proses \textit{map} tetapi masih berada pada \textit{node} pekerja fase \textit{map}. Kelas ini hanya memiliki 1 buah operasi yaitu operasi reduce yang berfungsi untuk menyatukan nilai yang memiliki key yang sama untuk dijumlahkan. Fase ini hanya akan menyatukan nilai dari atribut bertipe diskrit saja. Karena untuk atribut bertipe numerik, proses penyatuan perlu dilakukan pada fase reduce untuk kebutuhan melakukan perhitungan rata - rata dan standard deviasi. Berikut merupakan \textit{pseudocode} dari method \texttt{reduce(key : Text, values : Iterable<DoubleWritable>, context : Context) : void} milik kelas ini:
+
+\begin{algorithm}[H]
+\caption{NBC Model Combine Algorithm}\label{alg:NBCGenCombine}
+\begin{algorithmic}[1]
+\Procedure{Reduce}{$key,values[],context$}\Comment{Reduce function}
+
+\If{\texttt{key.type = discrete} or \texttt{key.type = class}}
+	\State \texttt{sum = 0}
+	\ForAll{\texttt{v} $\in$ \texttt{values}}
+		\State \texttt{sum += v}
+	\EndFor
+	\State \texttt{context.write(key,sum)}
 	
+\ElsIf{\texttt{key.type = continuous}}
+	\ForAll{\texttt{v} $\in$ \texttt{values}}
+		\State \texttt{context.write(key,sum)}
+	\EndFor
+\EndIf
+
+\EndProcedure
+\end{algorithmic}
+\end{algorithm}
+
+
 \end{enumerate}
 
 \subsection{Diagram Kelas Modul \textit{Testing Naive Bayes M-R Based}}
@@ -855,7 +882,7 @@ Terdapat 3 bagian \textit{layer} yang dijelaskan pada kelas diagram modul ini, y
 \subsubsection{\textit{Controller}}
 \begin{figure}[H]
 	\centering
-	\includegraphics[scale=0.6]{ClassDiagramLengkap/Klasifikasi/Simple_CD_Klasifikasi_Controller_Utils}
+	\includegraphics[scale=0.75]{ClassDiagramLengkap/Klasifikasi/Simple_CD_Klasifikasi_Controller_Utils}
 	\caption[Diagram Kelas Modul Kelola Input]{Diagram Kelas Modul Kelola Input}
 	\label{fig:Diagram Kelas Modul Kelola Input}
 \end{figure}

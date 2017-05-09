@@ -1,9 +1,303 @@
 %versi 2 (8-10-2016)
 \chapter{Struktur dan Kode Program Modul Kelola Input dan Klasifikasi}
 \label{lamp:C}
+\section{Struktur Program}
+\begin{lstlisting}
++--spring-naivebayes/
+|  +--src/
+|  |  +--main/
+|  |  |  +--resources/
+|  |  |  |  +--application.properties
+|  |  |  |  +--static/
+|  |  |  |  |  +--pages/
+|  |  |  |  |  +--assets/
+|  |  |  |  |  |  +--plugins/..
+|  |  |  |  |  |  +--less/
+|  |  |  |  |  |  |  +--style.less
+|  |  |  |  |  |  +--js/...
+|  |  |  |  |  |  +--css/
+|  |  |  |  |  |  |  +--style.css
+|  |  |  |  |  |  |  +--style.min.css
+|  |  |  |  |  |  +--img/...
+|  |  |  |  |  +--js/
+|  |  |  |  |  |  +--mathjax.min.js
+|  |  |  |  |  |  +--dashboardjs.js
+|  |  |  |  |  +--css/
+|  |  |  |  |  |  +--dashboardz.css
+|  |  |  |  +--templates/
+|  |  |  |  |  +--testing.html
+|  |  |  |  |  +--dashboard.html
+|  |  |  |  |  +--renew-modelz.html
+|  |  |  |  |  +--error-rates-detail.html
+|  |  |  |  |  +--input-set.html
+|  |  |  |  |  +--dashboard-numeric.html
+|  |  |  |  |  +--layouts/
+|  |  |  |  |  |  +--menu.html
+|  |  |  |  |  |  +--flash.html
+|  |  |  |  |  |  +--admin.html
+|  |  |  |  |  |  +--pagination.html
+|  |  |  |  |  +--predict-new-case.html
+|  |  |  |  |  +--dashboard-discrete.html
+|  |  |  |  |  +--error-rates.html
+|  |  |  |  |  +--renew-model.html
+|  |  |  +--java/
+|  |  |  |  +--com/
+|  |  |  |  |  +--mczal/
+|  |  |  |  |  |  +--nb/
+|  |  |  |  |  |  |  +--SpringNaivebayesApplication.java
+|  |  |  |  |  |  |  +--controller/
+|  |  |  |  |  |  |  |  +--IndexController.java
+|  |  |  |  |  |  |  |  +--HomeController.java
+|  |  |  |  |  |  |  |  +--ErrorRateController.java
+|  |  |  |  |  |  |  |  +--InputSetController.java
+|  |  |  |  |  |  |  |  +--TestingController.java
+|  |  |  |  |  |  |  |  +--utils/
+|  |  |  |  |  |  |  |  |  +--WrapperTestingResponse.java
+|  |  |  |  |  |  |  |  |  +--ConfusionMatrix.java
+|  |  |  |  |  |  |  +--model/
+|  |  |  |  |  |  |  |  +--BayesianModel.java
+|  |  |  |  |  |  |  |  +--util/
+|  |  |  |  |  |  |  |  |  +--ErrorType.java
+|  |  |  |  |  |  |  |  |  +--Type.java
+|  |  |  |  |  |  |  |  +--ErrorRate.java
+|  |  |  |  |  |  |  |  +--ClassInfoDetail.java
+|  |  |  |  |  |  |  |  +--PredictorInfoDetail.java
+|  |  |  |  |  |  |  |  +--ConfusionMatrixDetail.java
+|  |  |  |  |  |  |  |  +--ClassInfo.java
+|  |  |  |  |  |  |  |  +--PredictorInfo.java
+|  |  |  |  |  |  |  |  +--ConfusionMatrixLast.java
+|  |  |  |  |  |  |  +--config/
+|  |  |  |  |  |  |  |  +--CommonBeanConfig.java
+|  |  |  |  |  |  |  |  +--WebMvcConfig.java
+|  |  |  |  |  |  |  +--dto/
+|  |  |  |  |  |  |  |  +--RenewModelLocalFormRequest.java
+|  |  |  |  |  |  |  |  +--PredictorInfoDto.java
+|  |  |  |  |  |  |  |  +--SingletonQuery.java
+|  |  |  |  |  |  |  |  +--TrainFile.java
+|  |  |  |  |  |  |  |  +--InputSetDtoRequest.java
+|  |  |  |  |  |  |  |  +--RenewModelHdfsFormRequest.java
+|  |  |  |  |  |  |  |  +--ClassInfoDto.java
+|  |  |  |  |  |  |  +--dao/
+|  |  |  |  |  |  |  |  +--ConfusionMatrixLastDao.java
+|  |  |  |  |  |  |  |  +--ClassInfoDao.java
+|  |  |  |  |  |  |  |  +--ConfusionMatrixDetailDao.java
+|  |  |  |  |  |  |  |  +--PredictorInfoDao.java
+|  |  |  |  |  |  |  |  +--BayesianModelDao.java
+|  |  |  |  |  |  |  |  +--ErrorRateDao.java
+|  |  |  |  |  |  |  |  +--ClassInfoDetailDao.java
+|  |  |  |  |  |  |  +--service/
+|  |  |  |  |  |  |  |  +--hdfs/
+|  |  |  |  |  |  |  |  |  +--impl/
+|  |  |  |  |  |  |  |  |  |  +--HdfsServiceImpl.java
+|  |  |  |  |  |  |  |  |  +--HdfsService.java
+|  |  |  |  |  |  |  |  +--ErrorRateService.java
+|  |  |  |  |  |  |  |  +--CRUDService.java
+|  |  |  |  |  |  |  |  +--PredictorInfoService.java
+|  |  |  |  |  |  |  |  +--impl/
+|  |  |  |  |  |  |  |  |  +--ClassInfoServiceImpl.java
+|  |  |  |  |  |  |  |  |  +--BayesianModelServiceImpl.java
+|  |  |  |  |  |  |  |  |  +--PredictorInfoServiceImpl.java
+|  |  |  |  |  |  |  |  |  +--ConfusionMatrixDetailServiceImpl.java
+|  |  |  |  |  |  |  |  |  +--ErrorRateServiceImpl.java
+|  |  |  |  |  |  |  |  |  +--ConfusionMatrixLastServiceImpl.java
+|  |  |  |  |  |  |  |  |  +--ClassInfoDetailServiceImpl.java
+|  |  |  |  |  |  |  |  +--ConfusionMatrixLastService.java
+|  |  |  |  |  |  |  |  +--ConfusionMatrixDetailService.java
+|  |  |  |  |  |  |  |  +--BayesianModelService.java
+|  |  |  |  |  |  |  |  +--ClassInfoService.java
+|  |  |  |  |  |  |  |  +--ClassInfoDetailService.java
+|  |  |  |  |  |  |  +--utils/
+|  |  |  |  |  |  |  |  +--JPABootstrap.java
+|  |  |  |  |  |  |  |  +--TrainUtils.java
+|  |  |  |  |  |  |  |  +--McnBasePageWrapper.java
+|  |  +--test/
+|  |  |  +--java/
+|  |  |  |  +--com/
+|  |  |  |  |  +--mczal/
+|  |  |  |  |  |  +--nb/
+|  |  |  |  |  |  |  +--SpringNaivebayesApplicationTests.java
+|  |  |  |  |  |  |  +--dao/
+|  |  |  |  |  |  |  |  +--TestBayesianModelDao.java
+|  |  |  |  |  |  |  |  +--TestConfig.java
+|  |  |  |  |  |  |  +--service/
+|  |  |  |  |  |  |  |  +--TestService.java
+|  +--pom.xml
+\end{lstlisting}
 
+\section{Kode Program}
+
+\singlespacing
+
+\begin{lstlisting}[language=xml,basicstyle=\tiny,caption=pom.xml]
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>com.mczal.nb</groupId>
+  <artifactId>spring-naivebayes</artifactId>
+  <packaging>war</packaging>
+  <version>1.0</version>
+  <name>spring-naivebayes</name>
+  <description>Spring Naive Bayes Classifier</description>
+
+  <parent>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-parent</artifactId>
+    <version>1.4.2.RELEASE</version>
+    <relativePath/> <!-- lookup parent from repository -->
+  </parent>
+
+  <properties>
+    <!--<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>-->
+    <!--<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>-->
+    <java.version>1.8</java.version>
+
+    <!--WebJars-->
+    <bootstrap.version>3.3.7</bootstrap.version>
+    <jquery.version>3.1.1</jquery.version>
+    <font-awesome.version>4.7.0</font-awesome.version>
+
+    <commons-fileupload.version>1.3.2</commons-fileupload.version>
+    <commons-io.version>2.5</commons-io.version>
+  </properties>
+
+  <dependencyManagement>
+    <dependencies>
+
+      <!--WebJars-->
+      <dependency>
+        <groupId>org.webjars</groupId>
+        <artifactId>bootstrap</artifactId>
+        <version>${bootstrap.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.webjars</groupId>
+        <artifactId>jquery</artifactId>
+        <version>${jquery.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.webjars</groupId>
+        <artifactId>font-awesome</artifactId>
+        <version>${font-awesome.version}</version>
+      </dependency>
+
+      <!-- Apache Commons Upload -->
+      <dependency>
+        <groupId>commons-fileupload</groupId>
+        <artifactId>commons-fileupload</artifactId>
+        <version>${commons-fileupload.version}</version>
+      </dependency>
+      <!-- Apache Commons Upload -->
+      <dependency>
+        <groupId>commons-io</groupId>
+        <artifactId>commons-io</artifactId>
+        <version>${commons-io.version}</version>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+
+  <dependencies>
+
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-data-jpa</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-thymeleaf</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-validation</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-web</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-tomcat</artifactId>
+      <!--<scope>provided</scope>-->
+    </dependency>
+    
+    <!-- SHOULD BE REMOVED ? -->
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-devtools</artifactId>
+      <optional>true</optional>
+    </dependency>
+    
+    <dependency>
+      <groupId>mysql</groupId>
+      <artifactId>mysql-connector-java</artifactId>
+      <scope>runtime</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.h2database</groupId>
+      <artifactId>h2</artifactId>
+      <scope>runtime</scope>
+    </dependency>
+
+    <!-- TEST Purposes -->
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-test</artifactId>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.apache.hadoop</groupId>
+      <artifactId>hadoop-client</artifactId>
+      <version>2.7.3</version>
+    </dependency>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>4.12</version>
+    </dependency>
+
+    <!-- UTILS -->
+    <dependency>
+      <groupId>commons-fileupload</groupId>
+      <artifactId>commons-fileupload</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>commons-io</groupId>
+      <artifactId>commons-io</artifactId>
+    </dependency>
+
+    <!--WebJars-->
+    <dependency>
+      <groupId>org.webjars</groupId>
+      <artifactId>bootstrap</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.webjars</groupId>
+      <artifactId>jquery</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.webjars</groupId>
+      <artifactId>font-awesome</artifactId>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <plugins>
+      <!-- Package as an executable jar/war -->
+      <plugin>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-maven-plugin</artifactId>
+      </plugin>
+    </plugins>
+  </build>
+
+</project>
+\end{lstlisting}
+\subsection{Kode Program Kebutuhan Modul Kelola Input}
 %selalu gunakan single spacing untuk source code !!!!!
-\singlespacing 
+ 
 % language: bahasa dari kode program
 % terdapat beberapa pilihan : Java, C, C++, PHP, Matlab, R, dll
 %
@@ -11,63 +305,2714 @@
 % terdapat beberapa pilihan : tiny, scriptsize, footnotesize, dll
 %
 % caption : nama yang akan ditampilkan di dokumen akhir, lihat contoh
-\begin{lstlisting}[language=Java,basicstyle=\tiny,caption=MyFurSet.java]
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashSet; 
+
+\begin{lstlisting}[language=Java,basicstyle=\tiny,caption=InputController.java]
+package com.mczal.nb.controller;
+
+import com.mczal.nb.dto.InputSetDtoRequest;
+import com.mczal.nb.service.hdfs.HdfsService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.util.Arrays;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
- *
- * @author Lionov
+ * Created by mczal on 08/03/17.
  */
+@Controller
+@RequestMapping(InputController.ABSOLUTE_PATH)
+public class InputController {
 
-//class for set of vertices close to furthest edge
-public class MyFurSet {
-    protected int id;                                  //id of the set
-    protected MyEdge FurthestEdge;                     //the furthest edge
-    protected HashSet<MyVertex> set;                   //set of vertices close to furthest edge
-    protected ArrayList<ArrayList<Integer>> ordered;   //list of all vertices in the set for each trajectory
-    protected ArrayList<Integer> closeID;              //store the ID of all vertices
-    protected ArrayList<Double> closeDist;             //store the distance of all vertices
-    protected int totaltrj;                            //total trajectories in the set
+  public static final String ABSOLUTE_PATH = "/admin/input-set";
 
-    /**
-     * Constructor
-     * @param id : id of the set
-     * @param totaltrj : total number of trajectories in the set
-     * @param FurthestEdge : the furthest edge
-     */
-    public MyFurSet(int id,int totaltrj,MyEdge FurthestEdge) {
-        this.id = id;
-        this.totaltrj = totaltrj;
-        this.FurthestEdge = FurthestEdge;
-        set = new HashSet<MyVertex>();
-        ordered = new ArrayList<ArrayList<Integer>>();
-        for (int i=0;i<totaltrj;i++) ordered.add(new ArrayList<Integer>());
-        closeID = new ArrayList<Integer>(totaltrj);
-        closeDist = new ArrayList<Double>(totaltrj);
-        for (int i = 0;i <totaltrj;i++) {
-            closeID.add(-1);
-            closeDist.add(Double.MAX_VALUE);
-        }
+  private static final String LAYOUTS_ADMIN = "layouts/admin";
+
+  private final Logger logger = LoggerFactory.getLogger(this.getClass());
+
+  @Autowired
+  private HdfsService hdfsService;
+
+  @RequestMapping({"", "/"})
+  public String index(Model model) throws Exception {
+    model.addAttribute("view", "input-set");
+    model.addAttribute("inputSet", new InputSetDtoRequest());
+    logger.info("listInputDirOnPath(): " + hdfsService.listInputDirOnPath().toString());
+    model.addAttribute("availableDirs", hdfsService.listInputDirOnPath());
+    return LAYOUTS_ADMIN;
+  }
+
+  @RequestMapping(method = RequestMethod.POST,
+      value = "")
+  public String postFile(Model model, InputSetDtoRequest inputSetDtoRequest,
+      RedirectAttributes redirectAttributes) throws Exception {
+    //    logger.info(inputSetDtoRequest.toString());
+
+    if (inputSetDtoRequest.getFilesInput().length == 0
+        || inputSetDtoRequest.getFilesInfo().length == 0
+        || inputSetDtoRequest.getTypes().size() == 0 || inputSetDtoRequest.getClazz().size() == 0) {
+      redirectAttributes.addFlashAttribute("danger", "File error on upload files");
+      return "redirect:" + ABSOLUTE_PATH;
     }
 
-    /**
-     * set a vertex into the set
-     * @param v : vertex to be added to the set
-     */
-    public void add(MyVertex v) {
-        set.add(v);
+    String modelDir;
+    if (inputSetDtoRequest.getModelDirSelect().equals("null")) {
+      if (inputSetDtoRequest.getModelDir() == null || inputSetDtoRequest.getModelDir().trim()
+          .equals("")) {
+        redirectAttributes.addFlashAttribute("danger", "Error upload new file");
+        return "redirect:" + ABSOLUTE_PATH;
+      } else {
+        modelDir = inputSetDtoRequest.getModelDir();
+        hdfsService.cleanHdfsDir(modelDir);
+      }
+    } else {
+      modelDir = inputSetDtoRequest.getModelDirSelect();
     }
 
-    /**
-     * check whether vertex v is a member of the set
-     * @param v : vertex to be checked
-     * @return true if v is a member of the set, false otherwise
-     */
-    public boolean contains(MyVertex v) {
-        return this.set.contains(v);
-    }
+    BufferedReader brInfo = new BufferedReader(
+        new InputStreamReader(inputSetDtoRequest.getFilesInfo()[0].getInputStream()));
+
+    int countCols = hdfsService
+        .transformAndTransferInfoToHdfsInfo(brInfo, inputSetDtoRequest.getClazz(),
+            inputSetDtoRequest.getTypes(), modelDir);
+
+    AtomicInteger atomicInteger = new AtomicInteger(1);
+    Arrays.stream(inputSetDtoRequest.getFilesInput()).forEach(multipartFile -> {
+      try {
+        BufferedReader brInput =
+            new BufferedReader(new InputStreamReader(multipartFile.getInputStream()));
+
+        BufferedReader brInputLines =
+            new BufferedReader(new InputStreamReader(multipartFile.getInputStream()));
+        AtomicInteger totalLinesAtomic = new AtomicInteger(0);
+
+        brInputLines.lines().forEach(s -> {
+          totalLinesAtomic.incrementAndGet();
+        });
+
+        int totalLines = totalLinesAtomic.get();
+        hdfsService.transportToHdfs(brInput, modelDir, atomicInteger.getAndIncrement(),
+            inputSetDtoRequest.getPercentage(), totalLines, countCols);
+      } catch (Exception e) {
+        e.printStackTrace();
+      }
+    });
+
+    redirectAttributes.addFlashAttribute("success", "Success upload new file to HDFS");
+    return "redirect:" + ABSOLUTE_PATH;
+  }
 }
+
+\end{lstlisting}
+
+
+\begin{lstlisting}[language=Java,basicstyle=\tiny,caption=InputSetDtoRequest.java]
+package com.mczal.nb.dto;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import org.hibernate.validator.constraints.NotEmpty;
+import org.springframework.web.multipart.MultipartFile;
+
+/**
+ * Created by mczal on 08/03/17.
+ */
+public class InputSetDtoRequest implements Serializable {
+
+  private static final long serialVersionUID = -2619459006974040099L;
+  @NotEmpty
+  private MultipartFile[] filesInfo;
+
+  @NotEmpty
+  private MultipartFile[] filesInput;
+
+  private String modelDir;
+
+  private String modelDirSelect;
+
+  private Integer percentage;
+
+  private List<String> types = new ArrayList<String>();
+
+  private List<String> clazz = new ArrayList<String>();
+
+  public List<String> getClazz() {
+    return clazz;
+  }
+
+  public void setClazz(List<String> clazz) {
+    this.clazz = clazz;
+  }
+
+  public MultipartFile[] getFilesInfo() {
+    return filesInfo;
+  }
+
+  public void setFilesInfo(MultipartFile[] filesInfo) {
+    this.filesInfo = filesInfo;
+  }
+
+  public MultipartFile[] getFilesInput() {
+    return filesInput;
+  }
+
+  public void setFilesInput(MultipartFile[] filesInput) {
+    this.filesInput = filesInput;
+  }
+
+  public String getModelDir() {
+    return modelDir;
+  }
+
+  public void setModelDir(String modelDir) {
+    this.modelDir = modelDir;
+  }
+
+  public String getModelDirSelect() {
+    return modelDirSelect;
+  }
+
+  public void setModelDirSelect(String modelDirSelect) {
+    this.modelDirSelect = modelDirSelect;
+  }
+
+  public Integer getPercentage() {
+    return percentage;
+  }
+
+  public void setPercentage(Integer percentage) {
+    this.percentage = percentage;
+  }
+
+  public List<String> getTypes() {
+    return types;
+  }
+
+  public void setTypes(List<String> types) {
+    this.types = types;
+  }
+}
+
+\end{lstlisting}
+
+
+\begin{lstlisting}[language=Java,basicstyle=\tiny,caption=HdfsService.java]
+package com.mczal.nb.service.hdfs;
+
+import java.io.BufferedReader;
+import java.util.List;
+import org.springframework.data.util.Pair;
+
+/**
+ * Created by mczal on 09/03/17.
+ */
+public interface HdfsService {
+
+  boolean cleanHdfsDir(String modelDir) throws Exception;
+
+  Pair<List<BufferedReader>, BufferedReader> getListOfOutputModelBufferedReaderFromModelHdfs(
+      String modelHdfs)
+      throws Exception;
+
+  BufferedReader getOutputModelBufferedReaderFromModelHdfs(String modelHdfs) throws Exception;
+
+  List<String> listInputDirOnPath() throws Exception;
+
+  int transformAndTransferInfoToHdfsInfo(BufferedReader bufferedReader, List<String> clazz,
+      List<String> types, String modelDir) throws Exception;
+
+  boolean transportToHdfs(BufferedReader bufferedReader, String modelDir, int atomic,
+      int trainPercentage, int totalLines, int countCols)
+      throws Exception;
+
+}
+
+\end{lstlisting}
+
+\begin{lstlisting}[language=Java,basicstyle=\tiny,caption=HdfsServiceImpl.java]
+package com.mczal.nb.service.hdfs.impl;
+
+import com.mczal.nb.service.hdfs.HdfsService;
+import org.apache.hadoop.conf.Configuration;
+import org.apache.hadoop.fs.FileStatus;
+import org.apache.hadoop.fs.FileSystem;
+import org.apache.hadoop.fs.Path;
+import org.apache.hadoop.util.Progressable;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.util.Pair;
+import org.springframework.stereotype.Service;
+
+import java.io.*;
+import java.net.URI;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
+
+/**
+ * Created by mczal on 09/03/17.
+ */
+@Service
+public class HdfsServiceImpl implements HdfsService {
+
+  private static final String HDFS_AUTHORITY = "hdfs://localhost:9000";
+
+  private static final String HDFS_PATH = "/bayes/";
+
+  private static final String HDFS_PATH_INFO = "/bayes/";
+
+  private final Logger logger = LoggerFactory.getLogger(getClass());
+
+  @Autowired
+  private Configuration conf;
+
+  @Value("${hdfs.input.regex}")
+  private String regex;
+
+  private boolean checkAvailability(String in, List<String> lists) {
+    if (lists.contains(in)) {
+      return true;
+    }
+    return false;
+  }
+
+  @Override
+  public boolean cleanHdfsDir(String modelDir) throws Exception {
+    FileSystem hdfsFileSystem = FileSystem.get(new URI(HDFS_AUTHORITY), conf);
+    /* CLEANING HDFS DIRECTORY */
+    Path fileInputPath = new Path(HDFS_AUTHORITY + HDFS_PATH + modelDir);
+    if (hdfsFileSystem.exists(fileInputPath)) {
+      hdfsFileSystem.delete(fileInputPath, true);
+    }
+    return true;
+  }
+
+  private List<String> createMetaInfo(List<String> clazz, List<String> types) {
+    List<String> attributes = new ArrayList<String>();
+    List<String> classes = new ArrayList<String>();
+    clazz.stream().filter(s -> !s.contains("null")).forEach(s -> {
+      types.stream().filter(s1 -> s1.split("\\|")[0].equals(s.split("\\|")[0])).forEach(s1 -> {
+        if (s.split("\\|")[2].equals("PREDICTOR")) {
+          /**
+           * Nama|Index|Tipe
+           * */
+          attributes.add(
+              s.split("\\|")[1] + "," + "" + s1.split("\\|")[0] + "," + "" + s1.split("\\|")[2]);
+        } else {
+          /**
+           * Nama|Index
+           * */
+          classes.add(s.split("\\|")[1] + "," + "" + s1.split("\\|")[0]);
+        }
+      });
+    });
+    String attr = "@attribute :" + String.join(";", attributes);
+    String cls = "@class :" + String.join(";", classes);
+    List<String> res = new ArrayList<String>();
+    res.add(cls);
+    res.add(attr);
+    return res;
+  }
+
+  @Override
+  public Pair<List<BufferedReader>, BufferedReader> getListOfOutputModelBufferedReaderFromModelHdfs(
+      String modelHdfs) throws Exception {
+    String infoHdfs = modelHdfs + "/info/";
+    modelHdfs += "/testing/input/";
+    FileSystem fs = FileSystem.get(new URI(HDFS_AUTHORITY), conf);
+    List<BufferedReader> results = new ArrayList<>();
+    FileStatus[] fileStatus = fs.listStatus(new Path(HDFS_AUTHORITY + HDFS_PATH + modelHdfs));
+    if (fileStatus.length == 0) {
+      return null;
+    }
+    String hdfsFileName = "";
+    for (FileStatus status : fileStatus) {
+      hdfsFileName = status.getPath().toString();
+      Path pt = new Path(hdfsFileName);
+      BufferedReader br = new BufferedReader(new InputStreamReader(fs.open(pt)));
+      results.add(br);
+    }
+
+    Path ptInfo = new Path(HDFS_AUTHORITY + HDFS_PATH + infoHdfs + "meta.info");
+    BufferedReader brInfo = new BufferedReader(new InputStreamReader(fs.open(ptInfo)));
+
+    return Pair.of(results, brInfo);
+  }
+
+  @Override
+  public BufferedReader getOutputModelBufferedReaderFromModelHdfs(String modelHdfs)
+      throws Exception {
+    modelHdfs += "/output/";
+    FileSystem fs = FileSystem.get(new URI(HDFS_AUTHORITY), conf);
+    FileStatus[] fileStatus = fs.listStatus(new Path(HDFS_AUTHORITY + HDFS_PATH + modelHdfs));
+    if (fileStatus.length == 0) {
+      return null;
+    }
+    List<String> results = new ArrayList<String>();
+    int i = 1;
+    String hdfsFileName = "";
+    for (FileStatus status : fileStatus) {
+      if (!status.getPath().toString().contains("_SUCCESS")) {
+        hdfsFileName = status.getPath().toString();
+        break;
+      }
+    }
+    Path pt = new Path(hdfsFileName);
+    BufferedReader br = new BufferedReader(new InputStreamReader(fs.open(pt)));
+    return br;
+  }
+
+  @Override
+  public List<String> listInputDirOnPath() throws Exception {
+    FileSystem fs = FileSystem.get(new URI(HDFS_AUTHORITY), conf);
+    FileStatus[] fileStatus = fs.listStatus(new Path(HDFS_AUTHORITY + HDFS_PATH));
+
+    List<String> results = new ArrayList<String>();
+    int i = 1;
+    for (FileStatus status : fileStatus) {
+      String[] splitter = status.getPath().toString().split("bayes");
+      String currRes = splitter[splitter.length - 1].substring(1);
+      String[] currResSplitter = currRes.split("/dataset");
+      if (currResSplitter.length > 1) {
+        if (!results.contains(currResSplitter[0])) {
+          results.add(currResSplitter[0]);
+        }
+      } else {
+        if (!results.contains(currRes)) {
+          results.add(currRes);
+        }
+      }
+    }
+    return results;
+  }
+
+  @Override
+  public int transformAndTransferInfoToHdfsInfo(BufferedReader bufferedReader, List<String> clazz,
+      List<String> types, String modelDir) throws Exception {
+    int countCols = (int) bufferedReader.lines().findFirst().get().split(regex).length;
+
+    FileSystem hdfsFileSystem = FileSystem.get(new URI(HDFS_AUTHORITY), conf);
+    /* CLEANING HDFS DIRECTORY */
+    Path fileInfo = new Path(HDFS_AUTHORITY + HDFS_PATH_INFO + modelDir + "/info/meta.info");
+    if (hdfsFileSystem.exists(fileInfo)) {
+      hdfsFileSystem.delete(fileInfo, true);
+    }
+    List<String> metaInfo = this.createMetaInfo(clazz, types);
+
+    /**
+     * Addition per March 20th
+     * */
+    metaInfo.add("@Count :" + countCols);
+    /**
+     * Addition per March 20th
+     * */
+
+    /**
+     * WRITE INFO FILE
+     * */
+    OutputStream os = hdfsFileSystem.create(fileInfo, new Progressable() {
+      public void progress() {
+        System.out.println("...bytes written");
+      }
+    });
+    BufferedWriter br = new BufferedWriter(new OutputStreamWriter(os, "UTF-8"));
+    metaInfo.forEach(s -> {
+      try {
+        br.write(s);
+        br.newLine();
+      } catch (IOException e) {
+        e.printStackTrace();
+      }
+    });
+    br.close();
+    hdfsFileSystem.close();
+
+    return countCols;
+  }
+
+  @Override
+  public boolean transportToHdfs(BufferedReader bufferedReaderInputFile, String modelDir,
+      int atomic, int trainPercentage, int totalLines, int countCols) throws Exception {
+
+    logger.info("IN TRANSPORT TO HDFS");
+    FileSystem hdfsFileSystem = FileSystem.get(new URI(HDFS_AUTHORITY), conf);
+
+    AtomicInteger totalLinesAtomic = new AtomicInteger(0);
+    logger.info("totalLines: " + totalLines);
+
+    /**
+     * WRITE INPUT FILE
+     * */
+    Date date = new Date(System.currentTimeMillis());
+    DateFormat df = new SimpleDateFormat("dd-MM-yyyy_hh-mm");
+    Path fileInput = new Path(
+        HDFS_AUTHORITY + HDFS_PATH + modelDir + "/input" + "/dataset-" + atomic + "_" + df
+            .format(date) + ".in");
+    OutputStream osTrainIn = hdfsFileSystem.create(fileInput, new Progressable() {
+      public void progress() {
+        System.out.println("train input file:...bytes written");
+      }
+    });
+
+    Path fileTestingInput = new Path(
+        HDFS_AUTHORITY + HDFS_PATH + modelDir + "/testing/input" + "/dataset-" + atomic + "_" + df
+            .format(date) + ".in");
+    OutputStream osTesting = hdfsFileSystem.create(fileTestingInput, new Progressable() {
+      public void progress() {
+        System.out.println("testing input file:...bytes written");
+      }
+    });
+
+    AtomicInteger currLine = new AtomicInteger(1);
+
+    BufferedWriter brTrainInput = new BufferedWriter(new OutputStreamWriter(osTrainIn, "UTF-8"));
+    BufferedWriter brTestingInput = new BufferedWriter(new OutputStreamWriter(osTesting, "UTF-8"));
+
+    AtomicInteger trainCount = new AtomicInteger(0);
+    AtomicInteger testingCount = new AtomicInteger(0);
+    bufferedReaderInputFile.lines().forEach(s -> {
+      try {
+        double currPerc = (currLine.getAndIncrement() * 1.0 / totalLines * 1.0) * 100;
+        if (s.split(",").length == countCols) {
+          if ((int) currPerc <= trainPercentage) {
+            brTrainInput.write(s);
+            brTrainInput.newLine();
+            trainCount.incrementAndGet();
+          } else {
+            brTestingInput.write(s);
+            brTestingInput.newLine();
+            testingCount.incrementAndGet();
+          }
+        } else {
+          logger.info("Ignoring record with missing value detected");
+        }
+      } catch (IOException e) {
+        e.printStackTrace();
+      }
+    });
+    brTrainInput.close();
+    brTestingInput.close();
+    hdfsFileSystem.close();
+    logger.info("Input Training Count: " + trainCount.get());
+    logger.info("Input Testing Count: " + testingCount.get());
+    return true;
+  }
+}
+\end{lstlisting}
+
+\subsection{Kode Program Kebutuhan Modul Klasifikasi}
+
+\subsubsection{Controller}
+
+\begin{lstlisting}[language=Java,basicstyle=\tiny,caption=TestingController.java]
+package com.mczal.nb.controller;
+
+import com.mczal.nb.controller.utils.ConfusionMatrix;
+import com.mczal.nb.controller.utils.WrapperTestingResponse;
+import com.mczal.nb.dto.RenewModelHdfsFormRequest;
+import com.mczal.nb.dto.SingletonQuery;
+import com.mczal.nb.dto.TrainFile;
+import com.mczal.nb.model.*;
+import com.mczal.nb.model.util.ErrorType;
+import com.mczal.nb.service.*;
+import com.mczal.nb.service.hdfs.HdfsService;
+import com.mczal.nb.utils.TrainUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.util.Pair;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
+
+//import com.mczal.nb.service.ConfusionMatrixService;
+
+
+/**
+ * Created by Gl552 on 2/11/2017.
+ */
+@Controller
+@RequestMapping(TestingController.ABSOLUTE_PATH)
+public class TestingController {
+
+  public static final String ABSOLUTE_PATH = "/admin/testing";
+
+  private static final String LAYOUTS_ADMIN = "layouts/admin";
+
+  private final Logger logger = LoggerFactory.getLogger(this.getClass());
+
+  @Autowired
+  private BayesianModelService bayesianModelService;
+
+  @Autowired
+  private ClassInfoDetailService classInfoDetailService;
+
+  @Autowired
+  private ClassInfoService classInfoService;
+
+  @Autowired
+  private ConfusionMatrixLastService confusionMatrixLastService;
+
+  @Autowired
+  private ErrorRateService errorRateService;
+
+  @Autowired
+  private HdfsService hdfsService;
+
+  @Autowired
+  private PredictorInfoService predictorInfoService;
+
+  @Autowired
+  private TrainUtils trainUtils;
+
+  private void calculateErrorRate(HashMap<String, ConfusionMatrix> confusionEachClass) {
+    confusionEachClass.forEach((className, confusionMatrix) -> {
+      ClassInfo classInfo = classInfoService.findByClassName(className);
+      if (classInfo == null) {
+        throw new RuntimeException("Class Info Is Null On Line 169");
+      }
+
+      /**
+       * Calculate Accuracy for current class
+       * */
+      int dividend = 0;
+      int divisor = 0;
+      for (int i = 0; i < confusionMatrix.getMatrix().length; i++) {
+        for (int j = 0; j < confusionMatrix.getMatrix().length; j++) {
+          if (i == j) {
+            dividend += confusionMatrix.getMatrix()[i][j];
+          }
+          divisor += confusionMatrix.getMatrix()[i][j];
+        }
+      }
+      String accuracyOperator = dividend + " \\over " + divisor;
+      double accuracyResult = (dividend * 1.0) / (divisor * 1.0);
+      ErrorRate accuracy = new ErrorRate();
+      accuracy.setOperation(accuracyOperator);
+      accuracy.setType(ErrorType.ACCURACY);
+      accuracy.setResult(accuracyResult);
+      classInfo.setAccuracy(accuracy);
+      try {
+        classInfoService.save(classInfo);
+      } catch (Exception e) {
+        e.printStackTrace();
+      }
+
+      /**
+       * Calculate Precision, Recall, Specificity
+       * */
+      confusionMatrix.getInfo().forEach((classValue, index) -> {
+        ClassInfoDetail classInfoDetail =
+            classInfoDetailService.findByClassInfoAndValue(classInfo, classValue);
+        if (classInfoDetail == null) {
+          throw new RuntimeException(
+              "Class Info Detail Is Null On Line 105:\n" + classInfo.getClassName() + " - "
+                  + classValue);
+        }
+        int currTP = confusionMatrix.getMatrix()[index][index];
+        int currFP = 0;
+        int currFN = 0;
+        for (int i = 0; i < confusionMatrix.getMatrix().length; i++) {
+          if (i != index) {
+            currFP += confusionMatrix.getMatrix()[i][index];
+            currFN += confusionMatrix.getMatrix()[index][i];
+          }
+        }
+        /**
+         * Precision
+         * */
+        ErrorRate precision = new ErrorRate();
+        String precisionOperation = currTP + " \\over " + currTP + " + " + currFP;
+        double precisionResult = currTP * 1.0 / (currTP + currFP) * 1.0;
+        precision.setType(ErrorType.PRECISION);
+        precision.setOperation(precisionOperation);
+        precision.setResult(precisionResult);
+        precision.setClassInfoDetail(classInfoDetail);
+        /**
+         * Recall
+         * */
+        ErrorRate recall = new ErrorRate();
+        String recallOperation = currTP + " \\over " + currTP + " + " + currFN;
+        double recallResult = currTP * 1.0 / (currTP + currFN) * 1.0;
+        recall.setType(ErrorType.RECALL);
+        recall.setOperation(recallOperation);
+        recall.setResult(recallResult);
+        recall.setClassInfoDetail(classInfoDetail);
+
+        /**
+         * F Measure
+         * */
+        ErrorRate fMeasure = new ErrorRate();
+        double alpha = (2.0 * precisionResult * recallResult) / (precisionResult + recallResult);
+        String fMeasureOperation =
+            "{1 \\over { " + String.format("%.2f", alpha) + " {1 \\over P}+(1- " + String
+                .format("%.2f", alpha) + " ) {1 \\over R} }}";
+        double fMeasureResult =
+            1 / ((alpha * (1 / precisionResult)) + ((1 - alpha) * (1 / recallResult)));
+        fMeasure.setType(ErrorType.F_MEASURE);
+        fMeasure.setOperation(fMeasureOperation);
+        fMeasure.setResult(fMeasureResult);
+        fMeasure.setClassInfoDetail(classInfoDetail);
+
+        try {
+          errorRateService.save(precision);
+          errorRateService.save(recall);
+          errorRateService.save(fMeasure);
+        } catch (Exception e) {
+          e.printStackTrace();
+        }
+      });
+    });
+  }
+
+  @RequestMapping("")
+  public String index(Model model) throws Exception {
+    model.addAttribute("view", "testing");
+    model.addAttribute("testPathHdfs", new RenewModelHdfsFormRequest());
+    model.addAttribute("trainFile", new TrainFile());
+    model.addAttribute("availableDirs", hdfsService.listInputDirOnPath());
+
+    return LAYOUTS_ADMIN;
+  }
+
+  @RequestMapping(value = "/predict-new-case",
+      method = RequestMethod.GET)
+  public String predictNewCase(Model model) {
+    model.addAttribute("view", "predict-new-case");
+    List<ClassInfo> classInfos = classInfoService.listAll();
+    List<PredictorInfo> predictorInfos = predictorInfoService.listAll();
+    model.addAttribute("classes", classInfos);
+    model.addAttribute("predictors", predictorInfos);
+
+    model.addAttribute("singleton", new SingletonQuery());
+    return LAYOUTS_ADMIN;
+  }
+
+  @RequestMapping(value = "/files-from-hdfs",
+      method = RequestMethod.POST)
+  public String trainFileFromHdfs(RenewModelHdfsFormRequest modelHdfs,
+      RedirectAttributes redirectAttributes) throws Exception {
+    if (modelHdfs == null || modelHdfs.getModelHdfs().equals("null")) {
+      redirectAttributes.addFlashAttribute("danger", "Failed to retrieve file from HDFS.");
+      return "redirect:" + ABSOLUTE_PATH;
+    }
+    Pair<List<BufferedReader>, BufferedReader> pair =
+        hdfsService.getListOfOutputModelBufferedReaderFromModelHdfs(modelHdfs.getModelHdfs());
+    if (pair.getFirst() == null || pair.getFirst().size() <= 0) {
+      redirectAttributes.addFlashAttribute("danger", "Failed retrive file from HDFS");
+      return "redirect:" + ABSOLUTE_PATH;
+    }
+    return this.trainFilesEncapsuled(pair.getFirst(), pair.getSecond(), redirectAttributes);
+  }
+
+  @RequestMapping(value = "/files",
+      method = RequestMethod.POST)
+  public String trainFiles(TrainFile trainFile, RedirectAttributes redirectAttributes)
+      throws Exception {
+    BufferedReader br1 =
+        new BufferedReader(new InputStreamReader(trainFile.getFileTesting()[0].getInputStream()));
+    BufferedReader br2 =
+        new BufferedReader(new InputStreamReader(trainFile.getFileInfo()[0].getInputStream()));
+    List<BufferedReader> br1s = new ArrayList<>();
+    br1s.add(br1);
+    return this.trainFilesEncapsuled(br1s, br2, redirectAttributes);
+  }
+
+  /**
+   * @param br2  Info File
+   * @param br1s Array of File Test
+   */
+  public String trainFilesEncapsuled(List<BufferedReader> br1s, BufferedReader br2,
+      RedirectAttributes redirectAttributes) {
+    errorRateService.resetAll();
+    confusionMatrixLastService.deleteAll();
+
+    HashMap<String, ConfusionMatrix> confusionEachClassz = new HashMap<String, ConfusionMatrix>();
+    ArrayList<HashMap<String, String>> resultPerClasses = new ArrayList<HashMap<String, String>>();
+
+    /**
+     * attributeInfo = [Index,ClassName|Type]
+     * */
+    HashMap<Integer, String> attributeInfos = new HashMap<Integer, String>();
+    br2.lines().forEach(s -> {
+      Arrays.stream(s.split(":")[1].split(";")).forEach(s1 -> {
+        String[] info = s1.split(",");
+        if (s.split(":")[0].contains("attribute")) {
+          /**
+           * If Predictor
+           * */
+          attributeInfos.put(Integer.parseInt(info[1]), info[2] + "|" + info[0]);
+        } else if (s.split(":")[0].contains("class")) {
+          /**
+           * If Class
+           * */
+          attributeInfos.put(Integer.parseInt(info[1]), info[0]);
+        }
+      });
+    });
+    br1s.forEach(br1 -> {
+      br1.lines().forEach(s -> {
+        SingletonQuery singletonQuery = new SingletonQuery();
+        List<String> classInfos = new ArrayList<String>();
+        List<String> predictorInfos = new ArrayList<String>();
+        String[] in = s.split(",");
+        for (int i = 0; i < in.length; i++) {
+          String attrInfo = attributeInfos.get(i);
+          if (attrInfo != null) {
+            if (attrInfo.split("\\|").length == 1) {
+              /**
+               * If Class
+               * */
+              classInfos.add(attrInfo + "|" + in[i]);
+            } else {
+              /**
+               * If Predictor
+               * */
+              predictorInfos.add(attrInfo + "|" + in[i]);
+            }
+          }
+
+        }
+        singletonQuery.setClassInfos(classInfos);
+        singletonQuery.setPredictorInfos(predictorInfos);
+        this.trainSingleton(null, singletonQuery, redirectAttributes, confusionEachClassz,
+            resultPerClasses);
+      });
+    });
+    calculateErrorRate(confusionEachClassz);
+
+    redirectAttributes.addFlashAttribute("success", "Complete test NB-Classifier");
+    return "redirect:" + ErrorRateController.ABSOLUTE_PATH;
+  }
+
+  @RequestMapping(value = "/singleton",
+      method = RequestMethod.POST)
+  public String trainSingleton(Model model, SingletonQuery singletonQuery,
+      RedirectAttributes redirectAttributes, HashMap<String, ConfusionMatrix> confusionEachClassz,
+      ArrayList<HashMap<String, String>> resultPerClasses) {
+
+    List<ClassInfo> classInfos = classInfoService.listAll();
+
+    /**
+     * <ClassName,ConfusionMatric>
+     * */
+    final HashMap<String, ConfusionMatrix> confusionEachClass;
+    if (confusionEachClassz == null) {
+      confusionMatrixLastService.deleteAll();
+      confusionEachClass = new HashMap<String, ConfusionMatrix>();
+    } else {
+      confusionEachClass = confusionEachClassz;
+    }
+
+    if (resultPerClasses == null) {
+      resultPerClasses = new ArrayList<HashMap<String, String>>();
+    }
+
+    /**
+     * Format :
+     * HashMap<ClassName,[Class]ResultValue>
+     * */
+    HashMap<String, String> resultPerClass = new HashMap<>();
+    resultPerClasses.add(resultPerClass);
+    classInfos.stream().forEach(classInfo -> {
+
+      ConfusionMatrix confusionMatrix = new ConfusionMatrix(classInfo.getClassInfoDetails().size());
+      confusionEachClass.putIfAbsent(classInfo.getClassName(), confusionMatrix);
+      /**
+       * Accumulative Count
+       * */
+      int acc = 0;
+      for (ClassInfoDetail cd : classInfo.getClassInfoDetails()) {
+        acc += cd.getCount();
+      }
+      final int accFinal = acc;
+
+      /**
+       * Format
+       * K => ClassName,ClassVal
+       * V => Result
+       * List<ClassName,ClassVal|Result>
+       * */
+      List<String> allPredRes = new ArrayList<>();
+
+      AtomicInteger atomicIntegerConfMatrix = new AtomicInteger(0);
+      classInfo.getClassInfoDetails().stream().forEach(classInfoDetail -> {
+        confusionMatrix.getInfo()
+            .putIfAbsent(classInfoDetail.getValue(), atomicIntegerConfMatrix.getAndIncrement());
+
+        //        logger.info("\n\nMCZAL : FIRST=>");
+        double currPredRes = 1.0;
+        /**
+         * List<String> predictorInfos
+         *      Format :
+         * Type|PredictorName|PredictorValue
+         *
+         * */
+        int flag = 0;
+        outer:
+        for (String s : singletonQuery.getPredictorInfos()) {
+          s = s.trim();
+          String type = s.split("\\|")[0].trim();
+          if (type.equalsIgnoreCase("DISCRETE")) {
+            Pair<Double, Double> pairRes = trainUtils.calcDiscrete(classInfo, classInfoDetail, s);
+            if (pairRes == null) {
+              flag = 1;
+              break outer;
+            }
+            double dividend = pairRes.getFirst();
+            double divisor = pairRes.getSecond();
+            currPredRes *= (dividend / divisor);
+          } else if (type.equalsIgnoreCase("NUMERIC") || type.equalsIgnoreCase("NUMERICAL")) {
+            double res = trainUtils.calcNormDistEachClass(classInfo, classInfoDetail, s);
+            if (res == -1.0) {
+              throw new IllegalArgumentException("RES = " + res);
+            }
+            currPredRes *= res;
+          } else {
+            throw new IllegalArgumentException("NO SUCH TYPE = " + type);
+          }
+
+        }
+        if (flag == 1) {
+          throw new RuntimeException(
+              "261 Zero-Frequency Problem Occured. Laplacian smoothing didn't work for: \n"
+                  + classInfo.getClassName() + " -> " + classInfoDetail.getValue());
+        } else {
+          currPredRes *= (classInfoDetail.getCount() * 1.0) / (accFinal * 1.0);
+          allPredRes
+              .add(classInfo.getClassName() + "," + classInfoDetail.getValue() + "|" + currPredRes);
+
+        }
+      });
+      /**
+       * Format :
+       * maxS  => ClassName,ClassVal|Result
+       * */
+      double divisorNorm = Double.parseDouble(allPredRes.get(0).split("\\|")[1]);
+      double checker = divisorNorm;
+      String maxS = allPredRes.get(0);
+
+      for (int i = 1; i < allPredRes.size(); i++) {
+        double numeric = Double.parseDouble(allPredRes.get(i).split("\\|")[1]);
+        divisorNorm += numeric;
+        if (numeric > checker) {
+          checker = numeric;
+          maxS = allPredRes.get(i);
+        }
+      }
+
+      String maxSNorm = maxS.split(",")[0] + "," + maxS.split(",")[1].split("\\|")[0];
+      double resNorm = checker;
+      resNorm = (resNorm / divisorNorm) * 100.0;
+      DecimalFormat df = new DecimalFormat("#.00");
+      df.setRoundingMode(RoundingMode.CEILING);
+      maxSNorm += "|" + df.format(resNorm) + "%";
+      resultPerClass.put(maxSNorm.split(",")[0], maxSNorm.split(",")[1]);
+    });
+
+    /**
+     * Apply result to error rate
+     * */
+    List<WrapperTestingResponse> wrapperTestingResponses = new ArrayList<>();
+    resultPerClass.entrySet().stream().forEach(resClass -> {
+      WrapperTestingResponse wrapperTestingResponse = new WrapperTestingResponse();
+      wrapperTestingResponse.setClassName(resClass.getKey());
+      wrapperTestingResponse.setPredicted(resClass.getValue().split("\\|")[0]);
+      wrapperTestingResponse.setPercentage(resClass.getValue().split("\\|")[1]);
+
+      ConfusionMatrix confusionMatrix = confusionEachClass.get(resClass.getKey());
+      if (confusionMatrix == null) {
+        throw new IllegalArgumentException(
+            "Confusion Matrix is Null for: resClass.getKey()=" + resClass.getKey() + " "
+                + confusionMatrix.toString());
+      }
+
+      singletonQuery.getClassInfos().stream()
+          .filter(s -> s.split("\\|")[0].trim().equalsIgnoreCase(resClass.getKey()))
+          .forEach(classActual -> {
+
+            String actual = classActual.split("\\|")[1].trim();
+            String predicted = resClass.getValue().split("\\|")[0].trim();
+            wrapperTestingResponse.setActual(actual);
+
+            /**
+             * TODO: ERROR FUCKING RATE
+             * */
+            if (actual.equalsIgnoreCase(predicted)) {
+              int index = confusionMatrix.getInfo().get(actual);
+              confusionMatrix.getMatrix()[index][index]++;
+            } else {
+              int predIndex = confusionMatrix.getInfo().get(predicted);
+              int actIndex = confusionMatrix.getInfo().get(actual);
+              confusionMatrix.getMatrix()[actIndex][predIndex]++;
+            }
+            try {
+            } catch (Exception e) {
+              e.printStackTrace();
+            }
+          });
+      wrapperTestingResponse.setConfusionMatrix(confusionMatrix);
+      wrapperTestingResponses.add(wrapperTestingResponse);
+
+      ConfusionMatrixLast confusionMatrixLast =
+          confusionMatrixLastService.findByClassName(wrapperTestingResponse.getClassName());
+      if (confusionMatrixLast == null) {
+        confusionMatrixLast = new ConfusionMatrixLast();
+        confusionMatrixLast.setClassName(wrapperTestingResponse.getClassName());
+        ClassInfo classInfo =
+            classInfoService.findByClassName(wrapperTestingResponse.getClassName());
+        if (classInfo == null) {
+          throw new RuntimeException("Class Info Null On 461");
+        }
+        confusionMatrixLast.setClassInfo(classInfo);
+      }
+      ConfusionMatrixDetail confusionMatrixDetail = new ConfusionMatrixDetail();
+      confusionMatrixDetail.setPercentage(wrapperTestingResponse.getPercentage());
+      confusionMatrixDetail.setActual(wrapperTestingResponse.getActual());
+      confusionMatrixDetail.setPredicted(wrapperTestingResponse.getPredicted());
+      confusionMatrixDetail.setConfusionMatrixLast(confusionMatrixLast);
+      confusionMatrixLast
+          .setPrintedConfusionMatrix(wrapperTestingResponse.getPrintedConfusionMatrix());
+      confusionMatrixLast.getConfusionMatrixDetails().add(confusionMatrixDetail);
+
+      try {
+        confusionMatrixLastService.save(confusionMatrixLast);
+      } catch (Exception e) {
+        e.printStackTrace();
+      }
+    });
+
+    redirectAttributes.addFlashAttribute("success", "Complete test NB-Classifier");
+    if (model != null) {
+      redirectAttributes.addFlashAttribute("results", resultPerClass);
+    }
+    return "redirect:" + ABSOLUTE_PATH + "/predict-new-case";
+  }
+
+}
+\end{lstlisting}
+
+\begin{lstlisting}[language=Java,basicstyle=\tiny,caption=TestingUtils.java]
+package com.mczal.nb.utils;
+
+import com.mczal.nb.model.BayesianModel;
+import com.mczal.nb.model.ClassInfo;
+import com.mczal.nb.model.ClassInfoDetail;
+import com.mczal.nb.model.util.Type;
+import com.mczal.nb.service.BayesianModelService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.util.Pair;
+import org.springframework.stereotype.Component;
+
+import java.util.Set;
+
+/**
+ * Created by Gl552 on 2/13/2017.
+ */
+@Component
+public class TestingUtils {
+
+  private final Logger logger = LoggerFactory.getLogger(this.getClass());
+
+  private BayesianModelService bayesianModelService;
+
+  @Value("${k.count}")
+  private Integer laplacianSmoothingAdder;
+
+  public Pair<Double, Double> calcDiscrete(ClassInfo classInfo, ClassInfoDetail classInfoDetail,
+      String s) {
+    String predictorName = s.split("\\|")[1].trim();
+    String predictorValue = s.split("\\|")[2].trim();
+    BayesianModel bayesianModelDividend = bayesianModelService
+        .findByPredictorNameAndPredValAndClassNameAndClassVal(predictorName, predictorValue,
+            classInfo.getClassName(), classInfoDetail.getValue());
+
+    int divisor = 0;
+    int dividend;
+    if (bayesianModelDividend == null) {
+      /**
+       * Debug per March 31st 2017
+       * */
+      throw new RuntimeException(
+          "\nZero Frequency problem occured for -> \n" + "PredictorName: " + predictorName + "\n"
+              + "PredictorValue: " + predictorValue + "\n" + "ClassName: " + classInfo
+              .getClassName() + "\n" + "ClassValue: " + classInfoDetail.getValue() + "\n");
+    } else {
+      dividend = bayesianModelDividend.getCount();
+    }
+    Set<BayesianModel> bayesianModelsDivisor = bayesianModelService
+        .findByPredictorNameAndClassNameAndClassVal(s.split("\\|")[1].trim(),
+            classInfo.getClassName(), classInfoDetail.getValue());
+    for (BayesianModel bm : bayesianModelsDivisor) {
+      divisor += bm.getCount();
+    }
+    Pair<Double, Double> result = Pair.of(dividend * 1.0, divisor * 1.0);
+    return result;
+  }
+
+  /**
+   * Format
+   *
+   * @param in : NUMERIC|<PredictorName>|<Value>
+   * @return : String<"ClassName|ClassVal|Value">
+   */
+  public double calcNormDistEachClass(ClassInfo classInfo, ClassInfoDetail classInfoDetail,
+      String in) {
+    double x = Double.parseDouble(in.split("\\|")[2].trim());
+
+    BayesianModel bayesianModel = bayesianModelService
+        .findByPredictorNameAndClassNameAndClassValAndType(in.split("\\|")[1].trim(),
+            classInfo.getClassName().trim(), classInfoDetail.getValue().trim(), Type.NUMERIC);
+    if (bayesianModel == null) {
+      return -1.0;
+    }
+    double currSigma = bayesianModel.getSigma().doubleValue();
+    double currMean = bayesianModel.getMean().doubleValue();
+    return calcNormalDist(currMean, currSigma, x);
+  }
+
+  private double calcNormalDist(double mean, double sigma, double x) {
+
+    String debugSec = "\n" + "x=" + x + "\n" + "mean=" + mean + "\n" + "sigma=" + sigma + "\n";
+    double divisor = Math.sqrt(2.0 * Math.PI * sigma);
+    debugSec += "divisor=" + divisor + "\n";
+    double powerDividend = Math.pow((x - mean), 2) * -1;
+    debugSec += "powerDividend=" + powerDividend + "\n";
+    double powerDivisor = 2.0 * Math.pow(sigma, 2);
+    debugSec += "powerDivisor=" + powerDivisor + "\n";
+    double resPower = powerDividend / powerDivisor;
+    debugSec += "resPower=" + resPower + "\n";
+    double currRes = (1 / divisor) * (Math.pow(Math.E, resPower));
+    debugSec += "currRes=" + currRes + "\n";
+    logger.info(debugSec + "\n");
+    return currRes;
+  }
+
+  @Autowired
+  public void setBayesianModelService(BayesianModelService bayesianModelService) {
+    this.bayesianModelService = bayesianModelService;
+  }
+
+}
+
+\end{lstlisting}
+
+\subsubsection{Service}
+
+\begin{lstlisting}[language=Java,basicstyle=\tiny,caption=CRUDService.java]
+package com.mczal.nb.service;
+
+import java.util.List;
+
+/**
+ * Created by Gl552 on 11/29/2016.
+ */
+public interface CRUDService<T> {
+
+  void delete(String id) throws Exception;
+
+  void delete(Integer id) throws Exception;
+
+  T findById(String id) throws Exception;
+
+  List<T> listAll();
+
+  T save(T domainObject) throws Exception;
+
+  T update(T domainObject) throws Exception;
+}
+
+\end{lstlisting}
+
+
+\begin{lstlisting}[language=Java,basicstyle=\tiny,caption=ClassInfoService.java]
+package com.mczal.nb.service;
+
+import com.mczal.nb.model.ClassInfo;
+import java.util.List;
+
+/**
+ * Created by Gl552 on 2/11/2017.
+ */
+public interface ClassInfoService extends CRUDService<ClassInfo> {
+
+  ClassInfo findByClassName(String className);
+
+  List<ClassInfo> getAllWithErrorDetails();
+
+}
+
+\end{lstlisting}
+
+
+\begin{lstlisting}[language=Java,basicstyle=\tiny,caption=ClassInfoDetailService.java]
+package com.mczal.nb.service;
+
+import com.mczal.nb.model.ClassInfo;
+import com.mczal.nb.model.ClassInfoDetail;
+
+/**
+ * Created by mczal on 17/03/17.
+ */
+public interface ClassInfoDetailService {
+
+  ClassInfoDetail findByClassInfoAndValue(ClassInfo classInfo,String value);
+
+}
+
+\end{lstlisting}
+
+
+\begin{lstlisting}[language=Java,basicstyle=\tiny,caption=PredictorInfoService.java]
+package com.mczal.nb.service;
+
+import com.mczal.nb.model.PredictorInfo;
+
+/**
+ * Created by Gl552 on 2/11/2017.
+ */
+public interface PredictorInfoService extends CRUDService<PredictorInfo> {
+
+}
+
+\end{lstlisting}
+
+
+\begin{lstlisting}[language=Java,basicstyle=\tiny,caption=ErrorRateService.java]
+package com.mczal.nb.service;
+
+import com.mczal.nb.model.ErrorRate;
+import com.mczal.nb.model.util.ErrorType;
+
+/**
+ * Created by Gl552 on 2/12/2017.
+ */
+public interface ErrorRateService extends CRUDService<ErrorRate> {
+
+  void resetAll();
+
+}
+
+\end{lstlisting}
+
+
+\begin{lstlisting}[language=Java,basicstyle=\tiny,caption=ConfusionMatrixService.java]
+package com.mczal.nb.service;
+
+import com.mczal.nb.model.ConfusionMatrix;
+import java.util.List;
+
+/**
+ * Created by mczal on 06/03/17.
+ */
+public interface ConfusionMatrixService extends CRUDService<ConfusionMatrix> {
+
+  void deleteAll();
+
+  List<ConfusionMatrixLast> findAllDetails();
+
+  ConfusionMatrixLast findByClassName(String className);
+
+}
+
+\end{lstlisting}
+
+\begin{lstlisting}[language=Java,basicstyle=\tiny,caption=BayesianModelService.java]
+package com.mczal.nb.service;
+
+import com.mczal.nb.model.BayesianModel;
+import com.mczal.nb.model.util.Type;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.util.List;
+import java.util.Set;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
+/**
+ * Created by Gl552 on 1/21/2017.
+ */
+public interface BayesianModelService extends CRUDService<BayesianModel> {
+
+  Set<BayesianModel> findByPredictorNameAndClassNameAndClassVal(String predictorName,
+      String className, String classVal);
+
+  BayesianModel findByPredictorNameAndClassNameAndClassValAndType(String predictorName,
+      String className, String classVal, Type type);
+
+  BayesianModel findByPredictorNameAndPredValAndClassNameAndClassVal(String predictorName,
+      String predVal, String className, String classVal);
+
+  Page<BayesianModel> findByType(Type type, Pageable pageRequest) throws Exception;
+
+  void insertNewModel(BufferedReader br) throws IOException;
+
+}
+
+\end{lstlisting}
+
+
+\begin{lstlisting}[language=Java,basicstyle=\tiny,caption=BayesianModelService.java]
+package com.mczal.nb.service.impl;
+
+import com.mczal.nb.dao.BayesianModelDao;
+import com.mczal.nb.dao.ClassInfoDao;
+import com.mczal.nb.dao.PredictorInfoDao;
+import com.mczal.nb.model.*;
+import com.mczal.nb.model.util.Type;
+import com.mczal.nb.service.BayesianModelService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.math.BigDecimal;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
+
+/**
+ * Created by Gl552 on 1/21/2017.
+ */
+@Service
+@Transactional(readOnly = true)
+public class BayesianModelServiceImpl implements BayesianModelService {
+
+  private final Logger logger = LoggerFactory.getLogger(this.getClass());
+
+  @Autowired
+  private BayesianModelDao bayesianModelDao;
+
+  @Autowired
+  private ClassInfoDao classInfoDao;
+
+  @Value("${k.count}")
+  private Integer laplacianSmoothingAdder;
+
+  @Autowired
+  private PredictorInfoDao predictorInfoDao;
+
+  @Override
+  @Transactional(readOnly = false)
+  public void delete(String id) throws Exception {
+
+  }
+
+  @Override
+  @Transactional(readOnly = false)
+  public void delete(Integer id) throws Exception {
+    bayesianModelDao.delete(id);
+  }
+
+  @Override
+  public BayesianModel findById(String id) throws Exception {
+    return null;
+  }
+
+  @Override
+  public Set<BayesianModel> findByPredictorNameAndClassNameAndClassVal(String predictorName,
+      String className, String classVal) {
+    return bayesianModelDao
+        .findByPredictorNameAndClassNameAndClassVal(predictorName, className, classVal);
+  }
+
+  @Override
+  public BayesianModel findByPredictorNameAndClassNameAndClassValAndType(String predictorName,
+      String className, String classVal, Type type) {
+    Set<BayesianModel> resz =
+        this.findByPredictorNameAndClassNameAndClassVal(predictorName, className, classVal);
+    BayesianModel res = null;
+    for (Iterator<BayesianModel> itr = resz.iterator(); itr.hasNext(); ) {
+      res = itr.next();
+    }
+    return res;
+  }
+
+  @Override
+  public BayesianModel findByPredictorNameAndPredValAndClassNameAndClassVal(String predictorName,
+      String predVal, String className, String classVal) {
+    BayesianModel bayesianModel = bayesianModelDao
+        .findByPredictorNameAndPredValAndClassNameAndClassVal(predictorName, predVal, className,
+            classVal);
+    return bayesianModel;
+  }
+
+  @Override
+  public Page<BayesianModel> findByType(Type type, Pageable pageRequest) throws Exception {
+    return bayesianModelDao.findByType(type, pageRequest);
+  }
+
+  @Override
+  @Transactional(readOnly = false)
+  public void insertNewModel(BufferedReader br) throws IOException {
+    if (br.ready()) {
+      br.lines().forEach(s -> {
+        String[] splitter = s.split("\\|");
+        switch (splitter[splitter.length - 1].trim()) {
+          case "DISCRETE": {
+            String[] splitterInner = s.split("\\|")[0].trim().split(",");
+            BayesianModel bayesianModel = new BayesianModel();
+            bayesianModel.setPredictorName(splitterInner[0].trim());
+            bayesianModel.setPredVal(splitterInner[1].trim());
+            bayesianModel.setClassName(splitterInner[2].trim());
+            bayesianModel.setClassVal(splitterInner[3].trim());
+            int bayesianCount = ((int) Double.parseDouble(splitterInner[4].trim()));
+            bayesianModel.setCount(bayesianCount);
+            bayesianModel.setType(Type.DISCRETE);
+            bayesianModelDao.save(bayesianModel);
+            /**
+             * ------ WORK SEPARATOR ------
+             * */
+            PredictorInfo predictorInfo =
+                predictorInfoDao.findByPredictorName(splitterInner[0].trim());
+            if (predictorInfo == null) {
+              predictorInfo = new PredictorInfo();
+              predictorInfo.setPredictorName(splitterInner[0].trim());
+              predictorInfo.setType(Type.DISCRETE);
+            }
+            AtomicBoolean checker = new AtomicBoolean(false);
+            predictorInfo.getPredictorInfoDetails().stream().filter(
+                predictorInfoDetail -> predictorInfoDetail.getValue()
+                    .equals(splitterInner[1].trim())).forEach(predictorInfoDetail -> {
+              checker.set(true);
+              predictorInfoDetail.setCount(predictorInfoDetail.getCount() + bayesianCount);
+            });
+            if (!checker.get()) {
+              PredictorInfoDetail predictorInfoDetail = new PredictorInfoDetail();
+              predictorInfoDetail.setCount(bayesianCount);
+              predictorInfoDetail.setValue(splitterInner[1].trim());
+              predictorInfoDetail.setPredictorInfo(predictorInfo);
+              predictorInfo.getPredictorInfoDetails().add(predictorInfoDetail);
+            }
+            predictorInfoDao.save(predictorInfo);
+            break;
+          }
+          case "CLASS": {
+            String[] splitterInner = s.split("\\|")[0].split(",");
+            ClassInfo classInfo = classInfoDao.findByClassName(splitterInner[0].trim());
+            if (classInfo == null) {
+              classInfo = new ClassInfo();
+              classInfo.setClassName(splitterInner[0].trim());
+            }
+            ClassInfoDetail classInfoDetail = new ClassInfoDetail();
+            int bayesianClassCount = (int) Double.parseDouble(splitterInner[2].trim());
+            classInfoDetail.setValue(splitterInner[1].trim());
+            classInfoDetail.setCount(bayesianClassCount);
+            classInfoDetail.setClassInfo(classInfo);
+            classInfo.getClassInfoDetails().add(classInfoDetail);
+            classInfoDao.save(classInfo);
+            break;
+          }
+          case "NUMERIC": {
+            String[] splitterInner = s.split(";");
+            String[] splitterMeta = splitterInner[0].split(",");
+            BayesianModel bayesianModel = new BayesianModel();
+            bayesianModel.setPredictorName(splitterMeta[0].trim());
+            bayesianModel.setClassName(splitterMeta[1].trim());
+            bayesianModel.setClassVal(splitterMeta[2].trim());
+            String[] splitterInfo = splitterInner[1].trim().split("\\|");
+            bayesianModel.setMean(new BigDecimal(Double.parseDouble(splitterInfo[0].trim())));
+            bayesianModel.setSigma(new BigDecimal(Double.parseDouble(splitterInfo[1].trim())));
+            bayesianModel.setType(Type.NUMERIC);
+            bayesianModelDao.save(bayesianModel);
+            /**
+             * ------ WORK SEPARATOR ------
+             * */
+            PredictorInfo predictorInfo = predictorInfoDao.findByPredictorName(splitterMeta[0]);
+            if (predictorInfo == null) {
+              predictorInfo = new PredictorInfo();
+              predictorInfo.setPredictorName(splitterMeta[0].trim());
+              predictorInfo.setType(Type.NUMERIC);
+            }
+            PredictorInfoDetail predictorInfoDetail = new PredictorInfoDetail();
+            predictorInfoDetail.setClassPriorName(splitterMeta[1].trim());
+            predictorInfoDetail.setClassPriorValue(splitterMeta[2].trim());
+            predictorInfoDetail.setMean(new BigDecimal(Double.parseDouble(splitterInfo[0])));
+            predictorInfoDetail.setSigma(new BigDecimal(Double.parseDouble(splitterInfo[1])));
+            predictorInfoDetail.setPredictorInfo(predictorInfo);
+            predictorInfo.getPredictorInfoDetails().add(predictorInfoDetail);
+            predictorInfoDao.save(predictorInfo);
+            break;
+          }
+          default:
+            throw new IllegalArgumentException("<mczal>UNDEFINED CASE</mczal>");
+        }
+      });
+    }
+    this.laplacianSmoothing();
+  }
+
+  //  @Transactional(readOnly = false)
+  private void laplacianSmoothing() {
+    List<ClassInfo> classInfos = classInfoDao.findAll();
+    if (classInfos.size() <= 0) {
+      throw new RuntimeException("Size of class is equal to zero");
+    }
+    classInfos.forEach(classInfo -> {
+      /**
+       * FOR EACH CLASS
+       * */
+      Set<ClassInfoDetail> classInfoDetails = classInfo.getClassInfoDetails();
+      classInfoDetails.forEach(classInfoDetail -> {
+        /**
+         * FOR EACH CLASS VALUE
+         * */
+        AtomicInteger totalAdditionForCurrClassDetail = new AtomicInteger(0);
+
+        List<PredictorInfo> predictorInfos = predictorInfoDao.findAll();
+        if (predictorInfos.size() <= 0) {
+          throw new RuntimeException("Size of predictor is equal to zero");
+        }
+        predictorInfos.forEach(predictorInfo -> {
+          /**
+           * FOR EACH PREDICTOR
+           * */
+          if (predictorInfo.getType() == Type.DISCRETE) {
+
+            Set<PredictorInfoDetail> predictorInfoDetails = predictorInfo.getPredictorInfoDetails();
+            predictorInfoDetails.forEach(predictorInfoDetail -> {
+              /**
+               * FOR EACH PREDICTOR VALUE
+               * */
+              BayesianModel bayesianModel = bayesianModelDao
+                  .findByPredictorNameAndPredValAndClassNameAndClassVal(
+                      predictorInfo.getPredictorName(), predictorInfoDetail.getValue(),
+                      classInfo.getClassName(), classInfoDetail.getValue());
+              if (bayesianModel == null) {
+                /**
+                 * ZERO FREQ OCCURED
+                 * */
+                logger.info("Zero frequency occured.");
+
+                /**
+                 * HANDLING FOR BAYESIAN MODEL
+                 * */
+                bayesianModel = new BayesianModel();
+                bayesianModel.setClassName(classInfo.getClassName());
+                bayesianModel.setClassVal(classInfoDetail.getValue());
+                bayesianModel.setCount(laplacianSmoothingAdder);
+                bayesianModel.setPredictorName(predictorInfo.getPredictorName());
+                bayesianModel.setPredVal(predictorInfoDetail.getValue());
+                bayesianModel.setType(Type.DISCRETE);
+              } else {
+                bayesianModel.setCount(bayesianModel.getCount() + laplacianSmoothingAdder);
+              }
+              bayesianModelDao.save(bayesianModel);
+              /**
+               * ------------------_WORK SEPARATOR --------------------
+               * HANDLING FOR PREDICTOR INFO DETAIL
+               * */
+              predictorInfoDetail
+                  .setCount(predictorInfoDetail.getCount() + laplacianSmoothingAdder);
+
+              for (int i = 0; i < laplacianSmoothingAdder; i++) {
+                totalAdditionForCurrClassDetail.incrementAndGet();
+              }
+            });
+          }
+          predictorInfoDao.save(predictorInfo);
+        });
+
+        classInfoDetail
+            .setCount(classInfoDetail.getCount() + totalAdditionForCurrClassDetail.get());
+
+      });
+      classInfoDao.save(classInfo);
+    });
+  }
+
+  @Override
+  public List<BayesianModel> listAll() {
+    return bayesianModelDao.findAll();
+  }
+
+  @Override
+  @Transactional(readOnly = false)
+  public BayesianModel save(BayesianModel domainObject) throws Exception {
+    return null;
+  }
+
+  @Override
+  @Transactional(readOnly = false)
+  public BayesianModel update(BayesianModel domainObject) throws Exception {
+    return null;
+  }
+}
+
+\end{lstlisting}
+
+
+\begin{lstlisting}[language=Java,basicstyle=\tiny,caption=ClassInfoDetailServiceImpl.java]
+package com.mczal.nb.service.impl;
+
+import com.mczal.nb.dao.ClassInfoDetailDao;
+import com.mczal.nb.model.ClassInfo;
+import com.mczal.nb.model.ClassInfoDetail;
+import com.mczal.nb.service.ClassInfoDetailService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+/**
+ * Created by mczal on 17/03/17.
+ */
+@Service
+@Transactional(readOnly = true)
+public class ClassInfoDetailServiceImpl implements ClassInfoDetailService {
+
+  @Autowired
+  private ClassInfoDetailDao classInfoDetailDao;
+
+  @Override
+  public ClassInfoDetail findByClassInfoAndValue(ClassInfo classInfo, String value) {
+    return classInfoDetailDao.findByClassInfoAndValue(classInfo, value);
+  }
+}
+
+\end{lstlisting}
+
+
+\begin{lstlisting}[language=Java,basicstyle=\tiny,caption=ClassInfoServiceImpl.java]
+package com.mczal.nb.service.impl;
+
+import com.mczal.nb.dao.ClassInfoDao;
+import com.mczal.nb.model.ClassInfo;
+import com.mczal.nb.service.ClassInfoService;
+import java.util.List;
+import org.hibernate.Hibernate;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+/**
+ * Created by Gl552 on 2/11/2017.
+ */
+@Service
+@Transactional(readOnly = true)
+public class ClassInfoServiceImpl implements ClassInfoService {
+
+  @Autowired
+  private ClassInfoDao classInfoDao;
+
+  @Override
+  public void delete(String id) throws Exception {
+
+  }
+
+  @Override
+  public void delete(Integer id) throws Exception {
+    classInfoDao.delete(id);
+  }
+
+  @Override
+  public ClassInfo findByClassName(String className) {
+    return classInfoDao.findByClassName(className);
+  }
+
+  @Override
+  public ClassInfo findById(String id) throws Exception {
+    return null;
+  }
+
+  @Override
+  public List<ClassInfo> getAllWithErrorDetails() {
+    List<ClassInfo> classInfos = classInfoDao.findAll();
+    classInfos.forEach(classInfo -> {
+      classInfo.getClassInfoDetails().forEach(classInfoDetail -> {
+        Hibernate.initialize(classInfoDetail.getErrorRates());
+      });
+    });
+    return classInfos;
+  }
+
+  @Override
+  public List<ClassInfo> listAll() {
+    return classInfoDao.findAll();
+  }
+
+  @Override
+  public ClassInfo save(ClassInfo domainObject) throws Exception {
+    return null;
+  }
+
+  @Override
+  public ClassInfo update(ClassInfo domainObject) throws Exception {
+    return null;
+  }
+}
+
+\end{lstlisting}
+
+
+\begin{lstlisting}[language=Java,basicstyle=\tiny,caption=ConfusionMatrixDetailServiceImpl.java]
+package com.mczal.nb.service.impl;
+
+import com.mczal.nb.dao.ConfusionMatrixDetailDao;
+import com.mczal.nb.model.ConfusionMatrixDetail;
+import com.mczal.nb.model.ConfusionMatrixLast;
+import com.mczal.nb.service.ConfusionMatrixDetailService;
+import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+/**
+ * Created by mczal on 17/03/17.
+ */
+@Service
+@Transactional(readOnly = true)
+public class ConfusionMatrixDetailServiceImpl implements ConfusionMatrixDetailService {
+
+  @Autowired
+  private ConfusionMatrixDetailDao confusionMatrixDetailDao;
+
+  @Override
+  public Page<ConfusionMatrixDetail> findByConfusionMatrixLastPageable(
+      ConfusionMatrixLast confusionMatrixLast, Pageable pageRequest) {
+    return confusionMatrixDetailDao.findByConfusionMatrixLast(confusionMatrixLast, pageRequest);
+  }
+}
+
+\end{lstlisting}
+
+
+\begin{lstlisting}[language=Java,basicstyle=\tiny,caption=ConfusionMatrixServiceImpl.java]
+package com.mczal.nb.service.impl;
+
+import com.mczal.nb.dao.ConfusionMatrixLastDao;
+import com.mczal.nb.model.ConfusionMatrixLast;
+import com.mczal.nb.service.ConfusionMatrixLastService;
+import java.util.List;
+import org.hibernate.Hibernate;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+/**
+ * Created by mczal on 06/03/17.
+ */
+@Service
+@Transactional(readOnly = true)
+public class ConfusionMatrixServiceImpl implements ConfusionMatrixService {
+
+  @Autowired
+  private ConfusionMatrixDao confusionMatrixLastDao;
+
+  @Override
+  public void delete(String id) throws Exception {
+
+  }
+
+  @Override
+  @Transactional(readOnly = false)
+  public void delete(Integer id) throws Exception {
+    confusionMatrixLastDao.delete(id);
+  }
+
+  @Override
+  @Transactional(readOnly = false)
+  public void deleteAll() {
+    confusionMatrixLastDao.findAll().forEach(confusionMatrixLast -> {
+      try {
+        this.delete(confusionMatrixLast.getId());
+      } catch (Exception e) {
+        e.printStackTrace();
+      }
+    });
+  }
+
+  @Override
+  public List<ConfusionMatrixLast> findAllDetails() {
+    List<ConfusionMatrixLast> confusionMatrixLasts = confusionMatrixLastDao.findAll();
+    confusionMatrixLasts.forEach(confusionMatrixLast -> {
+      Hibernate.initialize(confusionMatrixLast.getConfusionMatrixDetails());
+    });
+    return confusionMatrixLasts;
+  }
+
+  @Override
+  public ConfusionMatrixLast findByClassName(String className) {
+    return confusionMatrixLastDao.findByClassName(className);
+  }
+
+  @Override
+  public ConfusionMatrixLast findById(Integer id) {
+    return confusionMatrixLastDao.findOne(id);
+  }
+
+  @Override
+  public ConfusionMatrixLast findById(String id) throws Exception {
+    return null;
+  }
+
+  @Override
+  public List<ConfusionMatrixLast> listAll() {
+    return confusionMatrixLastDao.findAll();
+  }
+
+  @Override
+  @Transactional(readOnly = false)
+  public ConfusionMatrixLast save(ConfusionMatrixLast domainObject) throws Exception {
+    return confusionMatrixLastDao.save(domainObject);
+  }
+
+  @Override
+  @Transactional(readOnly = false)
+  public ConfusionMatrixLast update(ConfusionMatrixLast domainObject) throws Exception {
+    return this.save(domainObject);
+  }
+}
+
+\end{lstlisting}
+
+
+\begin{lstlisting}[language=Java,basicstyle=\tiny,caption=PredictorInfoServiceImpl.java]
+package com.mczal.nb.service.impl;
+
+import com.mczal.nb.dao.PredictorInfoDao;
+import com.mczal.nb.model.PredictorInfo;
+import com.mczal.nb.service.PredictorInfoService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+
+/**
+ * Created by Gl552 on 2/11/2017.
+ */
+@Service
+@Transactional(readOnly = true)
+public class PredictorInfoServiceImpl implements PredictorInfoService {
+
+  @Autowired
+  private PredictorInfoDao predictorInfoDao;
+
+  @Override
+  public void delete(String id) throws Exception {
+
+  }
+
+  @Override
+  public void delete(Integer id) throws Exception {
+    predictorInfoDao.delete(id);
+  }
+
+  @Override
+  public PredictorInfo findById(String id) throws Exception {
+    return null;
+  }
+
+  @Override
+  public PredictorInfo findByPredictorName(String predictorName) {
+    return predictorInfoDao.findByPredictorName(predictorName);
+  }
+
+  @Override
+  public List<PredictorInfo> listAll() {
+    return predictorInfoDao.findAll();
+  }
+
+  @Override
+  public PredictorInfo save(PredictorInfo domainObject) throws Exception {
+    return null;
+  }
+
+  @Override
+  public PredictorInfo update(PredictorInfo domainObject) throws Exception {
+    return null;
+  }
+}
+
+\end{lstlisting}
+
+
+\subsubsection{Model}
+
+\begin{lstlisting}[language=Java,basicstyle=\tiny,caption=ErrorType.java]
+package com.mczal.nb.model.util;
+
+/**
+ * Created by Gl552 on 2/14/2017.
+ */
+public enum ErrorType {
+  ACCURACY, PRECISION, RECALL, SPECIFICITY, F_MEASURE;
+}
+
+\end{lstlisting}
+
+
+\begin{lstlisting}[language=Java,basicstyle=\tiny,caption=Type.java]
+package com.mczal.nb.model.util;
+
+/**
+ * Created by Gl552 on 1/22/2017.
+ */
+public enum Type {
+  DISCRETE,
+  NUMERIC,
+  CLASS
+}
+
+\end{lstlisting}
+
+\begin{lstlisting}[language=Java,basicstyle=\tiny,caption=BayesianModel.java]
+package com.mczal.nb.model;
+
+import com.mczal.nb.model.util.Type;
+
+import javax.persistence.*;
+import java.io.Serializable;
+import java.math.BigDecimal;
+
+/**
+ * Created by Gl552 on 1/21/2017.
+ */
+@Entity
+public class BayesianModel implements Serializable {
+
+  private static final long serialVersionUID = 918981889757624891L;
+
+  @Column
+  private String className;
+
+  @Column
+  private String classVal;
+
+  @Column
+  private Integer count;
+
+  @Id
+  @GeneratedValue(strategy = GenerationType.AUTO)
+  private Integer id;
+
+  @Column
+  private BigDecimal mean;
+
+  @Column
+  private String predVal;
+
+  @Column
+  private String predictorName;
+
+  @Column
+  private BigDecimal sigma;
+
+  @Column
+  @Enumerated(value = EnumType.STRING)
+  private Type type;
+
+  public String getClassName() {
+    return className;
+  }
+
+  public void setClassName(String className) {
+    this.className = className;
+  }
+
+  public String getClassVal() {
+    return classVal;
+  }
+
+  public void setClassVal(String classVal) {
+    this.classVal = classVal;
+  }
+
+  public Integer getCount() {
+    return count;
+  }
+
+  public void setCount(Integer count) {
+    this.count = count;
+  }
+
+  public Integer getId() {
+    return id;
+  }
+
+  public void setId(Integer id) {
+    this.id = id;
+  }
+
+  public BigDecimal getMean() {
+    return mean;
+  }
+
+  public void setMean(BigDecimal mean) {
+    this.mean = mean;
+  }
+
+  public String getPredVal() {
+    return predVal;
+  }
+
+  public void setPredVal(String predVal) {
+    this.predVal = predVal;
+  }
+
+  public String getPredictorName() {
+    return predictorName;
+  }
+
+  public void setPredictorName(String predictorName) {
+    this.predictorName = predictorName;
+  }
+
+  public BigDecimal getSigma() {
+    return sigma;
+  }
+
+  public void setSigma(BigDecimal sigma) {
+    this.sigma = sigma;
+  }
+
+  public Type getType() {
+    return type;
+  }
+
+  public void setType(Type type) {
+    this.type = type;
+  }
+
+  @Override
+  public String toString() {
+    return "BayesianModel{" + "className='" + className + '\'' + ", classVal='" + classVal + '\''
+        + ", count=" + count + ", id=" + id + ", mean=" + mean + ", predVal='" + predVal + '\''
+        + ", predictorName='" + predictorName + '\'' + ", sigma=" + sigma + ", type=" + type + '}';
+  }
+}
+
+\end{lstlisting}
+
+
+\begin{lstlisting}[language=Java,basicstyle=\tiny,caption=ClassInfo.java]
+package com.mczal.nb.model;
+
+import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
+
+/**
+ * Created by Gl552 on 1/22/2017.
+ */
+@Entity
+@Table(uniqueConstraints = {@UniqueConstraint(columnNames = "className")})
+public class ClassInfo implements Serializable {
+
+  private static final long serialVersionUID = 7690173919728795609L;
+
+  @OneToMany(cascade = CascadeType.ALL,
+      fetch = FetchType.EAGER,
+      mappedBy = "classInfo")
+  private Set<ClassInfoDetail> classInfoDetails = new HashSet<>();
+
+  @Column(name = "className")
+  private String className;
+
+  @OneToOne(mappedBy = "classInfo")
+  private ConfusionMatrixLast confusionMatrixLast;
+
+  @Id
+  @GeneratedValue(strategy = GenerationType.AUTO)
+  private Integer id;
+
+  @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+  @JoinColumn(name = "accuracy")
+  private ErrorRate accuracy;
+
+  public ErrorRate getAccuracy() {
+    return accuracy;
+  }
+
+  public void setAccuracy(ErrorRate accuracy) {
+    this.accuracy = accuracy;
+  }
+
+  public Set<ClassInfoDetail> getClassInfoDetails() {
+    return classInfoDetails;
+  }
+
+  public void setClassInfoDetails(Set<ClassInfoDetail> classInfoDetails) {
+    this.classInfoDetails = classInfoDetails;
+  }
+
+  public String getClassName() {
+    return className;
+  }
+
+  public void setClassName(String className) {
+    this.className = className;
+  }
+
+  public ConfusionMatrixLast getConfusionMatrixLast() {
+    return confusionMatrixLast;
+  }
+
+  public void setConfusionMatrixLast(ConfusionMatrixLast confusionMatrixLast) {
+    this.confusionMatrixLast = confusionMatrixLast;
+  }
+
+  public Integer getId() {
+    return id;
+  }
+
+  public void setId(Integer id) {
+    this.id = id;
+  }
+}
+
+\end{lstlisting}
+
+
+\begin{lstlisting}[language=Java,basicstyle=\tiny,caption=ClassInfoDetail.java]
+package com.mczal.nb.model;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+
+/**
+ * Created by Gl552 on 1/22/2017.
+ */
+@Entity
+public class ClassInfoDetail implements Serializable {
+
+  private static final long serialVersionUID = 6334593415054392713L;
+
+  @ManyToOne
+  @JoinColumn(name = "classInfoId")
+  private ClassInfo classInfo;
+
+  @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "classInfoDetail")
+  private List<ErrorRate> errorRates = new ArrayList<ErrorRate>();
+
+  @Column
+  private Integer count = 0;
+
+  @Id
+  @GeneratedValue(strategy = GenerationType.AUTO)
+  private Integer id;
+
+  @Column
+  private String value;
+
+  public ClassInfo getClassInfo() {
+    return classInfo;
+  }
+
+  public void setClassInfo(ClassInfo classInfo) {
+    this.classInfo = classInfo;
+  }
+
+  public Integer getCount() {
+    return count;
+  }
+
+  public void setCount(Integer count) {
+    this.count = count;
+  }
+
+  public List<ErrorRate> getErrorRates() {
+    return errorRates;
+  }
+
+  public void setErrorRates(List<ErrorRate> errorRates) {
+    this.errorRates = errorRates;
+  }
+
+  public Integer getId() {
+    return id;
+  }
+
+  public void setId(Integer id) {
+    this.id = id;
+  }
+
+  public String getValue() {
+    return value;
+  }
+
+  public void setValue(String value) {
+    this.value = value;
+  }
+}
+
+\end{lstlisting}
+
+
+\begin{lstlisting}[language=Java,basicstyle=\tiny,caption=ConfusionMatrixDetail.java]
+package com.mczal.nb.model;
+
+import java.io.Serializable;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+
+/**
+ * Created by mczal on 07/03/17.
+ */
+@Entity
+public class ConfusionMatrixDetail implements Serializable {
+
+  private static final long serialVersionUID = -7643004541516515067L;
+
+  @Id
+  @GeneratedValue(strategy = GenerationType.AUTO)
+  private Integer id;
+
+  @Column
+  private String predicted;
+
+  @ManyToOne
+  @JoinColumn(name = "confusionMatrixLastId")
+  private ConfusionMatrixLast confusionMatrixLast;
+
+  @Column
+  private String percentage;
+
+  @Column
+  private String actual;
+
+  public String getActual() {
+    return actual;
+  }
+
+  public void setActual(String actual) {
+    this.actual = actual;
+  }
+
+  public ConfusionMatrixLast getConfusionMatrixLast() {
+    return confusionMatrixLast;
+  }
+
+  public void setConfusionMatrixLast(ConfusionMatrixLast confusionMatrixLast) {
+    this.confusionMatrixLast = confusionMatrixLast;
+  }
+
+  public Integer getId() {
+    return id;
+  }
+
+  public void setId(Integer id) {
+    this.id = id;
+  }
+
+  public String getPercentage() {
+    return percentage;
+  }
+
+  public void setPercentage(String percentage) {
+    this.percentage = percentage;
+  }
+
+  public String getPredicted() {
+    return predicted;
+  }
+
+  public void setPredicted(String predicted) {
+    this.predicted = predicted;
+  }
+
+  @Override
+  public String toString() {
+    return "ConfusionMatrixDetail{" +
+        "id=" + id +
+        ", predicted='" + predicted + '\'' +
+        ", confusionMatrixLast=" + confusionMatrixLast +
+        ", percentage='" + percentage + '\'' +
+        ", actual='" + actual + '\'' +
+        '}';
+  }
+
+}
+
+\end{lstlisting}
+
+
+\begin{lstlisting}[language=Java,basicstyle=\tiny,caption=ConfusionMatrix.java]
+package com.mczal.nb.model;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.persistence.UniqueConstraint;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
+/**
+ * Created by mczal on 06/03/17.
+ */
+@Entity
+@Table(uniqueConstraints = {@UniqueConstraint(columnNames = "className")})
+@EntityListeners(value = {AuditingEntityListener.class})
+public class ConfusionMatrix implements Serializable {
+
+  private static final long serialVersionUID = -6423414871356377433L;
+
+  /**
+   * TODO: RECONS
+   */
+  @OneToOne(cascade = CascadeType.DETACH, fetch = FetchType.EAGER)
+  @JoinColumn(name = "classInfoId")
+  private ClassInfo classInfo;
+
+  @Id
+  @GeneratedValue(strategy = GenerationType.AUTO)
+  private Integer id;
+
+  @OneToMany(cascade = CascadeType.ALL,
+      fetch = FetchType.LAZY,
+      mappedBy = "confusionMatrixLast")
+  private List<ConfusionMatrixDetail> confusionMatrixDetails = new ArrayList<ConfusionMatrixDetail>();
+
+  @CreatedDate
+  @Temporal(value = TemporalType.TIMESTAMP)
+  @Column(name = "createdDate",
+      nullable = false)
+  private Date createdDate;
+
+  @LastModifiedDate
+  @Temporal(value = TemporalType.TIMESTAMP)
+  @Column(name = "updatedDate")
+  private Date updatedDate;
+
+  @Column(name = "className")
+  private String className;
+
+  @Lob
+  @Column(name = "printedConfusionMatrix", length = 10000)
+  private String printedConfusionMatrix;
+
+  public ClassInfo getClassInfo() {
+    return classInfo;
+  }
+
+  public void setClassInfo(ClassInfo classInfo) {
+    this.classInfo = classInfo;
+  }
+
+  public String getClassName() {
+    return className;
+  }
+
+  public void setClassName(String className) {
+    this.className = className;
+  }
+
+  public List<ConfusionMatrixDetail> getConfusionMatrixDetails() {
+    return confusionMatrixDetails;
+  }
+
+  public void setConfusionMatrixDetails(
+      List<ConfusionMatrixDetail> confusionMatrixDetails) {
+    this.confusionMatrixDetails = confusionMatrixDetails;
+  }
+
+  public Date getCreatedDate() {
+    return createdDate;
+  }
+
+  public void setCreatedDate(Date createdDate) {
+    this.createdDate = createdDate;
+  }
+
+  public Integer getId() {
+    return id;
+  }
+
+  public void setId(Integer id) {
+    this.id = id;
+  }
+
+  public String getPrintedConfusionMatrix() {
+    return printedConfusionMatrix;
+  }
+
+  public void setPrintedConfusionMatrix(String printedConfusionMatrix) {
+    this.printedConfusionMatrix = printedConfusionMatrix;
+  }
+
+  public Date getUpdatedDate() {
+    return updatedDate;
+  }
+
+  public void setUpdatedDate(Date updatedDate) {
+    this.updatedDate = updatedDate;
+  }
+
+  @Override
+  public String toString() {
+    return "ConfusionMatrixLast{" +
+        "id=" + id +
+        ", confusionMatrixDetails=" + confusionMatrixDetails.size() +
+        ", createdDate=" + createdDate +
+        ", updatedDate=" + updatedDate +
+        ", className='" + className + '\'' +
+        ", printedConfusionMatrix='" + printedConfusionMatrix + '\'' +
+        '}';
+  }
+}
+
+\end{lstlisting}
+
+
+\begin{lstlisting}[language=Java,basicstyle=\tiny,caption=ErrorRate.java]
+package com.mczal.nb.model;
+
+import com.mczal.nb.model.util.ErrorType;
+import java.io.Serializable;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+
+/**
+ * Created by Gl552 on 2/12/2017.
+ */
+@Entity
+public class ErrorRate implements Serializable {
+
+  private static final long serialVersionUID = -774762515628401586L;
+
+  @Id
+  @GeneratedValue(strategy = GenerationType.AUTO)
+  private Integer id;
+
+  @Column(name = "type")
+  @Enumerated(EnumType.STRING)
+  private ErrorType type;
+
+  @ManyToOne(cascade = CascadeType.DETACH)
+  @JoinColumn(name = "classInfoDetailId")
+  private ClassInfoDetail classInfoDetail;
+
+  @Column
+  private String operation;
+
+  @Column
+  private Double result;
+
+  public ClassInfoDetail getClassInfoDetail() {
+    return classInfoDetail;
+  }
+
+  public void setClassInfoDetail(ClassInfoDetail classInfoDetail) {
+    this.classInfoDetail = classInfoDetail;
+  }
+
+  public Integer getId() {
+    return id;
+  }
+
+  public void setId(Integer id) {
+    this.id = id;
+  }
+
+  public String getOperation() {
+    return operation;
+  }
+
+  public void setOperation(String operation) {
+    this.operation = operation;
+  }
+
+  public Double getResult() {
+    return result;
+  }
+
+  public void setResult(Double result) {
+    this.result = result;
+  }
+
+  public ErrorType getType() {
+    return type;
+  }
+
+  public void setType(ErrorType type) {
+    this.type = type;
+  }
+}
+
+\end{lstlisting}
+
+\begin{lstlisting}[language=Java,basicstyle=\tiny,caption=PredictorInfo.java]
+package com.mczal.nb.model;
+
+import com.mczal.nb.model.util.Type;
+
+import javax.persistence.*;
+import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
+
+/**
+ * Created by Gl552 on 1/22/2017.
+ */
+@Entity
+@Table(uniqueConstraints = {@UniqueConstraint(columnNames = "predictorName")})
+public class PredictorInfo implements Serializable {
+  private static final long serialVersionUID = 3941627791928304053L;
+
+  @Id
+  @GeneratedValue(strategy = GenerationType.AUTO)
+  private Integer id;
+
+  @OneToMany(cascade = CascadeType.ALL,
+      fetch = FetchType.EAGER,
+      mappedBy = "predictorInfo")
+  private Set<PredictorInfoDetail> predictorInfoDetails = new HashSet<PredictorInfoDetail>();
+
+  @Column(name = "predictorName")
+  private String predictorName;
+
+  @Column
+  @Enumerated(EnumType.STRING)
+  private Type type;
+
+  public Integer getId() {
+    return id;
+  }
+
+  public void setId(Integer id) {
+    this.id = id;
+  }
+
+  public Set<PredictorInfoDetail> getPredictorInfoDetails() {
+    return predictorInfoDetails;
+  }
+
+  public void setPredictorInfoDetails(Set<PredictorInfoDetail> predictorInfoDetails) {
+    this.predictorInfoDetails = predictorInfoDetails;
+  }
+
+  public String getPredictorName() {
+    return predictorName;
+  }
+
+  public void setPredictorName(String predictorName) {
+    this.predictorName = predictorName;
+  }
+
+  public Type getType() {
+    return type;
+  }
+
+  public void setType(Type type) {
+    this.type = type;
+  }
+}
+
+\end{lstlisting}
+
+
+\begin{lstlisting}[language=Java,basicstyle=\tiny,caption=PredictorInfoDetail.java]
+package com.mczal.nb.model;
+
+import javax.persistence.*;
+import java.io.Serializable;
+import java.math.BigDecimal;
+
+/**
+ * Created by Gl552 on 1/22/2017.
+ */
+@Entity
+public class PredictorInfoDetail implements Serializable {
+
+  private static final long serialVersionUID = -9028287663776722770L;
+
+  @Column
+  private String classPriorName;
+
+  @Column
+  private String classPriorValue;
+
+  @Column
+  private Integer count = 0;
+
+  @Id
+  @GeneratedValue(strategy = GenerationType.AUTO)
+  private Integer id;
+
+  @Column
+  private BigDecimal mean;
+
+  @ManyToOne
+  @JoinColumn(name = "predictorInfoId")
+  private PredictorInfo predictorInfo;
+
+  private Boolean selected = false;
+
+  @Column
+  private BigDecimal sigma;
+
+  @Column
+  private String value;
+
+  public String getClassPriorName() {
+    return classPriorName;
+  }
+
+  public void setClassPriorName(String classPriorName) {
+    this.classPriorName = classPriorName;
+  }
+
+  public String getClassPriorValue() {
+    return classPriorValue;
+  }
+
+  public void setClassPriorValue(String classPriorValue) {
+    this.classPriorValue = classPriorValue;
+  }
+
+  public Integer getCount() {
+    return count;
+  }
+
+  public void setCount(Integer count) {
+    this.count = count;
+  }
+
+  public Integer getId() {
+    return id;
+  }
+
+  public void setId(Integer id) {
+    this.id = id;
+  }
+
+  public BigDecimal getMean() {
+    return mean;
+  }
+
+  public void setMean(BigDecimal mean) {
+    this.mean = mean;
+  }
+
+  public PredictorInfo getPredictorInfo() {
+    return predictorInfo;
+  }
+
+  public void setPredictorInfo(PredictorInfo predictorInfo) {
+    this.predictorInfo = predictorInfo;
+  }
+
+  public Boolean getSelected() {
+    return selected;
+  }
+
+  public void setSelected(Boolean selected) {
+    this.selected = selected;
+  }
+
+  public static long getSerialVersionUID() {
+    return serialVersionUID;
+  }
+
+  public BigDecimal getSigma() {
+    return sigma;
+  }
+
+  public void setSigma(BigDecimal sigma) {
+    this.sigma = sigma;
+  }
+
+  public String getValue() {
+    return value;
+  }
+
+  public void setValue(String value) {
+    this.value = value;
+  }
+}
+
 \end{lstlisting}

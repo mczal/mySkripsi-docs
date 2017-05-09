@@ -57,6 +57,8 @@
 \usepackage{relsize}
 \usepackage{listings}
 
+\usepackage{enumitem}
+
 % END CUSTOM PACKAGE SECTION BY MOHAMAD FAHRIZAL S.
 
 %=============================================================================
@@ -140,7 +142,7 @@
 % Catatan: Jika ingin menambahkan bab ke-10 dan seterusnya, harus dilakukan 
 % secara manual
 %=============================================================================
-\bab{5,6}
+\bab{ }
 %=============================================================================
 
 %_____________________________________________________________________________
@@ -181,7 +183,7 @@
 % !!Lihat singkatan pembimbing dan penguji anda di file dosen.tex
 %=============================================================================
 \namanpm{Mohamad Fahrizal Septrianto}{2013730017}	%hilangkan tanda << & >>
-\tanggal{25}{5}{2016}			%hilangkan tanda << & >>
+\tanggal{9}{5}{2017}			%hilangkan tanda << & >>
 \pembimbing{\VSM}{} %hilangkan tanda << & >>    
 \penguji{\TAB}{} 				%hilangkan tanda << & >>
 %=============================================================================
@@ -220,7 +222,15 @@ Untuk dapat mengetahui dan mengambil informasi berharga yang tersembunyi dalam \
 
 Pada penelitian ini, telah berhasil dikembangkan sebuah perangkat lunak yang berjalan di dalam lingkungan Hadoop berbasiskan \textit{MapReduce} yang mampu melakukan pembuatan model klasifikasi \textit{naive bayes} sekaligus melakukan pengujian terhadap model tersebut menggunakan \textit{big data}. Pada eksperimen yang telah dilakukan menggunakan \textit{cluster} hadoop yang ada pada laboratorium milik FTIS (Fakultas Teknologi Informasi dan Sains), ditetapkan 2 variabel eksperimen, yaitu (1) ukuran \textit{big data} dan (2) ukuran blok. Dari hasil eksperimen yang telah dilakukan diketahui bahwa ukuran \textit{big data} yang diumpankan pada perangkat lunak sangat bergantung pada spesifikasi perangkat keras milik \textit{cluster} hadoop, sehingga dapat mempengaruhi waktu eksekusi. Lalu, ukuran blok pada HDFS (\textit{Hadoop Distributed File System}) juga mempengaruhi waktu eksekusi perangkat lunak yang berjalan pada sistem terdistribusi hadoop.
 }
-\abstrakENG{MY ABSTRACT}
+\abstrakENG{
+Nowadays, internet has become one of the most used tool for communicating, searching for information, even for online transaction like buying and selling some products. Also, it has grows to became a digital place for companies to sell and market their products. Because internet users continue to grow quickly and diverse, this could cause all the data that are processed is getting more and more big and also had unstructured pattern. It also make the needs for processing huge data at an efficient amount of time to be the major common problem faced by most companies/individu (Big Data).
+
+A distributed system is an impact from the present technology that can meet human expectations in huge data processing. Hadoop is an example of a framework that can run software in a distributed system. Hadoop is a framework that build for huge data processing and analysis. Hadoop have many component that support it to process a numerous data in many computers at the same time with parallel method. Because of the ability to concurrently run a job at the same time, Hadoop can minimize the process time from the job.
+
+To be able to know and retrieve hidden valuable information inside the big data, it required data mining technique/machine learning algorithm to perform the process of making a specific model that can later be used to predict a fact in the future so that company could make a better decision. This could be useful for company in doing predictive analysis to raise the value of the company.
+
+In this research, a MapReduce based software that runs in Hadoop environment has been successfully developed which is able to make a naive bayes classifier model for classification as well as testing the models that use large data. In experiments that has been done using existing hadoop clusters in the laboratory owned by FTIS (Faculty of Information and Science Technology), 2 experimental variables were defined, which is: (1) big data size and (2) block size. The results told us that the size of big data fed on the software is very dependent on the hardware specifications owned by hadoop cluster, so it can affect the execution time. Also, block size on HDFS (Hadoop Distributed File System) also affects software execution time running on the hadoop distributed system according to the size of the data itself.
+}
 %=============================================================================
 
 %_____________________________________________________________________________

@@ -6,7 +6,7 @@ Pada bab ini dijelaskan beberapa dasar teori dan \textit{framework} yang digunak
 \section{Penambangan Data}
 
 \subsection{Definisi Penambangan Data}
-\textit{Data mining} (penambangan data) adalah suatu proses untuk menemukan suatu
+Penambangan data (\textit{data mining}) adalah suatu proses untuk menemukan suatu
 pengetahuan atau informasi yang berguna dari data berskala besar. Sering juga
 disebut sebagai bagian proses KDD (Knowledge Discovery in Databases) \cite{Piateski:1991:KDD:583310}. \textit{Data mining} melakukan pemecahan masalah dengan menganalisa data yang ada di dalam database dan sering juga didefinisikan sebagai proses menemukan pola dalam data, dimana proses tersebut harus otomatis atau semi-otomatis dan pola yang ditemukan harus bermakna \cite{DataMiningIntro:2015}.
 
@@ -114,7 +114,8 @@ Berikut merupakan beberapa contoh \textit{big data} dan pemanfaatannya diberbaga
 			\label{fig:Arsitektur master-slave}
 		\end{figure}
 	
-	\subsection{Fitur - fitur dari \textit{Hadoop} \cite{Lam:2010:HA:1965594}}
+	\subsection{Fitur - fitur dari \textit{Hadoop}}
+	\cite{Lam:2010:HA:1965594}
 	\begin{enumerate}
 		\item \textit{Cost Effective System}.
 		Hadoop dapat diimplementasikan pada beberapa komputer biasa yang tidak memiliki spesifikasi terlalu tinggi. 
@@ -283,12 +284,13 @@ HDFS merupakan sebuah sistem penyimpanan terdistribusi yang menyediakan akses th
 	\label{fig:map_reduce}
 \end{figure}
 		
-		MapReduce merupakan framework yang dirancang untuk memproses data secara paralel terdistribusi yang memiliki performa dan efisiensi yang sangat tinggi. Jenis pekerjaan pada fase map dan reduce yang dapat dikerjakan oleh framework ini merupakan jenis pekerjaan yang tidak memiliki hubungan berkesinambungan di antara  tiap proses-nya, sehingga dapat berjalan secara bersama - sama (\textit{concurrent}). Hadoop membagi/memecah seluruh dataset yang ada ke dalam beberapa partisi dan mendistribusikannya ke dalam kelompok/\textit{cluster}. MapReduce memproses data di setiap server terhadap blok - blok data yang sudah dibagikan sebelumnya, sehingga sangat menghemat waktu pekerjaan yang dihabiskan \cite{Lam:1965594:HA}. \\
-		Terdapat 3 fase utama pada MapReduce, yaitu fase \textit{map}, fase \textit{shuffle}, dan fase \textit{reduce}. 
+		MapReduce merupakan framework yang dirancang untuk memproses data secara paralel terdistribusi di dalam Hadoop yang memiliki performa dan efisiensi yang optimal untuk menangani data yang berukuran besar. Jenis pekerjaan pada fase map dan reduce yang dapat dikerjakan oleh framework ini merupakan jenis pekerjaan yang tidak memiliki hubungan berkesinambungan di antara  tiap proses-nya, sehingga dapat berjalan secara bersama - sama (\textit{concurrent}). Hadoop membagi/memecah seluruh dataset yang ada ke dalam beberapa partisi dan mendistribusikannya ke dalam kelompok/\textit{cluster}. MapReduce memproses data di setiap server terhadap blok - blok data yang sudah dibagikan sebelumnya, sehingga sangat menghemat waktu pekerjaan yang dihabiskan \cite{Lam:1965594:HA}. \\
+		Terdapat 3 fase utama dan 1 fase yang opsional(bisa dijalankan atau tidak, bergantung pada kebutuha) pada MapReduce, yaitu fase \textit{map}, fase \textit{shuffle}, fase \textit{reduce}, dan fase \textit{combine}. 
 		\begin{enumerate}
 			\item Pada fase \textit{map}, melakukan \textit{convert} tiap partisi dari input kedalam pasangan \textit{key/value} (seperti pada struktur data HashMap) lalu menggabungkan setiap \textit{value} yang memiliki \textit{key} yang sama.
 			\item Pada fase shuffle, hasil keluaran dari fase Map di sort berdasarkan key dan pasangan \textit{key/value} tersebut di kirimkan ke reducer node yang menerima pasangan \textit{key/value} yang sesuai.
 			\item Pada fase \textit{reduce}, algoritma menerima sebuah pasangan key dengan himpunan dari value yang memiliki hubungan dengan key tersebut, lalu melakukan suatu proses yang nantinya menjadi keluaran dari program MapReduce.
+			\item Fase \textit{combine} ini merupakan fase yang sifatnya opsional, bisa dijalankan atau tidak. Fase ini akan melakukan yang sama seperti pada fase \textit{reduce}, hanya saja dijalankan langsung setelah fase map selesai pada node yang menjalankan proses fase \textit{map} tersebut. Hal ini bertujuan agar besaran data yang dikirim dari \textit{node} pekerja pada fase \textit{map} kepada node pekerja pada fase \textit{reduce} tidak terlalu besar, karena sebelum dikirim telah dilakukan integrasi terlebih dahulu pada data yang memiliki key yang sama. Sehingga akan menghemat \textit{bandwidth} jaringan yang digunakan.
 		\end{enumerate} 
 		
 	Beberapa komponen utama dari \textit{MapReduce} terdiri dari \textit{JobTracker} dan \textit{TaskTracker}.
@@ -328,7 +330,6 @@ Pada YARN setiap pekerjaan memiliki JobTracker-nya masing - masing dan pada suat
 	\label{fig:Arsitektur YARN : Heterogenous Cluster YARN}
 \end{figure}
 
-
 Map-Reduce ada pada setiap DataNode pada cluster Hadoop. Setiap program Map-Reduce mengerjakan atau mengolah data - data yang terdapat pada DataNode-nya. Map-Reduce ditulis dengan bahasa Java, sehingga untuk setiap abstraksi dan aturan pada pembuatan kode mengikuti bahasa Java. Selain itu, Map-Reduce milik Hadoop dibuat untuk memudahkan programmer sehingga hanya perlu berfokus pada dua buah fase yang digunakan saja, yaitu fase map dan reduce. Sedangkan untuk fase Shuffle dan Sort sudah ditangani secara otomatis oleh framework Hadoop. Berikut merupakan penjelasan lebih lanjut mengenai mapper dan reducer yang digunakan pada fase map dan fase reduce.
 
 \paragraph{Mapper} 
@@ -356,10 +357,50 @@ Reducer berfungsi untuk mengurangi data yang tidak diperlukan (misal : data yang
 	\item Pada fase reduce, dijalankan fungsi reduce yang sudah diimplementasikan sebelumnya untuk memproses pasangan dari \textit{key/list-of-value-key} menjadi hasil yang dibutuhkan.
 \end{enumerate}
 
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.5]{contoh_mapreduce}
+\caption[Proses MapReduce]{Proses MapReduce}
+\label{fig:Proses MapReduce}
+\end{figure}
+
+Misalkan sebuah contoh kasus MapReduce berdasarkan gambar diatas. Contoh diatas merupakan sebuah sekenario program MapReduce yang melakukan perhitungan banyaknya kemunculan kata pada sebuah dokumen. Data mentah yang berasal dari HDFS mula-mula diambil per barisnya menjadi pasangan key-value yang diumpankan ke fungsi map. Pada state kedua saat pertama kali masuk ke dalam MapReduce, nilai (0, pada suatu hari), (16, pada suatu), (27, desa) menyatakan pasangan key-value yang diumpankan ke fungsi map. 0, 16, dan 27 menyatakan ofset data pasangan valuenya berdasarkan awal dari file HDFS. Maksudnya adalah untuk offset ke-0 value yang diumpankan adalah "pada suatu hari", mulai offset ke-16 value yang diumpankan adalah "pada suatu", dan pada offset ke 27-value yang diumpankan adalah desa. Untuk kasus ini, fungsi map diatur sedemikian sehingga menghasilkan pasangan key-value dengan key berupa sebuah kata dan value merupakan sebuah angka satu yang melambangkan kata tersebut muncul satu kali. Dapat diperhatikan juga bahwa ada pasangan key-value yang berulang seperti (pada, 1) karena pada input terdapat lebih dari satu kali kata "pada".
+
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.5]{proses_map}
+\caption[Proses Map]{Proses Map}
+\label{fig:Proses Map}
+\end{figure}
+
+Pada gambar diatas, digambarkan bila terdapat dua buah node pada sebuah cluster. File dibagi menjadi dua block dimana pada block pertama data adalah data dengan key 0 dan 27, sedangkan pada block yang ke dua adalah data dengan key 16. Kedua block tersebut masuk ke dua buah node yang berbeda, lalu dilakukan fungsi map yang terpisah dan hasilnya disimpan sementara di masing-masing node tersebut.
+
+Setiap kunci ditetapkan pada sebuah partisi oleh sebuah komponen dalam MapReduce bernama partitioner. Di MapReduce pada Hadoop, partitioner secara default melakukan hash partition yang mengambil hash dari key yang di modulo jumlah reduce yang dikonfigurasi dalam sebuah job untuk mendapatkan nomor partisi. Pelaksanaan hash yang digunakan oleh Hadoop memastikan bahwa hash dari sebuah kunci "pada" selalu sama pada semua node yang memiliki kunci "pada". Hal tersebut menyebabkan bahwa semua "pada" ditempatkan di partisi yang sama.
+
+Hasil keluaran dari fungsi map terlebih dahulu diolah dalam sebuah proses yang dinamakan Shuffle and Sort sebelum diumpankan selanjutnya ke fungsi reduce. Pada proses ini pasangan key-value dikelompokan dan diurutkan berdasarkan key. Proses Shuffe and Sort ini merupakan bagian pra-pengolahan data yang diumpankan pada fungsi reduce. Proses ini memiliki tujuan untuk memastikan:
+
+\begin{itemize}
+	\item Jika reducer melihat sebuah key, reducer melihat semua value untuk key tersebut. Sebagai contoh, jika sebuah key menerima kunci "pada", maka reducer menerima dua buah angka 1 sebagai value dari setiap key "pada".
+	\item Sebuah kunci diproses oleh tepat satu reducer.
+	\item Setiap reducer melihat key yang sudah terurut.
+\end{itemize}
+
+Pada proses Shuffle and Sort, setiap reducer pada awalnya ditetapkan sebuah partisi dimana reducer melakukan tugasnya. Pertama, reducer mengambil setiap pasangan key-value hasil dari fungsi map pada setiap node yang memiliki partisi yang ditetapkan pada reducer tersebut. Misalkan sebuah reducer yang ditetapkan mengerjakan partisi X mencari di seluruh node setiap pasangan key-value yang berada pada partisi 1. Mencari dan menduplikasi data dari setiap node menghabiskan banyak waktu dan resources yang berbanding lurus dengan jumlah data. Untuk meminimalisasi hal ini, proses pencarian dan penduplikasian data dilakukan sesegera mungkin ketika sebuah fungsi map telah selesai untuk mempersingkat runtime namun tidak dilakukan terlalu cepat karena data yang diduplikasi menyita banyak resource yang dimiliki oleh fungsi reduce bila fungsi map masih belum selesai.
+
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.5]{proses_reduce}
+\caption[Proses Reduce]{Proses Reduce}
+\label{fig:Proses Reduce}
+\end{figure}
+
+Setelah data untuk fungsi reduce telah disiapkan, maka fungsi reduce sekarang dapat melakukan tugasnya. Pada kasus ini dan berdasarkan ketentuan data yang diterima sebuah reducer, misalkan sebuah reducer mendapatkan tugas untuk melakukan proses reduce pada partisi X dimana partisi tersebut berisi dua buah pasangan key-value (pada, 1) dan (di, 1). Reducer dibuat sedemikian rupa sehingga reducer menggabungkan pasangan key-value yang serupa dengan menambahkan value dari key tersebut. Untuk kasus ini maka hasil dari reducer ini berupa (pada, 2) dan (di, 1).
+
+Setiap reducer menghasilkan output file yang berbeda antara reducer lainnya. Hal ini ditujukan agar reducer tidak harus berkoordinasi dengan reducer lainnya dalam penulisan sebuah shared file sehingga mengurangi kompleksitas dan setiap reducer bebas menyelesaikan pekerjaanya tidak bergantung dengan reducer yang lain. File yang dihasilkan biasanya dinamakan part-XXXXX dimana XXXXX merupakan penunjuk bahwa file tersebut merupakan hasil dari task reduce ke-XXXXX.
 		
-\section{Teorema Bayes \cite{garg2013design}}
+\section{Teorema Bayes}
 	
-	Teorema Bayes adalah salah satu teorema dalam statistika untuk menghitung peluang suatu kejadian dari beberapa kejadian lainnya. Teorema bayes merupakan salah satu istilah dalam teori probabilitas yang berisi mengenai perhitungan probabilitas yang memiliki syarat tertentu (\textit{certain conditional probability}). Probabilitas bersyarat (\textit{conditional probabilities}) merupakan suatu probabilitas terhadap 1 kejadian tertentu yang dipengaruhi oleh probabilitas kejadian lain. Istilah yang umum digunakan pada teorema bayes adalah probabilitas \textit{prior} dan probabilitasi \textit{posterior}. Probabilitas prior dari suatu kejadian(atau hipotesa) merupakan probablitas orisinil yang didapatkan sebelum dipengaruhi oleh probabilitas lain. Sedangkan probabilitas posterior merupakan probabilitas suatu kejadian yang sudah dipengaruhi oleh probabilitas dari kejadian lain.
+	\cite{garg2013design} Teorema Bayes adalah salah satu teorema dalam statistika untuk menghitung peluang suatu kejadian dari beberapa kejadian lainnya. Teorema bayes merupakan salah satu istilah dalam teori probabilitas yang berisi mengenai perhitungan probabilitas yang memiliki syarat tertentu (\textit{certain conditional probability}). Probabilitas bersyarat (\textit{conditional probabilities}) merupakan suatu probabilitas terhadap 1 kejadian tertentu yang dipengaruhi oleh probabilitas kejadian lain. Istilah yang umum digunakan pada teorema bayes adalah probabilitas \textit{prior} dan probabilitasi \textit{posterior}. Probabilitas prior dari suatu kejadian(atau hipotesa) merupakan probablitas orisinil yang didapatkan sebelum dipengaruhi oleh probabilitas lain. Sedangkan probabilitas posterior merupakan probabilitas suatu kejadian yang sudah dipengaruhi oleh probabilitas dari kejadian lain.
 	
 	Teorema bayes dapat ditulis sebagai:
 	
@@ -410,13 +451,13 @@ Sebuah dataset dapat ditentukan klasifikasi-nya dengan algoritma naive bayes set
 %	\item $P(d)$ merupakan probabilitas dari dokumen/dataset
 %\end{itemize}
 
-\subsection{\textit{Zero-Frequency Problem} \cite{PeughMissing:2004}}
+\subsection{\textit{Zero-Frequency Problem}}
 \label{subsec:Zero-Frequency Problem}
-
+\cite{PeughMissing:2004} 
 Ketika ada suatu nilai dari atribut prediktor yang tidak memiliki frekuensi kemunculan sama sekali terhadap setiap kelas (frekuensi=0), maka nilai 1 ditambahkan kepada setiap kombinasi dari frekuensi dari atribut terhadap tiap kelas. Pendekatan yang digunakan untuk dalam mengatasi hal ini adalah dengan menggunakan metode \textit{Laplacian Correction}. Pada metode tersebut, dikatakan bahwa kita perlu menambah nilai 1 kepada seluruh nilai pada table frekuensi untuk mengatasi masalah \textit{zero-frequency problems}. Asumsikan training database (D) itu sangat besar, dimana menambahkan frekuensi sebanyak 1 ke setiap jumlah perhitungan yang kita perlukan tidak memberikan pengaruh yang besar terhadap nilai kemungkinan akhir (Laplacian correction / Laplace estimator).
 
-\subsection{Prediktor Numerik \cite{garg2013design}}
-
+\subsection{Prediktor Numerik}
+\cite{garg2013design} 
 Ketika suatu atribut prediktor memiliki data bersifat kontinu atau numerik, terdapat 2 cara untuk mengatasi hal tersebut, diantaranya adalah:
 \begin{enumerate}
 	\item Melakukan transformasi atribut numerik dengan cara memecah - mecah nilai distribusi dari seluruh nilai dalam atribut tersebut ke dalam kategori - kategori terpisah. Cara tersebut disebut sebagai \textit{binning}. Cara ini perlu dilakukan sebelum membuat tabel frekuensi.
@@ -548,14 +589,16 @@ Spring menyediakan model pemrograman terbuka yang komprehensif, kohesif, mudah d
 
 %\textit{Design pattern} perangkat lunak yang dibangun mengusung konsep dari MVC milik \textit{spring} dan beberapa tambahan \textit{layer - layer} untuk mempermudah jalannya perangkat lunak nantinya. Berikut merupakan ilustrasi
 
-\subsection{\textit{Maven} \cite{MengenalMaven2015EGunawan}}
+\subsection{\textit{Maven}}
+\cite{MengenalMaven2015EGunawan}
 Apache Maven adalah software build tools / project management yang dibangun dibawah \textit{Apache Software Foundation} yang digunakan untuk melakukan proses building project. Jadi, ketika project dibuild menggunakan Maven, project tersebut bisa kita buka menggunakan IDE lain.
 
 Selain itu, keuntungan menggunakan maven adalah mendukung dependency management. Artinya, ketika kita membutuhkan suatu library ke dalam project, kita tidak perlu men-\textit{download}-nya secara manual yang kemudian dimasukkan ke dalam project. Tetapi, tinggal memasukkan \textit{dependency} untuk library yang dibutuhkan tersebut dan maven menangani proses \textit{download} library dan kompilasi project menggunakan \textit{library} tersebut.  Dengan begitu, ukuran project menjadi lebih kecil karena tidak memasukkan library ke dalam project. \textit{Maven} menyimpan seluruh library yang pernah kita gunakan pada direktori \texttt{.m2} milik user.
 
 Untuk mendownload Apache Maven bisa langsung ke websitenya di \url{http://maven.apache.org/}. Versi terbaru dari Apache Maven adalah 3.5.0.
 
-\subsection{\textit{Thymeleaf} \cite{CogoluegnesIntroducing:2013}}
+\subsection{\textit{Thymeleaf}}
+\cite{CogoluegnesIntroducing:2013} 
 \textit{Thymeleaf} merupakan \textit{template-engine open source} yang dapat melakukan \textit{rendering} HTML pada \textit{server-side}. Thymeleaf adalah Java XML template engine / XHTML / HTML5 yang dapat bekerja baik di web (\textit{Servlet-based}) maupun lingkungan yang bukan web. Hal ini lebih cocok untuk melayani XHTML / HTML5 pada \textit{layer} tampilan aplikasi berbasis web MVC, tetapi dapat memproses file XML bahkan di lingkungan offline. \textit{Template engine} ini menyediakan integrasi penuh dengan \textit{Spring Framework}. 
 
 Dalam aplikasi web Thymeleaf bertujuan untuk menjadi pengganti lengkap untuk JSP, dan menerapkan konsep Natural Template: file template yang bisa langsung dibuka di browser dan yang masih menampilkan dengan benar sebagai halaman web.
