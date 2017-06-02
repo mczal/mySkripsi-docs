@@ -1,34 +1,36 @@
 %versi 2 (8-10-2016)
 \chapter{Landasan Teori}
 
-Pada bab ini dijelaskan beberapa dasar teori dan \textit{framework} yang digunakan dalam merancang dan membangun perangkat lunak untuk melakukan klasifikasi naive bayes pada sistem terdistribusi Hadoop. Dasar teori yang dijelaskan pada bab ini meliputi: (1) Penambangan data ; (2) \textit{Big data} ; (3) Sistem terdistribusi hadoop ; (4) \textit{Naive bayes classification} ; (5) \textit{Spring framework, maven, } dan \textit{thymeleaf}. \\
+Pada bab ini dijelaskan beberapa dasar teori dan \textit{framework} yang digunakan dalam merancang dan membangun perangkat lunak untuk melakukan klasifikasi Naive Bayes pada sistem terdistribusi Hadoop. Dasar teori yang dijelaskan pada bab ini meliputi: (1) Penambangan data ; (2) \textit{Big data} ; (3) Sistem terdistribusi Hadoop ; (4) \textit{Naive Bayes classification} ; (5) \textit{Spring framework, Maven, } dan \textit{Thymeleaf}. \\
 
 \section{Penambangan Data}
 
 \subsection{Definisi Penambangan Data}
 Penambangan data (\textit{data mining}) adalah suatu proses untuk menemukan suatu
 pengetahuan atau informasi yang berguna dari data berskala besar. Sering juga
-disebut sebagai bagian proses KDD (Knowledge Discovery in Databases) \cite{Piateski:1991:KDD:583310}. \textit{Data mining} melakukan pemecahan masalah dengan menganalisa data yang ada di dalam database dan sering juga didefinisikan sebagai proses menemukan pola dalam data, dimana proses tersebut harus otomatis atau semi-otomatis dan pola yang ditemukan harus bermakna \cite{DataMiningIntro:2015}.
+disebut sebagai bagian proses KDD (\textit{Knowledge Discovery in Databases}) \cite{Piateski:1991:KDD:583310}. \textit{Data mining} melakukan pemecahan masalah dengan menganalisis data yang ada di dalam basis data dan sering juga didefinisikan sebagai proses menemukan pola dalam data. Proses tersebut harus otomatis atau semi-otomatis dan pola yang ditemukan harus bermakna \cite{DataMiningIntro:2015}.
 
-\textit{Data mining} secara umum adalah mengenai pembuatan sebuah model. Suatu model dari teknik \textit{data mining} merupakan suatu algoritma atau sekumpulan aturan yang menghubungkan suatu input data set dengan hasil dari output yang diinginkan. Sebuah model yang dibuat menggunakan teknik \textit{data mining} dapat memiliki tingkat akurasi yang tinggi dan juga tingkat akurasi yang rendah. Hal tersebut bergantung pada pemilihan data yang digunakan sebagai input dan output yang harus memiliki hubungan \cite{book:339389}.
+\textit{Data mining} secara umum adalah mengenai pembuatan sebuah model. Suatu model dari teknik \textit{data mining} merupakan suatu algoritma atau sekumpulan aturan yang menghubungkan suatu input data set dengan hasil dari output yang diinginkan. Sebuah model yang dibuat menggunakan teknik \textit{data mining} dapat memiliki tingkat akurasi yang tinggi atau rendah. Hal tersebut bergantung pada pemilihan data yang digunakan sebagai input dan output yang harus memiliki hubungan \cite{book:339389}.
 
 \subsection{Tugas Yang Dapat Dilakukan Oleh \textit{Data Mining}}
+
+Beberapa tugas - tugas yang dapat diselesaikan menggunakan \textit{data mining} diantaranya adalah:
+
 \begin{itemize}
 	\item \textit{Classification}
-	\item \textit{Estimation}
 	\item \textit{Estimation}
 	\item \textit{Affinity grouping}
 	\item \textit{Clustering}
 	\item \textit{Description and profiling}
 \end{itemize}
 
-Pada bagian ini, hanya dijelaskan mengenai teknik klasifikasi dan klustering.
+Pada bagian ini, hanya dijelaskan mengenai teknik klasifikasi dan klustering. Karena, kedua algoritma ini memiliki sistem pembelajaran yang berbeda. Sehingga, dapat memudahkan dalam melihat perbedaan yang dimiliki oleh teknik tersebut.
 
 \begin{enumerate}
 	\item{\textit{Classification}\cite{book:339389}}\\
 	Klasifikasi juga merupakan algoritma mesin learning yang bersifat terawasi (\textit{supervised learning}). Dimana dalam pembuatan modelnya diperlukan data latih (umumnya disebut sebagai \textit{data training}) terlebih dahulu untuk dijadikan acuan dalam melakukan klasifikasi data.
 	
-	Algoritma klasifikasi adalah salah satu tugas data mining yang paling umum, tampaknya dewasa ini hal tersebut menjadi penting bagi perusahaan - perusahaan yang memiliki data transaksi. Disamping perusahaan, kita juga sebagai manusia secara terus-menerus mengklasifikasikan, mengkategorikan, dan melakukan penilaian terhadap sesuatu. 
+	Algoritma klasifikasi adalah salah satu tugas data mining yang paling umum, tampaknya dewasa ini hal tersebut menjadi penting bagi perusahaan - perusahaan yang memiliki data transaksi. Di samping perusahaan, kita juga sebagai manusia secara terus-menerus mengklasifikasikan, mengkategorikan, dan melakukan penilaian terhadap sesuatu. 
 	
 	Klasifikasi memeriksa atribut dari objek baru yang diberikan dan dilemparkan ke dalam model standar klasifikasi yang sudah ada. Objek yang diklasifikasikan umumnya diwakili oleh \textit{record - record} dalam tabel database atau file, dan tindakan klasifikasi terdiri dari menambahkan kolom (\textit{field}) baru dengan kode kelas (\textit{kelompok}) dari beberapa jenis kelas. Tugas kita adalah untuk membangun model dari beberapa jenis \textit{dataset} yang dapat diterapkan pada data yang belum terklasifikasi untuk diklasifikasikan ke dalam kelompok yang sudah ada. Berikut merupakan beberapa contoh dari penerapan teknik klasifikasi:
 \begin{itemize}
@@ -38,10 +40,10 @@ Pada bagian ini, hanya dijelaskan mengenai teknik klasifikasi dan klustering.
 	\item Menentukan potensi dari klaim asuransi palsu.
 \end{itemize}
 	\item{\textit{Clustering}\cite{book:339389}} \\
-	Klustering juga merupakan algoritma mesin learning yang bersifat tidak terawasi (\textit{unsupervised learning}). Dimana dalam pembuatan modelnya tidak diperlukan data latih (umumnya disebut sebagai \textit{data training}) terlebih dahulu. Klustering mengelompokkan sejumlah data yang memiliki kemiripan yang tinggi. Berikut merupakan beberapa contoh dari penerapan teknik klustering:
+	Klustering juga merupakan algoritma mesin learning yang bersifat tidak terawasi (\textit{unsupervised learning}). Berbeda dengan teknik klasifikasi, dalam pembuatan model teknik ini tidak diperlukan data latih (umumnya disebut sebagai \textit{data training}) terlebih dahulu. Klustering hanya melakukan pengelompokkan sejumlah data yang memiliki kemiripan yang tinggi. Berikut merupakan beberapa contoh dari penerapan teknik klustering:
 \begin{itemize}
-	\item Mencari distribusi penjualan suatu barang tertentu berdasarkan lokasi tempat tinggal konsumen.
-	\item Mencari distribusi penjualan suatu barang tertentu berdasarkan tingkat penghasilan konsumen.
+	\item Mencari distribusi penjualan suatu barang tertentu berdasarkan lokasi tempat tinggal konsumen dan tingkat penghasilan konsumen.
+	%\item Mencari distribusi penjualan suatu barang tertentu berdasarkan tingkat penghasilan konsumen.
 	\item Mengetahui rentang umur yang paling banyak melakukan transaksi terhadap suatu barang (melakukan pembelian barang tersebut) untuk dijadikan \textit{targeted marketing}.
 \end{itemize}
 \end{enumerate}
@@ -55,7 +57,7 @@ Pada bagian ini, hanya dijelaskan mengenai teknik klasifikasi dan klustering.
 	\label{fig:Langkah Penambangan Data}
 \end{figure}
 
-Gambar 2.1 menyatakan langkah-langkah untuk menemukan pengetahuan dan proses-proses pengolahan data. Gambar 2.1 juga menyatakan bahwa setelah meraih pengetahuan, proses pencarian pengetahuan lebih lanjut juga dapat dilakukan kembali. Lihat anak panah pada Gambar yang merujuk pada langkah-langkah yang dapat dilakukan kembali untuk mendapatkan pengetahuan yang lebih mendalam. Berikut adalah proses-proses yang harus dilakukan dalam mencari pengetahuan baru \cite{DataMiningIntro:2015}:
+Gambar~\ref{fig:Langkah Penambangan Data} menyatakan langkah-langkah untuk menemukan pengetahuan dan proses-proses pengolahan data. Gambar~\ref{fig:Langkah Penambangan Data} juga menyatakan bahwa setelah meraih pengetahuan, proses pencarian pengetahuan lebih lanjut juga dapat dilakukan kembali. Lihat anak panah pada Gambar~\ref{fig:Langkah Penambangan Data} yang merujuk pada langkah-langkah yang dapat dilakukan kembali untuk mendapatkan pengetahuan yang lebih mendalam. Berikut adalah proses-proses yang harus dilakukan dalam mencari pengetahuan baru \cite{DataMiningIntro:2015}:
 
 \begin{itemize}
 	\item{Pembersihan Data} \\
@@ -63,40 +65,40 @@ Gambar 2.1 menyatakan langkah-langkah untuk menemukan pengetahuan dan proses-pro
 	\item{Integrasi data} \\
 	Pada fase ini, beberapa sumber data yang heterogen digabungkan menjadi satu.
 	\item{Pemilihan Data} \\
-	Fase ini adalah fase dimana data dipilih, data yang relevan dipilih dari koleksi data pada fase sebelumnya.
+	Fase ini adalah fase di mana data dipilih, data yang relevan dipilih dari koleksi data pada fase sebelumnya.
 	\item{Transformasi Data} \\
 	Pada fase ini data yang dipilih ditransformasi sehingga memiliki bentuk yang layak untuk ditambang.
 	\item{Penambangan Data} \\
-	Fase ini adalah fase dimana teknik-teknik penambangan (termasuk Algoritma Apriori) digunakan untuk mencari pola yang memiliki potensi.
+	Fase ini adalah fase di mana teknik-teknik penambangan digunakan untuk mencari pola yang memiliki potensi.
 	\item{Evaluasi Pola} \\
 	Pada fase ini, pola yang menarik diidentifikasi dan dianalisis sehingga dapat menghasilkan pengetahuan yang baru.
 	\item{Penyimpulan Pengetahuan} \\
-	Fase terakhir ini adalah fase dimana pengetahuan yang baru ditemukan itu direpresentasikan kepada pengguna.
+	Fase terakhir ini adalah fase di mana pengetahuan yang baru ditemukan itu direpresentasikan kepada pengguna.
 \end{itemize}
 
 \section{{\it Big Data}}
 
 \subsection{Definisi {\it Big Data}}
-{\it Big Data} merupakan suatu terminologi modern untuk sekumpulan data yang memiliki kesulitan tersendiri untuk diproses dengan cara tradisional (menggunakan satu buah komputer) \cite{zikopoulos2011understanding}. Dewasa ini perusahaan - perusahaan tengah menghadapi tantangan - tantangan yang ada pada {\it Big Data}, karena pertumbuhan data yang sudah semakin cepat dan grafik jumlah pengguna internet yang semakin menaik setiap saat. Mereka mendapatkan akses pada data/informasi tersebut tetapi tidak tahu cara mengambil informasi yang berguna pada data tersebut karena format dari data tersebut yang semi bahkan ada yang tidak terstruktur dan juga ukuran-nya yang sangat besar ; Cukup kebingungan apakah data tersebut berguna apabila terus disimpan. Karena, dapat dapat menyebabkan {\it memory overload}.
+{\it Big Data} merupakan suatu terminologi modern untuk sekumpulan data yang memiliki kesulitan tersendiri untuk diproses dengan cara tradisional (menggunakan satu buah komputer) \cite{zikopoulos2011understanding}. Dewasa ini perusahaan - perusahaan tengah menghadapi tantangan - tantangan yang ada pada {\it Big Data}, karena pertumbuhan data yang sudah semakin cepat dan jumlah pengguna internet yang semakin menaik setiap saat. Mereka mendapatkan akses pada data/informasi tersebut tetapi tidak tahu cara mengambil informasi yang berguna pada data tersebut karena format dari data tersebut yang semi bahkan ada yang tidak terstruktur dan juga ukuran-nya yang sangat besar ; Cukup kebingungan apakah data tersebut berguna apabila terus disimpan. Karena, dapat dapat menyebabkan {\it memory overload}.
 
-{\it Big Data} tidak melulu berasal dari internet, di dalam kehidupan kita sehari - hari sering kali kita berurusan dengan data, seperti data pada sensor sidik jari ketika absensi, data pembelian pada supermarket, data sensor kelembaban udara pada 10 tahun terakhir untuk memprediksi cuaca, kenaikan dan penurunan harga saham, {\it bitcoin}, dsb. {\it Big Data} menjadi topik yang diminati karena dengan data yang begitu banyak, dapat diteliti pola yang terjadi pada data tersebut selama beberapa kurun waktu tertentu untuk digunakan dalam menganalisis data dan membuat keputusan serta memberikan prediksi kemunculan data berikutnya dengan tingkat akurasi yang tinggi berdasarkan data yang dipelajari. Perusahaan - perusahaan saat ini tengah memulai untuk mengumpulkan setiap data yang dapat mereka peroleh dari {\it customer} untuk melihat pola aktifitas {\it customer} mereka dan membuat keputusan yang dapat menguntungkan perusahaan berdasarkan hal tersebut. Tentu saja hal ini tidak dapat dilakukan menggunakan teknik komputasi yang tradisional (menggunakan satu buah komputer berteknologi tinggi), karena biaya dan waktu yang terlalu mahal dan lama.
+{\it Big Data} tidak melulu berasal dari internet, di dalam kehidupan kita sehari - hari sering kali kita berurusan dengan data, seperti data pada sensor sidik jari ketika absensi, data pembelian pada supermarket, data sensor kelembaban udara pada 10 tahun terakhir untuk memprediksi cuaca, kenaikan dan penurunan harga saham, {\it bitcoin}, dsb. {\it Big Data} menjadi topik yang diminati karena dengan data yang begitu banyak, dapat diteliti pola yang terjadi pada data tersebut selama beberapa kurun waktu tertentu untuk digunakan dalam menganalisis data dan membuat keputusan serta memberikan prediksi kemunculan data berikutnya dengan tingkat akurasi yang tinggi berdasarkan data yang dipelajari. Perusahaan - perusahaan saat ini tengah memulai untuk mengumpulkan setiap data yang dapat mereka peroleh dari {\it customer} untuk melihat pola perilaku dari {\it customer} mereka dan membuat keputusan yang dapat menguntungkan perusahaan berdasarkan hal tersebut. Tentu saja hal ini tidak dapat dilakukan menggunakan teknik komputasi yang tradisional (menggunakan satu buah komputer berteknologi tinggi), karena biaya dan waktu yang terlalu mahal dan lama.
 
 \subsection{Karakteristik {\it Big Data}}
 
- 3 hal terpenting yang menjadi pokok permasalahan dalam {\it Big Data} adalah : 
+ Tiga hal terpenting yang menjadi pokok permasalahan dalam {\it Big Data} adalah : 
 \begin{enumerate}
 	\item{Mengolah data yang berjumlah sangat besar} \\
-	Ukuran data yang menjadi tantangan pada big data saat ini sangat besar, dari \textit{GigaByte} bahkan bisa mencapai puluhan \textit{PetaByte}.
+	Ukuran data yang menjadi tantangan pada big data saat ini sangat besar, mulai dari \textit{GigaByte} bahkan bisa mencapai puluhan \textit{PetaByte}.
 	\item{Mengolah data yang memiliki tipe sangat bermacam - macam / variatif} \\
 	Tipe dari data pada \textit{big data} sangat bermacam - macam. seperti: (1) angka, (2) tanggal, (3) \textit{string}\footnote{\textit{String} dalam pemrograman komputer adalah sebuah deret simbol. Tipe data string adalah tipe data yang digunakan untuk menyimpan barisan karakter}
 	\item{Mengolah data dengan performa yang optimal}\\
 	Tantangan yang terakhir pada \textit{big data} adalah kebutuhan untuk mengolah \textit{big data} dengan waktu dan sumber daya yang se-optimal dan se-efisien mungkin.
 \end{enumerate}
 
-Berikut merupakan beberapa contoh \textit{big data} dan pemanfaatannya diberbagai bidang \cite{JNetwork2012introductionBigData}:
+Berikut merupakan beberapa contoh \textit{big data} dan pemanfaatannya di berbagai bidang \cite{JNetwork2012introductionBigData}:
 \begin{enumerate}
-	\item Pada bidang penerbangan dan transportasi, big data didapat dari data konsumsi bahan bakar dan pola lalu lintas di setiap armada secara nyata untuk meningkatkan efisiensi dan penghematan biaya.
-	\item Pada sektor kesehatan, big data didapat dari berbagai catatan kesehatan elektronik pasien dari berbagai sumber, perawatan, demografi dan pencatatan khasiat obat sehingga dapat memberikan proses pengembangan obat yang lebih efisien dan lebih cepat.
+	\item Pada bidang penerbangan dan transportasi, big data didapat dari data konsumsi bahan bakar dan pola lalu lintas di setiap armada secara nyata untuk meningkatkan efisiensi dalam penggunaan bahan bakar.
+	\item Pada sektor kesehatan, big data didapat dari berbagai catatan kesehatan elektronik pasien dari berbagai sumber, perawatan, demografi dan pencatatan khasiat obat sehingga dapat memberikan proses pengembangan obat yang lebih efisien dan cepat.
 	\item Pada sektor telekomunikasi, big data didapat dari penggunaan dan permintaan pengguna sehingga perusahaan telekomunikasi dapat menganalisis perilaku pengguna dan pola permintaan tersebut.
 	\item Pada sektor media dan hiburan, big data didapat dari penggunaan media dan hiburan sehingga dapat dimanfaatkan untuk membantu pengambilan keputusan dan analisis prediktif dari penggunaan media dan hiburan tersebut.
 \end{enumerate}
@@ -105,7 +107,7 @@ Berikut merupakan beberapa contoh \textit{big data} dan pemanfaatannya diberbaga
 \section{Sistem Terdistribusi Hadoop}
 	\subsection{Definisi Hadoop}
 	Apache Hadoop merupakan platform \textit{open source} yang didirikan pada tahun 2006 untuk melakukan analisis pada big data. Hadoop merupakan software framework open source yang dapat menangani pertumbuhan jumlah data yang tinggi tanpa mempengaruhi performa kinerja-nya dengan sistem komputasi yang terdistribusi pada beberapa mesin yang dimiliki oleh Hadoop secara efisien \cite{Lam:2010:HA:1965594}. Hadoop terinspirasi dari MapReduce milik Google\cite{GoogleMR:2004} dan Google File System (GFS) \cite{GFS:2003}. \\
-	Hadoop cluster\footnote{cluster merupakan sekelompok server} terdiri dari 2 node \footnote{node merupakan istilah teknik yang digunakan untuk menjelaskan suatu mesin atau komputer} yaitu \textit{Master Node} yang terdiri dari \textit{Namenode} dan \textit{Jobtracker daemon}\footnote{Daemon merupakan isitlah teknis yang digunakan untuk menjelaskan suatu proses yang berjalan secara background pada mesin linux} dan \textit{Slave Node} yang terdiri dari \textit{Datanode} dan \textit{Task Tracker}.
+	Hadoop cluster\footnote{cluster merupakan sekelompok server} terdiri dari 2 jenis \textit{node}\footnote{\textit{node} merupakan istilah teknik yang digunakan untuk menjelaskan suatu mesin atau komputer} yaitu \textit{Master Node} yang terdiri dari \textit{Namenode} dan \textit{Jobtracker daemon}\footnote{Daemon merupakan isitlah teknis yang digunakan untuk menjelaskan suatu proses yang berjalan secara background pada mesin linux} dan \textit{Slave Node} yang terdiri dari \textit{Datanode} dan \textit{Task Tracker}.
 	
 	\begin{figure}[ht]
 			\centering
@@ -115,20 +117,20 @@ Berikut merupakan beberapa contoh \textit{big data} dan pemanfaatannya diberbaga
 		\end{figure}
 	
 	\subsection{Fitur - fitur dari \textit{Hadoop}}
-	\cite{Lam:2010:HA:1965594}
+	Pada bagian ini akan dijelaskan mengenai fitur - fitur dari Hadoop yang diambil dari \cite{Lam:2010:HA:1965594}.
 	\begin{enumerate}
 		\item \textit{Cost Effective System}.
 		Hadoop dapat diimplementasikan pada beberapa komputer biasa yang tidak memiliki spesifikasi terlalu tinggi. 
 		\item \textit{Support Large Cluster or Node}.
 		Jumlah node yang digunakan dapat mencapai ratusan bahkan ribuan node.
 		\item \textit{Support Parallel Processing Data}.
-		Proses yang dijalankan oleh hadoop dapat berjalan secara bersamaan pada cluster. Sehingga, kebutuhan waktu pengerjaan berkurang sebanding dengan banyaknya node yang dipakai.
+		Proses yang dijalankan oleh hadoop dapat berjalan secara bersamaan pada cluster. Hal tersebut menyebabkan kebutuhan waktu pengerjaan akan berkurang sebanding dengan banyaknya jumlah \textit{node} yang dipakai.
 		\item \textit{Distributed Data}.
 		Hadoop menangani pendistribusian data kepada setiap node pada cluster dan melakukan replikasi data untuk seluruh cluster.
 		\item \textit{Automatic Failover Management}.
-		Jika cluster/node mengalami kerusakan (\textit{fail}), maka hadoop secara otomatis membebankan proses yang dikerjakan oleh cluster/node yang mengalami kerusakan tersebut kepada node node baru yang siap dan melakukan replikasi seluruh konfigurasi dan data dari node yang mengalami kerusakan tersebut ke node node baru.
+		Jika cluster/node mengalami kerusakan (\textit{fail}), maka Hadoop secara otomatis membebankan proses yang dikerjakan oleh cluster/node yang mengalami kerusakan tersebut kepada node - node baru yang siap dan melakukan replikasi seluruh konfigurasi dan data dari node yang mengalami kerusakan tersebut ke node node baru.
 		\item \textit{Data Locality Optimization}.
-		Menggunakan konsep \textit{move-code-to-data}. Daripada menggunakan metode yang biasa digunakan, memasukan seluruh input ke dalam suatu kode, yang mengakibatkan \textit{bottleneck} pada jaringan transfer karena \textit{bandwidth} yang dibutuhkan tidak mampu melakukan transfer data yang sangat besar, lebih baik jika data tetap disimpan pada tempatnya,lalu kode kita yang dipindahkan ke tempat data tersebut berada. Karena, besaran file kode pasti jauh lebih kecil daripada data yang berukuran sangat besar. Sehingga, sangat menghemat waktu proses transfer yang berjalan.
+		Menggunakan konsep \textit{move-code-to-data}. Daripada menggunakan metode yang biasa digunakan, memasukkan seluruh input ke dalam suatu kode, yang mengakibatkan \textit{bottleneck} pada jaringan transfer karena \textit{bandwidth} yang dibutuhkan tidak mampu melakukan transfer data yang sangat besar, lebih baik jika data tetap disimpan pada tempatnya,lalu kode kita yang dipindahkan ke tempat data tersebut berada. Karena, besaran file kode pasti jauh lebih kecil daripada data yang berukuran sangat besar. Sehingga, sangat menghemat waktu proses transfer yang berjalan.
 	\item \textit{Heterogeneous Cluster}.
 	Suatu \textit{cluster}, dapat terdiri dari komputer yang berbeda - beda spesifikasi, merek, maupun OS. Hal ini dapat memudahkan kita untuk membangun suatu \textit{commodity hardware}.
 	\item \textit{Scalability}\footnote{Skalabilitas atau keterluasan adalah kemampuan suatu sistem, jaringan, atau proses untuk menangani penambahan beban yang diberikan, atau potensinya untuk ditingkatkan guna menangani penambahan beban tersebut}.
@@ -136,17 +138,17 @@ Berikut merupakan beberapa contoh \textit{big data} dan pemanfaatannya diberbaga
 	\end{enumerate}
 	
 	\subsection{Cara Kerja Hadoop}
-	Hadoop menggunakan model pemrograman yang cukup sederhana untuk memproses data - data yang berukuran sangat besar melewati beberapa cluster mesin dan tempat penyimpanan memori yang terdistribusi. Oleh karena cara kerja hadoop yang menggunakan beberapa cluster mesin secara terdistribusi, besar kemungkinan untuk terjadi kegagalan dalam cluster tersebut pada saat ada proses yang sedang berjalan. Tetapi, kita tidak perlu khawatir dan mempersiapkan mekanisme penanganan untuk mengatasi hal tersebut, karena Hadoop sudah secara otomatis menangani hal tersebut agar apabila terjadi kegagalan (\textit{failure}) pada 1 atau lebih cluster/node, Hadoop mendistribusikan proses beserta seluruh sumber daya yang dibutuhkan oleh proses tersebut kepada mesin lain yang siap (\textit{available}). Hadoop sudah memiliki skema khusus untuk melindungi metadata dari kumpulan - kumpulan dataset yang berjumlah besar agar tidak hilang secara tidak sengaja, sehingga sangat aman digunakan (memiliki toleransi tinggi terhadap \textit{node failures}). Tahapan cara kerja hadoop adalah \cite{Holmes:2012:HP:2543981} : 
+	Hadoop menggunakan model pemrograman yang cukup sederhana untuk memproses data - data yang berukuran sangat besar melewati beberapa cluster mesin dan tempat penyimpanan memori yang terdistribusi. Oleh karena cara kerja hadoop yang menggunakan beberapa cluster mesin secara terdistribusi, besar kemungkinan untuk terjadi kegagalan dalam cluster tersebut pada saat ada proses yang sedang berjalan. Tetapi, kita tidak perlu khawatir dan mempersiapkan mekanisme penanganan untuk mengatasi hal tersebut, karena Hadoop sudah secara otomatis menangani hal tersebut agar apabila terjadi kegagalan (\textit{failure}) pada 1 atau lebih cluster/node, Hadoop mendistribusikan proses beserta seluruh sumber daya yang dibutuhkan oleh proses tersebut kepada mesin lain yang siap (\textit{available}). Hadoop sudah memiliki skema khusus untuk melindungi metadata dari kumpulan - kumpulan dataset yang berjumlah besar agar tidak hilang secara tidak sengaja, sehingga sangat aman digunakan (memiliki toleransi tinggi terhadap \textit{node failures}). Tahapan cara kerja Hadoop adalah \cite{Holmes:2012:HP:2543981} : 
 	\begin{enumerate}
 		\item Membagi data input ke dalam bagian yang lebih kecil dan menyimpan setiap bagian dari data tersebut ke dalam node yang berbeda pada cluster.
-		\item Mereplikasi setiap bagian data tersebut kepada beberapa node yang berada di cluster yang sama maupun yang berbeda. Secara default direplikasi sebanyak 3 kali (\textit{default replication factor is 3}).
-		\item Menangani jalannya proses komunikasi diantara cluster. Seperti untuk mengakses replikasi data, jika dibutuhkan, pada cluster yang berbeda.
+		\item Mereplikasi setiap bagian data tersebut kepada beberapa node yang berada di cluster yang sama maupun yang berbeda. Secara default direplikasi sebanyak 3 kali. %(\textit{default replication factor is 3}).
+		\item Menangani jalannya proses komunikasi di antara cluster. Seperti untuk mengakses replikasi data, jika dibutuhkan, pada cluster yang berbeda.
 	\end{enumerate}
 	\subsection{Elemen dari Hadoop}
 	Hadoop memiliki 2 elemen penting, HDFS (\textit{Hadoop Distributed File System}) dan MapReduce. Keduanya sama - sama memiliki peran penting yang saling berhubungan untuk melakukan \textit{distributed computing}.
 		\subsubsection{HDFS (Hadoop Distributed File System)}
 
-HDFS merupakan sebuah sistem penyimpanan terdistribusi yang menyediakan akses throughput data yang tinggi. Akses throughput data yang tinggi memiliki arti bahwa HDFS dapat melakukan proses baca tulis data dalam skala yang besar. HDFS menciptakan beberapa replika dari setiap blok data dan mendistribusikannya pada seluruh cluster komputer untuk memungkinkan akses data yang dapat diandalkan dan cepat \cite{Holmes:2012:HP:2543981}. Dapat diandalkan dalam konteks ini bermaksud apabila sebuah node pada cluster Hadoop mengalami kegagalan yang menyebabkan data pada node tersebut corrupt, maka blok data tersebut tidak hilang karena selain node tersebut ada beberapa node lain yang menyimpan replika dari blok data tersebut. HDFS dapat melakukan komputasi dengan performa tinggi pada skala komputasi yang sangat besar \textit{(high-bandwidth computation)} dan biaya kapasitas penyimpanan terdistribusi yang dibutuhkan cukup rendah. HDFS didesain untuk data yang berukuran sangat besar GB to TB. HDFS memiliki default block size yang cukup besar, yakni 64 MB.
+HDFS merupakan sebuah sistem penyimpanan terdistribusi yang menyediakan akses throughput data yang tinggi. Akses throughput data yang tinggi memiliki arti bahwa HDFS dapat melakukan proses baca tulis data dengan kecepatan yang tinggi. HDFS menciptakan beberapa replika dari setiap blok data dan mendistribusikannya pada seluruh cluster komputer untuk memungkinkan akses data yang dapat diandalkan dan cepat \cite{Holmes:2012:HP:2543981}. Dapat diandalkan dalam konteks ini bermaksud apabila sebuah node pada cluster Hadoop mengalami kegagalan yang menyebabkan data pada node tersebut \textit{corrupt}, maka blok data tersebut tidak hilang karena selain node tersebut ada beberapa node lain yang menyimpan replika dari blok data tersebut. HDFS dapat melakukan komputasi dengan performa tinggi pada skala komputasi yang sangat besar \textit{(high-bandwidth computation)} dan biaya kapasitas penyimpanan terdistribusi yang dibutuhkan cukup rendah. HDFS didesain untuk data yang berukuran sangat besar GB to TB. HDFS memiliki \textit{default block size} yang cukup besar, yakni 64 MB. Berbeda dengan ukuran \textit{default block size} pada sistem operasi pada umumnya yang hanya sebesar 4KB. Hal tersebut dibuat seperti itu agar penyimpanan file yang berukuran besar tidak terpecah pecah menjadi bagian yang terlalu kecil.
 
 	HDFS terdiri dari 3 komponen utama yang berjalan secara \textit{background}, diantaranya adalah: 
 		\begin{enumerate}
@@ -193,7 +195,7 @@ HDFS merupakan sebuah sistem penyimpanan terdistribusi yang menyediakan akses th
 			HDFS memiliki 2 operasi yang penting, yaitu operasi baca dan operasi tulis dari dan ke HDFS. Berikut merupakan penjelasan lebih lanjut mengenai operasi baca dan operasi tulis dari dan ke HDFS.
 		
 		\paragraph{Membaca data dari HDFS}
-			Untuk dapat membaca data dari HDFS, Hadoop Client membutuhkan "`Hadoop Client Library"' dan configurasi dari cluster. Mekanisme operasi baca data dari HDFS adalah sebagai berikut : (Ilustrasi pada gambar 2.4) : 
+			Untuk dapat membaca data dari HDFS, Hadoop Client membutuhkan "Hadoop Client Library" dan konfigurasi dari cluster. Mekanisme operasi baca data dari HDFS adalah sebagai berikut : (Ilustrasi pada gambar 2.4) : 
 			
 			\begin{figure}[ht]
 			\centering
@@ -210,7 +212,7 @@ HDFS merupakan sebuah sistem penyimpanan terdistribusi yang menyediakan akses th
 			%\end{figure}
 			
 			\begin{enumerate}
-				\item Client menghubungi NameNode dan memberikan nama file lokasi pada file yang ingin dibaca.
+				\item Client menghubungi NameNode dan memberikan nama file pada file yang ingin dibaca.
 				\item NameNode memvalidasi client untuk memeriksa permission yang dimiliki oleh user tersebut terhadap file yang diminta. 
 				\item NameNode memberikan respon kembali kepada client dengan memberikan \textit{first block ID} \footnote{First block ID merepresentasikan tempat penyimpanan 64MB pertama dari data yang diminta tersebut. Memberikan informasi seperti pada rak dan DataNode yang menyimpan blok pertama pada file yang diminta.} dengan seluruh DataNode yang memiliki salinan/replikasi dari file yang dimintanya tersebut.
 				\item Setiap DataNode yang memiliki salinan diurutkan berdasarkan yang terdekat sebelum dikirimkan kepada client.
@@ -259,7 +261,7 @@ HDFS merupakan sebuah sistem penyimpanan terdistribusi yang menyediakan akses th
 			\item Thread menghubungi NameNode untuk meminta list dari DataNode yang dibutuhkan untuk menyalin replikasi dari data baru ini.
 			\item Client menghubungi secara langsung DataNode pertama dan melakukan penulisan hingga sukses.
 			\item Setelah sukses, tahap tersebut diulangi untuk setiap node yang mereplikasi data tersebut yang diberikan dari NameNode.
-			\item Setelah selesai, ACK diberikan kepada client untuk memberi informasi bahwa penulisan telah selesai dan berhasil.
+			\item Setelah selesai, ACK\footnote{ACK merupakan sinyal yang dikirim dalam proses komunikasi sebagai tanggapan(\textit{response}) pada protokol komunikasi.} (\textit{Acknowledgment}) diberikan kepada client untuk memberi informasi bahwa penulisan telah selesai dan berhasil.
 			\item Jika ketika sedang penulisan telah mencapai maksimum dari block size, maka client kembali menghubungi NameNode untuk meminta kumpulan DataNode berikutnya yang dapat dilakukan operasi tulis.
 			\item Jika telah selesai, maka client menutup stream, lalu queue dibersihkan kembali, dan metada dari NameNode diupdate.
 			\item Jika pada saat penulisan terjadi kegagalan, maka data yang dikirimkan setelah ACK terakhir yang diterima oleh client dikembalikan ke queue. Lalu didelegasikan ke DataNode yang baru dengan block id yang baru.
@@ -284,11 +286,11 @@ HDFS merupakan sebuah sistem penyimpanan terdistribusi yang menyediakan akses th
 	\label{fig:map_reduce}
 \end{figure}
 		
-		MapReduce merupakan framework yang dirancang untuk memproses data secara paralel terdistribusi di dalam Hadoop yang memiliki performa dan efisiensi yang optimal untuk menangani data yang berukuran besar. Jenis pekerjaan pada fase map dan reduce yang dapat dikerjakan oleh framework ini merupakan jenis pekerjaan yang tidak memiliki hubungan berkesinambungan di antara  tiap proses-nya, sehingga dapat berjalan secara bersama - sama (\textit{concurrent}). Hadoop membagi/memecah seluruh dataset yang ada ke dalam beberapa partisi dan mendistribusikannya ke dalam kelompok/\textit{cluster}. MapReduce memproses data di setiap server terhadap blok - blok data yang sudah dibagikan sebelumnya, sehingga sangat menghemat waktu pekerjaan yang dihabiskan \cite{Lam:1965594:HA}. \\
-		Terdapat 3 fase utama dan 1 fase yang opsional(bisa dijalankan atau tidak, bergantung pada kebutuha) pada MapReduce, yaitu fase \textit{map}, fase \textit{shuffle}, fase \textit{reduce}, dan fase \textit{combine}. 
+		MapReduce merupakan framework yang dirancang untuk memproses data secara paralel terdistribusi di dalam Hadoop yang memiliki performa dan efisiensi yang optimal untuk menangani data yang berukuran besar. Jenis pekerjaan pada fase map dan reduce yang dapat dikerjakan oleh framework ini merupakan jenis pekerjaan yang tidak memiliki hubungan berkesinambungan di antara  tiap proses-nya, sehingga dapat berjalan secara bersama - sama (\textit{concurrent}). Hadoop membagi/memecah seluruh dataset yang ada ke dalam beberapa partisi dan mendistribusikannya ke dalam kelompok/\textit{cluster}. MapReduce memproses data di setiap server terhadap blok - blok data yang sudah dibagikan sebelumnya, sehingga sangat menghemat waktu pekerjaan yang dihabiskan \cite{Lam:2010:HA:1965594}. \\
+		Terdapat 3 fase utama dan 1 fase yang opsional(bisa dijalankan atau tidak, bergantung pada kebutuhan) pada MapReduce, yaitu fase \textit{map}, fase \textit{shuffle}, fase \textit{reduce}, dan fase \textit{combine}. 
 		\begin{enumerate}
-			\item Pada fase \textit{map}, melakukan \textit{convert} tiap partisi dari input kedalam pasangan \textit{key/value} (seperti pada struktur data HashMap) lalu menggabungkan setiap \textit{value} yang memiliki \textit{key} yang sama.
-			\item Pada fase shuffle, hasil keluaran dari fase Map di sort berdasarkan key dan pasangan \textit{key/value} tersebut di kirimkan ke reducer node yang menerima pasangan \textit{key/value} yang sesuai.
+			\item Pada fase \textit{map}, melakukan konversi tiap partisi dari input ke dalam pasangan \textit{key/value} (seperti pada struktur data HashMap) lalu menggabungkan setiap \textit{value} yang memiliki \textit{key} yang sama.
+			\item Pada fase shuffle, hasil keluaran dari fase Map di urutkan berdasarkan key dan pasangan \textit{key/value} tersebut dikirimkan ke reducer node yang menerima pasangan \textit{key/value} yang sesuai.
 			\item Pada fase \textit{reduce}, algoritma menerima sebuah pasangan key dengan himpunan dari value yang memiliki hubungan dengan key tersebut, lalu melakukan suatu proses yang nantinya menjadi keluaran dari program MapReduce.
 			\item Fase \textit{combine} ini merupakan fase yang sifatnya opsional, bisa dijalankan atau tidak. Fase ini akan melakukan yang sama seperti pada fase \textit{reduce}, hanya saja dijalankan langsung setelah fase map selesai pada node yang menjalankan proses fase \textit{map} tersebut. Hal ini bertujuan agar besaran data yang dikirim dari \textit{node} pekerja pada fase \textit{map} kepada node pekerja pada fase \textit{reduce} tidak terlalu besar, karena sebelum dikirim telah dilakukan integrasi terlebih dahulu pada data yang memiliki key yang sama. Sehingga akan menghemat \textit{bandwidth} jaringan yang digunakan.
 		\end{enumerate} 
@@ -299,18 +301,18 @@ HDFS merupakan sebuah sistem penyimpanan terdistribusi yang menyediakan akses th
 		\item \textit{TaskTracker} adalah slave yang ada pada setiap node. \textit{TaskTracker} bertanggung jawab untuk menjalankan proses \textit{map} dan \textit{reduce} seperti yang diperintahkan oleh \textit{JobTracker}.
 	\end{itemize}
 		
-		Komponen utama lainnya setelah release versi terbaru hadoop 2 dari MapReduce adalah Apache YARN (\textit{Yet Another Resource Negotiator}). YARN bertanggung jawab untuk mengawasi \textit{resource} yang tersedia pada seluruh node dan memantau status dari setiap \textit{TaskTracker} yang ada pada setiap node dan status dari pekerjaannya. YARN sebagai arsitektur baru dari Apache hadoop 2 membagi dua fungsi utama dari JobTracker/TaskTracker pada MapReduce menjadi beberapa entitas yang terpisah, diantaranya adalah: 
+		Komponen utama lainnya setelah release versi terbaru Hadoop 2 dari MapReduce adalah Apache YARN (\textit{Yet Another Resource Negotiator}). YARN bertanggung jawab untuk mengawasi \textit{resource} yang tersedia pada seluruh node dan memantau status dari setiap \textit{TaskTracker} yang ada pada setiap node dan status dari pekerjaannya. YARN sebagai arsitektur baru dari Apache Hadoop 2 membagi dua fungsi utama dari JobTracker/TaskTracker pada MapReduce menjadi beberapa entitas yang terpisah, diantaranya adalah: 
 		\begin{itemize}
 			\item \textit{Resource Manager} di \textit{node master}, yang bertugas untuk mengawasi dan mengatur seluruh \textit{resource} yang tersedia dan digunakan pada seluruh node.
 			\item \textit{Application Master} di setiap aplikasi, yang berfungsi untuk memantau status dari setiap \textit{TaskTracker} yang ada pada setiap node dan status dari pekerjaannya dan juga untuk negosiasi resource dengan \textit{ResourceManager} dan kemudian bekerja sama dengan \textit{NodeManager} untuk mengeksekusi dan memonitor \textit{tasks}.
-			\item \textit{NodeManager} di \textit{Agen-Framework} setiap \textit{node slave}, yang bertanggung jawab terhadap \textit{container}, dengan memantau penggunaan resource/sumber daya dari container(cpu, memori, disk, jaringan ) dan melaporkannya pada ResourceManager.
+			\item \textit{NodeManager} pada setiap \textit{node slave}, yang bertanggung jawab terhadap \textit{Container}, dengan memantau penggunaan resource/sumber daya dari container(cpu, memori, disk, jaringan ) dan melaporkannya pada ResourceManager.
 			\item \textit{Container} di setiap aplikasi yang jalan di \textit{NodeManager}, sebagai wadah penyimpanan data/file.
 		\end{itemize}
 		
 \begin{figure}[H]
 \centering
 \includegraphics[scale=0.6]{YARN-Architecture}
-\caption[Arsitektur YARN-1]{Arsitektur YARN-1}
+\caption[Arsitektur YARN]{Arsitektur YARN}
 \label{fig:Arsitektur YARN-1}
 \end{figure}
 		
@@ -364,7 +366,7 @@ Reducer berfungsi untuk mengurangi data yang tidak diperlukan (misal : data yang
 \label{fig:Proses MapReduce}
 \end{figure}
 
-Misalkan sebuah contoh kasus MapReduce berdasarkan gambar diatas. Contoh diatas merupakan sebuah sekenario program MapReduce yang melakukan perhitungan banyaknya kemunculan kata pada sebuah dokumen. Data mentah yang berasal dari HDFS mula-mula diambil per barisnya menjadi pasangan key-value yang diumpankan ke fungsi map. Pada state kedua saat pertama kali masuk ke dalam MapReduce, nilai (0, pada suatu hari), (16, pada suatu), (27, desa) menyatakan pasangan key-value yang diumpankan ke fungsi map. 0, 16, dan 27 menyatakan ofset data pasangan valuenya berdasarkan awal dari file HDFS. Maksudnya adalah untuk offset ke-0 value yang diumpankan adalah "pada suatu hari", mulai offset ke-16 value yang diumpankan adalah "pada suatu", dan pada offset ke 27-value yang diumpankan adalah desa. Untuk kasus ini, fungsi map diatur sedemikian sehingga menghasilkan pasangan key-value dengan key berupa sebuah kata dan value merupakan sebuah angka satu yang melambangkan kata tersebut muncul satu kali. Dapat diperhatikan juga bahwa ada pasangan key-value yang berulang seperti (pada, 1) karena pada input terdapat lebih dari satu kali kata "pada".
+Misalkan sebuah contoh kasus MapReduce berdasarkan Gambar~\ref{fig:Proses MapReduce}. Contoh di atas merupakan sebuah skenario program MapReduce yang melakukan perhitungan banyaknya kemunculan kata pada sebuah dokumen. Data mentah yang berasal dari HDFS mula-mula diambil per barisnya menjadi pasangan key-value yang diumpankan ke fungsi map. Pada state kedua saat pertama kali masuk ke dalam MapReduce, nilai (0, pada suatu hari), (16, pada suatu), (27, desa hari) menyatakan pasangan key-value yang diumpankan ke fungsi map. 0, 16, dan 27 menyatakan ofset data pasangan valuenya berdasarkan awal dari file HDFS. Maksudnya adalah untuk offset ke-0 value yang diumpankan adalah "pada suatu hari", mulai offset ke-16 value yang diumpankan adalah "pada suatu", dan pada offset ke 27-value yang diumpankan adalah desa. Untuk kasus ini, fungsi map diatur sedemikian sehingga menghasilkan pasangan key-value dengan key berupa sebuah kata dan value merupakan sebuah angka satu yang melambangkan kata tersebut muncul satu kali. Dapat diperhatikan juga bahwa ada pasangan key-value yang berulang seperti (pada, 1) karena pada input terdapat lebih dari satu kali kata "pada".
 
 \begin{figure}[H]
 \centering
@@ -373,7 +375,7 @@ Misalkan sebuah contoh kasus MapReduce berdasarkan gambar diatas. Contoh diatas 
 \label{fig:Proses Map}
 \end{figure}
 
-Pada gambar diatas, digambarkan bila terdapat dua buah node pada sebuah cluster. File dibagi menjadi dua block dimana pada block pertama data adalah data dengan key 0 dan 27, sedangkan pada block yang ke dua adalah data dengan key 16. Kedua block tersebut masuk ke dua buah node yang berbeda, lalu dilakukan fungsi map yang terpisah dan hasilnya disimpan sementara di masing-masing node tersebut.
+Pada Gambar~\ref{fig:Proses Map}, digambarkan bila terdapat dua buah node pada sebuah cluster. File dibagi menjadi dua block dimana pada block pertama data adalah data dengan key 0 dan 16, sedangkan pada block yang ke dua adalah data dengan key 27. Kedua block tersebut masuk ke dua buah node yang berbeda, lalu dilakukan fungsi map yang terpisah dan hasilnya disimpan sementara di masing-masing node tersebut.
 
 Setiap kunci ditetapkan pada sebuah partisi oleh sebuah komponen dalam MapReduce bernama partitioner. Di MapReduce pada Hadoop, partitioner secara default melakukan hash partition yang mengambil hash dari key yang di modulo jumlah reduce yang dikonfigurasi dalam sebuah job untuk mendapatkan nomor partisi. Pelaksanaan hash yang digunakan oleh Hadoop memastikan bahwa hash dari sebuah kunci "pada" selalu sama pada semua node yang memiliki kunci "pada". Hal tersebut menyebabkan bahwa semua "pada" ditempatkan di partisi yang sama.
 
@@ -400,18 +402,18 @@ Setiap reducer menghasilkan output file yang berbeda antara reducer lainnya. Hal
 		
 \section{Teorema Bayes}
 	
-	\cite{garg2013design} Teorema Bayes adalah salah satu teorema dalam statistika untuk menghitung peluang suatu kejadian dari beberapa kejadian lainnya. Teorema bayes merupakan salah satu istilah dalam teori probabilitas yang berisi mengenai perhitungan probabilitas yang memiliki syarat tertentu (\textit{certain conditional probability}). Probabilitas bersyarat (\textit{conditional probabilities}) merupakan suatu probabilitas terhadap 1 kejadian tertentu yang dipengaruhi oleh probabilitas kejadian lain. Istilah yang umum digunakan pada teorema bayes adalah probabilitas \textit{prior} dan probabilitasi \textit{posterior}. Probabilitas prior dari suatu kejadian(atau hipotesa) merupakan probablitas orisinil yang didapatkan sebelum dipengaruhi oleh probabilitas lain. Sedangkan probabilitas posterior merupakan probabilitas suatu kejadian yang sudah dipengaruhi oleh probabilitas dari kejadian lain.
+	\cite{garg2013design} Teorema Bayes adalah salah satu teorema dalam statistika untuk menghitung peluang suatu kejadian dari beberapa kejadian lainnya. Teorema Bayes merupakan salah satu istilah dalam teori probabilitas yang berisi mengenai perhitungan probabilitas yang memiliki syarat tertentu (\textit{certain conditional probability}). Probabilitas bersyarat (\textit{conditional probabilities}) merupakan suatu probabilitas terhadap 1 kejadian tertentu yang dipengaruhi oleh probabilitas kejadian lain. Istilah yang umum digunakan pada teorema bayes adalah probabilitas \textit{prior} dan probabilitas \textit{posterior}. Probabilitas prior dari suatu kejadian(atau hipotesa) merupakan probablitas orisinil yang didapatkan sebelum dipengaruhi oleh probabilitas lain. Sedangkan probabilitas posterior merupakan probabilitas suatu kejadian yang sudah dipengaruhi oleh probabilitas dari kejadian lain.
 	
-	Teorema bayes dapat ditulis sebagai:
+	Teorema Bayes dapat ditulis sebagai:
 	
 \begin{equation} \label{eq:1}
 P(A|B) = \dfrac{P(B|A)P(A)}{P(B)}
 \end{equation}
-Dimana,
-P(A) adalah probabilitas prior dari A
-P(B) adalah probabilitas prior dari B
-P(A|B) adalah probabilitas posterior dari A jika diberikan B
-P(B|A) adalah probabilitas posterior dari B jika diberikan A
+Dimana,\\
+P(A) adalah probabilitas prior dari A.\\
+P(B) adalah probabilitas prior dari B.\\
+P(A|B) adalah probabilitas posterior dari A jika diberikan B.\\
+P(B|A) adalah probabilitas posterior dari B jika diberikan A.
 
 \section{\textit{Naive Bayes Classifier}}
 	
@@ -423,16 +425,18 @@ P(B|A) adalah probabilitas posterior dari B jika diberikan A
 \caption[Struktur \textit{Naive Bayesian Network}]{Struktur \textit{Naive Bayesian Network}}
 \label{fig:Struktur Naive Bayesian Network}
 \end{figure}
+	Pada Gambar~\ref{fig:Struktur Naive Bayesian Network}
 
 \subsection{Algoritma}
 
-	 \textit{Bayes Optimal Classifier} menghitung peluang dari satu kelas dari masing-masing kelompok atribut yang ada dan menentukan kelas mana yang paling optimal. Teori bayes memiliki asumsi bahwa probabilitas P(A|B) atau peluang kejadian A bila B terjadi tidak saling berhubungan dengan setiap kemungkinan dari nilai B yang diberikan (\textit{naive}). Hal ini disebut sebagai \textit{class conditional independence} . Sehingga memudahkan perhitungan yang dilakukan pada saat klasifikasi. Kemungkinan terjadinya kejadian A bila diberikan kejadian B dapat dihitung dengan menggunakan rumus diatas, yaitu mengalikan peluang dari kejadian B jika diberikan kejadian A dikalikan dengan peluang seluruh kejadian A dan dibagi dengan peluang dari seluruh kejadian B.
+%	 \textit{Bayes Optimal Classifier} menghitung peluang dari satu kelas dari masing-masing kelompok atribut yang ada dan menentukan kelas mana yang paling optimal. 
+	 Teori bayes memiliki asumsi bahwa probabilitas P(A|B) atau peluang kejadian A bila B terjadi tidak saling berhubungan dengan setiap kemungkinan dari nilai B yang diberikan (\textit{naive}). Hal ini disebut sebagai \textit{class conditional independence} . Sehingga memudahkan perhitungan yang dilakukan pada saat klasifikasi. Kemungkinan terjadinya kejadian A bila diberikan kejadian B dapat dihitung dengan menggunakan rumus~\ref{eq:1}, yaitu mengalikan peluang dari kejadian B jika diberikan kejadian A dikalikan dengan peluang seluruh kejadian A dan dibagi dengan peluang dari seluruh kejadian B.
 
 	Seperti yang ditulis pada \cite{rish2001empirical}, \textit{naive bayes classifier} dapat didefinisikan sebagai berikut. Variabel - variabel dilambangkan dengan menggunakan huruf kapital seperti $X_i$, dan nilai-nya dilambangkan dengan huruf kecil seperti $x_i$, dan kumpulan dari variabel dilambangkan dengan huruf tebal seperti \textbf{$X$}.
 
 Berdasarkan persamaan pada~\ref{eq:1}, untuk dataset $X$ dan sebuah kelas $C$, didapatkan persamaan seperti $P(C=c|X=x) = \dfrac{P(X=x|C=c)P(C=c)}{P(X=x)}$. Karena, $P(X=x)$ adalah sama untuk setiap kelas, maka bisa diabaikan. Oleh karena itu, maka fungsi dikriminan dapat ditulis menjadi $f^x = P(X=x|C=c)P(C=c)$, dimana $P(X=x|C=c)$ disebut sebagai CPD (\textit{class-conditional probability distribution}).
 
-Untuk menghitung nilai $P(C=c|X)$ (\textit{X merupakan dataset yang digunakan sebagai predictor}) dengan mengasumsikan bahwa masing - masing atribut tidak saling bergantung dengan atribut lainnya \textit{class conditional independence}, maka didapat : 
+Untuk menghitung nilai $P(C=c|X)$ (\textit{X merupakan dataset yang digunakan sebagai predictor}) dengan mengasumsikan bahwa masing - masing atribut tidak saling bergantung dengan atribut lainnya (\textit{class conditional independence}), maka didapat : 
 \begin{equation}
 	P(C=c|X) = P(x_1|c) P(x_2|c) ... P(x_n|c) P(C=c)
 \end{equation}
@@ -468,7 +472,7 @@ Ketika suatu atribut prediktor memiliki data bersifat kontinu atau numerik, terd
 	\end{equation}
 	Dimana,\\
 	\textit{Mean} $= \mu = \dfrac{1}{n}\sum^n_{j=1}x_j$\\
-	\textit{Standard Deviation} $= \sigma = [\dfrac{1}{n-1}\sum^n_{j=1}(x_j-n)^2]^{0.5}$\\
+	\textit{Standard Deviation} $= \sigma = [\dfrac{1}{n-1}\sum^n_{j=1}(x_j-\mu)^2]^{0.5}$\\
 	\textit{n} $=$ jumlah kemunculan atribut terhadap kelas
 	
 	
