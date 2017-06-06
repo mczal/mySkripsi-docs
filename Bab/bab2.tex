@@ -422,10 +422,11 @@ P(B|A) adalah probabilitas posterior dari B jika diberikan A.
 \begin{figure}[H]
 \centering
 \includegraphics[scale=0.6]{naive_bayes_classifier_structure}
-\caption[Struktur \textit{Naive Bayesian Network}]{Struktur \textit{Naive Bayesian Network}}
+\caption[\textit{Bayesian Network} dengan Kedalaman 1 \textit{level}]{\textit{Bayesian Network} dengan Kedalaman 1 \textit{level}}
 \label{fig:Struktur Naive Bayesian Network}
 \end{figure}
-	Pada Gambar~\ref{fig:Struktur Naive Bayesian Network}
+
+	Pada Gambar~\ref{fig:Struktur Naive Bayesian Network}, $C$ melambangkan sebagai kelas dan $A_i$ melambangkan sebagai atribut - atribut yang dimiliki oleh kelas tersebut. Pada \textit{Bayesian Network} tersebut dijelaskan bahwa atribut $A_1$ sampai dengan $A_4$ akan mempengaruhi nilai dari kelas $C$, tetapi untuk setiap atribut tersebut tidak saling memiliki keterikatan dalam mempengaruhi nilai dari kelas $C$ (\textit{naive}). Oleh karena itu, pada gambar \textit{Bayesian Network}~\ref{fig:Struktur Naive Bayesian Network} hanya memiliki 1 level saja, dimana setiap atribut dalam mempengaruhi nilai kelas $C$ tidak saling memiliki keterikatan antara satu atribut dengan yang lainnya (\textit{class conditional independence}).
 
 \subsection{Algoritma}
 
@@ -434,19 +435,248 @@ P(B|A) adalah probabilitas posterior dari B jika diberikan A.
 
 	Seperti yang ditulis pada \cite{rish2001empirical}, \textit{naive bayes classifier} dapat didefinisikan sebagai berikut. Variabel - variabel dilambangkan dengan menggunakan huruf kapital seperti $X_i$, dan nilai-nya dilambangkan dengan huruf kecil seperti $x_i$, dan kumpulan dari variabel dilambangkan dengan huruf tebal seperti \textbf{$X$}.
 
-Berdasarkan persamaan pada~\ref{eq:1}, untuk dataset $X$ dan sebuah kelas $C$, didapatkan persamaan seperti $P(C=c|X=x) = \dfrac{P(X=x|C=c)P(C=c)}{P(X=x)}$. Karena, $P(X=x)$ adalah sama untuk setiap kelas, maka bisa diabaikan. Oleh karena itu, maka fungsi dikriminan dapat ditulis menjadi $f^x = P(X=x|C=c)P(C=c)$, dimana $P(X=x|C=c)$ disebut sebagai CPD (\textit{class-conditional probability distribution}).
+Berdasarkan persamaan pada~\ref{eq:1}, untuk dataset $X$ dan sebuah kelas $C$, didapatkan persamaan seperti $P(C=c|X=x) = \dfrac{P(X=x|C=c)P(C=c)}{P(X=x)}$. Karena, $P(X=x)$ adalah sama untuk setiap kelas, maka bisa diabaikan. Oleh karena itu, maka fungsi diskriminan dapat ditulis menjadi $f^x = P(X=x|C=c)P(C=c)$, dimana $P(X=x|C=c)$ disebut sebagai CPD (\textit{class-conditional probability distribution}).
 
 Untuk menghitung nilai $P(C=c|X)$ (\textit{X merupakan dataset yang digunakan sebagai predictor}) dengan mengasumsikan bahwa masing - masing atribut tidak saling bergantung dengan atribut lainnya (\textit{class conditional independence}), maka didapat : 
-\begin{equation}
+\begin{equation} \label{eq:2}
 	P(C=c|X) = P(x_1|c) P(x_2|c) ... P(x_n|c) P(C=c)
 \end{equation}
 
 Sebuah dataset dapat ditentukan klasifikasi-nya dengan algoritma naive bayes setelah dihitung semua kemungkinan dari nilai $P(c_k|X)$ dan untuk nilai keluaran yang paling besar dipilih menjadi kelas yang paling optimal dari dataset tersebut.
 
 \textit{MAP Maximum A Posteriori}
-		\begin{equation}
+		\begin{equation} \label{eq:3}
 			C_{MAP} = \underset{c \in C}{ argmax } P(c|X) = \underset{c \in C}{ argmax } P(X|c) P(c)
 		\end{equation} \\
+		
+\subsubsection{Pembuatan Model}
+\label{subsubsec:Pembuatan Model}
+
+Langkah - langkah yang perlu dilakukan untuk melakukan pembuatan model adalah sebagai berikut:
+\begin{enumerate}
+	\item Membuat tabel frekuensi (atribut bertipe diskrit)
+	\item Membuat tabel peluang (atribut bertipe diskrit)
+	\item Menggunakan cara yang ada pada bagian~\ref{subsec:Prediktor Numerik} (atribut bertipe numerik)
+\end{enumerate}
+
+Dimisalkan dataset untuk contoh kasus adalah seperti berikut:
+
+\begin{table}[H]
+	\label{tab:dataset}
+	\centering
+	\caption{Contoh Dataset (atribut kelas = \textbf{Play})}
+	\begin{tabular}{ | c | c | c | }
+	\hline
+	%\toprule
+	Humidity & Outlook & \textbf{Play}\\ \hline \hline
+	%\midrule
+	60 & Rainy & No\\ \hline
+	%\midrule
+	78 & Rainy & No\\ \hline
+	%\midrule
+	80 & Sunny & Yes\\ \hline
+	%\midrule
+	75 & Sunny & No\\ \hline
+	%\midrule
+	85 & Sunny & Yes \\ \hline
+	%\bottomrule
+	\end{tabular}
+\end{table}
+
+Sesuai dengan langkah - langkah yang sudah dijelaskan sebelumnya, langkah pertama yang perlu dilakukan untuk membuat model naive bayes classifier adalah membuat tabel frekuensi untuk setiap atribut prediktor terhadap atribut kelas yang bertipe diskrit. Pada contoh tabel diatas, diasumsikan bahwa atribut Humidity dan Outlook merupakan atribut prediktor, lalu untuk atribut Play merupakan atribut kelas.
+
+\begin{table}[ht]
+	\centering
+	\caption{Tabel frekuensi atribut Outlook}
+	\label{tab:2-Table frekuensi atribut Outlook}
+	\begin{tabular}{ | c | c | c | c | }
+	\hline
+	& \multicolumn{2}{c}{\textbf{Play}} & \\ 
+	%\hline
+	& Yes & No & \textit{sum} \\
+	\hline
+	Sunny & 2 & 1 & \textbf{3}\\
+	\hline
+	Rainy & 0 & 2 & \textbf{2} \\
+	\hline
+	\textit{sum} & \textbf{2} & \textbf{3} & \\
+	\hline
+	\end{tabular}
+\end{table}
+
+Pada table frekuensi untuk atribut Outlook~\ref{tab:2-Table frekuensi atribut Outlook}, dapat dilihat bahwa $P(X=Rainy|C=Yes) = 0$. Naive bayes classifier tidak dapat mengatasi frekuensi yang nilainya 0. Karena dapat menyebabkan seluruh perhitungan menjadi 0(karena berapapun bilangannya, jika dikalikan dengan 0 selalu menghasilkan nilai 0), sehingga menjadi tidak relevan. Untuk menangani hal tersebut, maka dilakukan penanganan dengan cara yang dijelaskan pada bagian~\ref{subsec:Zero-Frequency Problem}. Berdasarkan pada~\ref{subsec:Zero-Frequency Problem}, perubahan nilai atribut dapat dilihat pada Table~\ref{tab:2-Table frekuensi atribut Outlook Modif}.
+
+\begin{table}[ht]
+	\centering
+	\caption{Tabel frekuensi atribut Outlook (modifikasi)}
+	\label{tab:2-Table frekuensi atribut Outlook Modif}
+	\begin{tabular}{|c|c|c|c|}
+	\hline
+	& \multicolumn{2}{c}{\textbf{Play}} & \\
+	& Yes & No & \textit{sum} \\ 
+	\hline
+	Sunny & 3 & 2 & \textbf{5}\\
+	\hline
+	Rainy & 1 & 3 & \textbf{4} \\
+	\hline
+	\textit{sum} & \textbf{4} & \textbf{5} & \\
+	\hline
+	\end{tabular}
+\end{table}
+
+Langkah kedua adalah membuat tabel kemungkinan dari tabel frekuensi yang telah dibuat:		
+\begin{table}[ht]
+	\centering
+	\caption{Tabel kemungkinan atribut Outlook}
+	\begin{tabular}{|c|c|c|c|}
+	\toprule
+	& \multicolumn{2}{c}{\textbf{Play}} & \\
+	& Yes & No & \textit{sum} \\ 
+	\midrule
+	Sunny & 3/4 & 2/5 & \textbf{5/9}\\
+	\midrule
+	Rainy & 1/4 & 3/5 & \textbf{4/9} \\
+	\midrule
+	\textit{sum} & \textbf{4/9} & \textbf{5/9} & \\
+	\bottomrule
+	\end{tabular}
+\end{table}
+
+Langkah ketiga bersifat opsional khusus untuk atribut bertipe numerik. Karena atribut Humidity bertipe numerik, atribut tersebut perlu diubah ke dalam kategori mereka masing - masing agar perhitungan dalam pembuatan model dapat tepat. Dalam melakukan pembuatan model atribut bertipe numerik, akan digunakan perhitungan standard distribusi yang dijelaskan pada bagian~\ref{subsec:Prediktor Numerik}. Berdasarkan cara pada bagian~\ref{subsec:Prediktor Numerik} perlu dibuat tabel rata - rata dan standard deviasi untuk atribut numerik terhadap setiap nilai dari atribut kelas.
+
+		\begin{table}[H]
+		\centering
+		\caption{Tabel Distribusi}
+		\label{tab:Table Distribusi-2}
+		\begin{tabular}{|c|c|c|c|c|}
+		\toprule
+		\multirow{2}{*}{Play Golf ?} & Yes & 80 & 85 & \\
+		 & No & 60 & 75 & 78 \\
+		\bottomrule
+		\end{tabular}
+		\end{table}
+		
+		Berdasarkan Tabel Distribusi pada~\ref{tab:Table Distribusi-2}, berikut merupakan table rata - rata dan standar deviasi dari atribut Humidity yang bertipe numerik : 
+		
+		\begin{table}[H]
+		\centering
+		\caption{Tabel rata - rata dan standar deviasi atribut Humidity}
+		\begin{tabular}{|c|c|c|}
+		\toprule
+		 & Mean & StDev \\
+		Yes & 82.5 & 3.5 \\
+		No & 71 & 9.6 \\
+		\bottomrule
+		\end{tabular}
+		\end{table}
+
+
+
+\subsubsection{Klasifikasi}
+\label{subsubsec:Klasifikasi}
+
+Setelah dilakukan pembuatan model pada bagian~\ref{subsubsec:Pembuatan Model}, klasifikasi dapat dilakukan terhadap sebuah dataset baru dengan menggunakan model yang sudah dibuat tersebut. Seperti contoh kita memiliki dua buah dataset seperti berikut:
+\begin{enumerate}
+	\item $X = {Humidity = 50, Outlook = Sunny}$
+	\item $Y = {Humidity = 90, Outlook = Sunny}$
+\end{enumerate}
+
+Seperti yang sudah dijelaskan pada perhitungan~\ref{eq:3}, untuk dataset X dan Y perlu dicari peluang kelas yang paling tinggi. Dengan menggunakan model pada bagian~\ref{subsubsec:Pembuatan Model}, didapat bahwa:
+\paragraph{Untuk dataset X dengan $P=Yes$:}
+	Menghitung peluang untuk atribut $Outlook=Sunny$ dengan $P=Yes$
+	\begin{equation}
+			P(Outlook=Sunny|Yes) = 3/4 
+			= 0.75
+	\end{equation}
+	
+	Menghitung peluang untuk atribut $Humidity=50$ dengan $P=Yes$
+		\begin{equation}
+			P(Humidity=50|Yes) 
+			= \dfrac{1}{\sqrt{2\pi(3.5)}}e^{-\dfrac{(\textbf{50}-82.5)^2}{2(3.5)^2}}
+			= 4.031*10^{-20}
+		\end{equation}
+	
+	\paragraph{Untuk dataset X dengan $P=No$:}
+		Menghitung peluang untuk atribut $Outlook=Sunny$ dengan $P=No$
+		\begin{equation}
+			P(Outlook=Sunny|No) = 2/5 
+			= 0.4
+		\end{equation}
+		Menghitung peluang untuk atribut $Humidity=50$ dengan $P=No$
+		\begin{equation}
+			P(Humidity=50|No) 
+			= \dfrac{1}{\sqrt{2\pi(9.6)}}e^{-\dfrac{(\textbf{50}-71)^2}{2(9.6)^2}}
+			= 0.011
+		\end{equation}
+	\paragraph{Kesimpulan untuk $dataset$ $X$}
+	Dari perhitungan di atas, didapat bahwa : \\ \\
+	Untuk kelas $Play=Yes$ \\
+	$P(Play=Yes|X) \\
+	= P(Outlook=Sunny|Play=Yes)*P(Humidity=50|Play=Yes)*P(Yes) \\
+	= 0.75 * 4.031*10^{-20} * 4/9 \\
+	= 1.343*10^{-20}$ \\ \\
+	Untuk kelas $Play=No$ \\
+	$P(Play=No|X) \\
+	= P(Outlook=Sunny|Play=No)*P(Humidity=50|Play=No)*P(No) \\
+	= 0.4 * 0.011 * 5/9 \\
+	= 0.002$ \\ \\
+	Setelah itu, lakukan normalisasi terhadap nilai - nilai berikut: \\
+	$P(Play=Yes|X) = 1.343*10^{-20} / (1.343*10^{-20} + 0.002) \\
+	= 6.715*10^{-18}$ \\
+	$P(Play=No|X) = 0.002 / ((1.343*10^{-20}) + 0.002) \\
+	= 1 (100\%)$ \\
+	
+	Karena, $P(Play=Yes|X) = 6.715*10^{-18} < P(Play=No|X) = 1 (100\%) $, maka hasil klasifikasi untuk \textit{dataset X} ialah kelas $Play=No$.
+	
+	\paragraph{Untuk dataset Y dengan $P=Yes$}
+	Menghitung peluang untuk atribut $Outlook=Sunny$ dengan $P=Yes$
+	\begin{equation}
+			P(Outlook=Sunny|Yes) = 3/4 
+			= 0.75
+	\end{equation}
+	
+	Menghitung peluang untuk atribut $Humidity=90$ dengan $P=Yes$
+		\begin{equation}
+			P(Humidity=90|Yes) 
+			= \dfrac{1}{\sqrt{2\pi(3.5)}}e^{-\dfrac{(\textbf{90}-82.5)^2}{2(3.5)^2}}
+			= 0.021
+		\end{equation}
+	
+	\paragraph{Untuk dataset Y dengan $P=No$:}
+	Menghitung peluang untuk atribut $Outlook=Sunny$ dengan $P=No$
+	\begin{equation}
+				P(Outlook=Sunny|No)
+				= 2/5 
+				= 0.4
+		\end{equation}
+	
+	Menghitung peluang untuk atribut $Humidity=90$ dengan $P=No$
+		\begin{equation}
+			P(Humidity=90|No)
+			= \dfrac{1}{\sqrt{2\pi(9.6)}}e^{-\dfrac{(\textbf{90}-71)^2}{2(9.6)^2}} 
+			= 0.018
+		\end{equation}
+		
+	\paragraph{Kesimpulan untuk $dataset$ $Y$}
+	Dari perhitungan di atas, didapat bahwa : \\ \\
+	Untuk kelas $Play=Yes$ \\
+	$P(Play=Yes|Y) \\
+	= P(Outlook=Sunny|Play=Yes)*P(Humidity=90|Play=Yes)*P(Yes) \\
+	= 0.75 * 0.021 * 4/9 \\
+	= 0.007$ \\ \\
+	Untuk kelas $Play=No$ \\
+	$P(Play=No|Y) \\
+	= P(Outlook=Sunny|Play=No)*P(Humidity=90|Play=No)*P(No) \\
+	= 0.4 * 0.018 * 5/9 \\
+	= 0.004$ \\ \\
+	Setelah itu, lakukan normalisasi terhadap nilai - nilai berikut: \\
+	$P(Play=Yes|Y) = 0.007 / (0.007+0.004) \\
+	= 0.64 (64\%)$ \\
+	$P(Play=No|Y) = 0.004 / (0.007+0.004) \\
+	= 0.46 (46\%)$ \\
+	
+	Karena, $P(Play=Yes|Y) = 0.64 (64\%) > P(Play=No|Y) = 0.46 (46\%)$, maka hasil klasifikasi untuk \textit{dataset Y} ialah kelas $Play=Yes$.
+	
 
 %\begin{itemize}
 %	\item $P(c|d)$ merupakan peluang dari kemunculan suatu kelas/kelompok tertentu jika diberikan suatu dataset $d$
@@ -461,6 +691,7 @@ Sebuah dataset dapat ditentukan klasifikasi-nya dengan algoritma naive bayes set
 Ketika ada suatu nilai dari atribut prediktor yang tidak memiliki frekuensi kemunculan sama sekali terhadap setiap kelas (frekuensi=0), maka nilai 1 ditambahkan kepada setiap kombinasi dari frekuensi dari atribut terhadap tiap kelas. Pendekatan yang digunakan untuk dalam mengatasi hal ini adalah dengan menggunakan metode \textit{Laplacian Correction}. Pada metode tersebut, dikatakan bahwa kita perlu menambah nilai 1 kepada seluruh nilai pada table frekuensi untuk mengatasi masalah \textit{zero-frequency problems}. Asumsikan training database (D) itu sangat besar, dimana menambahkan frekuensi sebanyak 1 ke setiap jumlah perhitungan yang kita perlukan tidak memberikan pengaruh yang besar terhadap nilai kemungkinan akhir (Laplacian correction / Laplace estimator).
 
 \subsection{Prediktor Numerik}
+\label{subsec:Prediktor Numerik}
 \cite{garg2013design} 
 Ketika suatu atribut prediktor memiliki data bersifat kontinu atau numerik, terdapat 2 cara untuk mengatasi hal tersebut, diantaranya adalah:
 \begin{enumerate}
@@ -479,6 +710,7 @@ Ketika suatu atribut prediktor memiliki data bersifat kontinu atau numerik, terd
 \end{enumerate}
 
 \subsection{Pengukuran \textit{Naive Bayes Classifier}}
+\label{subsec:Pengukuran Naive Bayes Classifier}
 
 Pengukuran dari sebuah model NBC (\textit{Naive Bayes Classifier}) dapat dilakukan dengan melihat kepada contoh tabel \textit{confusion matrix}~\ref{tab:conf_matrix}. Dapat dilihat pada tabel~\ref{tab:conf_matrix}, bahwa kolom pada \textit{confusion matrix} menyatakan nilai dari kelas hasil klasifikasi model NBC dan baris pada \textit{confusion matrix} menyatakan nilai sebenarnya dari data yang diklasifikasi. Terdapat beberapa istilah yang umum digunakan pada perhitungan model klasifikasi, diantaranya adalah sebagai berikut:
 \begin{enumerate}
@@ -489,9 +721,9 @@ Pengukuran dari sebuah model NBC (\textit{Naive Bayes Classifier}) dapat dilakuk
 \end{enumerate}
 
 \begin{table}[h]
-\label{tab:conf_matrix}
 \centering
 \caption{Contoh \textit{Confusion Matrix}}
+\label{tab:conf_matrix}
 \begin{tabular}{ | c | c | c | c | }
 \hline
  & $Predicted=c_1$ & $Predicted=c_2$ & $Predicted=c_3$ \\ \hline \hline
@@ -508,9 +740,9 @@ $Actual=c_3$ & $x$ & $y$ & $z$ \\ \hline
 	\textit{Accuracy} merupakan perhitungan kesalahan sistematik untuk melakuakn evaluasi terhadap model klasifikasi. \textit{Accuracy} dapat dihasilkan dengan menghitung jumlah seluruh data yang nilai klasifikasi-nya sama dengan nilai sebenarnya pada data tersebut dibagi dengan keseluruhan dataset. Pada \textit{confusion matrix}, perhitungan \textit{accuracy} dapat dilakukan dengan menjumlahkan seluruh garis diagonal pada matrix dan membaginya dengan seluruh dataset seperti pada tabel~\ref{tab:confusion_accuracy}.
 	
 \begin{table}[H]
-\label{tab:confusion_accuracy}
 \centering
 \caption{\textit{Confusion Matrix - Accuracy}}
+\label{tab:confusion_accuracy}
 \begin{tabular}{ | c | c | c | c | }
 \hline
  & $Predicted=c_1$ & $Predicted=c_2$ & $Predicted=c_3$ \\ \hline \hline
@@ -552,7 +784,7 @@ $Actual=c_3$ & $x$ & $y$ & $TP$ \\ \hline
 	 \begin{equation}
 	 	\dfrac{1}{\alpha \dfrac{1}{P} + (1 - \alpha)\dfrac{1}{R}}
 	 \end{equation}
-	 Dimana, $\alpha$ merupakan koefisien berat dari \textit{recall} dan \textit{precision}, biasanya digunakan $balanced F1$ untuk mengisi nilai $\alpha$ :
+	 Dimana, $\alpha$ merupakan koefisien bobot dari \textit{recall} dan \textit{precision}, biasanya digunakan $balanced F1$ untuk mengisi nilai $\alpha$ :
 	 \begin{equation}
 	 	\dfrac{2PR}{P + R}
 	 \end{equation}
@@ -560,6 +792,39 @@ $Actual=c_3$ & $x$ & $y$ & $TP$ \\ \hline
 \end{enumerate}
 
 
+\paragraph{Pengukuran \textit{Naive Bayes Classifier} Menggunakan Model Pada~\ref{subsubsec:Pembuatan Model}}
+
+Untuk melakukan sebuah pengukuran terhadap model NBC (\textit{Naive Bayes Classifier}), diperlukan sebuah data pelatihan yang sudah memiliki nilai asli dari atribut yang bertipe kelas. Dimisalkan kita memiliki data pelatihan seperti ini:
+\begin{enumerate}
+	\item $X = {Humidity = 50, Outlook = Sunny, Play = No}$
+	\item $Y = {Humidity = 90, Outlook = Sunny, Play = Yes}$
+\end{enumerate}
+
+Setelah itu, untuk setiap data pelatihan tersebut, akan dilakukan perhitungan klasifikasi menggunakan cara yang sudah dijelaskan pada bagian~\ref{subsubsec:Klasifikasi}. Setelah dilakukan klasifikasi terhadap kedua data pelatihan tersebut, didapat bahwa: (1) untuk data pelatihan X memiliki hasil prediksi atribut kelas $Play = No$; (2) untuk data pelatihan Y memiliki hasil prediksi atribut kelas $Play = Yes$. Sampai dengan tahap ini, sudah didapat nilai hasil prediksi terhadap kedua data pelatihan tersebut dan nilai asli dari atribut kelas milik data pelatihan tersebut. 
+
+Hasil prediksi klasifikasi nilai atribut kelas pada data pelatihan tersebut perlu dimasukkan kedalam \textit{confusion matrix}, dengan melakukan pencocokan terhadap tiap baris dan kolom yang ada pada \textit{confusion matrix}. Berikut merupakan \textit{confusion matrix} tersebut:
+
+\begin{table}[h]
+\centering
+\caption{\textit{Confusion Matrix} Kelas Play}
+\label{tab:conf_matrix_kasus}
+\begin{tabular}{ | c | c | c | }
+\hline
+ & $(predicted)Play=Yes$ & $(predicted)Play=No$ \\ \hline \hline
+$(actual)Play=Yes$ & $1$ & $0$ \\ \hline
+$(actual)Play=No$ & $0$ & $1$ \\ \hline
+\end{tabular}
+\end{table}
+
+Setelah selesai membuat \textit{confusion matrix} pada Tabel~\ref{tab:conf_matrix_kasus}, dapat dilakukan perhitungan untuk melakukan pengukuran menggunakan:
+\begin{enumerate}
+	\item \textit{Accuracy}
+	\item \textit{Precision}
+	\item \textit{Recall}
+	\item \textit{F-Measure}
+\end{enumerate}
+
+Sampai pada tahap ini, sudah dapat dilakukan perhitungan keempat pengukuran tersebut menggunakan rumus yang sudah dijelaskan pada bagian~\ref{subsec:Pengukuran Naive Bayes Classifier}.
 	
 \section{Framework Yang Digunakan Dalam Membangun Perangkat Lunak}
 
@@ -570,7 +835,7 @@ $Actual=c_3$ & $x$ & $y$ & $TP$ \\ \hline
 \begin{enumerate}
 	\item Melakukan deploy aplikasi dengan menggunakan mode standalone (menggunakan server bawaan dari \textit{spring}),
 	\item Melakukan deploy aplikasi pada aplikasi server (menggunakan aplikasi web server dari luar, seperti \textit{Apache Tomcat Web Application}),
-	\item Melakukan deploy aplikasi dengan menggunakan \textit{cloud PaaS}\footnote{\textit{Platform as Service merupakan sebuah platform untuk mengembangkan, menjalankan, dan mengatur aplikasi kita tanpa melewati serangkaian konfigurasi yang rumit layaknya \textit{dedicated server} pada umumnya}} (\textit{Platform as Service}, seperti \textit{Pivotal Web Service}).
+	\item Melakukan deploy aplikasi dengan menggunakan \textit{cloud PaaS}\footnote{\textit{Platform as Service} merupakan sebuah platform untuk mengembangkan, menjalankan, dan mengatur aplikasi kita tanpa melewati serangkaian konfigurasi yang rumit, layaknya \textit{dedicated server} pada umumnya} (\textit{Platform as Service}, seperti \textit{Pivotal Web Service}).
 \end{enumerate}
 Spring menyediakan model pemrograman terbuka yang komprehensif, kohesif, mudah dipahami serta memiliki \textit{library} yang lengkap untuk melakukan integrasi ke \textit{service - service} lain seperti \textit{Hadoop-client Library}, \textit{Mysql-connector Library}, dsb. Inti dari framework ini lebih kepada untuk membangun aplikasi web, mengatur manajemen transaksi, akses data, messaging, pengujian dsb. Kita bisa mengembangkan aplikasi web berbasis MVC dan \textit{Web-Service} framework \textit{REST-ful}\footnote{REST merupakan \textit{standard} dalam arsitektur web yang menggunakan Protocol HTTP untuk pertukaran data.  Konsep REST menekankan bahwa komunikasi yang terjadi antara \textit{client} dan \textit{server} hanya sebatas melakukan \textit{request} dan memberikan \textit{response} saja.} (\textit{Representational State Transfer}).
 
@@ -595,9 +860,11 @@ Spring menyediakan model pemrograman terbuka yang komprehensif, kohesif, mudah d
 
 \subsection{\textit{Maven}}
 \cite{MengenalMaven2015EGunawan}
-Apache Maven adalah software build tools / project management yang dibangun dibawah \textit{Apache Software Foundation} yang digunakan untuk melakukan proses building project. Jadi, ketika project dibuild menggunakan Maven, project tersebut bisa kita buka menggunakan IDE lain.
+Apache Maven adalah software build tools / project management yang dibangun di bawah \textit{Apache Software Foundation} yang digunakan untuk melakukan proses building project. Jadi, ketika project dibuild menggunakan Maven, project tersebut bisa kita buka menggunakan IDE lain.
 
-Selain itu, keuntungan menggunakan maven adalah mendukung dependency management. Artinya, ketika kita membutuhkan suatu library ke dalam project, kita tidak perlu men-\textit{download}-nya secara manual yang kemudian dimasukkan ke dalam project. Tetapi, tinggal memasukkan \textit{dependency} untuk library yang dibutuhkan tersebut dan maven menangani proses \textit{download} library dan kompilasi project menggunakan \textit{library} tersebut.  Dengan begitu, ukuran project menjadi lebih kecil karena tidak memasukkan library ke dalam project. \textit{Maven} menyimpan seluruh library yang pernah kita gunakan pada direktori \texttt{.m2} milik user.
+Selain itu, keuntungan menggunakan Maven adalah mendukung dependency management. Artinya, ketika kita membutuhkan suatu library ke dalam project, kita tidak perlu men-\textit{download}-nya secara manual yang kemudian dimasukkan ke dalam project. Tetapi, tinggal memasukkan \textit{dependency} untuk library yang dibutuhkan tersebut dan Maven menangani proses \textit{download} library dan kompilasi project menggunakan \textit{library} tersebut.  Dengan begitu, ukuran project menjadi lebih kecil karena tidak memasukkan library ke dalam project. \textit{Maven} menyimpan seluruh library yang pernah kita gunakan pada direktori \texttt{.m2} milik user.
+
+Pada skripsi ini, Apache Maven akan digunakan untuk mempermudah penggunaan library - library yang dibutuhkan dari \textit{repository} luar seperti Hadoop Client Library dsb. pada perangkat lunak yang dibangun.
 
 Untuk mendownload Apache Maven bisa langsung ke websitenya di \url{http://maven.apache.org/}. Versi terbaru dari Apache Maven adalah 3.5.0.
 
@@ -605,10 +872,9 @@ Untuk mendownload Apache Maven bisa langsung ke websitenya di \url{http://maven.
 \cite{CogoluegnesIntroducing:2013} 
 \textit{Thymeleaf} merupakan \textit{template-engine open source} yang dapat melakukan \textit{rendering} HTML pada \textit{server-side}. Thymeleaf adalah Java XML template engine / XHTML / HTML5 yang dapat bekerja baik di web (\textit{Servlet-based}) maupun lingkungan yang bukan web. Hal ini lebih cocok untuk melayani XHTML / HTML5 pada \textit{layer} tampilan aplikasi berbasis web MVC, tetapi dapat memproses file XML bahkan di lingkungan offline. \textit{Template engine} ini menyediakan integrasi penuh dengan \textit{Spring Framework}. 
 
-Dalam aplikasi web Thymeleaf bertujuan untuk menjadi pengganti lengkap untuk JSP, dan menerapkan konsep Natural Template: file template yang bisa langsung dibuka di browser dan yang masih menampilkan dengan benar sebagai halaman web.
+Dalam aplikasi web Thymeleaf bertujuan untuk menjadi pengganti lengkap untuk JSP, dan menerapkan konsep Natural Template: file template yang bisa langsung dibuka di browser dan yang masih menampilkan dengan benar sebagai halaman web. Sebagai \textit{framework open source}, \textit{Thymeleaf} memiliki lisensi Apache 2.0.
 
-Sebagai \textit{framework open source}, \textit{Thymeleaf} memiliki lisensi Apache 2.0 
-
+Pada skripsi ini, Thymeleaf akan digunakan untuk mempermudah melakukan render HTML dari data - data yang diproses oleh server dan memberikannya kepada client (untuk perangkat lunak yang dibangun berbasiskan web).
 
 
 		%\paragraph{Perhitungan pada \textit{Naive Bayes Classifier}}
