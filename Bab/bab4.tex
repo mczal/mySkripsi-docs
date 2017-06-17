@@ -262,35 +262,35 @@ Dalam \textit{package} ini terdapat beberapa \textit{package} lagi dan kelas - k
 
 \ForAll{\texttt{value} $\in$ \texttt{values}}
 	\State \texttt{caches.add(value)}
-	\State \texttt{sum} $+=$ \texttt{value}
+	\State \texttt{sum} $\gets$ \texttt{sum}$+$\texttt{value}
 	\State \texttt{count}$++$
 \EndFor
 
-\If{\texttt{key.type} $\gets$ \texttt{discrete}}
+\If{\texttt{key.type} == \texttt{DISCRETE\_TYPE}}
 
 \State \texttt{splitter} $\gets$ \texttt{key.split("|")[2]}
 \State \texttt{result} $\gets$ \texttt{splitter + "," + sum + "|" +}\verb|DISCRETE_TYPE|
 \State \texttt{write(result,"")}
 
-\ElsIf{\texttt{key.type} $\gets$ \texttt{class}}
+\ElsIf{\texttt{key.type} $==$ \texttt{CLASS\_TYPE}}
 
 \State \texttt{splitter} $\gets$ \texttt{key.split("|")[2]}
 \State \texttt{result} $\gets$ \texttt{splitter + "," + sum + "|" +}\verb|CLASS_TYPE|
 \State \texttt{write(result,"")}
 
-\ElsIf{\texttt{key.type} $\gets$ \texttt{contiuous}}
+\ElsIf{\texttt{key.type} $==$ \texttt{NUMERIC\_TYPE}}
 
 \State \texttt{mean} $\gets$ \texttt{sum/count}
 \State \texttt{calcTemp} $\gets$ \texttt{0.0}
 
 \ForAll{\texttt{c} $\in$ \texttt{caches}}
-	\State \texttt{calcTemp} $+= (c - mean)^2$
+	\State \texttt{calcTemp} $\gets$\texttt{calcTemp}$+(c - mean)^2$
 \EndFor
 
 \State \texttt{calcTemp} $\gets$ \texttt{calcTemp * (1/count)}
 \State \texttt{sigma} $\gets calcTemp^{0.5}$
 \State \texttt{result} $\gets$  \texttt{key.split("|")[2]}
-\State \texttt{write(result, ";" + mean + "|" + sigma + "|" +)}\verb|NUMERIC_TYPE|
+\State \texttt{write(result, ";" + mean + "|" + sigma + "|" +}\verb|NUMERIC_TYPE|\texttt{)}
 
 \EndIf
 
@@ -306,14 +306,18 @@ Kelas ini merupakan kelas yang akan menjadi \textit{combiner} pada modul ini. Ke
 \begin{algorithmic}[1]
 \Procedure{Reduce}{$key,values[],context$}\Comment{Reduce function}
 
-\If{\texttt{key.type = discrete} or \texttt{key.type = class}}
+\State \verb|CLASS_TYPE| $\gets$ \texttt{"CLASS"}
+\State \verb|DISCRETE_TYPE| $\gets$ \texttt{"DISCRETE"}
+\State \verb|NUMERIC_TYPE| $\gets$ \texttt{"NUMERIC"}
+
+\If{\texttt{key.type == \texttt{DISCRETE\_TYPE}} or \texttt{key.type == CLASS\_TYPE}}
 	\State \texttt{sum = 0}
 	\ForAll{\texttt{v} $\in$ \texttt{values}}
 		\State \texttt{sum += v}
 	\EndFor
 	\State \texttt{context.write(key,sum)}
 	
-\ElsIf{\texttt{key.type = continuous}}
+\ElsIf{\texttt{key.type == \texttt{NUMERIC\_TYPE}}}
 	\ForAll{\texttt{v} $\in$ \texttt{values}}
 		\State \texttt{context.write(key,sum)}
 	\EndFor
@@ -457,7 +461,7 @@ Pada package ini terdapat 7 kelas utama yang digunakan untuk melakukan proses pa
 					\ForAll{(attrIdx,attrName,attrType) $\in$ attrSplitConf}
 						\State \texttt{currInAttrValue}$ \gets $\texttt{input[attrIdx]}	
 						
-						\If{\texttt{attrType} $\gets$ \texttt{discrete}}
+						\If{\texttt{attrType} $==$ \texttt{discrete}}
 							\State \texttt{predictor} $\gets$ \texttt{predictorContainer[attrName]}
 							\State \texttt{predDetail} $\gets$ \texttt{predictor.getDetail[currInAttrValue]}
 							\State \texttt{countDividend} $\gets$ \texttt{classPriorDetail.getCount}
@@ -465,8 +469,8 @@ Pada package ini terdapat 7 kelas utama yang digunakan untuk melakukan proses pa
 							\State \texttt{divClassPriorDetail} $\gets$ \texttt{divClassPrior.getDetail[classPriorDetail]}
 							\State \texttt{divisor} $\gets$ \texttt{divClassPriorDetail.getCount}
 							\State \texttt{currRes} $\gets$ \texttt{(countDividend) / (divisor)}
-							\State \texttt{currClassAllPredictorResult *= currRes}
-						\ElsIf{\texttt{attrType} $\gets$ \texttt{numeric}}
+							\State \texttt{currClassAllPredictorResult}$*\gets$\texttt{currRes}
+						\ElsIf{\texttt{attrType} $==$ \texttt{numeric}}
 							\State \texttt{predictor} $\gets$ \texttt{predictorContainer[attrName]}
 							\State \texttt{mean} $\gets$ \texttt{classPriorDetail.getMean}
 							\State \texttt{sigma} $\gets$ \texttt{classPriorDetail.getSigma}
@@ -475,7 +479,7 @@ Pada package ini terdapat 7 kelas utama yang digunakan untuk melakukan proses pa
 							\State $powerDivisor \gets 2.0 * \frac{sigma}{2}$
 							\State resPower $\gets$ powerDividend / powerDivisor
 							\State currRes $\gets$ (1/divisor) * $Math.E^{resPower}$
-							\State \texttt{currClassAllPredictorResult *= currRes}
+							\State \texttt{currClassAllPredictorResult}$*\gets$\texttt{currRes}
 						\EndIf
 						
 						\State currClassCount $\gets$ classPriorDetail.getCount()
@@ -485,7 +489,7 @@ Pada package ini terdapat 7 kelas utama yang digunakan untuk melakukan proses pa
 							\State \texttt{allCurrClassCount += x.getCount}
 						\EndFor
 												
-						\State \texttt{currClassAllPredictorResult *= (currClassCount/allCurrClassCount)}
+						\State \texttt{currClassAllPredictorResult}$*\gets$\texttt{(currClassCount/allCurrClassCount)}
 						\State \texttt{allClassResult.add(currClassAllPredictorResult)}
 					\EndFor					
 					
@@ -496,7 +500,7 @@ Pada package ini terdapat 7 kelas utama yang digunakan untuk melakukan proses pa
 				\State \texttt{divisorNorm $\gets$ 0.0}
 				
 				\ForAll{\texttt{result $\in$ allClassResult}}
-					\State \texttt{divisorNorm += result.currentVal}
+					\State \texttt{divisorNorm}$+=$\texttt{result.currentVal}
 					\If{\texttt{checker < currentVal}}
 						\State \texttt{checker = currentVal}
           				\State \texttt{maxClass = s}
@@ -536,7 +540,7 @@ Pada package ini terdapat 7 kelas utama yang digunakan untuk melakukan proses pa
 						\ForAll{\texttt{(predictorDetailName, predictorDetail)}$ \in $\texttt{predictor}}
 							\State \texttt{classPriorDetailChecker} $\gets$ \texttt{predictorDetail.classPrior[className]} \texttt{.getDetail[classValue]}
 														
-							\If{\texttt{classPriorDetailChecker}$ \gets $\texttt{null}}
+							\If{\texttt{classPriorDetailChecker}$==$\texttt{null}}
 								\State \texttt{classPriorDetailChecker}$ \gets $\texttt{new ClassPriorDetail} \texttt{(classValue,laplacianSmoothingAdder)}
 								\State \texttt{predictorDetail.classPrior[className]} \texttt{.putDetail(classValue,classPriorDetailChecker)}
 								\State \texttt{tmpClassPriorDetail}$ \gets $\texttt{classPrior.get[classValue]}
@@ -653,16 +657,16 @@ Pada package ini terdapat 4 kelas utama yang digunakan untuk menjalankan proses 
 			
 			\For{$i \gets 0$ \textbf{to} \texttt{confusionMatrix.matrixLength}}
 				\For{$j \gets 0$ \textbf{to} \texttt{confusionMatrix.matrixLength}}
-					\If{$i=j$}
-						\State \texttt{dividend} $+=$ \texttt{confusionMatrix.getMatrix()[i][j]}
+					\If{$i==j$}
+						\State \texttt{dividend} $+\gets$ \texttt{confusionMatrix.getMatrix()[i][j]}
 					\EndIf
-					\State \texttt{divisor} $+=$ \texttt{confusionMatrix.getMatrix()[i][j]}
+					\State \texttt{divisor} $+\gets$ \texttt{confusionMatrix.getMatrix()[i][j]}
 				\EndFor
 			\EndFor
 			
 			\State \texttt{accuracyOperator} $\gets$ \texttt{dividend + "/" + divisor}
 			\State \texttt{accuracyResult} $\gets$ \texttt{dividend/divisor}
-			\State \texttt{outVal} $+=$ \texttt{accuracyOperator+"="+accuracyResult}
+			\State \texttt{outVal} $+\gets$ \texttt{accuracyOperator+"="+accuracyResult}
 			
 			\ForAll{\texttt{(className,index)} $\in$ \texttt{confusionMatrix}}
 
@@ -671,26 +675,26 @@ Pada package ini terdapat 4 kelas utama yang digunakan untuk menjalankan proses 
 				\State \texttt{currFN} $\gets 0$
 				
 				\For{$i \gets 0 $ \textbf{to} \texttt{confusionMatrix.matrixLength}}
-					\If{$i != index$}
-						\State \texttt{currFP} $+=$ \texttt{confusionMatrix.getMatrix()[i][index]}
-						\State \texttt{currFN} $+=$ \texttt{confusionMatrix.getMatrix()[index][i]}
+					\If{\texttt{i}$!=$\texttt{index}}
+						\State \texttt{currFP} $+\gets$ \texttt{confusionMatrix.getMatrix()[i][index]}
+						\State \texttt{currFN} $+\gets$ \texttt{confusionMatrix.getMatrix()[index][i]}
 					\EndIf
 				\EndFor
 				//*\Comment{Precision}
 				\State \texttt{precisionOperation} $\gets$ \texttt{currTP + "/" + currTP + "+" + currFP}
 				\State \texttt{precisionResult} $\gets$ \texttt{currTP/(currTP + currFP)}
-				\State \texttt{outVal} $+=$ \texttt{precisionOperation + "=" + precisionResult}
+				\State \texttt{outVal} $+\gets$ \texttt{precisionOperation + "=" + precisionResult}
 				
 				//*\Comment{Recall}
 				\State \texttt{recallOperation} $\gets$ \texttt{currTP + "/" + currTP + " + " + currFN}
 				\State \texttt{recallResult} $\gets$ \texttt{currTP/ (currTP + currFN)}
-				\State \texttt{outVal} $+=$ \texttt{recallOperation + "=" + recallResult}
+				\State \texttt{outVal} $+\gets$ \texttt{recallOperation + "=" + recallResult}
 				
 				//*\Comment{F-Measure}
 				\State $\alpha \gets$ \texttt{(2*precisionResult*recallResult) / (precisionResult+recallResult)}
 				\State \texttt{fMeasureOperation} $\gets 1 / {alpha{1 / P}+(1-alpha) 1/R}$
 				\State \texttt{fMeasureResult} $\gets 1/((alpha * (1/P)) + ((1 - alpha) * (1/R)))$
-				\State \texttt{outVal} $+=$ \texttt{fMeasureOperation + "=" + fMeasureResult}
+				\State \texttt{outVal} $+\gets$ \texttt{fMeasureOperation + "=" + fMeasureResult}
 				
 				
 			\EndFor

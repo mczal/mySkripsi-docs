@@ -7,7 +7,7 @@ Pembangunan perangkat lunak pada skripsi ini dilakukan dengan menggunakan aplika
 \begin{itemize}
 	\item Sistem Operasi: Ubuntu 14.04 LTS
 	\item Tipe SO: 64-bit
-	\item Prosesor: Intel® Core™ i3 CPU 550 @ 3.20GHz × 4 
+	\item Prosesor: Intel Core i3 CPU 550 @ 3.20GHz x 4 
 	\item Memori: 7,7 GiB
 	\item Grafik: Gallium 0.4 on AMD REDWOOD
 	\item Disk: 264,2 GB
@@ -726,6 +726,18 @@ Setelah model NBC dihasilkan, dilakukan juga eksperimen testing untuk mengetahui
 \end{tabular}
 \end{table}
 
+\subsubsection{Kesimpulan}
+Berdasarkan eksperimen pembuatan model yang telah dilakukan, maka dapat diambil kesimpulan bahwa model NBC yang dibuat pada Dataset-1, Dataset-2, dan Dataset-3:
+
+\begin{enumerate}[label=(\alph*)]
+	\item Memiliki tingkat \textit{accuracy} yang tinggi, karena nilainya selalu berada diatas 80\%
+	\item Untuk perhitungan \textit{precision}, \textit{recall}, dan \textit{f-measure} memiliki rata - rata yang cukup tinggi yaitu berkisar diatas 60\%.
+\end{enumerate}
+
+Sehingga dapat disimpulkan bahwa setelah dilakukan evaluasi terhadap model NBC pada Dataset-1, Dataset-2, dan Dataset-3 hasil perhitungan evaluasi memiliki nilai yang cukup baik. 
+
+
+
 \subsection{Performansi Big Data}
 Eksperimen perangkat lunak yang dilakukan dengan menggunakan \textit{big data} memiliki tujuan untuk menguji kemampuan dari perangkat lunak terhadap sebuah \textit{big data} dan variabel-variabel pada Hadoop. Eksperimen ini dilakukan dengan menggunakan dataset "Homicide Reports" dari eksperimen pembuatan model dataset-3 pada bagian~\ref{subsubsec:Dataset-3}. Data tersebut diletakan pada HDFS tepatnya pada direktori \textit{input}. Terdapat dua buah variabel yang akan dibandingkan pada eksperimen ini, yaitu (1) ukuran blok HDFS, (2) jumlah ukuran data dan atribut prediktor yang digunakan. Eksperimen akan dilakukan sebanyak 3 kali untuk masing - masing variabel dengan nilai yang berbeda - beda.
 
@@ -857,7 +869,7 @@ Hasil pengujian tertera pada Tabel~\ref{tab:uji pengaruh ukuran data atr 2}. Pad
 \end{figure}
 
 \subsubsection{Kesimpulan}
-Berdasarkan eksperimen - eksperimen yang telah dilakukan, maka dapat diambil kesimpulan sebagai berikut:
+Berdasarkan eksperimen performansi \textit{big data} yang telah dilakukan, maka dapat diambil kesimpulan sebagai berikut:
 
 \begin{enumerate}[label=(\alph*)]
 	\item Ukuran blok berpengaruh pada performa kecepatan eksekusi dari program yang dijalankan berdasarkan besaran ukuran data yang diproses. Oleh karena itu, pemilihan ukuran blok yang tepat perlu dilakukan dengan baik, agar program yang dieksekusi dapat berjalan secara cepat.

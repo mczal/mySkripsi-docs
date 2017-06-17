@@ -8,6 +8,26 @@ Salah satu algoritma teknik \textit{data mining} yang digunakan pada skripsi ini
 \subsection{Solusi Umum}
 \textit{Apache hadoop} digunakan untuk menangani pemrosesan big data dengan sistem yang terdistribusi. Framework ini dapat memfasilitasi sebuah program yang berjalan dengan menggunakan beberapa mesin/komputer sekaligus untuk menjadi sebagai tempat penyimpanan data sekaligus pemroses tugas dari program tersebut, dengan protokol komunikasi antar mesin/komputer yang sudah secara otomatis diatur oleh framework tersebut. \textit{Framework hadoop} dapat digunakan untuk membantu algoritma \textit{naive bayes classifier} dalam menangani jumlah data yang sangat banyak dengan bergantung pada banyaknya node yang digunakan. Sehingga, banyaknya node yang digunakan pada lingkungan hadoop yang dipakai mempengaruhi \textit{scalability} dari algoritma \textit{naive bayes classifier}. Tentu saja untuk mendapatkan keuntungan tersebut dalam menjalankan program \textit{naive bayes classifier}, diperlukan rancangan program yang dibuat berbasiskan \textit{MapReduce} pada Hadoop. Skripsi ini membangun perangkat lunak yang menerapkan algoritma klasifikasi \textit{naive bayes} pada sistem terdistribusi hadoop.
 
+\paragraph{Gambaran Umum Transformasi Algoritma \textit{Naive Bayes Classifier standalone} menjadi berbasis MapReduce}
+
+Dalam mengimplementasikan algoritma NBC berbasis MapReduce, diperlukan beberapa pemodelan secara khusus agar algoritma NBC dapat berjalan secara optimal dengan memanfaatkan konsep paralel pada model pemrograman berbasis MapReduce yang berjalan di Hadoop. Dalam mengimplementasikan algoritma NBC berbasis MapReduce, dibuat 2 perangkat lunak berbasis MapReduce yang berbeda, masing - masing perangkat lunak tersebut akan menjalankan fase pembuatann model pada NBC dan fase testing/klasifikasi terhadap model NBC.
+\begin{enumerate}
+	\item Pembuatan Model NBC\\
+	Untuk melakukan pembuatan model NBC, akan dilakukan penanganan yang berbeda untuk setiap tipe atribut yang berbeda.
+	\begin{itemize}
+		\item Atribut bertipe diskrit\\
+		Pada penanganan atribut ini, fase Map pada program yang berbasiskan MapReduce akan melakukan pencatatan setiap jumlah kemunculan tiap atribut prediktor terhadap tiap atribut kelas pada partisi input yang dibaca. Lalu pada fase Reduce, akan dilakukan penjumlahan untuk seluruh kemunculan tiap atribut prediktor terhadap tiap atribut kelas yang identik.
+		\item Atribut bertipe kelas\\
+		Pada penanganan atribut ini, fase Map pada program berbasiskan MapReduce akan melakukan pencatatan setiap jumlah kemunculan atribut kelas pada partisi input yang dibaca. Lalu pada fase Reduce, akan dilakukan penjumlahan untuk kemunculan atribut kelas yang identik.
+		\item Atribut bertipe numerik\\
+		Pada penanganan atribut ini, fase Map pada program berbasiskan MapReduce akan melakukan pencatatan atribut numerik terhadap atribut kelas pada partisi input yang dibaca. Lalu pada fase Reduce, akan dilakukan perhitungan rata - rata untuk setiap kemunculan atribut numerik terhadap kelas tersebut dan dilanjutkan dengan menghitung standard deviasi pada list tersebut.
+	\end{itemize}
+	
+	\item \textit{Testing}/Klasifikasi\\
+	Untuk melakukan \textit{testing}/klasifiasi NBC pada program berbasis MapReduce, pada fase Map akan dilakukan perhitungan peluang nilai kelas tertinggi dari partisi input yang dibaca. Lalu pada fase reduce, akan dilakukan penjumlahan untuk setiap hasil nilai prediksi yang memiliki nilai sama dan juga nilai asli kelas pada partisi tersebut yang memiliki nilai sama, hasil penjumlahan tersebut akan dimasukkan ke dalam \textit{confusion matrix}. Setelah pembuatan \textit{confusion matrix} selesai, pada fase ini juga akan dilakukan perhitungan evaluasi pada NBC yang akan meliputi: (1)\textit{Accuracy}, (2)\textit{Precision}, (3)\textit{Recall}, dan (4)F-Measure.
+
+\end{enumerate}
+
 %Dengan begitu, tingkat akurasi yang dimiliki oleh algoritma ini sangat maksimal dengan memberikan fasilitas untuk mengolah data yang sangat banyak dan beragam (\textit{big data}). Waktu yang dibutuhkan untuk mengeksekusi program tersebut juga diharapkan sangat cepat sebanding dengan jumlah komputer/node yang digunakan pada sistem terdistribusi hadoop(mendelegasikan pekerjaan kepada tiap komputer/node yang terintegrasi pada sistem secara bersamaan). 
 %Untuk dapat melakukan hal tersebut, program perlu dirancang dengan berbasis \textit{MapReduce}. Skripsi ini membangun perangkat lunak yang menerapkan algoritma naive bayes pada sistem terdistribusi hadoop.
 
@@ -109,10 +129,10 @@ Untuk proses yang berbasis \textit{MapReduce} pada modul ini perlu digambarkan m
 \begin{enumerate}
 	\item{Data \verb|model_naive_bayes_classifier|}
 	\begin{itemize}
-		\item \textit{Class Name} = [A..Z|a..z] \textcolor{red}{*}\textit{required}
-		\item \textit{Class Value} = [A..Z|a..z] \textcolor{red}{*}\textit{required}
-		\item \textit{Atribute Type} = [A..Z|a..z] \textcolor{red}{*}\textit{required}
-		\item Frekuensi kemunculan = [0..9] \textcolor{red}{*}\textit{required}
+		\item \textit{Class Name} = [A..Z|a..z] 
+		\item \textit{Class Value} = [A..Z|a..z] 
+		\item \textit{Atribute Type} = [A..Z|a..z] 
+		\item Frekuensi kemunculan = [0..9] 
 		\item \textit{Predictor Name} = [A..Z|a..z]
 		\item \textit{Predictor Value} = [A..Z|a..z]
 		\item \textit{Mean} = [0..9]
@@ -131,8 +151,8 @@ Untuk proses yang berbasis \textit{MapReduce} pada modul ini perlu digambarkan m
 		
 	\item{Data \verb|input_dan_info|}
 	\begin{itemize}
-		\item Data nilai tiap field = [A..Z|a..z|0..9] \textcolor{red}{*}\textit{required}
-		\item Nama - nama field = [A..Z|a..z] \textcolor{red}{*}\textit{required}
+		\item Data nilai tiap field = [A..Z|a..z|0..9] 
+		\item Nama - nama field = [A..Z|a..z] 
 	\end{itemize}
 	Contoh data \verb|input_dan_info|:
 	\begin{lstlisting}
@@ -178,9 +198,9 @@ Untuk proses yang berbasis \textit{MapReduce} pada modul ini perlu digambarkan m
 		\begin{itemize}
 			\item \textit{Key} terdiri dari:
 			\begin{enumerate}
-				\item \textit{Class Name} = [A..Z|a..z] \textcolor{red}{*}\textit{required}
-				\item \textit{Class Value} = [A..Z|a..z] \textcolor{red}{*}\textit{required}
-				\item \textit{Attribute Type} = [A..Z|a..z] \textcolor{red}{*}\textit{required}
+				\item \textit{Class Name} = [A..Z|a..z] 
+				\item \textit{Class Value} = [A..Z|a..z] 
+				\item \textit{Attribute Type} = [A..Z|a..z] 
 				\item \textit{Predictor Name} = [A..Z|a..z]
 				\item \textit{Predictor Value} = [A..Z|a..z|0..9]
 			\end{enumerate}
@@ -230,7 +250,7 @@ Untuk proses yang berbasis \textit{MapReduce} pada modul ini perlu digambarkan m
 	
 \end{enumerate}
 
-\paragraph{DFD \textit{level} 2: pada proses 1.0}
+\paragraph{DFD \textit{level} 2: pada proses 1}
 \begin{figure}[H]
 	\centering
 	\includegraphics[scale=0.5]{Diagram/DFD_1_1_Training_Map}
@@ -238,7 +258,7 @@ Untuk proses yang berbasis \textit{MapReduce} pada modul ini perlu digambarkan m
 	\label{fig:DFD level 2: proses 1.0}
 \end{figure}
 
-\paragraph{\textit{Data Dictionary} pada DFD \textit{level} 2: proses 1.0}
+\paragraph{\textit{Data Dictionary} pada DFD \textit{level} 2: proses 1}
 \begin{enumerate}
 	\item{Data \verb|data_info|}
 		\begin{itemize}
@@ -302,11 +322,11 @@ Untuk proses yang berbasis \textit{MapReduce} pada modul ini perlu digambarkan m
 	\begin{itemize}
 		\item \textit{Key} terdiri dari:
 		\begin{enumerate}
-			\item \textit{Class Name} = [A..Z|a..z] \textit{\textcolor{red}{*}required}
-			\item \textit{Class Value} = [A..Z|a..z] \textit{\textcolor{red}{*}required}
-			\item \textit{Attribute Type} = [A..Z|a..z] \textit{\textcolor{red}{*}required}
-			\item \textit{Predictor Name} = [A..Z|a..z] \textcolor{red}{*}\textit{required}
-			\item \textit{Predictor Value} = [A..Z|a..z|0..9] \textcolor{red}{*}\textit{required}
+			\item \textit{Class Name} = [A..Z|a..z] 
+			\item \textit{Class Value} = [A..Z|a..z] 
+			\item \textit{Attribute Type} = [A..Z|a..z] 
+			\item \textit{Predictor Name} = [A..Z|a..z] 
+			\item \textit{Predictor Value} = [A..Z|a..z|0..9] 
 		\end{enumerate}
 		\item \textit{Value} terdiri dari:
 		\begin{enumerate}
@@ -318,10 +338,10 @@ Untuk proses yang berbasis \textit{MapReduce} pada modul ini perlu digambarkan m
 	\begin{itemize}
 		\item \textit{Key} terdiri dari:
 		\begin{enumerate}
-			\item \textit{Class Name} = [A..Z|a..z] \textit{\textcolor{red}{*}required}
-			\item \textit{Class Value} = [A..Z|a..z] \textit{\textcolor{red}{*}required}
-			\item \textit{Attribute Type} = [A..Z|a..z] \textit{\textcolor{red}{*}required}
-			\item \textit{Predictor Name} = [A..Z|a..z] \textcolor{red}{*}\textit{required}
+			\item \textit{Class Name} = [A..Z|a..z] 
+			\item \textit{Class Value} = [A..Z|a..z] 
+			\item \textit{Attribute Type} = [A..Z|a..z] 
+			\item \textit{Predictor Name} = [A..Z|a..z] 
 		\end{enumerate}
 		\item \textit{Value} terdiri dari:
 		\begin{enumerate}
@@ -331,7 +351,7 @@ Untuk proses yang berbasis \textit{MapReduce} pada modul ini perlu digambarkan m
 
 \end{enumerate}
 
-\paragraph{P-Spec (\textit{Process Specification}) pada DFD \textit{level} 2: pada proses 1.0}
+\paragraph{P-Spec (\textit{Process Specification}) pada DFD \textit{level} 2: pada proses 1}
 \begin{figure}[H]
 	\centering
 	\includegraphics[scale=0.6]{PSpec/P-Spec_dfd_1_0_0_train}
@@ -360,7 +380,7 @@ Untuk proses yang berbasis \textit{MapReduce} pada modul ini perlu digambarkan m
 	\label{fig:P-Spec training: pada proses 1.0.3}
 \end{figure}
 
-\paragraph{DFD \textit{level} 2: pada proses 1.1}
+\paragraph{DFD \textit{level} 2: pada proses 2}
 \begin{figure}[H]
 	\centering
 	\includegraphics[scale=0.65]{Diagram/DFD_1_2_Training_Test_SS}
@@ -368,15 +388,15 @@ Untuk proses yang berbasis \textit{MapReduce} pada modul ini perlu digambarkan m
 	\label{fig:DFD level 2: proses 1.1}
 \end{figure}
 
-\paragraph{\textit{Data Dictionary} pada DFD \textit{level} 2: proses 1.1}
+\paragraph{\textit{Data Dictionary} pada DFD \textit{level} 2: proses 2}
 \begin{enumerate}
 	\item{Data \verb|(k,v)|}
 	\begin{itemize}
 		\item \textit{Key} terdiri dari:
 		\begin{enumerate}
-			\item \textit{Class Name} = [A..Z|a..z] \textit{\textcolor{red}{*}required}
-			\item \textit{Class Value} = [A..Z|a..z] \textit{\textcolor{red}{*}required}
-			\item \textit{Attribute Type} = [A..Z|a..z] \textit{\textcolor{red}{*}required}
+			\item \textit{Class Name} = [A..Z|a..z] 
+			\item \textit{Class Value} = [A..Z|a..z] 
+			\item \textit{Attribute Type} = [A..Z|a..z] 
 			\item \textit{Predictor Name} = [A..Z|a..z]
 			\item \textit{Predictor Value} = [A..Z|a..z|0..9]
 		\end{enumerate}
@@ -406,7 +426,7 @@ Untuk proses yang berbasis \textit{MapReduce} pada modul ini perlu digambarkan m
 	\end{lstlisting}
 \end{enumerate}
 
-\paragraph{P-Spec (\textit{Process Specification}) pada proses 1.1}
+\paragraph{P-Spec (\textit{Process Specification}) pada proses 2}
 \begin{figure}[H]
 	\centering
 	\includegraphics[scale=0.6]{PSpec/P-Spec_dfd_1_1_0_train_testing}
@@ -415,7 +435,7 @@ Untuk proses yang berbasis \textit{MapReduce} pada modul ini perlu digambarkan m
 \end{figure}
 
 
-\paragraph{DFD \textit{level} 2: pada proses 1.2}
+\paragraph{DFD \textit{level} 2: pada proses 3}
 \begin{figure}[H]
 	\centering
 	\includegraphics[scale=0.6]{Diagram/DFD_1_3_Training_Red}
@@ -423,16 +443,16 @@ Untuk proses yang berbasis \textit{MapReduce} pada modul ini perlu digambarkan m
 	\label{fig:DFD level 2: proses 1.2}
 \end{figure}
 
-\paragraph{\textit{Data Dictionary} pada DFD \textit{level} 2: proses 1.2}
+\paragraph{\textit{Data Dictionary} pada DFD \textit{level} 2: proses 3}
 \begin{enumerate}
 	\item{Data \verb|sorted_(k',list(v'))numeric|}
 	\begin{itemize}
 		\item \textit{Key} terdiri dari:
 		\begin{enumerate}
-			\item \textit{Class Name} = [A..Z|a..z] \textit{\textcolor{red}{*}required}
-			\item \textit{Class Value} = [A..Z|a..z] \textit{\textcolor{red}{*}required}
-			\item \textit{Attribute Type} = [A..Z|a..z] \textit{\textcolor{red}{*}required}
-			\item \textit{Predictor Name} = [A..Z|a..z] \textit{\textcolor{red}{*}required}
+			\item \textit{Class Name} = [A..Z|a..z] 
+			\item \textit{Class Value} = [A..Z|a..z] 
+			\item \textit{Attribute Type} = [A..Z|a..z] 
+			\item \textit{Predictor Name} = [A..Z|a..z] 
 		\end{enumerate}
 		\item \textit{Value} terdiri dari:
 		\begin{enumerate}
@@ -450,11 +470,11 @@ Untuk proses yang berbasis \textit{MapReduce} pada modul ini perlu digambarkan m
 	\begin{itemize}
 		\item \textit{Key} terdiri dari:
 		\begin{enumerate}
-			\item \textit{Class Name} = [A..Z|a..z] \textit{\textcolor{red}{*}required}
-			\item \textit{Class Value} = [A..Z|a..z] \textit{\textcolor{red}{*}required}
-			\item \textit{Attribute Type} = [A..Z|a..z] \textit{\textcolor{red}{*}required}
-			\item \textit{Predictor Name} = [A..Z|a..z] \textit{\textcolor{red}{*}required}
-			\item \textit{Predictor Value} = [A..Z|a..z] \textit{\textcolor{red}{*}required}
+			\item \textit{Class Name} = [A..Z|a..z] 
+			\item \textit{Class Value} = [A..Z|a..z] 
+			\item \textit{Attribute Type} = [A..Z|a..z] 
+			\item \textit{Predictor Name} = [A..Z|a..z] 
+			\item \textit{Predictor Value} = [A..Z|a..z] 
 		\end{enumerate}
 		\item \textit{Value} terdiri dari:
 		\begin{enumerate}
@@ -472,9 +492,9 @@ Untuk proses yang berbasis \textit{MapReduce} pada modul ini perlu digambarkan m
 	\begin{itemize}
 		\item \textit{Key} terdiri dari:
 		\begin{enumerate}
-			\item \textit{Class Name} = [A..Z|a..z] \textit{\textcolor{red}{*}required}
-			\item \textit{Class Value} = [A..Z|a..z] \textit{\textcolor{red}{*}required}
-			\item \textit{Attribute Type} = [A..Z|a..z] \textit{\textcolor{red}{*}required}
+			\item \textit{Class Name} = [A..Z|a..z] 
+			\item \textit{Class Value} = [A..Z|a..z]
+			\item \textit{Attribute Type} = [A..Z|a..z] 
 		\end{enumerate}
 		\item \textit{Value} terdiri dari:
 		\begin{enumerate}
@@ -492,9 +512,9 @@ Untuk proses yang berbasis \textit{MapReduce} pada modul ini perlu digambarkan m
 	\begin{itemize}
 		\item \textit{Key} terdiri dari:
 		\begin{enumerate}
-			\item \textit{Class Name} = [A..Z|a..z] \textit{\textcolor{red}{*}required}
-			\item \textit{Class Value} = [A..Z|a..z] \textit{\textcolor{red}{*}required}
-			\item \textit{Attribute Type} = [A..Z|a..z] \textit{\textcolor{red}{*}required}
+			\item \textit{Class Name} = [A..Z|a..z] 
+			\item \textit{Class Value} = [A..Z|a..z] 
+			\item \textit{Attribute Type} = [A..Z|a..z] 
 		\end{enumerate}
 		\item \textit{Value} terdiri dari:
 		\begin{enumerate}
@@ -513,9 +533,9 @@ Untuk proses yang berbasis \textit{MapReduce} pada modul ini perlu digambarkan m
 	\begin{itemize}
 		\item \textit{Key} terdiri dari:
 		\begin{enumerate}
-			\item \textit{Class Name} = [A..Z|a..z] \textit{\textcolor{red}{*}required}
-			\item \textit{Class Value} = [A..Z|a..z] \textit{\textcolor{red}{*}required}
-			\item \textit{Attribute Type} = [A..Z|a..z]	\textit{\textcolor{red}{*}required}	
+			\item \textit{Class Name} = [A..Z|a..z] 
+			\item \textit{Class Value} = [A..Z|a..z] 
+			\item \textit{Attribute Type} = [A..Z|a..z]	
 			\item \textit{Predictor Name} = [A..Z|a..z]	
 			\item \textit{Predictor Value} = [A..Z|a..z]
 			\item Frekuensi kemunculan untuk atribut diskrit/kelas = [0..9]
@@ -542,7 +562,7 @@ Untuk proses yang berbasis \textit{MapReduce} pada modul ini perlu digambarkan m
 \end{enumerate}
 
 
-\paragraph{P-Spec (\textit{Process Specification}) pada proses 1.2}
+\paragraph{P-Spec (\textit{Process Specification}) pada proses 3}
 
 \begin{figure}[H]
 	\centering
@@ -772,7 +792,7 @@ Sama seperti pada modul \textit{training}, untuk proses yang berbasis \textit{Ma
 \end{enumerate}
 
 
-\paragraph{DFD \textit{level} 2: pada proses 1.0}
+\paragraph{DFD \textit{level} 2: pada proses 1}
 \begin{figure}[H]
 	\centering
 	\includegraphics[scale=0.7]{Diagram/DFD_1_1_Testing_Map}
@@ -780,7 +800,7 @@ Sama seperti pada modul \textit{training}, untuk proses yang berbasis \textit{Ma
 	\label{fig:DFD level 2: proses 1.0}
 \end{figure}
 
-\paragraph{P-Spec (\textit{Process Specification}) pada proses 1.0}
+\paragraph{\textit{Data Dictionary} pada DFD level 2 proses 1}
 \begin{enumerate}
 	\item{Data \verb|NBCmodel|}
 	yang merupakan model dari NBC memiliki format sama dengan NBC model yang terdapat pada data \verb|input_info_NBmodel| di \textit{context diagram}.
@@ -914,7 +934,7 @@ Sama seperti pada modul \textit{training}, untuk proses yang berbasis \textit{Ma
 \end{figure}
 
 
-\paragraph{DFD \textit{level} 2: pada proses 1.1}
+\paragraph{DFD \textit{level} 2: pada proses 2}
 \begin{figure}[H]
 	\centering
 	\includegraphics[scale=0.65]{Diagram/DFD_1_2_Training_Test_SS}
@@ -922,7 +942,7 @@ Sama seperti pada modul \textit{training}, untuk proses yang berbasis \textit{Ma
 	\label{fig:DFD level 2: proses 1.1}
 \end{figure}
 
-\paragraph{Data Dictionary pada DFD \textit{level} 2: proses 1.1}
+\paragraph{Data Dictionary pada DFD \textit{level} 2: proses 2}
 \begin{enumerate}
 	\item{Data \verb|(k',v')|} memiliki format yang sama dengan data \verb|output(k',v')| pada proses 1.0
 	
@@ -930,7 +950,7 @@ Sama seperti pada modul \textit{training}, untuk proses yang berbasis \textit{Ma
 
 \end{enumerate}
 
-\paragraph{DFD \textit{level} 2: pada proses 1.2}
+\paragraph{DFD \textit{level} 2: pada proses 3}
 \begin{figure}[H]
 	\centering
 	\includegraphics[scale=0.6]{Diagram/DFD_1_3_Testing_Red}
@@ -938,7 +958,7 @@ Sama seperti pada modul \textit{training}, untuk proses yang berbasis \textit{Ma
 	\label{fig:DFD level 2: proses 1.2}
 \end{figure}
 
-\paragraph{Data Dictionary pada DFD \textit{level} 2: proses 1.2}
+\paragraph{Data Dictionary pada DFD \textit{level} 2: proses 3}
 \begin{enumerate}
 	\item Data \verb|data_info| memiliki format dan isi yang sama dengan data \verb|data_info| pada proses 1.0
 	
@@ -987,7 +1007,7 @@ Sama seperti pada modul \textit{training}, untuk proses yang berbasis \textit{Ma
 
 \end{enumerate}
 
-\paragraph{P-Spec (\textit{Process Specification}) pada proses 1.0}
+\paragraph{P-Spec (\textit{Process Specification}) pada proses 3}
 
 \begin{figure}[H]
 	\centering
