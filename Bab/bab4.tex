@@ -183,7 +183,7 @@ Dalam \textit{package} ini terdapat beberapa \textit{package} lagi dan kelas - k
 	Kelas ini memiliki 1 buah operasi. Operasi tersebut adalah operasi \textit{map(key : Object, value : Text, context : Context) : void} yang melakukan operasi pada fase map untuk proses training pada modul ini. Seperti yang digambarkan pada DFD sebelumnya, proses ini melakukan perhitungan jumlah frekuensi kemunculan tiap atribut. Terkecuali untuk atribut prediktor yang bertipe numerik, operasi ini mengeluarkan kembali nilai yang dibaca dari input.
 	
 \begin{algorithm}[H]
-\caption{NBC Model Map Algorithm}\label{alg:NBCGenMap}
+\caption{NBC Training Map Algorithm}\label{alg:NBCGenMap}
 \begin{algorithmic}[1]
 \Procedure{Map}{$key,value,context$}\Comment{Map function}
 \State \verb|_|\texttt{CLASS} $\gets$ \texttt{"|}$\verb|_|$\texttt{class|"}
@@ -208,7 +208,7 @@ Dalam \textit{package} ini terdapat beberapa \textit{package} lagi dan kelas - k
 \State \texttt{checkerClassPrior} $\gets$ \texttt{classSplitConf.length}
 %\For $i \gets 0$ \To $attrSplitConf.length$ \Do
 \For{$i \gets 0$ \textbf{to} \texttt{attrSplitConf.length}}	
-	\If{\texttt{attrSplitConf[i].split(",")[2].equals(DISCRETETYPE)}}
+	\If{\texttt{attrSplitConf[i].split(",")[2].equals(}\texttt{DISCRETE}\_\texttt{TYPE)}}
 		%\For $j \gets 0$ \To $classSplitConf.length$ \Do
 		\For{$j \gets 0$ \textbf{to} \texttt{classSplitConf.length}}	
 			\State currKey $ \gets $ \verb|_|\texttt{DISCRETE + attrSplitConf[i].split(",")[0]}
@@ -219,6 +219,40 @@ Dalam \textit{package} ini terdapat beberapa \textit{package} lagi dan kelas - k
               \texttt{.split(",")[1])];}
           	\State \texttt{wordAttr.set(currKey);}
           	\State \texttt{context.write(wordAttr, one)}
+
+          \If{checkerClassPrior > 0}
+          	\State \texttt{currClassKey} $\gets$ \_\texttt{CLASS + classSplitConf[j].split(",")[0] + "," + inputSplit[Integer .parseInt(classSplitConf[j] .split(",")[1])]}
+          	\State \texttt{wordClass.set(currClassKey)}
+          	\State \texttt{context.write(wordClass, one)}
+          	\State \texttt{checkerClassPrior--;}
+          \EndIf          	
+          	
+		\EndFor
+	\ElsIf{\texttt{attrSplitConf[i].split(",")[2].equals(}\texttt{NUMERIC}\_\texttt{TYPE})}
+		\For{$j \gets 0$ \textbf{to} \texttt{classSplitConf.length}}
+
+            \State \texttt{currKey} $\gets$ \_\texttt{CONTINUOUS} $+$ \texttt{attrSplitConf[i].split(",")[0]} $+$ \texttt{"," + classSplitConf[j].split(",")[0]} $+$ \texttt{"," + inputSplit[Integer.parseInt(classSplitConf[j]
+              .split(",")[1])]}  		
+              
+            \State \texttt{wordAttr.set(currKey)}
+          	\State \texttt{DoubleWritable valNum}
+          	\State \texttt{numericIn} $\gets$ \texttt{inputSplit[Integer.parseInt(attrSplitConf[i].split(",")[1])]}
+          	
+          	\If{numericIn.contains(".")}
+          		\State \texttt{valNum} $\gets$ \texttt{new DoubleWritable(Double.parseDouble(numericIn))}
+          	\Else
+          		\State \texttt{valNum} $\gets$  \texttt{new DoubleWritable(Integer.parseInt(numericIn) * 1.0)}
+          	\EndIf
+			
+		  	\State \texttt{context.write(wordAttr, valNum)}
+			
+          	\If{\texttt{checkerClassPrior > 0}}
+          		\State \texttt{currClassKey} $\gets$ \_\texttt{CLASS + classSplitConf[j] .split(",")[0] + "," + inputSplit[Integer.parseInt(classSplitConf[j] .split(",")[1])]}
+          		\State \texttt{wordClass.set(currClassKey)}
+          		\State \texttt{context.write(wordClass, one)}
+          		\State \texttt{checkerClassPrior--}
+          	\EndIf
+			
 		\EndFor
 	\EndIf
 \EndFor
@@ -311,9 +345,9 @@ Kelas ini merupakan kelas yang akan menjadi \textit{combiner} pada modul ini. Ke
 \State \verb|NUMERIC_TYPE| $\gets$ \texttt{"NUMERIC"}
 
 \If{\texttt{key.type == \texttt{DISCRETE\_TYPE}} or \texttt{key.type == CLASS\_TYPE}}
-	\State \texttt{sum = 0}
+	\State \texttt{sum} $\gets$ 0
 	\ForAll{\texttt{v} $\in$ \texttt{values}}
-		\State \texttt{sum += v}
+		\State \texttt{sum} $\gets$ \texttt{sum} $+$ \texttt{v}
 	\EndFor
 	\State \texttt{context.write(key,sum)}
 	
@@ -444,7 +478,7 @@ Pada package ini terdapat 7 kelas utama yang digunakan untuk melakukan proses pa
 			\item{\texttt{map(}}
 			Operasi ini melakukan proses pada fase \textit{map} untuk proses testing pada modul ini. Proses yang dilakukan meliputi perhitungan nilai probabilitas posterior untuk setiap input pada value. Proses perhitungan tersebut dibagi menjadi 2 proses yang terpisah untuk atribut numerik dan diskrit. Setelah diketahui hasilnya, lalu disimpan hasil-nya untuk dijadikan keluaran pada operasi ini. Berikut merupakan \texttt{pseudo-code} pada operasi ini:
 			\begin{algorithm}[H]
-			\caption{NBC Testing algorithm}\label{alg:NBCTestMap}
+			\caption{NBC Testing Map Algorithm}\label{alg:NBCTestMap}
 			\begin{algorithmic}[1]
 			\Procedure{Map}{\texttt{key,value,context}}\Comment{Map function}
 			\State \texttt{input} $\gets$ \texttt{value.toString().trim().split(",")}
@@ -456,7 +490,7 @@ Pada package ini terdapat 7 kelas utama yang digunakan untuk melakukan proses pa
 				\ForAll{\texttt{(classPriorDetail)}$ \in $\texttt{classPrior}}
 					\State \texttt{currClassAllPredictorResult}$ \gets $\texttt{1.0}
 					\State \texttt{flag} $\gets$ \texttt{0}
-					\State \texttt{outer:}
+					%\State \texttt{outer:}
 					
 					\ForAll{(attrIdx,attrName,attrType) $\in$ attrSplitConf}
 						\State \texttt{currInAttrValue}$ \gets $\texttt{input[attrIdx]}	
@@ -465,7 +499,7 @@ Pada package ini terdapat 7 kelas utama yang digunakan untuk melakukan proses pa
 							\State \texttt{predictor} $\gets$ \texttt{predictorContainer[attrName]}
 							\State \texttt{predDetail} $\gets$ \texttt{predictor.getDetail[currInAttrValue]}
 							\State \texttt{countDividend} $\gets$ \texttt{classPriorDetail.getCount}
-							\State \texttt{divClassPrior} $\gets$ \texttt{predidctor.getClassPrior[className]}
+							\State \texttt{divClassPrior} $\gets$ \texttt{predictor.getClassPrior[className]}
 							\State \texttt{divClassPriorDetail} $\gets$ \texttt{divClassPrior.getDetail[classPriorDetail]}
 							\State \texttt{divisor} $\gets$ \texttt{divClassPriorDetail.getCount}
 							\State \texttt{currRes} $\gets$ \texttt{(countDividend) / (divisor)}
@@ -486,7 +520,7 @@ Pada package ini terdapat 7 kelas utama yang digunakan untuk melakukan proses pa
 						\State allCurrClassCount $\gets$ 0.0
 
 						\ForAll{\texttt{x} $\in$ \texttt{classPrior.getDetail}}
-							\State \texttt{allCurrClassCount += x.getCount}
+							\State \texttt{allCurrClassCount} $+\gets$ \texttt{x.getCount}
 						\EndFor
 												
 						\State \texttt{currClassAllPredictorResult}$*\gets$\texttt{(currClassCount/allCurrClassCount)}
@@ -500,10 +534,10 @@ Pada package ini terdapat 7 kelas utama yang digunakan untuk melakukan proses pa
 				\State \texttt{divisorNorm $\gets$ 0.0}
 				
 				\ForAll{\texttt{result $\in$ allClassResult}}
-					\State \texttt{divisorNorm}$+=$\texttt{result.currentVal}
+					\State \texttt{divisorNorm}$+\gets$\texttt{result.currentVal}
 					\If{\texttt{checker < currentVal}}
-						\State \texttt{checker = currentVal}
-          				\State \texttt{maxClass = s}
+						\State \texttt{checker} $\gets$ \texttt{currentVal}
+          				\State \texttt{maxClass} $\gets$ \texttt{s}
 					\EndIf
 				\EndFor
 				
@@ -629,14 +663,14 @@ Pada package ini terdapat 4 kelas utama yang digunakan untuk menjalankan proses 
 			\item{\texttt{reduce()}}\\
 			Operasi ini melakukan proses pada fase \textit{reduce} untuk proses testing pada modul ini. Proses yang dilakukan meliputi perhitungan nilai - nilai pada \texttt{confusion matrix} untuk setiap atribut kelas berdasarkan hasil klasifikasi pada fase \textit{map} sebelumnya. Setelah itu, proses ini juga melakukan kalkulasi untuk \textit{error rate}. Variabel yang digunakan pada perhitungan \textit{error rate} adalah: (1) \texttt{Accuracy} (2) \texttt{Precision} (3) \texttt{Recall} (4) \texttt{F-Measure}. Berikut merupakan \textit{pseudo-code} untuk proses \textit{reduce} pada modul \textit{testing}:
 			\begin{algorithm}[H]
-			\caption{NBC Testing algorithm}\label{alg:NBCTestMap}
+			\caption{NBC Testing Reduce Algorithm}\label{alg:NBCTestReduce}
 			\begin{algorithmic}[1]
 			\Procedure{Reduce}{$key,values[],context$}\Comment{Reduce function}
 			
-			\State \verb|HDFS_AUTHORITY| $\gets$ \texttt{"hdfs://master:9000"}
-			\State \texttt{classContainerRed} $\gets$ \texttt{ClassContainerRed}
+			%\State \verb|HDFS_AUTHORITY| $\gets$ \texttt{"hdfs://master:9000"}
+			\State \texttt{classContainerRed} $\gets$ \texttt{container dari seluruh atribut kelas pada model NBC}
 
-			\State \texttt{classPriorRed = classContainerRed.get[key]}
+			\State \texttt{classPriorRed} $\gets$ \texttt{classContainerRed.get[key]}
 			\State \texttt{confusionMatrix} $\gets$ \texttt{ConfusionMatrix(classPriorRed.valueSize,classPriorRed)}
 			\State \texttt{outKey} $\gets$ \texttt{"@" + key}\Comment{class name}
 			
