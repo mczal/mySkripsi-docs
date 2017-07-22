@@ -50,12 +50,13 @@ Pada bagian ini, hanya dijelaskan mengenai teknik klasifikasi dan klustering. Ka
 
 \subsection{Langkah - langkah Penambangan Data}
 
-\begin{figure}[h]
+\begin{figure}[H]
 	\centering
 	\includegraphics[scale=0.7]{GambarIO/langkah-data-mining}
-	\caption[Langkah Penambangan Data]{Langkah Penambangan Data}
+	\caption[Langkah Penambangan Data]{Langkah Penambangan Data\footnotemark}
 	\label{fig:Langkah Penambangan Data}
 \end{figure}
+\footnotetext{https://image.slidesharecdn.com/cdocumentsandsettingsganeshdesktopmyseminardatamining-090716020404-phpapp02/95/data-mining-overview-13-728.jpg?cb=1247709959}
 
 Gambar~\ref{fig:Langkah Penambangan Data} menyatakan langkah-langkah untuk menemukan pengetahuan dan proses-proses pengolahan data. Gambar~\ref{fig:Langkah Penambangan Data} juga menyatakan bahwa setelah meraih pengetahuan, proses pencarian pengetahuan lebih lanjut juga dapat dilakukan kembali. Lihat anak panah pada Gambar~\ref{fig:Langkah Penambangan Data} yang merujuk pada langkah-langkah yang dapat dilakukan kembali untuk mendapatkan pengetahuan yang lebih mendalam. Berikut adalah proses-proses yang harus dilakukan dalam mencari pengetahuan baru \cite{DataMiningIntro:2015}:
 
@@ -282,7 +283,7 @@ HDFS merupakan sebuah sistem penyimpanan terdistribusi yang menyediakan akses th
 \begin{figure}[h]
 	\centering
 	\includegraphics[scale=0.43]{GambarIO/map_reduce}
-	\caption[Ilustrasi framework MapReduce]{Ilustrasi framework MapReduce}
+	\caption[Ilustrasi framework MapReduce]{Ilustrasi framework MapReduce \cite{Lam:2010:HA:1965594}}
 	\label{fig:map_reduce}
 \end{figure}
 		
@@ -312,9 +313,10 @@ HDFS merupakan sebuah sistem penyimpanan terdistribusi yang menyediakan akses th
 \begin{figure}[H]
 \centering
 \includegraphics[scale=0.6]{YARN-Architecture}
-\caption[Arsitektur YARN]{Arsitektur YARN}
+\caption[Arsitektur YARN]{Arsitektur YARN \footnotemark}
 \label{fig:Arsitektur YARN-1}
 \end{figure}
+\footnotetext{https://hadoop.apache.org/docs/r2.7.1/hadoop-yarn/hadoop-yarn-site/yarn\_architecture.gif}
 		
 Pada YARN setiap pekerjaan memiliki JobTracker-nya masing - masing dan pada suatu cluster dapat memiliki beberapa JobTracker yang sedang bekerja. Setiap JobTracker pada node yang berbeda bisa berjalan pada software yang berbeda. Hal ini yang mendukung model  dari \textit{Heterogeneous Cluster}.
 
@@ -693,7 +695,7 @@ Ketika ada suatu nilai dari atribut prediktor yang tidak memiliki frekuensi kemu
 \subsection{Prediktor Numerik}
 \label{subsec:Prediktor Numerik}
 \cite{garg2013design} 
-Ketika suatu atribut prediktor memiliki data bersifat kontinu atau numerik, terdapat 2 cara untuk mengatasi hal tersebut, diantaranya adalah:
+Ketika suatu atribut prediktor memiliki data bersifat kontinu atau numerik, terdapat 2 cara untuk melakukan perhitungan probabilitas posterior dari dataset tersebut terhadap atribut kelas, diantaranya adalah:
 \begin{enumerate}
 	\item Melakukan transformasi atribut numerik dengan cara memecah - mecah nilai distribusi dari seluruh nilai dalam atribut tersebut ke dalam kategori - kategori terpisah. Cara tersebut disebut sebagai \textit{binning}. Cara ini perlu dilakukan sebelum membuat tabel frekuensi.
 	
@@ -766,9 +768,10 @@ $Actual=c_3$ & $x$ & $y$ & $TP$ \\ \hline
 	\begin{figure}[H]
 	\centering
 	\includegraphics[scale=0.5]{precision_recall}
-	\caption[\textit{Precision dan Recall}, diambil dari \url{https://en.wikipedia.org/wiki/Precision_and_recall}]{\textit{Precision dan Recall}, diambil dari \url{https://en.wikipedia.org/wiki/Precision_and_recall}}
+	\caption[\textit{Precision dan Recall}, diambil dari \url{https://en.wikipedia.org/wiki/Precision_and_recall}]{\textit{Precision dan Recall}\footnotemark}
 	\label{fig:precision_recall}
 \end{figure}
+	\footnotetext{https://en.wikipedia.org/wiki/Precision\_and\_recall}
 
 	 \item \textit{Recall}\\
 	 \textit{Recall}(biasa disebut juga sebagai \textit{sensitivity}) merupakan pecahan dari suatu data contoh yang relevan dan diambil terhadap seluruh data yang relevan. Contoh ilustrasi pada gambar~\ref{fig:precision_recall}. Pada \textit{confusion matrix} \textit{recall} dapat diperoleh dengan perhitungan berikut:
@@ -837,15 +840,16 @@ Sampai pada tahap ini, sudah dapat dilakukan perhitungan keempat pengukuran ters
 	\item Melakukan deploy aplikasi pada aplikasi server (menggunakan aplikasi web server dari luar, seperti \textit{Apache Tomcat Web Application}),
 	\item Melakukan deploy aplikasi dengan menggunakan \textit{cloud PaaS}\footnote{\textit{Platform as Service} merupakan sebuah platform untuk mengembangkan, menjalankan, dan mengatur aplikasi kita tanpa melewati serangkaian konfigurasi yang rumit, layaknya \textit{dedicated server} pada umumnya} (\textit{Platform as Service}, seperti \textit{Pivotal Web Service}).
 \end{enumerate}
-Spring menyediakan model pemrograman terbuka yang komprehensif, kohesif, mudah dipahami serta memiliki \textit{library} yang lengkap untuk melakukan integrasi ke \textit{service - service} lain seperti \textit{Hadoop-client Library}, \textit{Mysql-connector Library}, dsb. Inti dari framework ini lebih kepada untuk membangun aplikasi web, mengatur manajemen transaksi, akses data, messaging, pengujian dsb. Kita bisa mengembangkan aplikasi web berbasis MVC dan \textit{Web-Service} framework \textit{REST-ful}\footnote{REST merupakan \textit{standard} dalam arsitektur web yang menggunakan Protocol HTTP untuk pertukaran data.  Konsep REST menekankan bahwa komunikasi yang terjadi antara \textit{client} dan \textit{server} hanya sebatas melakukan \textit{request} dan memberikan \textit{response} saja.} (\textit{Representational State Transfer}).
+Spring menyediakan model pemrograman terbuka yang komprehensif, kohesif, mudah dipahami serta memiliki \textit{library} yang lengkap untuk melakukan integrasi ke \textit{service - service} lain seperti \textit{Hadoop-client Library}, \textit{Mysql-connector Library}, dsb. Inti dari framework ini lebih kepada untuk membangun aplikasi web, mengatur manajemen transaksi, akses data, messaging, pengujian dsb. Kita bisa mengembangkan aplikasi web berbasis MVC dan \textit{Web-Service} framework \textit{REST-ful}\footnote{REST merupakan \textit{standard} dalam arsitektur web yang menggunakan Protocol HTTP untuk pertukaran data.  Konsep REST menekankan bahwa komunikasi yang terjadi antara \textit{client} dan \textit{server} hanya sebatas melakukan \textit{request} dan memberikan \textit{response} saja (\textit{stateless}).} (\textit{Representational State Transfer}).
 
-\textit{Design pattern} yang digunakan pada perangkat lunak yang dibuat menggunakan konsep MVC (\textit{model view controler}). Spring memiliki fitur khusus untuk membuat web berbasiskan \textit{design pattern} MVC. Berikut merupakan ilustrasi(diambil dari \url{https://docs.spring.io/spring/docs/current/spring-framework-reference/html/images/mvc.png.pagespeed.ce.tmIzOTr1gg.png}) dari \textit{request workflow} pada \textit{Spring Web} MVC.
-\begin{figure}[h]
+\textit{Design pattern} yang digunakan pada perangkat lunak yang dibuat menggunakan konsep MVC (\textit{model view controler}). Spring memiliki fitur khusus untuk membuat web berbasiskan \textit{design pattern} MVC. Berikut merupakan ilustrasi dari \textit{request workflow} pada \textit{Spring Web} MVC.
+\begin{figure}[H]
 	\centering
 	\includegraphics[scale=0.5]{GambarIO/mvc_springdocs}
-	\caption[Request Processing Workflow Spring MVC]{\textit{Request Processing Workflow Spring MVC}}
+	\caption[Request Processing Workflow Spring MVC]{\textit{Request Processing Workflow Spring MVC}\footnotemark}
 	\label{fig:Request Processing Workflow Spring MVC}
 \end{figure}
+\footnotetext{https://docs.spring.io/spring/docs/current/spring-framework-reference/html/images/mvc.png}
 
 \begin{enumerate}
 	\item \textit{\textbf{Model}} melakukan enkapsulasi dari data yang ada pada aplikasi dan secara umum berisi POJO\footnote{Istilah POJO (\textit{Plain Old Java Object}) digunakan untuk menunjukkan objek java yang hanya berisi variable serta \textit{accessor} dan \textit{mutator} -nya tanpa ada method proses lainnya}.

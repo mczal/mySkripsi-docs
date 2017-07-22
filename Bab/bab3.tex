@@ -138,7 +138,15 @@ Untuk proses yang berbasis \textit{MapReduce} pada modul ini perlu digambarkan m
 		\item \textit{Mean} = [0..9]
 		\item \textit{Sigma (standard deviation)} = [0..9]
 	\end{itemize}
-	Contoh data \verb|model_naive_bayes_classifier|:
+
+	Data \verb|model_naive_bayes_classifier|, memiliki format yang berbeda - beda untuk setiap tipe atribut, berikut merupakan format tiap tipe tersebut:
+	\begin{itemize}
+		\item Kelas: [<NamaAtributKelas>, <NilaiAtributKelas>, <Frekuensi>|CLASS]
+		\item Numerik/Kontinu: [<NamaAtributPrediktor>, <NamaAtributKelas>, <NilaiAtributKelas> ; <Mean>|<Sigma>|NUMERIC]
+		\item Diskrit: [<NamaAtributPrediktor>, <NilaiAtributPrediktor>, <NamaAtributKelas>, <NilaiAtributKelas>, <Frekuensi>|DISCRETE]
+	\end{itemize}
+	
+	Setiap baris pada data \verb|model_naive_bayes_classifier| akan terurut dari atribut kelas, atribut prediktor numerik, dan atribut prediktor diskrit. Contoh data \verb|model_naive_bayes_classifier|:
 	\begin{lstlisting}
 	Play,Yes,2.0|CLASS
 	Play,No,3.0|CLASS
@@ -182,8 +190,8 @@ Untuk proses yang berbasis \textit{MapReduce} pada modul ini perlu digambarkan m
 \begin{enumerate}
 	\item{Data \verb|input(k,v)|}
 		\begin{itemize}
-			\item Key: \textit{NULL}. Karena, memang pada pertama kali data diambil dari HDFS, key-nya belum terdefinisi.
-			\item Value: Nilai dari tiap field yang ada = [A..Z|a..z|0..9] \textcolor{red}{*}\textit{required}
+			\item Key: Tidak terdefinisi. Karena, memang pada pertama kali data diambil dari HDFS, key-nya belum terdefinisi.
+			\item Value: Nilai dari tiap field yang ada = [A..Z|a..z|0..9]
 		\end{itemize}
 		Contoh data \verb|input_dan_info|:
 		\begin{lstlisting}
@@ -204,6 +212,13 @@ Untuk proses yang berbasis \textit{MapReduce} pada modul ini perlu digambarkan m
 				\item \textit{Predictor Name} = [A..Z|a..z]
 				\item \textit{Predictor Value} = [A..Z|a..z|0..9]
 			\end{enumerate}
+			Format dari \textit{Key} untuk setiap tipe yan berbeda adalah sebagai berikut:
+			\begin{itemize}
+				\item Kelas: [|\_class|<NamaAtributKelas>, <NilaiAtributKelas>]
+				\item Numerik: [|cont|<NamaAtributPrediktor>, <NamaAtributKelas>, <NilaiAtributKelas>]
+				\item Diskrit: [|disc|<NamaAtributPrediktor>, <NilaiAtributPrediktor>, <NamaAtributKelas>, <NilaiAtributKelas>]
+			\end{itemize}						
+			
 			\item \textit{Value} memiliki 3 jenis format yang berbeda untuk tiap jenis atribut, diantaranya adalah: 
 			\begin{enumerate}
 				\item Nilai dari atribut numerik dan \textit{kelas} = [0..9]
@@ -702,7 +717,7 @@ Sama seperti pada modul \textit{training}, untuk proses yang berbasis \textit{Ma
 \begin{enumerate}
 	\item{Data \verb|input(k,v)_allNBmodel|}
 	\begin{itemize}
-		\item \textit{Key} pada \verb|input(k,v)| = \textit{NULL} (karena memang pada awal proses \textit{mapreduce} key pada input belum terdefinisi)
+		\item \textit{Key} pada \verb|input(k,v)| = Tidak terdefinisi (karena memang pada awal proses \textit{mapreduce} key pada input belum terdefinisi)
 
 		\item \textit{Value} pada \verb|input(k,v)| terdiri dari:
 		\begin{enumerate}
@@ -831,7 +846,7 @@ Sama seperti pada modul \textit{training}, untuk proses yang berbasis \textit{Ma
 
 	\item{Data \verb|input(k,v)numeric|}
 	\begin{itemize}
-		\item \textit{Key} pada \verb|input(k,v)numeric| = \textit{NULL} (karena memang pada awal proses \textit{mapreduce} key pada input belum terdefinisi)
+		\item \textit{Key} pada \verb|input(k,v)numeric| = Tidak terdefinisi (karena memang pada awal proses \textit{mapreduce} key pada input belum terdefinisi)
 
 		\item \textit{Value} pada \verb|input(k,v)| terdiri dari:
 		\begin{enumerate}
@@ -843,7 +858,7 @@ Sama seperti pada modul \textit{training}, untuk proses yang berbasis \textit{Ma
 
 	\item{Data \verb|input(k,v)discrete|}
 	\begin{itemize}
-		\item \textit{Key} pada \verb|input(k,v)discrete| = \textit{NULL} (karena memang pada awal proses \textit{mapreduce} key pada input belum terdefinisi)
+		\item \textit{Key} pada \verb|input(k,v)discrete| = Tidak terdefinisi (karena memang pada awal proses \textit{mapreduce} key pada input belum terdefinisi)
 
 		\item \textit{Value} pada \verb|input(k,v)| terdiri dari:
 		\begin{enumerate}
